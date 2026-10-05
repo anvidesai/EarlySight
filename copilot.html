@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — AI Operational Copilot (Stage 9)</title>
+  <meta name="description" content="Integrated EarlySight AI Assistant Copilot for industrial operations. Cross-silo evidence correlation, natural language query answering, inline velocity charts, and prescriptive diagnostics connecting SCADA, CMMS, and floor logs.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="map-page-body">
+
+  <!-- Top Enterprise Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">AI Operational Copilot</span>
+      </div>
+    </a>
+
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Back to Dashboard</a>
+      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Workspaces 🏢</span>
+      </a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Action Center &rarr;</span>
+      </a>
+      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-emerald"></span>
+        <span>Impact Monitoring &rarr;</span>
+      </a>
+      <button class="view-switch-btn active">AI Copilot</button>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-amber"></span>
+        <span>Signal Map &rarr;</span>
+      </a>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Trends & Timeline &rarr;</span>
+      </a>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Evidence & Explainability &rarr;</span>
+      </a>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>STAGE 9 ACTIVE &bull; COPILOT ENGINE ONLINE</span>
+      </div>
+      <button class="btn-header-cta" onclick="window.earlySightAiAssistant && window.earlySightAiAssistant.exportBriefing()">
+        Export Intelligence Briefing
+      </button>
+    </div>
+  </header>
+
+  <!-- Main AI Assistant Page Container -->
+  <main class="evidence-page-container">
+
+    <!-- Hero Header Card -->
+    <section class="evidence-hero-card">
+      <div class="evidence-hero-top">
+        <div class="hero-left-content">
+          <div class="hero-eyebrow font-mono">
+            <span>STAGE 9 // NATURAL LANGUAGE OPERATIONAL INTELLIGENCE</span>
+            <span class="eyebrow-divider">&bull;</span>
+            <span class="text-teal font-mono">CROSS-SILO KNOWLEDGE REASONING</span>
+          </div>
+          <h1 class="evidence-main-title">
+            EarlySight Operational AI Copilot
+          </h1>
+          <p class="evidence-location-str font-mono">
+            Connected to 54 Live Telemetry Signals &bull; 148 Monitored Assets &bull; Facility Quad 04
+          </p>
+        </div>
+
+        <div class="hero-confidence-display" style="border-color: var(--color-forest-border); background: var(--color-forest-subtle);">
+          <div class="confidence-ring-wrapper">
+            <div class="confidence-number-group" style="border-color: var(--color-forest-border); background: #FFFFFF;">
+              <span class="confidence-label font-mono" style="color: var(--color-forest);">ONTOLOGY SYNC</span>
+              <span class="confidence-value font-mono" style="color: var(--color-forest); font-size: 1.8rem;">100% LIVE</span>
+            </div>
+            <div class="confidence-meta-group">
+              <span class="conf-lead-time font-mono">SCADA + CMMS + Logs</span>
+              <span class="conf-loss-val font-mono" style="color: var(--color-forest);">$2.84M Protected</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industrial Cockpit Container -->
+    <div class="ai-cockpit-container" id="earlySightAiAssistantContainer">
+      
+      <!-- Left Panel: Intelligence Hub & History (320px) -->
+      <aside class="ai-cockpit-sidebar">
+        
+        <!-- Facility Context Status Strip -->
+        <div class="ai-facility-status-card">
+          <div class="ai-status-row">
+            <span class="ai-status-pulse"></span>
+            <span class="ai-status-title font-mono">PLANT COPILOT ONLINE</span>
+          </div>
+          <div class="ai-status-metrics-grid">
+            <div class="ai-status-metric">
+              <span class="metric-key">FACILITY</span>
+              <span class="metric-val">Facility 04</span>
+            </div>
+            <div class="ai-status-metric">
+              <span class="metric-key">SIGNALS</span>
+              <span class="metric-val text-teal">54 Live</span>
+            </div>
+            <div class="ai-status-metric">
+              <span class="metric-key">ACTIVE HAZARDS</span>
+              <span class="metric-val text-vermilion">2 Critical</span>
+            </div>
+            <div class="ai-status-metric">
+              <span class="metric-key">AVERTED ROI</span>
+              <span class="metric-val text-emerald">$2.84M</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggested Operational Questions -->
+        <div class="ai-sidebar-section">
+          <div class="ai-sidebar-header font-mono">
+            <span>SUGGESTED OPERATIONAL INQUIRIES</span>
+          </div>
+          <div class="ai-suggested-questions-list" id="aiSuggestedQuestionsList">
+            <!-- Rendered dynamically by ai-assistant.js -->
+          </div>
+        </div>
+
+        <!-- Search & Query History -->
+        <div class="ai-sidebar-section">
+          <div class="ai-sidebar-header font-mono">
+            <span>INVESTIGATION SEARCH & HISTORY</span>
+          </div>
+          
+          <div class="ai-history-search-box">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="aiHistorySearchInput" class="ai-history-search-input" placeholder="Search investigation history...">
+          </div>
+
+          <div class="ai-history-list" id="aiHistoryList">
+            <!-- Rendered dynamically by ai-assistant.js -->
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Right Panel: Conversation Canvas & Visual Reasoning Feed -->
+      <section class="ai-cockpit-main">
+        
+        <!-- Top Console Action Bar -->
+        <div class="ai-console-top-bar">
+          <div class="ai-console-scope-info">
+            <span class="ai-scope-pill font-mono">
+              <span class="indicator-dot dot-teal"></span>
+              <span>Active Scope: Facility 04 (All Zones)</span>
+            </span>
+            <span class="ai-connected-pill font-mono">Connected: SCADA + CMMS + Shift Logs + IoT Probes</span>
+          </div>
+          <div class="ai-console-actions">
+            <button type="button" class="btn-ai-action font-mono" id="aiExportBriefingBtn" title="Export investigation briefing">
+              <span>Export Briefing</span>
+            </button>
+            <button type="button" class="btn-ai-action font-mono" id="aiClearThreadBtn" title="Clear active thread">
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Messages Feed -->
+        <div class="ai-chat-feed" id="aiChatFeed">
+          <!-- Messages rendered dynamically with charts, evidence chips & alerts -->
+        </div>
+
+        <!-- Interactive Query Input Bar -->
+        <div class="ai-query-input-bar">
+          <div class="ai-input-silos-row font-mono">
+            <span class="silo-label">SYNTHESIZING DATA SILOS:</span>
+            <span class="silo-badge active">&bull; SCADA Telemetry</span>
+            <span class="silo-badge active">&bull; CMMS Work Orders</span>
+            <span class="silo-badge active">&bull; Shift Handovers</span>
+            <span class="silo-badge active">&bull; Subsurface Probes</span>
+          </div>
+
+          <form id="aiQueryForm" class="ai-query-form">
+            <input type="text" id="aiQueryInput" class="ai-query-input" placeholder="Ask EarlySight Copilot (e.g. 'What problems are increasing this week?', 'Show emerging issues in Block A')..." autocomplete="off">
+            <button type="submit" class="ai-query-send-btn" id="aiQuerySendBtn" title="Execute Query">
+              <span>Analyze</span>
+              <span class="send-arrow">&rarr;</span>
+            </button>
+          </form>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="evidence-bottom-nav">
+      <div class="bottom-nav-left">
+        <span class="font-mono text-muted">EARLYSIGHT WORKFLOW STAGES</span>
+        <span class="bottom-nav-tag font-mono" style="background: var(--color-forest-subtle); color: var(--color-forest); border: 1px solid var(--color-forest-border);">STAGE 9 COMPLETE</span>
+      </div>
+      <div class="bottom-nav-links">
+        <a href="index.html" class="btn-nav-outline">&larr; Return to Dashboard</a>
+        <a href="map.html" class="btn-nav-outline">Open Signal Map ↗</a>
+        <a href="timeline.html" class="btn-nav-outline">Open Trends & Timeline ↗</a>
+        <a href="evidence.html" class="btn-nav-outline">Open Evidence & Explainability ↗</a>
+      </div>
+    </nav>
+
+  </main>
+
+  <!-- AI Assistant Evidence Record Inspector Modal -->
+  <div class="ai-evidence-modal" id="aiEvidenceModal" role="dialog" aria-hidden="true">
+    <div class="ai-evidence-dialog">
+      <div class="ai-evidence-dialog-header">
+        <div>
+          <span class="evidence-modal-badge font-mono">ORGANIZATIONAL EVIDENCE CITATION</span>
+          <h4 class="evidence-modal-title" id="aiEvidenceModalTitle">Evidence Record</h4>
+          <span class="evidence-modal-source font-mono" id="aiEvidenceModalSource">Source</span>
+        </div>
+        <button type="button" class="ai-modal-close" id="aiEvidenceModalClose" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="ai-evidence-dialog-body" id="aiEvidenceModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="signals-data.js"></script>
+  <script src="dashboard-data.js"></script>
+  <script src="ai-assistant-data.js"></script>
+  <script src="ai-assistant.js"></script>
+  <script src="global-nav.js"></script>
+  <script src="micro-interactions.js"></script>
+</body>
+</html>

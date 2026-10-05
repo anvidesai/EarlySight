@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Trends & Timeline Analysis (Stage 7)</title>
+  <meta name="description" content="Chronological problem development timeline showing how operational precursors emerge, repeat, form patterns, increase in frequency, trigger early warnings, and undergo verified remediation with quantified historical comparisons.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="map-page-body">
+
+  <!-- Top Enterprise Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">Trends & Timeline</span>
+      </div>
+    </a>
+
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Back to Dashboard</a>
+      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Workspaces 🏢</span>
+      </a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Action Center &rarr;</span>
+      </a>
+      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-emerald"></span>
+        <span>Impact Monitoring &rarr;</span>
+      </a>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>AI Copilot ⚡</span>
+      </a>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none;">Interactive Signal Map</a>
+      <button class="view-switch-btn active">Trends & Timeline</button>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Evidence & Explainability ↗</span>
+      </a>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>STAGE 7 ACTIVE • CHRONOLOGICAL ENGINE</span>
+      </div>
+      <button class="btn-header-cta" onclick="window.timelineController && window.timelineController.togglePlayback()">
+        Toggle Auto-Play
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Timeline Container -->
+  <main class="timeline-page-container">
+
+    <!-- Executive Problem Overview Header Card -->
+    <section class="timeline-hero-card">
+      <div class="timeline-hero-top">
+        <div class="hero-case-selector-group">
+          <span class="timeline-eyebrow font-mono">STAGE 7 // PROBLEM DEVELOPMENT OVER TIME</span>
+          <h1 class="timeline-main-title" id="caseStudyTitle">Block A — Sub-Slab Water Infrastructure Micro-Leakage</h1>
+          <p class="timeline-sub-summary" id="caseStudySummary">
+            Tracking the chronological lifecycle from the first sub-threshold pressure transient to cross-silo pattern detection, early warning issuance, and documented downtime avoidance.
+          </p>
+        </div>
+
+        <div class="case-switcher-box">
+          <label for="timelineCaseSelect" class="font-mono text-muted" style="font-size:0.7rem; text-transform:uppercase;">Select Problem Case Study:</label>
+          <select id="timelineCaseSelect" class="map-styled-select" style="min-width:260px;">
+            <option value="0">Block A — Water Infrastructure Issue (High Severity)</option>
+            <option value="1">Block C — Hydraulic Valve Cavitation (High Severity)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick KPI Strip -->
+      <div class="timeline-kpi-ribbon">
+        <div class="kpi-ribbon-item">
+          <span class="kpi-ribbon-label">Severity Status</span>
+          <span class="risk-severity-pill badge-severity-high" id="caseStudySeverityBadge">HIGH SEVERITY</span>
+        </div>
+        <div class="kpi-ribbon-item">
+          <span class="kpi-ribbon-label">Actionable Lead Time</span>
+          <span class="kpi-ribbon-val text-vermilion" id="caseStudyLeadTime">14.2 Days Lead</span>
+        </div>
+        <div class="kpi-ribbon-item">
+          <span class="kpi-ribbon-label">Peak Confidence</span>
+          <span class="kpi-ribbon-val" id="caseStudyConfidence">87.0%</span>
+        </div>
+        <div class="kpi-ribbon-item">
+          <span class="kpi-ribbon-label">Downtime Loss Averted</span>
+          <span class="kpi-ribbon-val text-emerald" id="caseStudyCostAverted">$512,000</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Interactive Lifecycle Stepper (The Core 7-Step Progression) -->
+    <nav class="sticky-stepper-panel" aria-label="Problem Development Lifecycle">
+      <div class="stepper-top-bar">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="indicator-dot dot-vermilion"></span>
+          <span class="font-mono" style="font-size:0.75rem; font-weight:800; text-transform:uppercase;">
+            Problem Lifecycle Progression Track:
+          </span>
+        </div>
+        
+        <!-- Stepper Playback Controls -->
+        <div class="stepper-playback-controls">
+          <button class="stepper-btn" id="timelinePrevBtn" title="Previous Stage">&larr; Prev</button>
+          <button class="stepper-btn stepper-btn-primary" id="timelinePlayBtn" title="Auto-advance through timeline stages">
+            <span>▶ Play Lifecycle Evolution</span>
+          </button>
+          <button class="stepper-btn" id="timelineNextBtn" title="Next Stage">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- 7 Horizontal Stepper Nodes -->
+      <div class="stepper-track-scroll-wrapper">
+        <div class="lifecycle-stepper-track" id="lifecycleStepperTrack"></div>
+      </div>
+    </nav>
+
+    <!-- SECTION 1: Chronological Problem Development Cards -->
+    <section class="timeline-progression-section">
+      <div class="section-block-header">
+        <div>
+          <h2 class="section-block-title">
+            <span class="indicator-dot dot-vermilion"></span>
+            <span>Chronological Lifecycle Evolution</span>
+          </h2>
+          <p style="font-size:0.78rem; color:var(--ink-secondary); margin-top:3px;">
+            Watch how a problem develops step-by-step from initial isolated noise into an actionable multi-modal early warning.
+          </p>
+        </div>
+        <span class="section-block-badge font-mono">Scroll or click stepper to inspect</span>
+      </div>
+
+      <div class="chronological-cards-list" id="chronologicalCardsContainer"></div>
+    </section>
+
+    <!-- SECTION 2: Trend Charts with Daily / Weekly / Monthly Filtering -->
+    <section class="timeline-charts-section">
+      <div class="section-block-header">
+        <div>
+          <h2 class="section-block-title">
+            <span class="indicator-dot dot-amber"></span>
+            <span>Precursor Signal Velocity & Confidence Horizon</span>
+          </h2>
+          <p style="font-size:0.78rem; color:var(--ink-secondary); margin-top:3px;">
+            Plotting precursor frequency surge vs. MTGNN confidence curve and legacy SCADA alarm threshold.
+          </p>
+        </div>
+
+        <!-- Daily / Weekly / Monthly Filter Switcher -->
+        <div class="timeline-timeframe-switcher">
+          <span class="font-mono text-muted" style="font-size:0.72rem; margin-right:4px;">Granularity:</span>
+          <div class="map-pill-buttons">
+            <button class="timeline-tf-btn active" data-timeframe="daily"><span>Daily (30d)</span></button>
+            <button class="timeline-tf-btn" data-timeframe="weekly"><span>Weekly (12w)</span></button>
+            <button class="timeline-tf-btn" data-timeframe="monthly"><span>Monthly (6m)</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="trend-chart-panel-card">
+        <div class="chart-legend-strip">
+          <div class="chart-legend-item">
+            <span class="legend-line-sample" style="background:#C85A32;"></span>
+            <span class="font-mono">Precursor Frequency (Signals / Day)</span>
+          </div>
+          <div class="chart-legend-item">
+            <span class="legend-line-sample" style="background:#1B4332; border-top:1px dashed #5E7E6C;"></span>
+            <span class="font-mono">EarlySight Confidence Curve (%)</span>
+          </div>
+          <div class="chart-legend-item">
+            <span class="legend-line-sample" style="background:#DC2626; border-top:1px dashed #DC2626;"></span>
+            <span class="font-mono">Legacy SCADA Alarm Threshold (Breach Point)</span>
+          </div>
+        </div>
+
+        <!-- Interactive SVG Chart Container -->
+        <div id="trendSvgChartContainer" class="trend-svg-wrapper"></div>
+        <div id="chartHoverTooltip" class="chart-hover-popover"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Multi-Dimensional Trend Analytics (Frequency, Severity, Category, Location) -->
+    <section class="timeline-frequency-section" id="trendAnalyticsSection">
+      <div class="section-block-header">
+        <div>
+          <h2 class="section-block-title">
+            <span class="indicator-dot dot-vermilion"></span>
+            <span>Operational Trends & Precursor Trajectories</span>
+          </h2>
+          <p style="font-size:0.78rem; color:var(--ink-secondary); margin-top:3px;">
+            Cross-dimensional trend visualization across signal frequency, severity progression, category distribution, and facility locations.
+          </p>
+        </div>
+        <span class="section-block-badge font-mono">4-WEEK OBSERVATION HORIZON</span>
+      </div>
+
+      <!-- 4-Trend Grid: Frequency, Severity, Category, Location -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:24px;">
+        
+        <!-- 1. Signal Frequency Trend Card (Exact Prompt Example) -->
+        <div class="freq-kpi-card" style="border-top:3px solid var(--accent-risk);">
+          <div class="freq-kpi-header">
+            <span class="font-mono" style="font-size:0.7rem; text-transform:uppercase; color:var(--ink-muted); font-weight:700;">Signal Frequency Trend</span>
+            <span class="indicator-dot dot-vermilion"></span>
+          </div>
+          <h3 style="font-size:1.05rem; font-weight:700; color:var(--ink-primary); margin:6px 0 2px 0;">Water Leakage Pattern</h3>
+          <span style="font-size:0.76rem; color:var(--ink-secondary); display:block; margin-bottom:12px;">Weekly arrival count surge in Block A</span>
+
+          <!-- Weekly Progression Indicator -->
+          <div style="display:flex; flex-direction:column; gap:8px; font-family:var(--font-mono); font-size:0.8rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--color-ivory-subtle); padding:6px 10px; border-radius:4px;">
+              <span>Week 1</span>
+              <span style="color:var(--ink-muted);">&rarr;</span>
+              <strong>2 signals</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--color-ivory-subtle); padding:6px 10px; border-radius:4px;">
+              <span>Week 2</span>
+              <span style="color:var(--ink-muted);">&rarr;</span>
+              <strong>4 signals</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--color-ivory-subtle); padding:6px 10px; border-radius:4px;">
+              <span>Week 3</span>
+              <span style="color:var(--ink-muted);">&rarr;</span>
+              <strong>7 signals</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(217, 78, 52, 0.10); border:1px solid rgba(217, 78, 52, 0.3); padding:6px 10px; border-radius:4px; color:var(--accent-risk);">
+              <span>Week 4 (Peak)</span>
+              <span>&rarr;</span>
+              <strong>12 signals (Surging)</strong>
+            </div>
+          </div>
+          <div style="font-size:0.74rem; color:var(--accent-risk); font-weight:600; margin-top:10px;">
+            &uarr; +500% Velocity Increase • Accelerating Precursor Arrival
+          </div>
+        </div>
+
+        <!-- 2. Severity Trend Card -->
+        <div class="freq-kpi-card" style="border-top:3px solid var(--accent-amber);">
+          <div class="freq-kpi-header">
+            <span class="font-mono" style="font-size:0.7rem; text-transform:uppercase; color:var(--ink-muted); font-weight:700;">Severity Progression Trend</span>
+            <span class="indicator-dot dot-amber"></span>
+          </div>
+          <h3 style="font-size:1.05rem; font-weight:700; color:var(--ink-primary); margin:6px 0 2px 0;">Severity Escalation</h3>
+          <span style="font-size:0.76rem; color:var(--ink-secondary); display:block; margin-bottom:12px;">Transition from sub-threshold to critical alert</span>
+
+          <div style="display:flex; flex-direction:column; gap:8px; font-size:0.78rem;">
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:3px; font-family:var(--font-mono);">
+                <span>Critical Severity</span>
+                <strong class="text-vermilion">15%</strong>
+              </div>
+              <div style="height:6px; background:var(--color-ivory-subtle); border-radius:3px; overflow:hidden;">
+                <div style="width:15%; height:100%; background:var(--accent-risk);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:3px; font-family:var(--font-mono);">
+                <span>High Severity</span>
+                <strong class="text-amber">45%</strong>
+              </div>
+              <div style="height:6px; background:var(--color-ivory-subtle); border-radius:3px; overflow:hidden;">
+                <div style="width:45%; height:100%; background:var(--accent-amber);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:3px; font-family:var(--font-mono);">
+                <span>Medium Severity</span>
+                <strong>28%</strong>
+              </div>
+              <div style="height:6px; background:var(--color-ivory-subtle); border-radius:3px; overflow:hidden;">
+                <div style="width:28%; height:100%; background:var(--color-sage);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:3px; font-family:var(--font-mono);">
+                <span>Low Severity</span>
+                <strong>12%</strong>
+              </div>
+              <div style="height:6px; background:var(--color-ivory-subtle); border-radius:3px; overflow:hidden;">
+                <div style="width:12%; height:100%; background:var(--ink-muted);"></div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:0.74rem; color:var(--ink-muted); margin-top:10px;">
+            High & Critical alerts grew from 18% in Week 1 to 60% in Week 4.
+          </div>
+        </div>
+
+        <!-- 3. Category Trend Card -->
+        <div class="freq-kpi-card" style="border-top:3px solid var(--accent-teal);">
+          <div class="freq-kpi-header">
+            <span class="font-mono" style="font-size:0.7rem; text-transform:uppercase; color:var(--ink-muted); font-weight:700;">Category Trend</span>
+            <span class="indicator-dot dot-teal"></span>
+          </div>
+          <h3 style="font-size:1.05rem; font-weight:700; color:var(--ink-primary); margin:6px 0 2px 0;">Signal Distribution</h3>
+          <span style="font-size:0.76rem; color:var(--ink-secondary); display:block; margin-bottom:12px;">Precursor volume by operational domain</span>
+
+          <div style="display:flex; flex-direction:column; gap:6px; font-size:0.78rem; font-family:var(--font-mono);">
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:var(--color-ivory-subtle); border-radius:4px;">
+              <span>Water Leakage</span>
+              <strong class="text-teal">38% (49 signals)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:var(--color-ivory-subtle); border-radius:4px;">
+              <span>Equipment Failure</span>
+              <strong>24% (31 signals)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:var(--color-ivory-subtle); border-radius:4px;">
+              <span>Overcrowding / EHS</span>
+              <strong>18% (23 signals)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:var(--color-ivory-subtle); border-radius:4px;">
+              <span>Electrical / Thermal</span>
+              <strong>20% (25 signals)</strong>
+            </div>
+          </div>
+          <div style="font-size:0.74rem; color:var(--ink-muted); margin-top:10px;">
+            Water leakage and mechanical equipment represent 62% of all precursors.
+          </div>
+        </div>
+
+        <!-- 4. Location Trend Card -->
+        <div class="freq-kpi-card" style="border-top:3px solid var(--intel-primary);">
+          <div class="freq-kpi-header">
+            <span class="font-mono" style="font-size:0.7rem; text-transform:uppercase; color:var(--ink-muted); font-weight:700;">Location Trend</span>
+            <span class="indicator-dot dot-forest"></span>
+          </div>
+          <h3 style="font-size:1.05rem; font-weight:700; color:var(--ink-primary); margin:6px 0 2px 0;">Geospatial Hotspots</h3>
+          <span style="font-size:0.76rem; color:var(--ink-secondary); display:block; margin-bottom:12px;">Concentration across monitored facility zones</span>
+
+          <div style="display:flex; flex-direction:column; gap:6px; font-size:0.78rem; font-family:var(--font-mono);">
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:rgba(217, 78, 52, 0.08); border-radius:4px; color:var(--accent-risk);">
+              <span>Block A (Assembly)</span>
+              <strong>46% (59 signals)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:var(--color-ivory-subtle); border-radius:4px;">
+              <span>Engineering Building</span>
+              <strong>22% (28 signals)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:var(--color-ivory-subtle); border-radius:4px;">
+              <span>Main Cafeteria</span>
+              <strong>18% (23 signals)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:5px 8px; background:var(--color-ivory-subtle); border-radius:4px;">
+              <span>Utility Basement / Other</span>
+              <strong>14% (18 signals)</strong>
+            </div>
+          </div>
+          <div style="font-size:0.74rem; color:var(--ink-muted); margin-top:10px;">
+            Block A is identified as the highest-risk facility zone across all metrics.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="frequency-grid-container">
+        
+        <!-- Frequency Acceleration KPI Card -->
+        <div class="freq-kpi-card">
+          <div class="freq-kpi-header">
+            <span class="font-mono text-muted" style="font-size:0.68rem; text-transform:uppercase;">Arrival Velocity Acceleration</span>
+            <span class="indicator-dot dot-vermilion"></span>
+          </div>
+          <div class="freq-kpi-number text-vermilion" id="metricFrequencySurge">+340%</div>
+          <div class="freq-kpi-sub">Surge in 72-hour window prior to warning</div>
+          <p style="font-size:0.75rem; color:var(--ink-muted); margin-top:8px;">
+            Precursor arrival rate climbed from 0.04 signals/day to 3.4 signals/day, confirming rapid non-linear failure progression.
+          </p>
+        </div>
+
+        <!-- Mean Recurrence Interval Card -->
+        <div class="freq-kpi-card">
+          <div class="freq-kpi-header">
+            <span class="font-mono text-muted" style="font-size:0.68rem; text-transform:uppercase;">Mean Time Between Precursors</span>
+            <span class="indicator-dot dot-amber"></span>
+          </div>
+          <div class="freq-kpi-number text-amber" id="metricMTBSignals">6.2 Hours</div>
+          <div class="freq-kpi-sub">Down from baseline 168.0 Hours (1 Week)</div>
+          <p style="font-size:0.75rem; color:var(--ink-muted); margin-top:8px;">
+            Signals began clustering into high-frequency pulses across pump vibration, acoustic transducers, and floor humidity probes.
+          </p>
+        </div>
+
+        <!-- Multi-Modal Precursor Composition -->
+        <div class="freq-kpi-card" style="grid-column: span 2;">
+          <div class="freq-kpi-header">
+            <span class="font-mono text-muted" style="font-size:0.68rem; text-transform:uppercase;">Multi-Modal Signal Composition</span>
+            <span class="font-mono" style="font-size:0.72rem; color:var(--ink-secondary);">17 Precursor Records</span>
+          </div>
+          <div class="modality-frequency-bars-container" id="frequencyModalityBars"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: Historical Comparison (EarlySight Mitigated vs. 2024 Unmitigated Catastrophe) -->
+    <section class="timeline-historical-section">
+      <div class="section-block-header">
+        <div>
+          <h2 class="section-block-title">
+            <span class="indicator-dot dot-emerald"></span>
+            <span>Historical Comparison: Mitigated vs. Unmitigated Trajectory</span>
+          </h2>
+          <p style="font-size:0.78rem; color:var(--ink-secondary); margin-top:3px;">
+            Quantified operational comparison between proactive early resolution and past catastrophic reactive failure.
+          </p>
+        </div>
+        <div class="historical-savings-pill">
+          <span>Net Financial Savings:</span>
+          <strong class="text-emerald font-mono" id="histNetSavings">$1,419,660</strong>
+        </div>
+      </div>
+
+      <!-- Comparative Summary Cards -->
+      <div class="historical-compare-grid">
+        
+        <!-- 2024 Past Incident Card -->
+        <div class="hist-card hist-card-unmitigated">
+          <div class="hist-card-tag">PAST UNMITIGATED INCIDENT (2024)</div>
+          <h4 class="hist-card-title" id="histUnmitigatedTitle">2024 Trench Seepage & Drive Inundation</h4>
+          <div class="hist-card-stat text-vermilion" id="histUnmitigatedLoss">$1,420,000 • 46 Hours Plant Stoppage</div>
+          <p class="hist-card-desc">
+            Traditional SCADA waited for water to physically reach emergency float switch. By that time, 3 line motors had shorted out and Cleanroom Cell C required full decontamination.
+          </p>
+        </div>
+
+        <!-- 2026 Mitigated Event Card -->
+        <div class="hist-card hist-card-mitigated">
+          <div class="hist-card-tag">EARLYSIGHT MITIGATED EVENT (2026)</div>
+          <h4 class="hist-card-title" id="histMitigatedTitle">2026 Flange 4B-12 Proactive Intervention</h4>
+          <div class="hist-card-stat text-emerald" id="histMitigatedLoss">$340 • 0 Hours (Executed During Shift Change)</div>
+          <p class="hist-card-desc">
+            EarlySight alerted engineers 14.2 days ahead. Gasket replaced during routine 35-minute break. Motors stayed bone dry; cleanroom remained 100% operational with zero output loss.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Trajectory Comparison Chart Card -->
+      <div class="hist-chart-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span class="font-mono text-muted" style="font-size:0.72rem; text-transform:uppercase;">
+            Anomaly Severity Trajectory: Unmitigated (Red) vs. Proactive Mitigation (Green)
+          </span>
+          <span class="font-mono" style="font-size:0.72rem; color:var(--accent-teal);">Threshold Breach Prevented</span>
+        </div>
+
+        <div id="historicalTrajectorySvg" class="hist-svg-wrapper"></div>
+      </div>
+
+      <!-- Comparative Matrix Table -->
+      <div class="historical-table-card">
+        <table class="historical-table">
+          <thead>
+            <tr>
+              <th>Operational Dimension</th>
+              <th>2024 Reactive Operation (No Early Warning)</th>
+              <th>2026 EarlySight Proactive Intervention</th>
+              <th>Quantified Advantage</th>
+            </tr>
+          </thead>
+          <tbody id="historicalComparisonTableBody"></tbody>
+        </table>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Enterprise Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong style="color: var(--ink-primary); font-size: 0.95rem;">EarlySight</strong>
+        <p style="margin-top: 4px;">AI-Powered Early Warning System for Emerging Problems</p>
+      </div>
+      <div class="footer-nav">
+        <a href="index.html#heroStage">Startup Narrative</a>
+        <a href="index.html#mainDashboardSection">Main Dashboard</a>
+        <a href="map.html">Interactive Signal Map</a>
+        <a href="timeline.html">Trends & Timeline</a>
+      </div>
+      <div>
+        <span>Enterprise Stage 7 — Timeline & Trend Analysis</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="timeline-data.js"></script>
+  <script src="timeline.js"></script>
+  <script src="global-nav.js"></script>
+  <script src="micro-interactions.js"></script>
+
+</body>
+</html>

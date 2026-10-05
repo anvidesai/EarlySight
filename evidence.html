@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Evidence & Explainability (Stage 8)</title>
+  <meta name="description" content="Dedicated Evidence & Explainability interface providing full causal transparency into early warnings. Visualizes connected evidence cards, operator complaints, maintenance logs, spatial clustering, frequency surge, and historical similarity with rigorous evidence strength confidence metrics.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="map-page-body">
+
+  <!-- Top Enterprise Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">Evidence & Explainability</span>
+      </div>
+    </a>
+
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Back to Dashboard</a>
+      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Workspaces 🏢</span>
+      </a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Action Center &rarr;</span>
+      </a>
+      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-emerald"></span>
+        <span>Impact Monitoring &rarr;</span>
+      </a>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>AI Copilot ⚡</span>
+      </a>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-amber"></span>
+        <span>Signal Map ↗</span>
+      </a>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Trends & Timeline ↗</span>
+      </a>
+      <button class="view-switch-btn active">Evidence & Explainability</button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>STAGE 8 ACTIVE • EXPLAINABILITY ENGINE</span>
+      </div>
+      <button class="btn-header-cta" onclick="window.evidenceController && window.evidenceController.triggerDispatchModal()">
+        Prescriptive Dispatch
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Evidence & Explainability Container -->
+  <main class="evidence-page-container">
+
+    <!-- Alert Selector Header Bar -->
+    <div class="evidence-alert-selector-bar">
+      <div class="selector-label font-mono">SELECT ALERT TO INSPECT EXPLAINABILITY:</div>
+      <div class="alert-pills-row">
+        <button class="alert-select-pill active" data-alert-id="EW-2026-088">
+          <span class="pill-dot dot-vermilion"></span>
+          <span class="pill-id font-mono">EW-2026-088</span>
+          <span class="pill-name">Block A Water Infrastructure Micro-Leakage</span>
+          <span class="pill-conf font-mono">87% Conf</span>
+        </button>
+        <button class="alert-select-pill" data-alert-id="EW-2026-094">
+          <span class="pill-dot dot-amber"></span>
+          <span class="pill-id font-mono">EW-2026-094</span>
+          <span class="pill-name">Block C Hydraulic Valve Cavitation</span>
+          <span class="pill-conf font-mono">91.2% Conf</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Alert Executive Overview Card -->
+    <section class="evidence-hero-card">
+      <div class="evidence-hero-top">
+        <div class="hero-left-content">
+          <div class="hero-eyebrow font-mono">
+            <span>EARLY WARNING INVESTIGATION // EVIDENCE AUDIT TRAIL</span>
+            <span class="eyebrow-divider">•</span>
+            <span class="text-vermilion font-mono" id="evAlertSeverity">HIGH HAZARD</span>
+          </div>
+          <h1 class="evidence-main-title" id="evAlertTitle">
+            Sub-Slab Pressurized Water Seepage on Flange 4B-12
+          </h1>
+          <p class="evidence-location-str" id="evAlertLocation">
+            Block A — Trench 4B / Assembly Bay 4 / Cleanroom Cell C Boundary
+          </p>
+        </div>
+
+        <!-- Prominent Confidence & Metric Card -->
+        <div class="hero-confidence-display">
+          <div class="confidence-ring-wrapper">
+            <div class="confidence-number-group">
+              <span class="confidence-label">EVIDENCE STRENGTH</span>
+              <span class="confidence-value" id="evConfidenceVal">87%</span>
+            </div>
+            <div class="confidence-meta-group">
+              <span class="conf-lead-time" id="evAlertLeadTime">14 Days Remaining</span>
+              <span class="conf-loss-val" id="evAlertLoss">$512,000 Averted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Critical Evidence Strength Disclaimer Callout -->
+      <div class="evidence-disclaimer-callout" role="alert">
+        <div class="disclaimer-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="disclaimer-content">
+          <div class="disclaimer-title font-mono">
+            MATHEMATICAL DEFINITION OF CONFIDENCE
+          </div>
+          <p class="disclaimer-text">
+            <strong>Confidence communicates the strength, volume, and cross-silo coherence of the available evidence — NOT certainty.</strong>
+            This 87% rating indicates that 5 independent operational streams (operator reports, CMMS tickets, spatial clustering, frequency surge, and historical similarity) align with high mathematical coherence. It does not mean catastrophic failure is 87% inevitable or already underway; early detection provides 14.2 days to prevent it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: "Why was this warning generated?" (Causal Explainability Engine) -->
+    <section class="causal-explainability-section">
+      <div class="section-badge-header">
+        <span class="badge-icon">💡</span>
+        <span class="badge-title font-mono">PRIMARY EXPLAINABILITY QUESTION</span>
+      </div>
+
+      <div class="causal-card-container">
+        <h2 class="why-question-title" id="whyHeadline">
+          Why was this warning generated?
+        </h2>
+
+        <div class="causal-summary-callout" id="whySummary">
+          This warning was generated because 5 independent, historically disconnected operational indicators converged in the exact same 8.5-meter sub-slab utility corridor in Block A with an exponential acceleration (+340% frequency surge over 72 hours).
+        </div>
+
+        <div class="causal-pillars-grid">
+          <!-- Pillar 1: Why legacy SCADA missed it -->
+          <div class="causal-pillar">
+            <div class="pillar-top font-mono">
+              <span class="pillar-num">01</span>
+              <span class="pillar-label">WHY LEGACY SCADA MISSED IT</span>
+            </div>
+            <p class="pillar-desc" id="whyCausalNarrative">
+              Standard SCADA alarms remained silent because no individual sensor exceeded legacy single-point trip limits. However, EarlySight cross-correlated 8 operator complaint logs (acoustic hiss, localized floor dampness) with 3 separate maintenance inspection tickets (gasket wear, condensation notes), pinpointing an active micro-leak on flange 4B-12. The temporal velocity and spatial co-location match past unmitigated trench flooding signatures with 94.2% similarity.
+            </p>
+          </div>
+
+          <!-- Pillar 2: Root Cause Physical Hypothesis -->
+          <div class="causal-pillar">
+            <div class="pillar-top font-mono">
+              <span class="pillar-num">02</span>
+              <span class="pillar-label">ROOT CAUSE PHYSICAL HYPOTHESIS</span>
+            </div>
+            <p class="pillar-desc" id="whyRootCause">
+              EPDM elastomer gasket embrittlement on pressurized line 4B combined with transient hydraulic shock from booster pump P-102 short-cycling.
+            </p>
+          </div>
+
+          <!-- Pillar 3: Prescriptive Mitigation -->
+          <div class="causal-pillar pillar-action-highlight">
+            <div class="pillar-top font-mono">
+              <span class="pillar-num">03</span>
+              <span class="pillar-label">PRESCRIPTIVE MITIGATION ACTION</span>
+            </div>
+            <p class="pillar-desc" id="whyAction">
+              Deploy ultrasonic acoustic leak pinpointing on joint 4B-12 during upcoming 45-minute shift break. Replace seal with reinforced Viton gasket ring and widen booster pump pressure deadband by 0.4 bar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Connected Visual Evidence Cards (The Visual Evidence Graph) -->
+    <section class="connected-evidence-section">
+      <div class="section-badge-header">
+        <span class="badge-icon">🔗</span>
+        <span class="badge-title font-mono">CONNECTED VISUAL EVIDENCE GRAPH</span>
+        <span class="badge-sub-note">Click any upstream card to inspect supporting records</span>
+      </div>
+
+      <div class="connected-graph-viewport">
+        <!-- SVG Canvas for converging flowing bezier vectors -->
+        <svg class="evidence-flow-canvas" id="evidenceFlowSvg" aria-hidden="true"></svg>
+
+        <!-- Upstream Cards Row -->
+        <div class="upstream-evidence-grid" id="evidenceCardsGrid">
+          <!-- Rendered dynamically by evidence.js:
+               1. 8 Similar Complaints
+               2. 3 Maintenance Reports
+               3. Same Location
+               4. Increasing Frequency
+               5. Historical Similarity
+          -->
+        </div>
+
+        <!-- Convergence Mid-Indicator -->
+        <div class="convergence-flow-divider">
+          <div class="flow-line-glow"></div>
+          <div class="flow-label-badge font-mono">
+            <span>CONVERGING CROSS-SILO EVIDENCE FLOW</span>
+            <span class="flow-arrow-down">↓</span>
+            <span class="flow-conf-tag">87% Strength</span>
+          </div>
+          <div class="flow-line-glow"></div>
+        </div>
+
+        <!-- Downstream Destination: Potential Emerging Problem Card -->
+        <div class="downstream-problem-wrapper" id="problemCardContainer">
+          <!-- Rendered dynamically by evidence.js: Potential Emerging Problem -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Granular Supporting Evidence Deep-Dive Panel -->
+    <section class="supporting-evidence-drilldown" id="supportingEvidenceDrilldown">
+      <div class="drilldown-header-bar">
+        <div class="drilldown-title-group">
+          <span class="drilldown-sub-label font-mono">INSPECTING SUPPORTING EVIDENCE STREAM:</span>
+          <h3 class="drilldown-main-title" id="drilldownTitle">
+            8 Similar Complaints
+          </h3>
+        </div>
+        <div class="drilldown-meta-group">
+          <span class="drilldown-badge-tag font-mono" id="drilldownBadge">Operator Logs</span>
+        </div>
+      </div>
+
+      <p class="drilldown-summary-text" id="drilldownSummary">
+        8 independent shift logs filed across 3 operator rotations noting abnormal hissing sounds, floor dampness, and localized solvent smell near Bay 4.
+      </p>
+
+      <!-- Dynamic Deep Dive Container -->
+      <div class="drilldown-dynamic-content" id="drilldownContent">
+        <!-- Injected dynamically based on selected card -->
+      </div>
+    </section>
+
+    <!-- SECTION 4: Mathematical Evidence Weighting & Decomposition (Transparent 87% Calculation) -->
+    <section class="evidence-decomposition-section">
+      <div class="section-badge-header">
+        <span class="badge-icon">📐</span>
+        <span class="badge-title font-mono">EVIDENCE WEIGHT DECOMPOSITION (HOW 87% IS CALCULATED)</span>
+      </div>
+
+      <div class="decomposition-card">
+        <div class="decomp-intro-text">
+          EarlySight's explainability model weights heterogeneous operational streams into a unified evidence strength score. The breakdown below shows the exact contribution of each factor to the <strong>87% confidence</strong> rating:
+        </div>
+
+        <div class="decomp-table-container">
+          <table class="decomp-table">
+            <thead>
+              <tr>
+                <th>EVIDENCE FACTOR</th>
+                <th>MODEL WEIGHT</th>
+                <th>NORMALIZED CONTRIBUTION</th>
+                <th>MATHEMATICAL & OPERATIONAL RATIONALE</th>
+              </tr>
+            </thead>
+            <tbody id="decompositionTbody">
+              <!-- Dynamically rendered rows -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="decompositionTotal">
+          <!-- Dynamically rendered summary bar -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation Callout Bar -->
+    <nav class="evidence-bottom-nav">
+      <div class="bottom-nav-left">
+        <span class="font-mono text-muted">EARLYSIGHT WORKFLOW STAGES</span>
+        <span class="bottom-nav-tag font-mono">STAGE 8 COMPLETE</span>
+      </div>
+      <div class="bottom-nav-links">
+        <a href="index.html" class="btn-nav-outline">&larr; Return to Dashboard</a>
+        <a href="map.html" class="btn-nav-outline">Open Signal Map ↗</a>
+        <a href="timeline.html" class="btn-nav-outline">Open Trends & Timeline ↗</a>
+      </div>
+    </nav>
+
+  </main>
+
+  <!-- Load Data Layer & Controller -->
+  <script src="evidence-data.js"></script>
+  <script src="evidence.js"></script>
+  <script src="global-nav.js"></script>
+  <script src="micro-interactions.js"></script>
+</body>
+</html>

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Operational Signals & Signal Detail</title>
+  <meta name="description" content="Unified operational signals registry for EarlySight. Real-time search, multi-variable filtering, correlation tracking, and deep AI-assisted signal explainability dossiers.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .signals-page-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 32px 64px 32px;
+    }
+    .signals-header-banner {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+    .signals-header-left h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink-primary, #1A1C1A);
+      margin: 4px 0 6px 0;
+      letter-spacing: -0.3px;
+    }
+    .signals-header-left p {
+      color: var(--ink-secondary, #636B65);
+      font-size: 0.88rem;
+      margin: 0;
+      max-width: 720px;
+      line-height: 1.45;
+    }
+    .signals-kpi-strip {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .signals-kpi-chip {
+      background: var(--color-ivory-subtle, #F4F0E8);
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    }
+    .signals-kpi-chip .kpi-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      color: var(--ink-muted, #8C948E);
+      display: block;
+    }
+    .signals-kpi-chip .kpi-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink-primary, #1A1C1A);
+    }
+
+    /* Filter Controls Card */
+    .signals-filter-card {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(5, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+    @media (max-width: 1100px) {
+      .filter-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .filter-search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .filter-search-box svg {
+      position: absolute;
+      left: 12px;
+      color: var(--ink-muted);
+      pointer-events: none;
+    }
+    .filter-search-input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 6px;
+      padding: 0 12px 0 34px;
+      font-size: 0.84rem;
+      background: #FFFFFF;
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+    }
+    .filter-search-input:focus {
+      outline: none;
+      border-color: var(--intel-primary, #1B4332);
+      box-shadow: 0 0 0 2px var(--color-forest-light);
+    }
+    .filter-select {
+      height: 38px;
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 6px;
+      padding: 0 10px;
+      font-size: 0.82rem;
+      background: #FFFFFF;
+      color: var(--ink-primary);
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--intel-primary);
+    }
+
+    /* Signals Table */
+    .signals-table-card {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .signals-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .signals-table th {
+      background: var(--color-ivory-subtle, #F4F0E8);
+      padding: 12px 16px;
+      font-size: 0.74rem;
+      font-family: var(--font-mono, monospace);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--ink-secondary, #636B65);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .signals-table td {
+      padding: 14px 16px;
+      font-size: 0.84rem;
+      color: var(--ink-primary);
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    .signals-table tr:last-child td {
+      border-bottom: none;
+    }
+    .signals-table tr:hover td {
+      background: var(--color-ivory-hover, #FCFBF8);
+      cursor: pointer;
+    }
+    .signal-title-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .signal-id-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+    }
+    .signal-title-text {
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+    .signal-category-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      background: var(--color-ivory-subtle);
+      color: var(--ink-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+    .signal-action-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--intel-primary, #1B4332);
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .signal-action-btn:hover {
+      background: var(--intel-primary);
+      color: #FFFFFF;
+      border-color: var(--intel-primary);
+    }
+
+    /* Signal Detail Drawer / Modal */
+    .signal-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      display: none;
+      justify-content: flex-end;
+    }
+    .signal-modal-backdrop.open {
+      display: flex;
+    }
+    .signal-detail-drawer {
+      width: 620px;
+      max-width: 90vw;
+      height: 100%;
+      background: #FFFFFF;
+      box-shadow: -8px 0 32px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      animation: slideInRight 0.25s ease-out;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .drawer-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--color-ivory-subtle);
+    }
+    .drawer-header-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin: 0;
+    }
+    .drawer-close-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      padding: 0 4px;
+    }
+    .drawer-scroll-content {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .drawer-metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      background: var(--color-ivory-subtle);
+      padding: 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+    }
+    .drawer-metric-item .k-label {
+      font-size: 0.7rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      display: block;
+    }
+    .drawer-metric-item .k-val {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+    .drawer-section-heading {
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+    .ai-analysis-box {
+      background: rgba(13, 148, 136, 0.08);
+      border: 1px solid rgba(13, 148, 136, 0.25);
+      border-left: 4px solid var(--accent-teal, #0D9488);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .ai-analysis-box .box-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-teal, #0D9488);
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .ai-analysis-box p {
+      font-size: 0.86rem;
+      color: var(--ink-primary);
+      margin: 0;
+      line-height: 1.45;
+    }
+    .evidence-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .evidence-card-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .evidence-card-item .ev-type {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: var(--ink-muted);
+      text-transform: uppercase;
+    }
+    .evidence-card-item .ev-title {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+    .evidence-card-item .ev-detail {
+      font-size: 0.8rem;
+      color: var(--ink-secondary);
+    }
+    .timeline-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-left: 2px solid var(--border-subtle);
+      padding-left: 14px;
+      margin-left: 6px;
+    }
+    .timeline-step-item {
+      position: relative;
+    }
+    .timeline-step-item::before {
+      content: '';
+      position: absolute;
+      left: -19px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--intel-primary);
+    }
+    .timeline-step-item .step-period {
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--intel-primary);
+    }
+    .timeline-step-item .step-desc {
+      font-size: 0.82rem;
+      color: var(--ink-secondary);
+    }
+    .drawer-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--color-ivory-subtle);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body class="map-page-body">
+
+  <!-- Universal Site Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">Signals Registry</span>
+      </div>
+    </a>
+
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Dashboard</a>
+      <button class="view-switch-btn active">Signals</button>
+      <a href="risks.html" class="view-switch-btn" style="text-decoration:none;">Risk & Alerts</a>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none;">Signal Map</a>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none;">Trends & Timeline</a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none;">Actions & Resolution</a>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none;">AI Assistant</a>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none;">Evidence</a>
+      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none;">Workspaces</a>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>INGESTION ACTIVE • 128 SIGNALS</span>
+      </div>
+      <a href="actions.html" class="btn-header-cta" style="text-decoration:none;">Action Center &rarr;</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="signals-page-container">
+    
+    <!-- Header Banner -->
+    <div class="signals-header-banner">
+      <div class="signals-header-left">
+        <div style="font-family:var(--font-mono); font-size:0.74rem; text-transform:uppercase; color:var(--intel-primary); font-weight:700;">
+          Operational Surveillance // Precursor Ingress
+        </div>
+        <h1>Unified Operational Signals</h1>
+        <p>
+          Continuous multi-modal surveillance capturing complaints, maintenance logs, sensor readings, and infrastructure anomalies across enterprise facilities before escalation.
+        </p>
+      </div>
+      <div class="signals-kpi-strip">
+        <div class="signals-kpi-chip">
+          <span class="kpi-label">Active Signals</span>
+          <span class="kpi-val text-primary" id="kpiActiveSignals">128</span>
+        </div>
+        <div class="signals-kpi-chip">
+          <span class="kpi-label">Modalities</span>
+          <span class="kpi-val text-teal">6 Live</span>
+        </div>
+        <div class="signals-kpi-chip">
+          <span class="kpi-label">Correlated Risks</span>
+          <span class="kpi-val text-vermilion">07 Active</span>
+        </div>
+        <div class="signals-kpi-chip">
+          <span class="kpi-label">Telemetry Ingress</span>
+          <span class="kpi-val text-forest">1,420 / s</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Controls Card -->
+    <div class="signals-filter-card">
+      <div class="filter-grid">
+        <!-- Search -->
+        <div class="filter-search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="signalSearchInput" class="filter-search-input" placeholder="Search signals, assets, keywords...">
+        </div>
+
+        <!-- Category -->
+        <select id="signalCategoryFilter" class="filter-select">
+          <option value="all">All Categories</option>
+          <option value="Water leakage">Water leakage</option>
+          <option value="Equipment failure">Equipment failure</option>
+          <option value="Electrical issue">Electrical issue</option>
+          <option value="Overcrowding">Overcrowding</option>
+          <option value="Safety concern">Safety concern</option>
+          <option value="Maintenance complaint">Maintenance complaint</option>
+          <option value="Temperature anomaly">Temperature anomaly</option>
+          <option value="Infrastructure damage">Infrastructure damage</option>
+        </select>
+
+        <!-- Location -->
+        <select id="signalLocationFilter" class="filter-select">
+          <option value="all">All Locations</option>
+          <option value="Block A">Block A</option>
+          <option value="Engineering Building">Engineering Building</option>
+          <option value="Main Cafeteria">Main Cafeteria</option>
+          <option value="Power Island">Power Island</option>
+          <option value="Utility Basement">Utility Basement</option>
+          <option value="Clean Packaging Suite 1">Clean Packaging Suite 1</option>
+        </select>
+
+        <!-- Severity -->
+        <select id="signalSeverityFilter" class="filter-select">
+          <option value="all">All Severities</option>
+          <option value="Critical">Critical</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+
+        <!-- Status -->
+        <select id="signalStatusFilter" class="filter-select">
+          <option value="all">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Correlated">Correlated</option>
+          <option value="Investigating">Investigating</option>
+          <option value="Action Queued">Action Queued</option>
+          <option value="Resolved">Resolved</option>
+        </select>
+
+        <!-- Date -->
+        <select id="signalDateFilter" class="filter-select">
+          <option value="all">All Dates</option>
+          <option value="today">Last 24 Hours</option>
+          <option value="week">Last 7 Days</option>
+          <option value="month">Last 30 Days</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Signals Table Card -->
+    <div class="signals-table-card">
+      <table class="signals-table">
+        <thead>
+          <tr>
+            <th>Signal</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Detected</th>
+            <th>Related Signals</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="signalsTableBody">
+          <!-- Rendered dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- Signal Detail Modal / Drawer -->
+  <div class="signal-modal-backdrop" id="signalDetailModal">
+    <div class="signal-detail-drawer">
+      <div class="drawer-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="indicator-dot dot-vermilion" id="drawerDot"></span>
+          <h2 class="drawer-header-title" id="drawerSignalTitle">Signal Detail Dossier</h2>
+        </div>
+        <button class="drawer-close-btn" id="closeDrawerBtn">&times;</button>
+      </div>
+
+      <div class="drawer-scroll-content">
+        <!-- Main Description -->
+        <div>
+          <div class="drawer-section-heading">Operational Summary</div>
+          <p id="drawerDescription" style="font-size:0.92rem; color:var(--ink-primary); line-height:1.45; margin:0 0 6px 0;"></p>
+          <div id="drawerSourceMeta" style="font-size:0.76rem; color:var(--ink-secondary); font-family:var(--font-mono);"></div>
+        </div>
+
+        <!-- 4-Stat Grid -->
+        <div class="drawer-metric-grid">
+          <div class="drawer-metric-item">
+            <span class="k-label">Location / Impact Points</span>
+            <span class="k-val" id="drawerLocationVal">Block A (4 points)</span>
+          </div>
+          <div class="drawer-metric-item">
+            <span class="k-label">Severity & Status</span>
+            <span class="k-val" id="drawerSeverityVal">High Severity • Correlated</span>
+          </div>
+          <div class="drawer-metric-item">
+            <span class="k-label">Related Precursors</span>
+            <span class="k-val" id="drawerRelatedVal">12 Related Signals</span>
+          </div>
+          <div class="drawer-metric-item">
+            <span class="k-label">Frequency Trajectory</span>
+            <span class="k-val text-vermilion" id="drawerFrequencyVal">Increasing frequency</span>
+          </div>
+        </div>
+
+        <!-- AI Pattern Analysis -->
+        <div>
+          <div class="drawer-section-heading">AI Pattern Analysis</div>
+          <div class="ai-analysis-box">
+            <div class="box-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              <span>Pattern Detection Coherence Engine</span>
+            </div>
+            <p id="drawerAiAnalysis"></p>
+          </div>
+        </div>
+
+        <!-- Supporting Evidence -->
+        <div>
+          <div class="drawer-section-heading">Supporting Multi-Modal Evidence</div>
+          <div class="evidence-cards-list" id="drawerEvidenceList"></div>
+        </div>
+
+        <!-- Timeline -->
+        <div>
+          <div class="drawer-section-heading">Chronological Progression (Weekly Signals)</div>
+          <div class="timeline-steps-list" id="drawerTimelineList"></div>
+        </div>
+
+        <!-- Recommended Action -->
+        <div>
+          <div class="drawer-section-heading">Recommended Action</div>
+          <div style="background:var(--color-ivory-subtle); border:1px solid var(--border-subtle); border-left:4px solid var(--intel-primary); padding:12px 14px; border-radius:6px;">
+            <p id="drawerRecommendedAction" style="font-size:0.86rem; color:var(--ink-primary); margin:0; line-height:1.4;"></p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="drawer-footer">
+        <a href="actions.html" class="btn-primary-explore" style="text-decoration:none; padding:8px 16px; font-size:0.82rem;">Assign Action Ticket &rarr;</a>
+        <a href="map.html" class="btn-secondary-replay" style="text-decoration:none; padding:8px 16px; font-size:0.82rem;">Locate on Map</a>
+        <button class="signal-action-btn" id="drawerCloseFooterBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="signals-data.js"></script>
+  <script src="global-nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tableBody = document.getElementById('signalsTableBody');
+      const searchInput = document.getElementById('signalSearchInput');
+      const categoryFilter = document.getElementById('signalCategoryFilter');
+      const locationFilter = document.getElementById('signalLocationFilter');
+      const severityFilter = document.getElementById('signalSeverityFilter');
+      const statusFilter = document.getElementById('signalStatusFilter');
+      const dateFilter = document.getElementById('signalDateFilter');
+
+      // Modal elements
+      const modal = document.getElementById('signalDetailModal');
+      const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      const drawerCloseFooterBtn = document.getElementById('drawerCloseFooterBtn');
+
+      const signals = window.OPERATIONAL_SIGNALS_REGISTRY || [];
+
+      function getSeverityBadge(sev) {
+        const s = sev.toLowerCase();
+        if (s === 'critical') return '<span class="risk-severity-pill badge-severity-critical">Critical</span>';
+        if (s === 'high') return '<span class="risk-severity-pill badge-severity-high">High</span>';
+        if (s === 'medium') return '<span class="risk-severity-pill badge-severity-medium">Medium</span>';
+        return '<span class="risk-severity-pill badge-severity-low">Low</span>';
+      }
+
+      function getStatusBadge(st) {
+        return `<span class="risk-status-pill badge-status-investigation">${st}</span>`;
+      }
+
+      function renderTable(data) {
+        if (!tableBody) return;
+        if (data.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:32px; color:var(--ink-muted);">No operational signals match your filter criteria.</td></tr>`;
+          return;
+        }
+
+        tableBody.innerHTML = data.map(item => `
+          <tr data-id="${item.id}" onclick="inspectSignal('${item.id}')">
+            <td>
+              <div class="signal-title-cell">
+                <span class="signal-id-tag">${item.id}</span>
+                <span class="signal-title-text">${item.title}</span>
+              </div>
+            </td>
+            <td><span class="signal-category-badge">${item.category}</span></td>
+            <td><strong style="color:var(--ink-primary);">${item.location}</strong></td>
+            <td>${getSeverityBadge(item.severity)}</td>
+            <td>${getStatusBadge(item.status)}</td>
+            <td><span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-secondary);">${item.detected}</span></td>
+            <td>
+              <span style="background:var(--color-ivory-subtle); padding:3px 8px; border-radius:4px; font-weight:600; font-size:0.78rem; border:1px solid var(--border-subtle); color:var(--intel-primary);">
+                ${item.relatedCount} signals
+              </span>
+            </td>
+            <td>
+              <button class="signal-action-btn" onclick="event.stopPropagation(); inspectSignal('${item.id}')">
+                Inspect &rarr;
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function applyFilters() {
+        const q = searchInput.value.toLowerCase();
+        const cat = categoryFilter.value;
+        const loc = locationFilter.value;
+        const sev = severityFilter.value;
+        const stat = statusFilter.value;
+
+        const filtered = signals.filter(s => {
+          const matchQ = !q || s.title.toLowerCase().includes(q) || s.description.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) || s.location.toLowerCase().includes(q);
+          const matchCat = cat === 'all' || s.category.toLowerCase() === cat.toLowerCase();
+          const matchLoc = loc === 'all' || s.location.toLowerCase().includes(loc.toLowerCase());
+          const matchSev = sev === 'all' || s.severity.toLowerCase() === sev.toLowerCase();
+          const matchStat = stat === 'all' || s.status.toLowerCase() === stat.toLowerCase();
+
+          return matchQ && matchCat && matchLoc && matchSev && matchStat;
+        });
+
+        renderTable(filtered);
+      }
+
+      window.inspectSignal = function(id) {
+        const item = signals.find(s => s.id === id) || signals[0];
+        if (!item) return;
+
+        document.getElementById('drawerSignalTitle').textContent = item.title;
+        document.getElementById('drawerDescription').textContent = item.description;
+        document.getElementById('drawerSourceMeta').textContent = `Source: ${item.source} • Ingested: ${item.createdDate}`;
+        document.getElementById('drawerLocationVal').textContent = `${item.location} (${item.locationsCount || 4} points)`;
+        document.getElementById('drawerSeverityVal').textContent = `${item.severity} Severity • ${item.status}`;
+        document.getElementById('drawerRelatedVal').textContent = `${item.relatedCount} Related Signals`;
+        document.getElementById('drawerFrequencyVal').textContent = item.frequencyTrend || 'Increasing frequency';
+        document.getElementById('drawerAiAnalysis').textContent = item.aiAnalysis;
+        document.getElementById('drawerRecommendedAction').textContent = item.recommendedAction;
+
+        // Evidence
+        const evContainer = document.getElementById('drawerEvidenceList');
+        if (evContainer) {
+          evContainer.innerHTML = (item.evidence || []).map(e => `
+            <div class="evidence-card-item">
+              <span class="ev-type">${e.type}</span>
+              <span class="ev-title">${e.title}</span>
+              <span class="ev-detail">${e.detail}</span>
+            </div>
+          `).join('');
+        }
+
+        // Timeline
+        const tlContainer = document.getElementById('drawerTimelineList');
+        if (tlContainer) {
+          tlContainer.innerHTML = (item.timeline || []).map(t => `
+            <div class="timeline-step-item">
+              <div class="step-period">${t.period} &bull; ${t.count} signals</div>
+              <div class="step-desc">${t.note}</div>
+            </div>
+          `).join('');
+        }
+
+        modal.classList.add('open');
+      };
+
+      function closeModal() {
+        modal.classList.remove('open');
+      }
+
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeModal);
+      if (drawerCloseFooterBtn) drawerCloseFooterBtn.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      [searchInput, categoryFilter, locationFilter, severityFilter, statusFilter, dateFilter].forEach(el => {
+        if (el) el.addEventListener('input', applyFilters);
+      });
+
+      renderTable(signals);
+    });
+  </script>
+</body>
+</html>

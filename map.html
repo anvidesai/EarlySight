@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Interactive Signal Map & Geospatial Intelligence</title>
+  <meta name="description" content="Interactive map-style page visualizing where operational problems are emerging across enterprise plant zones. Features zoom, search, location, date, signal and risk filtering with cluster merge synthesis.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="map-page-body">
+
+  <!-- Top Enterprise Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">Geospatial Intelligence</span>
+      </div>
+    </a>
+
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Back to Dashboard</a>
+      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Workspaces 🏢</span>
+      </a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Action Center &rarr;</span>
+      </a>
+      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-emerald"></span>
+        <span>Impact Monitoring &rarr;</span>
+      </a>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>AI Copilot ⚡</span>
+      </a>
+      <button class="view-switch-btn active">Interactive Signal Map</button>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Trends & Timeline ↗</span>
+      </a>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Evidence & Explainability ↗</span>
+      </a>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>54 SIGNALS ACTIVE • 6 ZONES MONITORED</span>
+      </div>
+      <button class="btn-header-cta" onclick="window.signalMapEngine && window.signalMapEngine.replayMergeAnimation()">
+        Replay Merge Physics
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Map Page Container -->
+  <main class="map-page-container">
+    
+    <div class="signal-map-section-wrapper" id="signalMapWrapper" style="margin-bottom:0; flex:1;">
+      
+      <!-- Stage 6 Filter & Control Command Center -->
+      <div class="map-controls-panel">
+        
+        <!-- Row 1: Search, Location Filter & Date Range Filter -->
+        <div class="map-controls-row">
+          
+          <!-- Live Keyword Search -->
+          <div class="map-search-container">
+            <svg class="map-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="map-search-input" id="mapSearchInput" placeholder="Search signals, assets, bays, or failure risks...">
+            <span class="map-search-matches-pill" id="mapSearchMatchesBadge">0 matches</span>
+          </div>
+
+          <!-- Location Filter Pills -->
+          <div class="map-filter-group">
+            <span class="map-filter-label">Facility Zone:</span>
+            <div class="map-pill-buttons">
+              <button class="map-loc-btn active" data-zone="all">
+                <span>All Zones</span>
+                <span class="map-count-badge">54</span>
+              </button>
+              <button class="map-loc-btn" data-zone="block-a">
+                <span>Block A</span>
+                <span class="map-count-badge">17</span>
+              </button>
+              <button class="map-loc-btn" data-zone="block-b">
+                <span>Block B</span>
+                <span class="map-count-badge">9</span>
+              </button>
+              <button class="map-loc-btn" data-zone="block-c">
+                <span>Block C</span>
+                <span class="map-count-badge">12</span>
+              </button>
+              <button class="map-loc-btn" data-zone="power-island">
+                <span>Power Island</span>
+                <span class="map-count-badge">15</span>
+              </button>
+              <button class="map-loc-btn" data-zone="logistics-yard">
+                <span>Logistics</span>
+                <span class="map-count-badge">8</span>
+              </button>
+              <button class="map-loc-btn" data-zone="chemical-env">
+                <span>Chemical & Env</span>
+                <span class="map-count-badge">10</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Date Quick Horizons -->
+          <div class="map-filter-group">
+            <span class="map-filter-label">Date Horizon:</span>
+            <div class="map-pill-buttons">
+              <button class="map-time-btn" data-horizon="24h"><span>Last 24h</span></button>
+              <button class="map-time-btn" data-horizon="7d"><span>Last 7d</span></button>
+              <button class="map-time-btn" data-horizon="14d"><span>Last 14d</span></button>
+              <button class="map-time-btn active" data-horizon="30d"><span>Last 30d</span></button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Row 2: Date Pickers, Signal Modality Filtering & Risk Filtering -->
+        <div class="map-controls-row">
+          
+          <!-- Explicit Date Pickers & Scrubber Slider -->
+          <div class="map-date-range-bar">
+            <span class="map-filter-label">Date Range:</span>
+            <input type="date" class="map-date-input" id="mapDateStart" value="2026-08-25">
+            <span style="color:var(--ink-muted); font-size:0.75rem;">to</span>
+            <input type="date" class="map-date-input" id="mapDateEnd" value="2026-09-24">
+            
+            <div class="map-date-scrubber-box">
+              <span style="font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-muted);" id="mapDateScrubberLabel">Scrub:</span>
+              <input type="range" class="map-date-scrubber-slider" id="mapDateScrubber" min="0" max="30" value="30" title="Scrub past 30 days">
+            </div>
+          </div>
+
+          <!-- Signal Modality Multi-Toggles -->
+          <div class="map-filter-group">
+            <span class="map-filter-label">Signal Filter:</span>
+            <div class="map-modality-filters-row">
+              <button class="map-modality-pill active" data-modality="all"><span>All Types</span></button>
+              <button class="map-modality-pill active" data-modality="Sensor"><span>⚡ Sensors</span></button>
+              <button class="map-modality-pill active" data-modality="Maintenance"><span>🔧 Maintenance</span></button>
+              <button class="map-modality-pill active" data-modality="Complaint"><span>📋 Complaints</span></button>
+              <button class="map-modality-pill active" data-modality="Image"><span>📷 FLIR Image</span></button>
+              <button class="map-modality-pill active" data-modality="Historical"><span>📊 Historical</span></button>
+              <button class="map-modality-pill active" data-modality="Incident"><span>⚠️ Incident</span></button>
+            </div>
+          </div>
+
+          <!-- Risk Severity Filter -->
+          <div class="map-filter-group">
+            <span class="map-filter-label">Severity:</span>
+            <select class="map-styled-select" id="mapSeveritySelect">
+              <option value="all">All Severities</option>
+              <option value="critical">Critical Severity</option>
+              <option value="high">High Severity</option>
+              <option value="moderate">Moderate Severity</option>
+              <option value="low">Low / Baseline</option>
+            </select>
+          </div>
+
+          <!-- Emerging Risk Issue Filter -->
+          <div class="map-filter-group">
+            <span class="map-filter-label">Risk Issue:</span>
+            <select class="map-styled-select" id="mapIssueSelect">
+              <option value="all">All Emerging Issues</option>
+              <option value="Water Infrastructure">Water Infrastructure Issue (Block A)</option>
+              <option value="Bearing Cage Fatigue">Bearing Cage Fatigue (Block A)</option>
+              <option value="Cavitation Drift">Hydraulic Valve Cavitation (Block C)</option>
+              <option value="Chilled Water Loop">Chilled Water Loop Drift (Block B)</option>
+              <option value="Thermal Degradation">Stator Thermal Degradation (Power Island)</option>
+              <option value="Tooth Micro-Pitting">Conveyor Tooth Micro-Pitting (Logistics)</option>
+              <option value="Seal Face Micro-Chipping">Reactor Seal Face Chipping (Chemical)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Row 3: Cluster Merge Controls & Scrub Slider -->
+        <div class="map-controls-row">
+          
+          <div class="map-synthesis-controls" style="flex:1;">
+            <span class="map-filter-label" style="color:var(--accent-risk);">Cluster Synthesis:</span>
+            
+            <div class="map-pill-buttons">
+              <button class="map-mode-btn" id="mapModeScattered" title="View individual operational signals at specific machine bays">
+                <span>Nodes (Scattered)</span>
+              </button>
+              <button class="map-mode-btn active" id="mapModeMerged" title="View merged geospatial risk clusters at zone centroids">
+                <span>Clusters (Merged)</span>
+              </button>
+            </div>
+
+            <!-- Replay Merge Button -->
+            <button class="map-merge-replay-btn" id="mapReplayMerge" title="Re-run gradual merge animation of signals into clusters">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              <span>Animate Merge into Cluster</span>
+            </button>
+
+            <!-- Merge Scrub Slider -->
+            <div class="map-slider-container">
+              <span class="map-slider-label" id="mapMergeSliderLabel">Synthesized Risk Clusters (Merged)</span>
+              <input type="range" class="map-range-slider" id="mapMergeSlider" min="0" max="100" value="100" title="Scrub gradual merge between scattered signals and zone clusters">
+            </div>
+
+            <div style="font-size:0.7rem; color:var(--ink-muted); margin-left:auto; font-family:var(--font-mono); display:flex; align-items:center; gap:10px;">
+              <span>Click any cluster or node to inspect</span>
+              <button class="map-loc-btn active" id="btnToggleClusterDrawer" style="background:var(--ink-primary); color:#FFFFFF; font-weight:700; border:none;" onclick="const z = (window.signalMapEngine && window.signalMapEngine.selectedCluster) || FACILITY_MAP_ZONES[0]; if(window.signalMapEngine) window.signalMapEngine.revealClusterDetails(z);">
+                <span>📊 Reveal Cluster Details</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Map Canvas Stage with Pan/Zoom & Cluster Revelation Drawer -->
+      <div class="map-canvas-wrapper-relative">
+        
+        <canvas id="facilityMapCanvas" class="facility-map-canvas"></canvas>
+
+        <!-- Floating Zoom Controls Overlay -->
+        <div class="map-zoom-controls-overlay">
+          <button class="zoom-ctrl-btn" id="mapZoomIn" title="Zoom In">+</button>
+          <button class="zoom-ctrl-btn" id="mapZoomOut" title="Zoom Out">&minus;</button>
+          <span class="zoom-level-badge" id="mapZoomLevelBadge">100%</span>
+          <button class="zoom-ctrl-btn" id="mapZoomReset" title="Reset View" style="font-size:0.75rem; width:auto; padding:0 6px;">Reset</button>
+        </div>
+
+        <!-- STAGE 6: Cluster Revelation Drawer (Location, Related Signals, Emerging Issue, Confidence, Trend) -->
+        <div id="clusterDetailsDrawer" class="cluster-details-drawer"></div>
+
+      </div>
+
+      <!-- Interactive Floating Tooltip Card -->
+      <div id="mapTooltip" class="map-hover-tooltip"></div>
+
+      <!-- Map Bottom Status Ribbon -->
+      <div class="map-status-ribbon">
+        <div class="map-status-metrics">
+          <div class="map-metric-item">
+            <span class="map-metric-title">Active Filtered Signals:</span>
+            <span class="map-metric-val" id="mapActiveSignalsCount" style="color:var(--accent-risk);">54 Signals</span>
+          </div>
+          <div class="map-metric-item">
+            <span class="map-metric-title">Current Time Window:</span>
+            <span class="map-metric-val" id="mapCurrentHorizonLabel">Last 30 Days</span>
+          </div>
+          <div class="map-metric-item">
+            <span class="map-metric-title">Primary Epicenter:</span>
+            <span class="map-metric-val" id="mapHotspotLabel" style="color:var(--accent-risk);">Block A (17 Precursors • 87% Confidence)</span>
+          </div>
+        </div>
+
+        <!-- Muted Palette Severity Legend -->
+        <div class="map-legend-strip">
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#C85A32;"></span>
+            <span>Critical Severity</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#C85A32;"></span>
+            <span>High Severity</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#B87333;"></span>
+            <span>Moderate Severity</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#475569;"></span>
+            <span>Baseline Signal</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Signal Details Modal / Inspector -->
+  <div class="modal-backdrop" id="signalModal">
+    <div class="modal-dialog">
+      <div class="modal-header-row">
+        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">Signal Record Inspector</span>
+        <button class="modal-close-btn" id="modalClose" aria-label="Close dialog">&times;</button>
+      </div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="signals-data.js"></script>
+  <script src="dashboard-data.js"></script>
+  <script src="signal-map-data.js"></script>
+  <script src="signal-map.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="global-nav.js"></script>
+  <script src="micro-interactions.js"></script>
+
+  <script>
+    // Initialize standalone map page engine
+    document.addEventListener('DOMContentLoaded', () => {
+      window.signalMapEngine = new EarlySightSignalMap('facilityMapCanvas', 'signalMapWrapper');
+      
+      // Modal close listener
+      const modal = document.getElementById('signalModal');
+      const closeBtn = document.getElementById('modalClose');
+      if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.classList.remove('active');
+        });
+      }
+
+      // Initial focus: if anchor block A exists, open its revelation drawer after 500ms for immediate impact
+      setTimeout(() => {
+        const blockA = FACILITY_MAP_ZONES.find(z => z.id === 'block-a');
+        if (blockA && window.signalMapEngine) {
+          window.signalMapEngine.revealClusterDetails(blockA);
+        }
+      }, 400);
+    });
+  </script>
+
+</body>
+</html>

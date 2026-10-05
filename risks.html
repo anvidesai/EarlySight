@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Risk & Alerts Monitoring</title>
+  <meta name="description" content="Operational emerging risk and alert surveillance. Synthesizes weak multi-modal signals into prioritized early warnings categorized by Low, Medium, High, and Critical severity.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .risks-page-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 32px 64px 32px;
+    }
+    .risks-header-banner {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+    .risks-header-left h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink-primary, #1A1C1A);
+      margin: 4px 0 6px 0;
+      letter-spacing: -0.3px;
+    }
+    .risks-header-left p {
+      color: var(--ink-secondary, #636B65);
+      font-size: 0.88rem;
+      margin: 0;
+      max-width: 720px;
+      line-height: 1.45;
+    }
+    .risks-filter-bar {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #E4E0D8);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .risks-search-input {
+      flex: 1;
+      min-width: 240px;
+      height: 38px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 0 12px;
+      font-size: 0.84rem;
+      color: var(--ink-primary);
+    }
+    .risks-search-input:focus {
+      outline: none;
+      border-color: var(--intel-primary);
+    }
+    .risks-select {
+      height: 38px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 0 12px;
+      font-size: 0.82rem;
+      color: var(--ink-primary);
+      background: #FFFFFF;
+      cursor: pointer;
+    }
+    .risks-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 640px) {
+      .risks-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .risk-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .risk-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--intel-border);
+    }
+    .risk-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .risk-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin: 0;
+      line-height: 1.3;
+    }
+    .risk-location-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: var(--ink-secondary);
+    }
+    .risk-signals-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--color-ivory-subtle);
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+    }
+    .risk-rec-action-box {
+      background: var(--color-ivory-subtle);
+      border-left: 3px solid var(--intel-primary);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: var(--ink-secondary);
+    }
+    .risk-rec-action-box strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      color: var(--ink-primary);
+      letter-spacing: 0.5px;
+    }
+    .risk-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 12px;
+      font-family: var(--font-mono);
+    }
+    .risk-metric-col .m-label {
+      font-size: 0.68rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      display: block;
+    }
+    .risk-metric-col .m-val {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+  </style>
+</head>
+<body class="map-page-body">
+
+  <!-- Universal Site Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">Risk & Alerts</span>
+      </div>
+    </a>
+
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Dashboard</a>
+      <a href="signals.html" class="view-switch-btn" style="text-decoration:none;">Signals</a>
+      <button class="view-switch-btn active">Risk & Alerts</button>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none;">Signal Map</a>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none;">Trends & Timeline</a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none;">Actions & Resolution</a>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none;">AI Assistant</a>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none;">Evidence</a>
+      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none;">Workspaces</a>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>07 ACTIVE RISKS MONITORED</span>
+      </div>
+      <a href="actions.html" class="btn-header-cta" style="text-decoration:none;">Action Center &rarr;</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="risks-page-container">
+    
+    <!-- Header Banner -->
+    <div class="risks-header-banner">
+      <div class="risks-header-left">
+        <div style="font-family:var(--font-mono); font-size:0.74rem; text-transform:uppercase; color:var(--intel-primary); font-weight:700;">
+          Operational Risk Radar // Pre-Failure Projections
+        </div>
+        <h1>Emerging Risks & Early Warning Alerts</h1>
+        <p>
+          Prioritized operational hazards synthesized from multi-modal precursor streams. Categorized by Critical, High, Medium, and Low severity with evidence-backed lead time projections.
+        </p>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span class="risk-severity-pill badge-severity-critical">1 Critical</span>
+        <span class="risk-severity-pill badge-severity-high">2 High</span>
+        <span class="risk-severity-pill badge-severity-medium">2 Medium</span>
+        <span class="risk-severity-pill badge-severity-low">1 Low</span>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="risks-filter-bar">
+      <input type="text" id="riskSearchInput" class="risks-search-input" placeholder="Search by risk title, location, subsystem...">
+      
+      <select id="riskSeverityFilter" class="risks-select">
+        <option value="all">All Severity Levels</option>
+        <option value="Critical">Critical Severity</option>
+        <option value="High">High Severity</option>
+        <option value="Medium">Medium Severity</option>
+        <option value="Low">Low Severity</option>
+      </select>
+
+      <select id="riskLocationFilter" class="risks-select">
+        <option value="all">All Locations</option>
+        <option value="Block A">Block A</option>
+        <option value="Engineering Building">Engineering Building</option>
+        <option value="Main Cafeteria">Main Cafeteria</option>
+        <option value="Block C">Block C</option>
+        <option value="Power Island">Power Island</option>
+        <option value="Stockyard Terminal">Stockyard Terminal</option>
+      </select>
+    </div>
+
+    <!-- Risks Grid -->
+    <div class="risks-cards-grid" id="risksGridContainer">
+      <!-- Rendered dynamically -->
+    </div>
+
+  </main>
+
+  <script src="dashboard-data.js"></script>
+  <script src="global-nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('risksGridContainer');
+      const searchInput = document.getElementById('riskSearchInput');
+      const severityFilter = document.getElementById('riskSeverityFilter');
+      const locationFilter = document.getElementById('riskLocationFilter');
+
+      const risks = window.EMERGING_RISKS_PANEL || [];
+
+      function getBadge(sev) {
+        const s = sev.toLowerCase();
+        if (s === 'critical') return '<span class="risk-severity-pill badge-severity-critical">Critical</span>';
+        if (s === 'high') return '<span class="risk-severity-pill badge-severity-high">High</span>';
+        if (s === 'medium') return '<span class="risk-severity-pill badge-severity-medium">Medium</span>';
+        return '<span class="risk-severity-pill badge-severity-low">Low</span>';
+      }
+
+      function render(items) {
+        if (!container) return;
+        if (items.length === 0) {
+          container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:48px; color:var(--ink-muted);">No emerging risks match your criteria.</div>';
+          return;
+        }
+
+        container.innerHTML = items.map(r => `
+          <div class="risk-card" onclick="location.href='evidence.html'">
+            <div class="risk-card-top">
+              ${getBadge(r.severity)}
+              <span class="risk-status-pill ${r.statusBadgeClass}">${r.status}</span>
+            </div>
+
+            <div>
+              <h3 class="risk-card-title">${r.title}</h3>
+              <div class="risk-location-row" style="margin-top:4px;">
+                <span class="location-marker-dot"></span>
+                <span>Location: <strong>${r.location}</strong></span>
+                <span>•</span>
+                <span class="font-mono text-muted">${r.subsystem || 'Subsystem'}</span>
+              </div>
+            </div>
+
+            <div class="risk-signals-strip">
+              <span><strong>${r.signalsCount}</strong> related signals</span>
+              <span class="text-vermilion">Trend: ${r.trend}</span>
+            </div>
+
+            <div class="risk-rec-action-box">
+              <strong>Recommended Action:</strong>
+              ${r.recommendedAction || 'Schedule preventive inspection and review telemetry baseline.'}
+            </div>
+
+            <div class="risk-metrics-row">
+              <div class="risk-metric-col">
+                <span class="m-label">Confidence</span>
+                <span class="m-val text-teal">${r.confidence}</span>
+              </div>
+              <div class="risk-metric-col">
+                <span class="m-label">Last Detected</span>
+                <span class="m-val">${r.lastDetected || r.lastUpdated}</span>
+              </div>
+              <div class="risk-metric-col">
+                <span class="m-label">First Seen</span>
+                <span class="m-val">${r.firstDetected}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function filter() {
+        const q = searchInput.value.toLowerCase();
+        const sev = severityFilter.value;
+        const loc = locationFilter.value;
+
+        const filtered = risks.filter(r => {
+          const matchQ = !q || r.title.toLowerCase().includes(q) || r.location.toLowerCase().includes(q) || (r.subsystem && r.subsystem.toLowerCase().includes(q));
+          const matchSev = sev === 'all' || r.severity.toLowerCase() === sev.toLowerCase();
+          const matchLoc = loc === 'all' || r.location.toLowerCase().includes(loc.toLowerCase());
+          return matchQ && matchSev && matchLoc;
+        });
+
+        render(filtered);
+      }
+
+      searchInput.addEventListener('input', filter);
+      severityFilter.addEventListener('change', filter);
+      locationFilter.addEventListener('change', filter);
+
+      render(risks);
+    });
+  </script>
+</body>
+</html>
