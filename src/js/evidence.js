@@ -1,586 +1,688 @@
 /**
- * EarlySight — Evidence & Explainability Interactive Controller (Stage 8)
+ * EarlySight — Evidence & Explainability Interactive Controller (Milestone 7)
+ * 
+ * Answers: "WHY WAS THIS RISK FLAGGED?"
  * 
  * Features:
- * 1. Alert Switching (EW-2026-088 vs EW-2026-094)
- * 2. Visual Connected Cards Engine with dynamic SVG bezier flow paths & particle pulses
- * 3. Deep-Dive Supporting Evidence Drawer / Panel
- * 4. Transparent Evidence Decomposition Calculation (87% Evidence Strength)
- * 5. Explaining "Why was this warning generated?" with clear causal narrative
- * 6. Prominent Evidence Strength Disclaimer (Communicating evidence strength, not certainty)
+ * 1. Evidence Overview & Illustrative KPI Metrics
+ * 2. "Why was this risk flagged?" Investigation Section:
+ *    - 5 Evidence Pillars (Frequency, Spatial, Convergence, Persistence, Severity)
+ *    - Strict separation of OBSERVED EVIDENCE vs AI INTERPRETATION
+ * 3. Directional Evidence Chain (Signals -> Correlated Group -> Pattern -> Risk -> Action)
+ * 4. Interactive Visual Evidence Graph (SVG node-link flow)
+ * 5. Confidence & Coherence decomposition + Causal Pillars (Why this matters)
+ * 6. Evidence Progression Timeline (Day 1 -> Day 10)
+ * 7. Source Evidence Cards with multi-attribute filtering & live search
+ * 8. Responsive Evidence Inspector Drawer with deep links to Signals, Risks, Map & Timeline
+ * 9. Cross-Page URL parameter handling (?riskId=..., ?evidenceId=..., ?signalId=..., ?zone=...)
  */
 
-import '../data/evidence-data.js';
+import {
+  EVIDENCE_OVERVIEW_KPIS,
+  EVIDENCE_ALERTS_DATA,
+  SOURCE_EVIDENCE_REGISTRY,
+  getAlertById,
+  getEvidenceItemById,
+  filterEvidenceRegistry
+} from '../data/evidence-data.js';
 
-(function () {
-  'use strict';
+class EvidenceController {
+  constructor() {
+    this.alerts = EVIDENCE_ALERTS_DATA;
+    this.allEvidence = SOURCE_EVIDENCE_REGISTRY;
+    this.activeAlert = this.alerts[0];
+    this.activeEvidenceItem = this.allEvidence[0];
+    this.selectedGraphNodeId = null;
 
-  class EvidenceController {
-    constructor() {
-      this.alerts = window.EVIDENCE_ALERTS_DATA || [];
-      this.activeAlertId = "EW-2026-088";
-      this.activeCardId = "ev-complaints"; // Default selected card
-      
-      this.dom = {
-        alertSelector: document.getElementById('evidenceAlertSelector'),
-        alertTitle: document.getElementById('evAlertTitle'),
-        alertLocation: document.getElementById('evAlertLocation'),
-        alertSeverity: document.getElementById('evAlertSeverity'),
-        alertLeadTime: document.getElementById('evAlertLeadTime'),
-        alertLoss: document.getElementById('evAlertLoss'),
-        alertConfidenceVal: document.getElementById('evConfidenceVal'),
-        confidencePillText: document.getElementById('confidencePillText'),
-        
-        // Causal Explainability Section
-        whyHeadline: document.getElementById('whyHeadline'),
-        whySummary: document.getElementById('whySummary'),
-        whyCausalNarrative: document.getElementById('whyCausalNarrative'),
-        whyRootCause: document.getElementById('whyRootCause'),
-        whyAction: document.getElementById('whyAction'),
-        
-        // Connected Cards Grid & Flow
-        cardsGrid: document.getElementById('evidenceCardsGrid'),
-        flowSvg: document.getElementById('evidenceFlowSvg'),
-        problemCardContainer: document.getElementById('problemCardContainer'),
-        
-        // Drilldown Deep-Dive Panel
-        drilldownTitle: document.getElementById('drilldownTitle'),
-        drilldownBadge: document.getElementById('drilldownBadge'),
-        drilldownSummary: document.getElementById('drilldownSummary'),
-        drilldownContent: document.getElementById('drilldownContent'),
-        
-        // Decomposition Table
-        decompositionTbody: document.getElementById('decompositionTbody'),
-        decompositionTotal: document.getElementById('decompositionTotal')
-      };
+    this.filters = {
+      search: '',
+      type: 'all',
+      location: 'all',
+      severity: 'all',
+      relevance: 'all',
+      riskId: 'all',
+      timeRange: 'all'
+    };
 
-      this.init();
-    }
+    this.isDrawerOpen = false;
+  }
 
-    init() {
-      if (!this.alerts || this.alerts.length === 0) {
-        console.error("Evidence alerts data not loaded.");
-        return;
+  init() {
+    this.parseUrlParameters();
+    this.bindGlobalEvents();
+    this.renderAlertCase(this.activeAlert);
+    this.renderSourceEvidenceCards();
+    this.renderEvidenceGraph();
+
+    // Auto re-render graph on window resize
+    window.addEventListener('resize', () => {
+      this.renderEvidenceGraph();
+    });
+
+    // Check if initial drawer open requested via URL
+    if (this.urlRequestedEvidenceId) {
+      const item = getEvidenceItemById(this.urlRequestedEvidenceId);
+      if (item) {
+        this.openEvidenceInspector(item);
       }
-
-      this.bindEvents();
-      this.renderAlert(this.activeAlertId);
-      
-      // Auto-draw connector lines after initial layout
-      window.addEventListener('resize', () => {
-        this.renderConnectors();
-      });
-
-      // Recalculate connectors after fonts/images load
-      setTimeout(() => {
-        this.renderConnectors();
-      }, 250);
-    }
-
-    bindEvents() {
-      // Alert switch buttons
-      const alertBtns = document.querySelectorAll('.alert-select-pill');
-      alertBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const alertId = e.currentTarget.getAttribute('data-alert-id');
-          if (alertId && alertId !== this.activeAlertId) {
-            alertBtns.forEach(b => b.classList.remove('active'));
-            e.currentTarget.classList.add('active');
-            this.switchAlert(alertId);
-          }
-        });
-      });
-
-      // Dispatch action demo button
-      const dispatchBtn = document.getElementById('btnDispatchAction');
-      if (dispatchBtn) {
-        dispatchBtn.addEventListener('click', () => {
-          this.triggerDispatchModal();
-        });
-      }
-    }
-
-    getCurrentAlert() {
-      return this.alerts.find(a => a.id === this.activeAlertId) || this.alerts[0];
-    }
-
-    switchAlert(alertId) {
-      this.activeAlertId = alertId;
-      const current = this.getCurrentAlert();
-      this.activeCardId = current.evidenceCards[0].id;
-      this.renderAlert(alertId);
-      
-      // Smooth scroll back to top of evidence if desired
-      setTimeout(() => {
-        this.renderConnectors();
-      }, 150);
-    }
-
-    renderAlert(alertId) {
-      const alert = this.getCurrentAlert();
-      if (!alert) return;
-
-      // 1. Header & Overview
-      if (this.dom.alertTitle) this.dom.alertTitle.textContent = alert.title;
-      if (this.dom.alertLocation) this.dom.alertLocation.textContent = alert.location;
-      if (this.dom.alertSeverity) {
-        this.dom.alertSeverity.textContent = alert.severity.toUpperCase() + " HAZARD";
-        this.dom.alertSeverity.className = `stat-badge ${alert.severity.toLowerCase() === 'high' ? 'badge-vermilion' : 'badge-amber'}`;
-      }
-      if (this.dom.alertLeadTime) this.dom.alertLeadTime.textContent = alert.leadTimeCountdown;
-      if (this.dom.alertLoss) this.dom.alertLoss.textContent = alert.projectedLossUSD + " Averted";
-      
-      // Prominent Confidence Value
-      if (this.dom.alertConfidenceVal) {
-        this.dom.alertConfidenceVal.textContent = alert.confidence;
-      }
-      if (this.dom.confidencePillText) {
-        this.dom.confidencePillText.textContent = `Confidence: ${alert.confidence} — Reflects cross-silo evidence strength, not certainty.`;
-      }
-
-      // 2. "Why was this warning generated?" Section
-      if (this.dom.whyHeadline) this.dom.whyHeadline.textContent = alert.whyGeneratedAnswer.headline;
-      if (this.dom.whySummary) this.dom.whySummary.textContent = alert.whyGeneratedAnswer.summary;
-      if (this.dom.whyCausalNarrative) this.dom.whyCausalNarrative.textContent = alert.whyGeneratedAnswer.causalNarrative;
-      if (this.dom.whyRootCause) this.dom.whyRootCause.textContent = alert.whyGeneratedAnswer.rootCauseHypothesis;
-      if (this.dom.whyAction) this.dom.whyAction.textContent = alert.whyGeneratedAnswer.prescriptiveAction;
-
-      // 3. Render Upstream Connected Evidence Cards
-      this.renderUpstreamCards(alert);
-
-      // 4. Render Downstream Synthesized Problem Card
-      this.renderProblemCard(alert);
-
-      // 5. Render Drilldown Deep-Dive Panel
-      this.renderDrilldownContent();
-
-      // 6. Render Evidence Weighting Decomposition Table
-      this.renderDecompositionTable(alert);
-
-      // 7. Render dynamic SVG Connectors
-      setTimeout(() => {
-        this.renderConnectors();
-      }, 100);
-    }
-
-    renderUpstreamCards(alert) {
-      if (!this.dom.cardsGrid) return;
-      this.dom.cardsGrid.innerHTML = '';
-
-      alert.evidenceCards.forEach(card => {
-        const isSelected = card.id === this.activeCardId;
-        const cardEl = document.createElement('div');
-        cardEl.className = `evidence-visual-card ${isSelected ? 'active-card' : ''}`;
-        cardEl.id = `card-${card.id}`;
-        cardEl.setAttribute('data-card-id', card.id);
-
-        cardEl.innerHTML = `
-          <div class="card-top-row">
-            <span class="card-icon-pill" style="background: ${card.themeColor}15; color: ${card.themeColor};">
-              <span class="card-icon-char">${card.icon}</span>
-              <span class="card-type-name">${card.type}</span>
-            </span>
-            <span class="card-weight-tag" title="Mathematical weight toward overall confidence">
-              ${card.weightContribution} Weight
-            </span>
-          </div>
-
-          <div class="card-metric-block">
-            <span class="card-main-stat">${card.label}</span>
-            <span class="card-badge-pill font-mono">${card.badge}</span>
-          </div>
-
-          <p class="card-summary-text">${card.summary}</p>
-
-          <div class="card-footer-action">
-            <span class="inspect-cue">
-              ${isSelected ? '● Currently Inspecting' : 'Inspect Supporting Records ↗'}
-            </span>
-            <span class="card-flow-anchor" id="anchor-${card.id}"></span>
-          </div>
-        `;
-
-        cardEl.addEventListener('click', () => {
-          this.activeCardId = card.id;
-          document.querySelectorAll('.evidence-visual-card').forEach(c => c.classList.remove('active-card'));
-          cardEl.classList.add('active-card');
-          this.renderDrilldownContent();
-          this.renderConnectors();
-          
-          // Smooth scroll to drilldown section if user is focused
-          const drilldown = document.getElementById('supportingEvidenceDrilldown');
-          if (drilldown && window.innerWidth < 1024) {
-            drilldown.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-
-        this.dom.cardsGrid.appendChild(cardEl);
-      });
-    }
-
-    renderProblemCard(alert) {
-      if (!this.dom.problemCardContainer) return;
-      const prob = alert.synthesizedProblem;
-
-      this.dom.problemCardContainer.innerHTML = `
-        <div class="synthesized-problem-card" id="synthesizedProblemCard">
-          <div class="problem-card-anchor" id="problemCardAnchor">
-            <div class="convergence-pulse-ring"></div>
-            <div class="convergence-indicator-node">
-              <span class="convergence-arrow">↓</span>
-            </div>
-          </div>
-
-          <div class="problem-card-inner">
-            <div class="problem-header-row">
-              <div class="problem-badge-cluster">
-                <span class="hazard-level-pill font-mono">${prob.riskLevel}</span>
-                <span class="convergence-tag font-mono">CONVERGED SYNTHESIS</span>
-              </div>
-              <div class="problem-lead-time">
-                <span class="lead-time-icon">⏱</span>
-                <span class="lead-time-txt font-mono">${prob.forecastWindow}</span>
-              </div>
-            </div>
-
-            <h3 class="problem-headline">${prob.headline}</h3>
-
-            <div class="problem-details-grid">
-              <div class="problem-detail-col">
-                <span class="detail-label font-mono">CRITICAL FAILURE MECHANISM</span>
-                <p class="detail-val">${prob.failureMechanism}</p>
-              </div>
-              <div class="problem-detail-col">
-                <span class="detail-label font-mono">ESTIMATED AVERTED DAMAGE</span>
-                <p class="detail-val text-vermilion font-mono" style="font-size: 1.15rem; font-weight:800;">${prob.avertedCost}</p>
-              </div>
-            </div>
-
-            <div class="problem-action-banner">
-              <div class="action-banner-text">
-                <span class="action-lead-icon">⚡</span>
-                <div>
-                  <strong>Prescriptive Recommendation:</strong>
-                  <span>${prob.recommendedAction}</span>
-                </div>
-              </div>
-              <button class="btn-dispatch-inline" id="btnDispatchAction">
-                Authorize Work Order
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      // Re-bind action button
-      const btn = document.getElementById('btnDispatchAction');
-      if (btn) {
-        btn.addEventListener('click', () => this.triggerDispatchModal());
-      }
-    }
-
-    renderConnectors() {
-      const svg = this.dom.flowSvg;
-      if (!svg) return;
-
-      const alert = this.getCurrentAlert();
-      const problemAnchor = document.getElementById('problemCardAnchor');
-      if (!problemAnchor) return;
-
-      const svgRect = svg.getBoundingClientRect();
-      const probRect = problemAnchor.getBoundingClientRect();
-
-      // Destination point relative to SVG
-      const targetX = (probRect.left + probRect.width / 2) - svgRect.left;
-      const targetY = (probRect.top + probRect.height / 2) - svgRect.top;
-
-      let pathsHtml = '';
-      let particlesHtml = '';
-
-      alert.evidenceCards.forEach((card, index) => {
-        const anchorEl = document.getElementById(`anchor-${card.id}`);
-        if (!anchorEl) return;
-
-        const anchorRect = anchorEl.getBoundingClientRect();
-        const startX = (anchorRect.left + anchorRect.width / 2) - svgRect.left;
-        const startY = (anchorRect.top + anchorRect.height / 2) - svgRect.top;
-
-        // Calculate smooth cubic bezier path converging downwards
-        const deltaY = targetY - startY;
-        const c1X = startX;
-        const c1Y = startY + deltaY * 0.45;
-        const c2X = targetX;
-        const c2Y = startY + deltaY * 0.85;
-
-        const pathData = `M ${startX} ${startY} C ${c1X} ${c1Y}, ${c2X} ${c2Y}, ${targetX} ${targetY}`;
-        const isSelected = card.id === this.activeCardId;
-        const strokeColor = card.themeColor;
-        const strokeWidth = isSelected ? 3.5 : 2.0;
-        const strokeOpacity = isSelected ? 1.0 : 0.65;
-        const animDelay = (index * 0.40).toFixed(2);
-
-        // Path
-        pathsHtml += `
-          <path d="${pathData}" 
-                id="flow-path-${card.id}" 
-                fill="none" 
-                stroke="${strokeColor}" 
-                stroke-width="${strokeWidth}" 
-                stroke-opacity="${strokeOpacity}" 
-                stroke-dasharray="${isSelected ? 'none' : '6 4'}"
-                class="connector-path ${isSelected ? 'active-path' : ''}" />
-        `;
-
-        // Pulsing particle flowing down the path towards the problem
-        pathsHtml += `
-          <circle r="${isSelected ? 5.5 : 4}" fill="${card.themeColor}" class="pulse-particle">
-            <animateMotion dur="2.2s" repeatCount="indefinite" path="${pathData}" begin="${animDelay}s" />
-          </circle>
-        `;
-      });
-
-      svg.innerHTML = `
-        <defs>
-          <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-        </defs>
-        ${pathsHtml}
-      `;
-    }
-
-    renderDrilldownContent() {
-      const alert = this.getCurrentAlert();
-      const card = alert.evidenceCards.find(c => c.id === this.activeCardId) || alert.evidenceCards[0];
-      if (!card) return;
-
-      if (this.dom.drilldownTitle) {
-        this.dom.drilldownTitle.innerHTML = `
-          <span style="color: ${card.themeColor}; margin-right: 8px;">${card.icon}</span>
-          <span>${card.label}</span>
-        `;
-      }
-      if (this.dom.drilldownBadge) {
-        this.dom.drilldownBadge.textContent = card.badge;
-      }
-      if (this.dom.drilldownSummary) {
-        this.dom.drilldownSummary.textContent = card.summary;
-      }
-
-      if (!this.dom.drilldownContent) return;
-
-      // Render specialized content based on card type
-      if (card.evidenceItems && card.type === "Similar Complaints") {
-        this.renderComplaintsDrilldown(card);
-      } else if (card.evidenceItems && card.type === "Repeated Maintenance Reports") {
-        this.renderMaintenanceDrilldown(card);
-      } else if (card.spatialMetrics) {
-        this.renderLocationDrilldown(card);
-      } else if (card.velocityMetrics) {
-        this.renderFrequencyDrilldown(card);
-      } else if (card.historicalMetrics) {
-        this.renderHistoricalDrilldown(card);
-      }
-    }
-
-    renderComplaintsDrilldown(card) {
-      let itemsHtml = `
-        <div class="drilldown-table-wrapper">
-          <div class="drilldown-table-header">
-            <span>SHOWING ${card.evidenceItems.length} OPERATOR LOGS & VERBATIM TRANSCRIPTS</span>
-            <span class="font-mono text-muted">CROSS-SHIFT NLP CORRELATION</span>
-          </div>
-          <div class="complaints-list">
-      `;
-
-      card.evidenceItems.forEach((item, idx) => {
-        itemsHtml += `
-          <div class="complaint-item-card">
-            <div class="complaint-item-top">
-              <span class="complaint-seq font-mono">#0${idx + 1}</span>
-              <span class="complaint-date font-mono">${item.date}</span>
-              <span class="complaint-author font-mono">${item.author}</span>
-              <span class="complaint-bay-badge font-mono">${item.bay}</span>
-            </div>
-            <p class="complaint-text">"${item.text}"</p>
-          </div>
-        `;
-      });
-
-      itemsHtml += `</div></div>`;
-      this.dom.drilldownContent.innerHTML = itemsHtml;
-    }
-
-    renderMaintenanceDrilldown(card) {
-      let itemsHtml = `
-        <div class="drilldown-table-wrapper">
-          <div class="drilldown-table-header">
-            <span>SHOWING ${card.evidenceItems.length} CMMS WORK ORDERS & MAINTENANCE TICKETS</span>
-            <span class="font-mono text-muted">PREVENTIVE VS UNCORRELATED LOGS</span>
-          </div>
-          <div class="maintenance-tickets-list">
-      `;
-
-      card.evidenceItems.forEach(item => {
-        itemsHtml += `
-          <div class="maintenance-ticket-card">
-            <div class="maint-ticket-top">
-              <span class="maint-id font-mono">${item.woId}</span>
-              <span class="maint-date font-mono">${item.date}</span>
-              <span class="maint-tech font-mono">${item.tech}</span>
-              <span class="maint-status font-mono ${item.status.includes('Closed') ? 'status-amber' : 'status-teal'}">${item.status}</span>
-            </div>
-            <p class="maint-desc">${item.text}</p>
-          </div>
-        `;
-      });
-
-      itemsHtml += `</div></div>`;
-      this.dom.drilldownContent.innerHTML = itemsHtml;
-    }
-
-    renderLocationDrilldown(card) {
-      const sp = card.spatialMetrics;
-      this.dom.drilldownContent.innerHTML = `
-        <div class="spatial-drilldown-grid">
-          <div class="spatial-metric-box">
-            <span class="spatial-label font-mono">CO-LOCATION RADIUS</span>
-            <span class="spatial-val font-mono text-blue">${sp.maxDispersionRadius}</span>
-            <span class="spatial-sub">All 17 precursors clustered within this tight sub-slab radius</span>
-          </div>
-
-          <div class="spatial-metric-box">
-            <span class="spatial-label font-mono">FACILITY QUADRANT</span>
-            <span class="spatial-val" style="font-size: 1.15rem; font-weight:700;">${sp.quadrant}</span>
-            <span class="spatial-sub">${sp.trenchSegment}</span>
-          </div>
-
-          <div class="spatial-metric-box">
-            <span class="spatial-label font-mono">SUBSURFACE PROBE TELEMETRY</span>
-            <span class="spatial-val font-mono text-vermilion" style="font-size: 1.15rem; font-weight:700;">${sp.soilMoistureProbe}</span>
-            <span class="spatial-sub">High volumetric moisture confirmed beneath concrete slab</span>
-          </div>
-        </div>
-
-        <div class="spatial-assets-box">
-          <div class="spatial-assets-title font-mono">CRITICAL CO-LOCATED ASSETS IN RISK CONE:</div>
-          <div class="asset-chips-row">
-            ${sp.affectedAssets.map(asset => `<span class="asset-chip">📍 ${asset}</span>`).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    renderFrequencyDrilldown(card) {
-      const vm = card.velocityMetrics;
-      this.dom.drilldownContent.innerHTML = `
-        <div class="velocity-drilldown-grid">
-          <div class="velocity-stat-card">
-            <span class="velocity-label font-mono">VELOCITY SURGE ACCELERATION</span>
-            <span class="velocity-val font-mono text-vermilion">${vm.accelerationRate}</span>
-            <span class="velocity-sub">Exponential arrival rate increase over rolling 72-hour baseline</span>
-          </div>
-
-          <div class="velocity-stat-card">
-            <span class="velocity-label font-mono">MEAN TIME BETWEEN SIGNALS</span>
-            <span class="velocity-val font-mono text-amber">${vm.meanTimeBetweenSignals}</span>
-            <span class="velocity-sub">Precursor interval collapsed from 168 hours down to 6.2 hours</span>
-          </div>
-
-          <div class="velocity-stat-card">
-            <span class="velocity-label font-mono">DAILY ARRIVAL VELOCITY</span>
-            <span class="velocity-val font-mono">${vm.arrivalVelocityDaily}</span>
-            <span class="velocity-sub">${vm.coherencePhase}</span>
-          </div>
-        </div>
-
-        <div class="velocity-alert-banner">
-          <span class="velocity-alert-icon">⚠️</span>
-          <div>
-            <strong>Velocity Trajectory Insight:</strong>
-            <span>${vm.trajectoryAlert}</span>
-          </div>
-        </div>
-      `;
-    }
-
-    renderHistoricalDrilldown(card) {
-      const hm = card.historicalMetrics;
-      this.dom.drilldownContent.innerHTML = `
-        <div class="historical-drilldown-container">
-          <div class="historical-match-top">
-            <div class="match-score-badge">
-              <span class="match-score-num font-mono">${hm.matchScore}</span>
-              <span class="match-score-sub font-mono">COSINE EMBEDDING SIMILARITY</span>
-            </div>
-            <div class="match-incident-info">
-              <span class="match-incident-title">${hm.pastIncident}</span>
-              <span class="match-incident-impact font-mono text-vermilion">Past Damage: ${hm.unmitigatedCost} • ${hm.unmitigatedDowntime}</span>
-            </div>
-          </div>
-
-          <div class="precursor-chain-box">
-            <span class="precursor-chain-label font-mono">IDENTICAL 4-STAGE PRECURSOR CASCADE:</span>
-            <div class="chain-flow-display font-mono">
-              ${hm.identicalPrecursorChain}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    renderDecompositionTable(alert) {
-      if (!this.dom.decompositionTbody) return;
-      this.dom.decompositionTbody.innerHTML = '';
-
-      let totalWeightNum = 0;
-      let totalContribNum = 0;
-
-      alert.evidenceWeightsDecomposition.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="decomp-factor-cell">
-            <strong>${item.factor}</strong>
-          </td>
-          <td class="decomp-weight-cell font-mono">${item.weight}</td>
-          <td class="decomp-contrib-cell font-mono text-vermilion"><strong>${item.contribution}</strong></td>
-          <td class="decomp-rationale-cell">${item.rationale}</td>
-        `;
-        this.dom.decompositionTbody.appendChild(tr);
-
-        totalWeightNum += parseInt(item.weight, 10) || 0;
-        totalContribNum += parseFloat(item.contribution) || 0;
-      });
-
-      if (this.dom.decompositionTotal) {
-        this.dom.decompositionTotal.innerHTML = `
-          <div class="decomp-summary-bar">
-            <div class="decomp-sum-item">
-              <span class="decomp-sum-label font-mono">AGGREGATE EVIDENCE STRENGTH:</span>
-              <span class="decomp-sum-val font-mono text-vermilion">${alert.confidence}</span>
-            </div>
-            <div class="decomp-sum-item">
-              <span class="decomp-sum-label font-mono">TOTAL CONTRIBUTING WEIGHT:</span>
-              <span class="decomp-sum-val font-mono">${totalWeightNum}% (Normalized)</span>
-            </div>
-            <div class="decomp-sum-note">
-              Confidence communicates the strength and coherence of available evidence, NOT certainty.
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    triggerDispatchModal() {
-      const alert = this.getCurrentAlert();
-      alert(`[EarlySight Prescriptive Dispatch]\n\nDispatching Work Order for Alert ${alert.id}:\n${alert.synthesizedProblem.headline}\n\nAssigned: Maintenance Quick-Response Unit\nAverted Loss: ${alert.projectedLossUSD}\nLead Time Window: ${alert.leadTimeDays} Days\n\nWork order packet generated with 5 verified evidence attachments.`);
     }
   }
 
-  // Auto-instantiate when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
-    window.evidenceController = new EvidenceController();
-  });
+  parseUrlParameters() {
+    const params = new URLSearchParams(window.location.search);
+    const riskParam = params.get('riskId');
+    const signalParam = params.get('signalId');
+    const zoneParam = params.get('zone');
+    const evidenceParam = params.get('evidenceId');
 
-})();
+    if (riskParam) {
+      const match = getAlertById(riskParam);
+      if (match) {
+        this.activeAlert = match;
+        this.filters.riskId = match.riskId;
+      }
+    } else if (zoneParam) {
+      const match = getAlertById(zoneParam);
+      if (match) {
+        this.activeAlert = match;
+        this.filters.location = match.zoneSlug;
+      }
+    }
+
+    if (evidenceParam) {
+      this.urlRequestedEvidenceId = evidenceParam;
+    } else if (signalParam) {
+      // Find evidence referencing this signal
+      const matchingEvidence = this.allEvidence.find(e => 
+        e.linkedSignals.some(s => s.toLowerCase() === signalParam.toLowerCase())
+      );
+      if (matchingEvidence) {
+        this.urlRequestedEvidenceId = matchingEvidence.id;
+      }
+    }
+  }
+
+  bindGlobalEvents() {
+    // Alert Selector Pills
+    const alertPills = document.querySelectorAll('.evidence-alert-pill');
+    alertPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        const alertId = e.currentTarget.getAttribute('data-alert-id');
+        alertPills.forEach(p => p.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        const alert = getAlertById(alertId);
+        if (alert) {
+          this.switchAlertCase(alert);
+        }
+      });
+    });
+
+    // Filter Controls
+    const searchInput = document.getElementById('evidenceSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.filters.search = e.target.value.trim();
+        this.renderSourceEvidenceCards();
+      });
+    }
+
+    const typeFilter = document.getElementById('evidenceTypeFilter');
+    if (typeFilter) {
+      typeFilter.addEventListener('change', (e) => {
+        this.filters.type = e.target.value;
+        this.renderSourceEvidenceCards();
+      });
+    }
+
+    const locationFilter = document.getElementById('evidenceLocationFilter');
+    if (locationFilter) {
+      locationFilter.addEventListener('change', (e) => {
+        this.filters.location = e.target.value;
+        this.renderSourceEvidenceCards();
+      });
+    }
+
+    const severityFilter = document.getElementById('evidenceSeverityFilter');
+    if (severityFilter) {
+      severityFilter.addEventListener('change', (e) => {
+        this.filters.severity = e.target.value;
+        this.renderSourceEvidenceCards();
+      });
+    }
+
+    const relevanceFilter = document.getElementById('evidenceRelevanceFilter');
+    if (relevanceFilter) {
+      relevanceFilter.addEventListener('change', (e) => {
+        this.filters.relevance = e.target.value;
+        this.renderSourceEvidenceCards();
+      });
+    }
+
+    const riskFilter = document.getElementById('evidenceRiskFilter');
+    if (riskFilter) {
+      riskFilter.addEventListener('change', (e) => {
+        this.filters.riskId = e.target.value;
+        this.renderSourceEvidenceCards();
+      });
+    }
+
+    const resetBtn = document.getElementById('btnResetEvidenceFilters');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        this.resetFilters();
+      });
+    }
+
+    // Drawer Close Buttons & Backdrop
+    const drawerCloseBtn = document.getElementById('closeEvidenceDrawerBtn');
+    const drawerBackdrop = document.getElementById('evidenceDrawerBackdrop');
+    if (drawerCloseBtn) {
+      drawerCloseBtn.addEventListener('click', () => this.closeEvidenceInspector());
+    }
+    if (drawerBackdrop) {
+      drawerBackdrop.addEventListener('click', () => this.closeEvidenceInspector());
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isDrawerOpen) {
+        this.closeEvidenceInspector();
+      }
+    });
+  }
+
+  switchAlertCase(alert) {
+    this.activeAlert = alert;
+    this.renderAlertCase(alert);
+    this.renderEvidenceGraph();
+    
+    // Auto-update risk filter to match selected case
+    const riskFilter = document.getElementById('evidenceRiskFilter');
+    if (riskFilter) {
+      riskFilter.value = alert.riskId;
+      this.filters.riskId = alert.riskId;
+      this.renderSourceEvidenceCards();
+    }
+  }
+
+  resetFilters() {
+    this.filters = {
+      search: '',
+      type: 'all',
+      location: 'all',
+      severity: 'all',
+      relevance: 'all',
+      riskId: 'all',
+      timeRange: 'all'
+    };
+
+    const searchInput = document.getElementById('evidenceSearchInput');
+    const typeFilter = document.getElementById('evidenceTypeFilter');
+    const locationFilter = document.getElementById('evidenceLocationFilter');
+    const severityFilter = document.getElementById('evidenceSeverityFilter');
+    const relevanceFilter = document.getElementById('evidenceRelevanceFilter');
+    const riskFilter = document.getElementById('evidenceRiskFilter');
+
+    if (searchInput) searchInput.value = '';
+    if (typeFilter) typeFilter.value = 'all';
+    if (locationFilter) locationFilter.value = 'all';
+    if (severityFilter) severityFilter.value = 'all';
+    if (relevanceFilter) relevanceFilter.value = 'all';
+    if (riskFilter) riskFilter.value = 'all';
+
+    this.renderSourceEvidenceCards();
+  }
+
+  renderAlertCase(alert) {
+    // 1. Featured Risk Header
+    const titleEl = document.getElementById('featuredRiskTitle');
+    const locationEl = document.getElementById('featuredRiskLocation');
+    const scoreValEl = document.getElementById('featuredRiskScore');
+    const priorityEl = document.getElementById('featuredRiskPriority');
+    const trendEl = document.getElementById('featuredRiskTrend');
+    const leadTimeEl = document.getElementById('featuredRiskLeadTime');
+    const avertedEl = document.getElementById('featuredRiskAverted');
+    const whySummaryEl = document.getElementById('whyFlaggedSummary');
+    const whyNarrativeEl = document.getElementById('whyFlaggedNarrative');
+
+    if (titleEl) titleEl.textContent = alert.riskTitle;
+    if (locationEl) locationEl.textContent = alert.location;
+    if (scoreValEl) scoreValEl.textContent = alert.riskScore;
+    if (priorityEl) {
+      priorityEl.textContent = `${alert.priority} • ${alert.priorityLabel}`;
+      priorityEl.className = `stat-badge ${alert.priority === 'P1' ? 'badge-vermilion' : 'badge-amber'}`;
+    }
+    if (trendEl) trendEl.textContent = `${alert.trendSymbol} ${alert.trend}`;
+    if (leadTimeEl) leadTimeEl.textContent = alert.leadTimeCountdown;
+    if (avertedEl) avertedEl.textContent = alert.projectedLossUSD;
+    if (whySummaryEl) whySummaryEl.textContent = alert.whyFlagged.summary;
+    if (whyNarrativeEl) whyNarrativeEl.textContent = alert.whyFlagged.causalNarrative;
+
+    // 2. Render 5 Evidence Pillars
+    const pillarsContainer = document.getElementById('evidencePillarsContainer');
+    if (pillarsContainer && alert.whyFlagged.pillars) {
+      pillarsContainer.innerHTML = alert.whyFlagged.pillars.map(p => `
+        <div class="evidence-pillar-card">
+          <div class="pillar-card-top font-mono">
+            <span class="pillar-num font-mono">${p.num}</span>
+            <span class="pillar-badge-pill">${p.badge}</span>
+          </div>
+          <h4 class="pillar-title">${p.title}</h4>
+          <p class="pillar-desc">${p.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    // 3. Render Observed Facts vs AI Interpretation
+    const observedListEl = document.getElementById('observedEvidenceList');
+    const aiListEl = document.getElementById('aiInterpretationList');
+    if (observedListEl && alert.whyFlagged.observedEvidenceFacts) {
+      observedListEl.innerHTML = alert.whyFlagged.observedEvidenceFacts.map(fact => `
+        <li class="fact-item">
+          <span class="fact-check-icon">✓</span>
+          <span class="fact-text">${fact}</span>
+        </li>
+      `).join('');
+    }
+    if (aiListEl && alert.whyFlagged.aiInterpretationHypothesis) {
+      aiListEl.innerHTML = alert.whyFlagged.aiInterpretationHypothesis.map(hyp => `
+        <li class="hypothesis-item">
+          <span class="hypothesis-spark-icon">⚡</span>
+          <span class="hypothesis-text">${hyp}</span>
+        </li>
+      `).join('');
+    }
+
+    // 4. Render Directional Evidence Chain (Section 3)
+    const chainContainer = document.getElementById('evidenceChainContainer');
+    if (chainContainer && alert.evidenceChain) {
+      chainContainer.innerHTML = alert.evidenceChain.map((step, idx) => `
+        <div class="evidence-chain-step ${idx === 3 ? 'step-risk-highlight' : ''}">
+          <div class="chain-step-header font-mono">
+            <span class="chain-step-num">${step.step}</span>
+            <span class="chain-stage-tag">${step.stage}</span>
+          </div>
+          <div class="chain-icon-wrap" style="color: ${step.color};">
+            <span class="chain-step-icon">${step.icon}</span>
+          </div>
+          <h5 class="chain-step-label">${step.label}</h5>
+          <p class="chain-step-detail">${step.detail}</p>
+          <div class="chain-step-footer">
+            <span class="chain-badge-pill">${step.badge}</span>
+          </div>
+        </div>
+        ${idx < alert.evidenceChain.length - 1 ? `
+          <div class="chain-connector-node" aria-hidden="true">
+            <span class="chain-arrow-symbol">➔</span>
+          </div>
+        ` : ''}
+      `).join('');
+    }
+
+    // 5. Render Explainability Panel (Section 6)
+    const confValEl = document.getElementById('confidenceMetricVal');
+    const patternCohEl = document.getElementById('patternCoherenceVal');
+    const signalAgrEl = document.getElementById('signalAgreementVal');
+    const tempConsEl = document.getElementById('temporalConsistencyVal');
+    const confExplEl = document.getElementById('confidenceExplanationText');
+
+    if (confValEl) confValEl.textContent = alert.confidence;
+    if (patternCohEl) patternCohEl.textContent = alert.patternCoherence;
+    if (signalAgrEl) signalAgrEl.textContent = alert.signalAgreement;
+    if (tempConsEl) tempConsEl.textContent = alert.temporalConsistency;
+    if (confExplEl) confExplEl.textContent = alert.confidenceExplanation;
+
+    // 6. Render Causal Pillars (Why this matters - Section 7)
+    const causalPillarsGrid = document.getElementById('causalPillarsGrid');
+    if (causalPillarsGrid && alert.causalPillars) {
+      causalPillarsGrid.innerHTML = alert.causalPillars.pillars.map(p => `
+        <div class="causal-dimension-card">
+          <div class="dimension-header font-mono">
+            <span class="dimension-key">${p.key}</span>
+            <span class="dimension-impact font-mono" style="color: ${p.color};">${p.impact}</span>
+          </div>
+          <div class="dimension-summary">${p.summary}</div>
+          <p class="dimension-detail">${p.detail}</p>
+        </div>
+      `).join('');
+    }
+
+    // 7. Render Evidence Progression Timeline (Section 9)
+    const timelineContainer = document.getElementById('evidenceTimelineTrack');
+    if (timelineContainer && alert.evidenceTimeline) {
+      timelineContainer.innerHTML = alert.evidenceTimeline.map((item, i) => `
+        <div class="evidence-timeline-node">
+          <div class="timeline-day-pill font-mono">${item.day}</div>
+          <div class="timeline-node-dot" style="background: ${item.color};"></div>
+          <div class="timeline-node-card">
+            <div class="timeline-card-top font-mono">
+              <span class="timeline-time">${item.time}</span>
+              <span class="timeline-status-badge" style="background: ${item.color}15; color: ${item.color};">${item.badge}</span>
+            </div>
+            <div class="timeline-label font-sans">${item.label}</div>
+            <p class="timeline-desc">${item.desc}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  renderEvidenceGraph() {
+    const container = document.getElementById('evidenceGraphContainer');
+    const svgCanvas = document.getElementById('evidenceGraphSvg');
+    if (!container || !svgCanvas) return;
+
+    const alert = this.activeAlert;
+    const graphData = alert.evidenceGraph;
+    if (!graphData) return;
+
+    // Render node elements in 4 horizontal columns: Evidence -> Signal -> Pattern -> Risk
+    const colEvidence = graphData.nodes.filter(n => n.type === 'evidence');
+    const colSignals = graphData.nodes.filter(n => n.type === 'signal');
+    const colPatterns = graphData.nodes.filter(n => n.type === 'pattern');
+    const colRisks = graphData.nodes.filter(n => n.type === 'risk');
+
+    const columnsHtml = `
+      <div class="graph-col col-evidence">
+        <div class="graph-col-header font-mono">1. SOURCE EVIDENCE</div>
+        <div class="graph-nodes-stack">
+          ${colEvidence.map(n => this.renderGraphNode(n)).join('')}
+        </div>
+      </div>
+
+      <div class="graph-col col-signals">
+        <div class="graph-col-header font-mono">2. LINKED SIGNALS</div>
+        <div class="graph-nodes-stack">
+          ${colSignals.map(n => this.renderGraphNode(n)).join('')}
+        </div>
+      </div>
+
+      <div class="graph-col col-pattern">
+        <div class="graph-col-header font-mono">3. RECURRING PATTERN</div>
+        <div class="graph-nodes-stack">
+          ${colPatterns.map(n => this.renderGraphNode(n)).join('')}
+        </div>
+      </div>
+
+      <div class="graph-col col-risk">
+        <div class="graph-col-header font-mono">4. EMERGING RISK</div>
+        <div class="graph-nodes-stack">
+          ${colRisks.map(n => this.renderGraphNode(n)).join('')}
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = columnsHtml;
+
+    // Bind node clicks
+    const nodeEls = container.querySelectorAll('.graph-node-box');
+    nodeEls.forEach(nodeEl => {
+      nodeEl.addEventListener('click', () => {
+        const nodeId = nodeEl.getAttribute('data-node-id');
+        this.selectGraphNode(nodeId);
+      });
+    });
+
+    // Draw SVG connecting lines after layout render
+    setTimeout(() => {
+      this.drawGraphConnectors(graphData, container, svgCanvas);
+    }, 120);
+  }
+
+  renderGraphNode(node) {
+    const isSelected = this.selectedGraphNodeId === node.id;
+    return `
+      <div class="graph-node-box ${isSelected ? 'selected' : ''}" 
+           id="graphNode-${node.id}" 
+           data-node-id="${node.id}"
+           style="border-left: 3px solid ${node.color};">
+        <div class="node-id-row font-mono">
+          <span class="node-id-tag">${node.label}</span>
+          <span class="node-type-pill">${node.type}</span>
+        </div>
+        <div class="node-title">${node.title}</div>
+        <div class="node-meta font-mono">${node.source}</div>
+      </div>
+    `;
+  }
+
+  selectGraphNode(nodeId) {
+    this.selectedGraphNodeId = nodeId;
+    document.querySelectorAll('.graph-node-box').forEach(el => {
+      el.classList.toggle('selected', el.getAttribute('data-node-id') === nodeId);
+    });
+
+    // If node is evidence, open in drawer
+    const evidenceItem = this.allEvidence.find(e => e.id === nodeId);
+    if (evidenceItem) {
+      this.openEvidenceInspector(evidenceItem);
+    }
+  }
+
+  drawGraphConnectors(graphData, container, svg) {
+    const containerRect = container.getBoundingClientRect();
+    if (containerRect.width === 0) return;
+
+    svg.setAttribute('width', containerRect.width);
+    svg.setAttribute('height', containerRect.height);
+
+    let pathsHtml = '';
+
+    graphData.links.forEach((link, idx) => {
+      const fromEl = document.getElementById(`graphNode-${link.from}`);
+      const toEl = document.getElementById(`graphNode-${link.to}`);
+
+      if (!fromEl || !toEl) return;
+
+      const fromRect = fromEl.getBoundingClientRect();
+      const toRect = toEl.getBoundingClientRect();
+
+      const startX = fromRect.right - containerRect.left;
+      const startY = fromRect.top + (fromRect.height / 2) - containerRect.top;
+      const endX = toRect.left - containerRect.left;
+      const endY = toRect.top + (toRect.height / 2) - containerRect.top;
+
+      const deltaX = endX - startX;
+      const c1X = startX + deltaX * 0.5;
+      const c1Y = startY;
+      const c2X = startX + deltaX * 0.5;
+      const c2Y = endY;
+
+      const isHighlighted = this.selectedGraphNodeId === link.from || this.selectedGraphNodeId === link.to;
+      const strokeColor = isHighlighted ? '#C85A32' : 'rgba(140, 148, 142, 0.45)';
+      const strokeWidth = isHighlighted ? 2.5 : 1.5;
+      const strokeDash = isHighlighted ? 'none' : '4 3';
+
+      pathsHtml += `
+        <path d="M ${startX} ${startY} C ${c1X} ${c1Y}, ${c2X} ${c2Y}, ${endX} ${endY}"
+              fill="none"
+              stroke="${strokeColor}"
+              stroke-width="${strokeWidth}"
+              stroke-dasharray="${strokeDash}"
+              class="graph-link-line" />
+      `;
+    });
+
+    svg.innerHTML = pathsHtml;
+  }
+
+  renderSourceEvidenceCards() {
+    const grid = document.getElementById('sourceEvidenceCardsGrid');
+    const countEl = document.getElementById('evidenceResultsCount');
+    if (!grid) return;
+
+    const filtered = filterEvidenceRegistry(this.filters);
+
+    if (countEl) {
+      countEl.textContent = `Showing ${filtered.length} of ${this.allEvidence.length} Evidence Records`;
+    }
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-evidence-state">
+          <div class="empty-icon font-mono">∅</div>
+          <h3>No Evidence Records Found</h3>
+          <p>No operational evidence records match the current filter criteria.</p>
+          <button class="btn-secondary font-mono" id="btnEmptyReset">Reset All Filters</button>
+        </div>
+      `;
+      const btn = document.getElementById('btnEmptyReset');
+      if (btn) btn.addEventListener('click', () => this.resetFilters());
+      return;
+    }
+
+    grid.innerHTML = filtered.map(item => `
+      <div class="source-evidence-card" data-evidence-id="${item.id}">
+        <div class="evidence-card-header font-mono">
+          <div class="evidence-id-group">
+            <span class="evidence-id-pill font-mono">${item.id}</span>
+            <span class="evidence-type-badge type-${item.sourceCategory}">${item.sourceType}</span>
+          </div>
+          <span class="evidence-relevance-tag font-mono relevance-${item.relevance.toLowerCase()}">
+            ${item.relevance} Relevance
+          </span>
+        </div>
+
+        <h4 class="evidence-card-title">${item.title}</h4>
+        
+        <div class="evidence-card-meta font-mono">
+          <span class="meta-loc">📍 ${item.location}</span>
+          <span class="meta-time">⏱ ${item.timestamp}</span>
+        </div>
+
+        <p class="evidence-card-desc">${item.description}</p>
+
+        <div class="evidence-signals-row font-mono">
+          <span class="signals-count font-mono">
+            <strong>${item.linkedSignalsCount}</strong> Linked Signals:
+          </span>
+          <div class="signal-chips-strip">
+            ${item.linkedSignals.map(s => `<span class="signal-micro-chip">${s}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="evidence-card-footer">
+          <div class="evidence-conf-pill font-mono">
+            <span class="conf-dot">●</span>
+            <span>Confidence: ${item.confidence}</span>
+          </div>
+          <button class="btn-view-evidence font-mono" data-inspect-id="${item.id}">
+            View Evidence ➔
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+    // Bind "View Evidence" buttons
+    grid.querySelectorAll('.btn-view-evidence').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-inspect-id');
+        const item = getEvidenceItemById(id);
+        if (item) {
+          this.openEvidenceInspector(item);
+        }
+      });
+    });
+  }
+
+  openEvidenceInspector(item) {
+    this.activeEvidenceItem = item;
+    this.isDrawerOpen = true;
+
+    const drawer = document.getElementById('evidenceInspectorDrawer');
+    const backdrop = document.getElementById('evidenceDrawerBackdrop');
+    if (!drawer) return;
+
+    // Populate drawer elements
+    const idEl = document.getElementById('drawerEvidenceId');
+    const typeEl = document.getElementById('drawerEvidenceType');
+    const titleEl = document.getElementById('drawerEvidenceTitle');
+    const timeEl = document.getElementById('drawerEvidenceTimestamp');
+    const locEl = document.getElementById('drawerEvidenceLocation');
+    const sysEl = document.getElementById('drawerEvidenceSystem');
+    const authorEl = document.getElementById('drawerEvidenceAuthor');
+    const descEl = document.getElementById('drawerEvidenceDesc');
+    const sevEl = document.getElementById('drawerEvidenceSeverity');
+    const relEl = document.getElementById('drawerEvidenceRelevance');
+    const confEl = document.getElementById('drawerEvidenceConfidence');
+    const signalsListEl = document.getElementById('drawerLinkedSignalsList');
+    const patternEl = document.getElementById('drawerLinkedPattern');
+    const riskEl = document.getElementById('drawerLinkedRisk');
+    const whyMattersEl = document.getElementById('drawerWhyMatters');
+    const timelineEl = document.getElementById('drawerEvidenceTimeline');
+
+    // Deep link action buttons
+    const btnSignal = document.getElementById('drawerActionViewSignal');
+    const btnRisk = document.getElementById('drawerActionViewRisk');
+    const btnTimeline = document.getElementById('drawerActionViewTimeline');
+    const btnMap = document.getElementById('drawerActionViewMap');
+
+    if (idEl) idEl.textContent = item.id;
+    if (typeEl) {
+      typeEl.textContent = item.sourceType;
+      typeEl.className = `evidence-type-badge type-${item.sourceCategory}`;
+    }
+    if (titleEl) titleEl.textContent = item.title;
+    if (timeEl) timeEl.textContent = item.timestamp;
+    if (locEl) locEl.textContent = item.location;
+    if (sysEl) sysEl.textContent = item.sourceSystem;
+    if (authorEl) authorEl.textContent = item.authorOrTech;
+    if (descEl) descEl.textContent = `"${item.description}"`;
+    if (sevEl) {
+      sevEl.textContent = `${item.severity} Severity`;
+      sevEl.className = `stat-badge ${item.severity === 'Critical' ? 'badge-vermilion' : (item.severity === 'High' ? 'badge-amber' : 'badge-neutral')}`;
+    }
+    if (relEl) {
+      relEl.textContent = `${item.relevance} Relevance`;
+      relEl.className = `evidence-relevance-tag relevance-${item.relevance.toLowerCase()}`;
+    }
+    if (confEl) confEl.textContent = item.confidence;
+    if (patternEl) patternEl.textContent = item.linkedPattern;
+    if (riskEl) riskEl.textContent = `${item.linkedRiskId} — ${item.linkedRiskName}`;
+    if (whyMattersEl) whyMattersEl.textContent = item.whyItMatters;
+    if (timelineEl) timelineEl.textContent = item.evidenceTimelineSummary;
+
+    // Render linked signals
+    if (signalsListEl && item.linkedSignals) {
+      signalsListEl.innerHTML = item.linkedSignals.map(sig => `
+        <a href="signals.html?zone=${item.zoneSlug}&signalId=${sig}" class="linked-signal-chip font-mono">
+          <span>📡 ${sig}</span>
+          <span style="font-size:0.68rem; color:var(--ink-muted);">↗</span>
+        </a>
+      `).join('');
+    }
+
+    // Configure deep-link hrefs
+    if (btnSignal) {
+      const firstSignal = item.linkedSignals && item.linkedSignals.length > 0 ? item.linkedSignals[0] : 'SIG-031';
+      btnSignal.setAttribute('href', `signals.html?zone=${item.zoneSlug}&signalId=${firstSignal}`);
+    }
+    if (btnRisk) {
+      btnRisk.setAttribute('href', `risks.html?riskId=${item.linkedRiskId}`);
+    }
+    if (btnTimeline) {
+      btnTimeline.setAttribute('href', `timeline.html?zone=${item.zoneSlug}&case=0`);
+    }
+    if (btnMap) {
+      btnMap.setAttribute('href', `map.html?zone=${item.zoneSlug}`);
+    }
+
+    drawer.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeEvidenceInspector() {
+    this.isDrawerOpen = false;
+    const drawer = document.getElementById('evidenceInspectorDrawer');
+    const backdrop = document.getElementById('evidenceDrawerBackdrop');
+    if (drawer) drawer.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// Auto-instantiate when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  window.evidenceController = new EvidenceController();
+  window.evidenceController.init();
+});

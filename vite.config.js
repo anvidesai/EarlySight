@@ -16,6 +16,7 @@ export default defineConfig({
         impact: resolve(__dirname, 'impact.html'),
         workspace: resolve(__dirname, 'workspace.html'),
         organizations: resolve(__dirname, 'organizations.html'),
+        notifications: resolve(__dirname, 'notifications.html'),
       },
     },
   },

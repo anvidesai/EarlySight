@@ -1,826 +1,685 @@
 /**
- * EarlySight — Action Center Controller (Stage 10)
+ * EarlySight — Action & Resolution Interactive Controller (Milestone 8)
  * 
- * Handles:
- * - 6-Stage Kanban Board & Tabular Matrix rendering
- * - Smooth status-transition animations with stage glow, card slide, & counter bounce
- * - Interactive 6-step progress visualizer on each card
- * - Granular issue inspector & resolution notes editor modal
- * - Search, team, and priority filtering
- * - Dynamic KPI metrics calculation
- * - Toast notification system for state transitions
+ * Complete Closed-Loop Operational Workflow:
+ * EMERGING RISK -> RECOMMENDED ACTION -> ASSIGNED -> IN PROGRESS -> RESOLVED -> VERIFIED
  */
 
-import '../data/actions-data.js';
+import {
+  ACTION_CENTER_KPIS,
+  ACTION_WORKFLOW_STAGES,
+  ACTION_REGISTRY_DATA,
+  getActionById,
+  filterActionsRegistry
+} from '../data/actions-data.js';
 
-(function () {
-  'use strict';
+class ActionsController {
+  constructor() {
+    this.actions = JSON.parse(JSON.stringify(ACTION_REGISTRY_DATA)); // Clone for interactive mock updates
+    this.activeAction = this.actions[0];
+    this.currentViewMode = 'board'; // 'board' | 'table'
 
-  class ActionCenterApp {
-    constructor() {
-      this.store = window.EarlySightActionStore;
-      this.currentView = 'kanban'; // 'kanban' | 'table' | 'urgency'
-      this.filterTeam = 'all';
-      this.filterPriority = 'all';
-      this.searchQuery = '';
-      this.selectedIssueId = null;
-      this.animatingIssueId = null;
+    this.filters = {
+      search: '',
+      priority: 'all',
+      status: 'all',
+      owner: 'all',
+      location: 'all',
+      riskId: 'all',
+      verification: 'all'
+    };
 
-      this.init();
-    }
+    this.isDrawerOpen = false;
+  }
 
-    init() {
-      this.bindEvents();
-      this.render();
+  init() {
+    this.parseUrlParameters();
+    this.bindEvents();
+    this.renderWorkflowStrip();
+    this.renderPriorityActions();
+    this.renderActionsViews();
 
-      // Subscribe to store changes
-      this.store.subscribe((event) => {
-        this.handleStoreEvent(event);
-      });
-
-      // Auto-open modal if URL has ?issue=...
-      const urlParams = new URLSearchParams(window.location.search);
-      const targetIssue = urlParams.get('issue');
-      if (targetIssue) {
-        setTimeout(() => {
-          this.openIssueModal(targetIssue);
-        }, 300);
+    // Check if initial drawer open requested via URL parameter
+    if (this.urlRequestedActionId) {
+      const target = this.actions.find(a => 
+        a.id.toLowerCase() === this.urlRequestedActionId.toLowerCase() ||
+        (a.actionIdAlt && a.actionIdAlt.toLowerCase() === this.urlRequestedActionId.toLowerCase())
+      );
+      if (target) {
+        this.openActionInspector(target);
       }
-    }
-
-    bindEvents() {
-      // Search input
-      const searchInput = document.getElementById('actionSearchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-          this.searchQuery = e.target.value.toLowerCase().trim();
-          this.renderBoard();
-        });
-      }
-
-      // Team filter buttons
-      document.querySelectorAll('[data-filter-team]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('[data-filter-team]').forEach(b => b.classList.remove('active'));
-          e.currentTarget.classList.add('active');
-          this.filterTeam = e.currentTarget.getAttribute('data-filter-team');
-          this.renderBoard();
-        });
-      });
-
-      // Priority filter buttons
-      document.querySelectorAll('[data-filter-priority]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('[data-filter-priority]').forEach(b => b.classList.remove('active'));
-          e.currentTarget.classList.add('active');
-          this.filterPriority = e.currentTarget.getAttribute('data-filter-priority');
-          this.renderBoard();
-        });
-      });
-
-      // View Switcher (Kanban vs Table vs Urgency)
-      document.querySelectorAll('[data-action-view]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('[data-action-view]').forEach(b => b.classList.remove('active'));
-          e.currentTarget.classList.add('active');
-          this.currentView = e.currentTarget.getAttribute('data-action-view');
-          
-          const kanbanEl = document.getElementById('actionKanbanBoard');
-          const tableEl = document.getElementById('actionTableView');
-          
-          if (this.currentView === 'table') {
-            if (kanbanEl) kanbanEl.style.display = 'none';
-            if (tableEl) tableEl.style.display = 'block';
-            this.renderTable();
-          } else {
-            if (kanbanEl) kanbanEl.style.display = 'grid';
-            if (tableEl) tableEl.style.display = 'none';
-            this.renderBoard();
-          }
-        });
-      });
-
-      // Close modal handlers
-      const modalCloseBtn = document.getElementById('actionModalClose');
-      const modalOverlay = document.getElementById('actionModalOverlay');
-      if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => this.closeIssueModal());
-      if (modalOverlay) modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) this.closeIssueModal();
-      });
-
-      // Modal save button
-      const modalSaveBtn = document.getElementById('actionModalSave');
-      if (modalSaveBtn) {
-        modalSaveBtn.addEventListener('click', () => this.saveModalChanges());
-      }
-
-      // Modal advance button
-      const modalAdvanceBtn = document.getElementById('actionModalAdvance');
-      if (modalAdvanceBtn) {
-        modalAdvanceBtn.addEventListener('click', () => {
-          if (this.selectedIssueId) {
-            this.triggerAdvance(this.selectedIssueId);
-          }
-        });
-      }
-
-      // Quick add ticket button
-      const addTicketBtn = document.getElementById('btnNewActionTicket');
-      if (addTicketBtn) {
-        addTicketBtn.addEventListener('click', () => this.openNewTicketModal());
-      }
-    }
-
-    render() {
-      this.renderKPIs();
-      if (this.currentView === 'table') {
-        this.renderTable();
-      } else {
-        this.renderBoard();
-      }
-    }
-
-    renderKPIs() {
-      const metrics = this.store.getMetrics();
-
-      const elTotal = document.getElementById('kpiTotalIssues');
-      const elInProgress = document.getElementById('kpiInProgress');
-      const elResolved = document.getElementById('kpiResolved');
-      const elSavings = document.getElementById('kpiSavings');
-      const elAvertedHours = document.getElementById('kpiAvertedHours');
-      const elSla = document.getElementById('kpiSla');
-
-      if (elTotal) elTotal.textContent = metrics.total;
-      if (elInProgress) elInProgress.textContent = metrics.inProgress;
-      if (elResolved) elResolved.textContent = metrics.resolved;
-      if (elSavings) elSavings.textContent = metrics.totalSavingsFormatted;
-      if (elAvertedHours) elAvertedHours.textContent = metrics.totalAvertedHours + " hrs";
-      if (elSla) elSla.textContent = metrics.slaCompliance;
-    }
-
-    getFilteredIssues() {
-      let list = this.store.getAllIssues();
-
-      // Team filter
-      if (this.filterTeam !== 'all') {
-        list = list.filter(item => item.responsibleTeam.toLowerCase().includes(this.filterTeam.toLowerCase()));
-      }
-
-      // Priority filter
-      if (this.filterPriority !== 'all') {
-        list = list.filter(item => item.priority.toLowerCase().includes(this.filterPriority.toLowerCase()));
-      }
-
-      // Search query
-      if (this.searchQuery) {
-        const q = this.searchQuery;
-        list = list.filter(item => 
-          item.id.toLowerCase().includes(q) ||
-          item.title.toLowerCase().includes(q) ||
-          item.asset.toLowerCase().includes(q) ||
-          item.location.toLowerCase().includes(q) ||
-          item.assignedPerson.toLowerCase().includes(q) ||
-          item.responsibleTeam.toLowerCase().includes(q) ||
-          item.action.toLowerCase().includes(q) ||
-          item.resolutionNotes.toLowerCase().includes(q)
-        );
-      }
-
-      // Urgency sorting
-      if (this.currentView === 'urgency') {
-        list = [...list].sort((a, b) => a.deadlineDaysRemaining - b.deadlineDaysRemaining);
-      }
-
-      return list;
-    }
-
-    renderBoard() {
-      const kanbanBoard = document.getElementById('actionKanbanBoard');
-      if (!kanbanBoard) return;
-
-      const filtered = this.getFilteredIssues();
-      const stages = this.store.stages;
-
-      kanbanBoard.innerHTML = '';
-
-      stages.forEach((stage, stageIndex) => {
-        const stageIssues = filtered.filter(item => item.currentStatus === stage.id);
-
-        const col = document.createElement('div');
-        col.className = 'action-kanban-col';
-        col.setAttribute('data-stage-id', stage.id);
-
-        col.innerHTML = `
-          <div class="action-col-header" style="border-top-color: ${stage.color};">
-            <div class="action-col-title-wrap">
-              <span class="action-stage-icon" style="background:${stage.bg}; color:${stage.color}; border: 1px solid ${stage.border};">${stage.icon}</span>
-              <div class="action-stage-name-box">
-                <span class="action-stage-name">${stage.label}</span>
-                <span class="action-stage-subtext">${stage.description}</span>
-              </div>
-            </div>
-            <span class="action-col-count-badge" id="count-${stage.id}">${stageIssues.length}</span>
-          </div>
-
-          <div class="action-col-cards-feed" id="col-feed-${stage.id}">
-            ${stageIssues.length === 0 ? `
-              <div class="action-col-empty">
-                <span class="empty-icon">✓</span>
-                <span>No issues in ${stage.label}</span>
-              </div>
-            ` : ''}
-          </div>
-        `;
-
-        const cardsFeed = col.querySelector('.action-col-cards-feed');
-
-        stageIssues.forEach(issue => {
-          const card = this.createIssueCard(issue, stageIndex, stages);
-          cardsFeed.appendChild(card);
-        });
-
-        kanbanBoard.appendChild(col);
-      });
-    }
-
-    createIssueCard(issue, stageIndex, stages) {
-      const card = document.createElement('article');
-      card.className = `action-issue-card priority-${issue.priority.replace(/\s+/g, '-').toLowerCase()}`;
-      card.id = `card-${issue.id}`;
-      card.setAttribute('data-issue-id', issue.id);
-
-      // Check if this card was just animated
-      if (this.animatingIssueId === issue.id) {
-        card.classList.add('card-transition-in');
-      }
-
-      // Priority Styling
-      const priorityDef = window.PRIORITIES.find(p => p.id === issue.priority) || { color: '#64748B', bg: '#F1F5F9' };
-
-      // Deadline urgency badge color
-      let deadlineColor = '#64748B';
-      let deadlineBg = '#F8FAFC';
-      if (issue.deadlineDaysRemaining > 0 && issue.deadlineDaysRemaining <= 2) {
-        deadlineColor = '#D94E34'; // Critical red
-        deadlineBg = 'rgba(217, 78, 52, 0.12)';
-      } else if (issue.deadlineDaysRemaining > 2 && issue.deadlineDaysRemaining <= 5) {
-        deadlineColor = '#EA580C'; // Amber
-        deadlineBg = 'rgba(234, 88, 12, 0.12)';
-      } else if (issue.currentStatus === 'resolved' || issue.currentStatus === 'impact_verified') {
-        deadlineColor = '#059669'; // Green done
-        deadlineBg = 'rgba(5, 150, 105, 0.12)';
-      }
-
-      // Render 6-Stage Stepper Track
-      let stepperHtml = `
-        <div class="card-stepper-track" title="Workflow Progress: ${stageIndex + 1} of 6 stages">
-      `;
-      stages.forEach((st, idx) => {
-        let stepClass = 'step-node';
-        if (idx < stageIndex) stepClass += ' completed';
-        else if (idx === stageIndex) stepClass += ' active pulse';
-        else stepClass += ' upcoming';
-
-        stepperHtml += `
-          <div class="stepper-node-wrap">
-            <span class="${stepClass}" style="${idx === stageIndex ? `background:${st.color}; border-color:${st.color};` : ''}" title="${st.label}">
-              ${idx < stageIndex ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block; vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg>' : idx + 1}
-            </span>
-            ${idx < stages.length - 1 ? `<span class="stepper-conn-line ${idx < stageIndex ? 'filled' : ''}"></span>` : ''}
-          </div>
-        `;
-      });
-      stepperHtml += `</div>`;
-
-      // Assignee Initials Avatar & Clean Name
-      const rawPerson = issue.assignedPerson || "Unassigned";
-      const personName = rawPerson.replace(/\s*\(.*\)/, '');
-      const initials = personName.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
-
-      card.innerHTML = `
-        <!-- Card Header -->
-        <div class="action-card-header">
-          <div class="action-card-tags">
-            <span class="action-id-tag">${issue.id}</span>
-            <span class="action-priority-badge" style="color:${priorityDef.color}; background:${priorityDef.bg}; border-color:${priorityDef.border};">
-              ${issue.priority}
-            </span>
-          </div>
-          <span class="action-leadtime-chip" title="Anticipated Early Warning Window">⚡ ${issue.leadTime}</span>
-        </div>
-
-        <!-- Issue Title & Physical Asset -->
-        <h4 class="action-card-title">${issue.title}</h4>
-        <div class="action-card-asset">
-          <span class="asset-pin"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-          <span>${issue.location}</span>
-        </div>
-
-        <!-- 6-Stage Stepper Visualizer -->
-        ${stepperHtml}
-
-        <!-- Concrete Action Callout Box -->
-        <div class="action-instruction-box">
-          <div class="action-box-label">
-            <span class="icon">🔧</span>
-            <span>PRESCRIPTIVE ACTION:</span>
-          </div>
-          <p class="action-box-text">${issue.action}</p>
-        </div>
-
-        <!-- People & Team Assignment -->
-        <div class="action-meta-grid">
-          <div class="action-meta-item">
-            <span class="meta-label">Responsible Team</span>
-            <span class="team-badge" title="${issue.responsibleTeam}">${issue.responsibleTeam}</span>
-          </div>
-          <div class="action-meta-item">
-            <span class="meta-label">Assigned Lead</span>
-            <div class="assignee-pill" title="${issue.assignedPerson}">
-              <span class="avatar-initials">${initials}</span>
-              <span class="assignee-name">${personName}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Deadline & Current Status Row -->
-        <div class="action-status-deadline-row">
-          <div class="action-deadline-badge" style="color:${deadlineColor}; background:${deadlineBg};">
-            <span class="deadline-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:3px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-            <span>${issue.deadline}</span>
-          </div>
-          <span class="action-status-pill" style="color:${stages[stageIndex].color}; background:${stages[stageIndex].bg}; border: 1px solid ${stages[stageIndex].border};">
-            ${stages[stageIndex].label}
-          </span>
-        </div>
-
-        <!-- Resolution Notes Accordion Preview -->
-        <div class="action-notes-preview">
-          <div class="notes-header" onclick="this.parentElement.classList.toggle('expanded')">
-            <span class="notes-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Resolution Notes</span>
-            <span class="toggle-icon">&darr;</span>
-          </div>
-          <p class="notes-content">${issue.resolutionNotes}</p>
-        </div>
-
-        <!-- Impact Savings Tag (if resolved or impact verified) -->
-        ${issue.impactMetrics ? `
-          <div class="action-impact-banner">
-            <span class="impact-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
-            <span><strong>Verified Averted Loss:</strong> ${issue.impactMetrics.financialSavings} • ${issue.impactMetrics.avertedDowntimeHours}h Saved</span>
-          </div>
-        ` : ''}
-
-        <!-- Interactive Transition Footer -->
-        <div class="action-card-footer">
-          <div class="stage-nav-btns">
-            ${stageIndex > 0 ? `
-              <button class="btn-stage-rollback" data-id="${issue.id}" title="Roll back to previous stage">
-                &larr; Prev
-              </button>
-            ` : ''}
-            
-            ${stageIndex < stages.length - 1 ? `
-              <button class="btn-stage-advance" data-id="${issue.id}" style="background:${stages[stageIndex + 1].color};" title="Advance to ${stages[stageIndex + 1].label}">
-                Advance to ${stages[stageIndex + 1].label} &rarr;
-              </button>
-            ` : `
-              <span class="btn-stage-complete">✓ Full Workflow Verified</span>
-            `}
-          </div>
-
-          <button class="btn-card-inspect" data-inspect-id="${issue.id}">
-            Inspect & Edit
-          </button>
-        </div>
-      `;
-
-      // Bind button events on the card
-      const advanceBtn = card.querySelector('.btn-stage-advance');
-      if (advanceBtn) {
-        advanceBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          this.triggerAdvance(issue.id);
-        });
-      }
-
-      const rollbackBtn = card.querySelector('.btn-stage-rollback');
-      if (rollbackBtn) {
-        rollbackBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          this.triggerRollback(issue.id);
-        });
-      }
-
-      const inspectBtn = card.querySelector('.btn-card-inspect');
-      if (inspectBtn) {
-        inspectBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          this.openIssueModal(issue.id);
-        });
-      }
-
-      // Clicking card body also opens modal
-      card.addEventListener('click', (e) => {
-        if (!e.target.closest('button') && !e.target.closest('.notes-header')) {
-          this.openIssueModal(issue.id);
-        }
-      });
-
-      return card;
-    }
-
-    renderTable() {
-      const tableBody = document.getElementById('actionTableBody');
-      if (!tableBody) return;
-
-      const filtered = this.getFilteredIssues();
-      const stages = this.store.stages;
-
-      tableBody.innerHTML = '';
-
-      if (filtered.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:32px; color:var(--text-muted);">No issues match current filters.</td></tr>`;
-        return;
-      }
-
-      filtered.forEach(issue => {
-        const stageObj = stages.find(s => s.id === issue.currentStatus) || stages[0];
-        const tr = document.createElement('tr');
-        tr.id = `tablerow-${issue.id}`;
-
-        tr.innerHTML = `
-          <td>
-            <div style="font-family:var(--font-mono); font-weight:700; color:var(--brand-black);">${issue.id}</div>
-            <span class="action-priority-badge" style="font-size:10px; padding:2px 6px;">${issue.priority}</span>
-          </td>
-          <td>
-            <div style="font-weight:700; color:var(--brand-black); margin-bottom:2px;">${issue.title}</div>
-            <div style="font-size:11px; color:var(--text-muted);">📍 ${issue.location}</div>
-          </td>
-          <td>
-            <span class="team-badge" style="font-size:11px;">${issue.responsibleTeam}</span>
-          </td>
-          <td>
-            <span style="font-weight:600; font-size:12px;">${issue.assignedPerson}</span>
-          </td>
-          <td>
-            <select class="table-stage-select" data-select-id="${issue.id}">
-              ${stages.map(s => `
-                <option value="${s.id}" ${s.id === issue.currentStatus ? 'selected' : ''}>
-                  ${s.shortLabel}
-                </option>
-              `).join('')}
-            </select>
-          </td>
-          <td>
-            <div style="font-size:11px; font-weight:600;">${issue.deadline}</div>
-            <div style="font-size:10px; color:var(--text-muted);">⚡ ${issue.leadTime}</div>
-          </td>
-          <td style="max-width:280px;">
-            <div style="font-size:12px; line-height:1.4; max-height:48px; overflow:hidden; text-overflow:ellipsis;">
-              ${issue.action}
-            </div>
-          </td>
-          <td>
-            <button class="btn-table-inspect" data-inspect-id="${issue.id}">Inspect</button>
-          </td>
-        `;
-
-        const select = tr.querySelector('.table-stage-select');
-        select.addEventListener('change', (e) => {
-          this.triggerSetStage(issue.id, e.target.value);
-        });
-
-        const inspectBtn = tr.querySelector('.btn-table-inspect');
-        inspectBtn.addEventListener('click', () => this.openIssueModal(issue.id));
-
-        tableBody.appendChild(tr);
-      });
-    }
-
-    triggerAdvance(issueId) {
-      const card = document.getElementById(`card-${issueId}`);
-      if (card) {
-        card.classList.add('card-transition-out');
-      }
-
-      this.animatingIssueId = issueId;
-
-      setTimeout(() => {
-        const res = this.store.advanceStage(issueId);
-        if (res) {
-          const stageName = this.store.stages.find(s => s.id === res.newStage)?.label || res.newStage;
-          this.showToast(`✓ [${res.issue.id}] Advanced to "${stageName}" • Assigned: ${res.issue.assignedPerson}`, res.newStage);
-        }
-      }, 240);
-    }
-
-    triggerRollback(issueId) {
-      const card = document.getElementById(`card-${issueId}`);
-      if (card) {
-        card.classList.add('card-transition-out');
-      }
-
-      this.animatingIssueId = issueId;
-
-      setTimeout(() => {
-        const res = this.store.rollbackStage(issueId);
-        if (res) {
-          const stageName = this.store.stages.find(s => s.id === res.newStage)?.label || res.newStage;
-          this.showToast(`↺ [${res.issue.id}] Rolled back to "${stageName}"`, res.newStage);
-        }
-      }, 240);
-    }
-
-    triggerSetStage(issueId, newStageId) {
-      const card = document.getElementById(`card-${issueId}`);
-      if (card) {
-        card.classList.add('card-transition-out');
-      }
-
-      this.animatingIssueId = issueId;
-
-      setTimeout(() => {
-        const res = this.store.setStage(issueId, newStageId);
-        if (res) {
-          const stageName = this.store.stages.find(s => s.id === res.newStage)?.label || res.newStage;
-          this.showToast(`✓ [${res.issue.id}] Status transitioned to "${stageName}"`, res.newStage);
-        }
-      }, 240);
-    }
-
-    handleStoreEvent({ issueId, oldStage, newStage, actionType }) {
-      this.renderKPIs();
-      
-      if (this.currentView === 'table') {
-        this.renderTable();
-      } else {
-        this.renderBoard();
-      }
-
-      // If modal is currently open with this issue, update modal view
-      if (this.selectedIssueId === issueId) {
-        this.populateModal(issueId);
-      }
-
-      // Clear animation flag after 1.2s
-      setTimeout(() => {
-        if (this.animatingIssueId === issueId) {
-          this.animatingIssueId = null;
-        }
-      }, 1200);
-    }
-
-    // Modal Inspector & Editor
-    openIssueModal(issueId) {
-      this.selectedIssueId = issueId;
-      const modal = document.getElementById('actionInspectorModal');
-      const overlay = document.getElementById('actionModalOverlay');
-      if (!modal || !overlay) return;
-
-      this.populateModal(issueId);
-
-      overlay.classList.add('active');
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    closeIssueModal() {
-      const modal = document.getElementById('actionInspectorModal');
-      const overlay = document.getElementById('actionModalOverlay');
-      if (modal) modal.classList.remove('active');
-      if (overlay) overlay.classList.remove('active');
-      document.body.style.overflow = '';
-      this.selectedIssueId = null;
-    }
-
-    populateModal(issueId) {
-      const issue = this.store.getIssueById(issueId);
-      if (!issue) return;
-
-      const stages = this.store.stages;
-      const currentStageIndex = stages.findIndex(s => s.id === issue.currentStatus);
-
-      // Header fields
-      document.getElementById('modalIssueId').textContent = issue.id;
-      document.getElementById('modalIssueTitle').textContent = issue.title;
-      document.getElementById('modalAssetLocation').textContent = `${issue.asset} • ${issue.location}`;
-      document.getElementById('modalLeadTime').textContent = `⚡ ${issue.leadTime}`;
-      document.getElementById('modalPotentialLoss').textContent = `💰 Potential Loss: ${issue.potentialLoss}`;
-      document.getElementById('modalWorkOrder').textContent = `Work Order: ${issue.workOrder}`;
-
-      // Large Interactive Stepper
-      const stepperContainer = document.getElementById('modalStepperTrack');
-      if (stepperContainer) {
-        stepperContainer.innerHTML = '';
-        stages.forEach((st, idx) => {
-          const stepBtn = document.createElement('div');
-          stepBtn.className = `modal-step-node-item ${idx < currentStageIndex ? 'completed' : ''} ${idx === currentStageIndex ? 'active' : ''}`;
-          stepBtn.setAttribute('data-stage-id', st.id);
-
-          stepBtn.innerHTML = `
-            <div class="step-circle" style="${idx === currentStageIndex ? `background:${st.color}; border-color:${st.color};` : ''}">
-              ${idx < currentStageIndex ? '✓' : st.icon}
-            </div>
-            <div class="step-text-wrap">
-              <span class="step-num">Step ${idx + 1}</span>
-              <span class="step-name">${st.label}</span>
-            </div>
-          `;
-
-          stepBtn.addEventListener('click', () => {
-            this.triggerSetStage(issue.id, st.id);
-          });
-
-          stepperContainer.appendChild(stepBtn);
-        });
-      }
-
-      // Form inputs
-      const teamSelect = document.getElementById('editResponsibleTeam');
-      if (teamSelect) {
-        teamSelect.innerHTML = window.TEAMS_LIST.map(t => `
-          <option value="${t}" ${t === issue.responsibleTeam ? 'selected' : ''}>${t}</option>
-        `).join('');
-      }
-
-      const assignedInput = document.getElementById('editAssignedPerson');
-      if (assignedInput) assignedInput.value = issue.assignedPerson;
-
-      const prioritySelect = document.getElementById('editPriority');
-      if (prioritySelect) prioritySelect.value = issue.priority;
-
-      const deadlineInput = document.getElementById('editDeadline');
-      if (deadlineInput) deadlineInput.value = issue.deadline;
-
-      const actionTextarea = document.getElementById('editAction');
-      if (actionTextarea) actionTextarea.value = issue.action;
-
-      const notesTextarea = document.getElementById('editResolutionNotes');
-      if (notesTextarea) notesTextarea.value = issue.resolutionNotes;
-
-      // Audit History Trail
-      const historyList = document.getElementById('modalHistoryList');
-      if (historyList) {
-        historyList.innerHTML = '';
-        (issue.history || []).forEach(h => {
-          const item = document.createElement('div');
-          item.className = 'history-log-item';
-          const stageDef = stages.find(s => s.id === h.stage) || { color: '#64748B', label: h.stage };
-          
-          item.innerHTML = `
-            <div class="history-dot" style="background:${stageDef.color};"></div>
-            <div class="history-content">
-              <div class="history-header">
-                <span class="history-stage-pill" style="color:${stageDef.color}; border-color:${stageDef.color};">${stageDef.label}</span>
-                <span class="history-author">${h.author}</span>
-                <span class="history-time">${h.timestamp}</span>
-              </div>
-              <p class="history-note">${h.note}</p>
-            </div>
-          `;
-          historyList.appendChild(item);
-        });
-      }
-
-      // Impact Verification Box
-      const impactBox = document.getElementById('modalImpactBox');
-      if (impactBox) {
-        if (issue.impactMetrics) {
-          impactBox.style.display = 'block';
-          impactBox.innerHTML = `
-            <div class="impact-verified-card">
-              <div class="impact-card-head">
-                <span class="impact-badge-tag">✓ STAGE 6 VERIFIED IMPACT</span>
-                <span class="impact-status">${issue.impactMetrics.falsePositiveCheck}</span>
-              </div>
-              <div class="impact-metrics-grid">
-                <div class="impact-metric">
-                  <span class="val">${issue.impactMetrics.financialSavings}</span>
-                  <span class="lbl">Averted Downtime Loss</span>
-                </div>
-                <div class="impact-metric">
-                  <span class="val">${issue.impactMetrics.avertedDowntimeHours} Hours</span>
-                  <span class="lbl">Production Loss Prevented</span>
-                </div>
-                <div class="impact-metric">
-                  <span class="val">${issue.impactMetrics.mtbfDelta}</span>
-                  <span class="lbl">MTBF Reliability Extension</span>
-                </div>
-              </div>
-            </div>
-          `;
-        } else {
-          impactBox.style.display = 'none';
-        }
-      }
-
-      // Update Modal Advance Button label
-      const modalAdvanceBtn = document.getElementById('actionModalAdvance');
-      if (modalAdvanceBtn) {
-        if (currentStageIndex < stages.length - 1) {
-          modalAdvanceBtn.style.display = 'inline-flex';
-          modalAdvanceBtn.textContent = `Advance to ${stages[currentStageIndex + 1].label} →`;
-          modalAdvanceBtn.style.backgroundColor = stages[currentStageIndex + 1].color;
-        } else {
-          modalAdvanceBtn.style.display = 'none';
-        }
-      }
-    }
-
-    saveModalChanges() {
-      if (!this.selectedIssueId) return;
-
-      const team = document.getElementById('editResponsibleTeam')?.value;
-      const person = document.getElementById('editAssignedPerson')?.value;
-      const priority = document.getElementById('editPriority')?.value;
-      const deadline = document.getElementById('editDeadline')?.value;
-      const action = document.getElementById('editAction')?.value;
-      const notes = document.getElementById('editResolutionNotes')?.value;
-
-      this.store.updateIssue(this.selectedIssueId, {
-        responsibleTeam: team,
-        assignedPerson: person,
-        priority: priority,
-        deadline: deadline,
-        action: action,
-        resolutionNotes: notes
-      });
-
-      this.showToast(`✓ Ticket [${this.selectedIssueId}] changes saved successfully.`, 'saved');
-      this.closeIssueModal();
-    }
-
-    // New Ticket Modal
-    openNewTicketModal() {
-      const title = prompt("Enter Emerging Issue Title (e.g. Compressor Bearing Micro-Vibration):");
-      if (!title) return;
-
-      const newId = "ACT-2026-" + Math.floor(100 + Math.random() * 900);
-      const newIssue = {
-        id: newId,
-        title: title,
-        asset: "Monitored Plant Asset",
-        location: "Block A / Quad 2",
-        responsibleTeam: "Mechanical Reliability",
-        assignedPerson: "Marcus Vance (Lead Tech)",
-        priority: "High P2",
-        action: "Perform immediate diagnostic scan and inspect lubrication boundary.",
-        deadline: "Oct 12, 2026 • 18:00",
-        deadlineDaysRemaining: 14.0,
-        currentStatus: "detected",
-        resolutionNotes: "Discovered via EarlySight cross-silo anomaly correlation.",
-        leadTime: "14.0 Days Lead",
-        potentialLoss: "$120,000",
-        confidence: "84.5%",
-        signalsLinked: 3,
-        workOrder: "WO-2026-9999",
-        history: [
-          { stage: "detected", timestamp: "Just now", author: "Operator Manual Ticket", note: "Created via Action Center interface." }
-        ],
-        impactMetrics: null
-      };
-
-      this.store.addIssue(newIssue);
-      this.showToast(`✓ Created new action ticket [${newId}].`, 'detected');
-    }
-
-    // Toast Notification System
-    showToast(message, stageKey = 'detected') {
-      let toastContainer = document.getElementById('actionToastContainer');
-      if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.id = 'actionToastContainer';
-        toastContainer.className = 'action-toast-container';
-        document.body.appendChild(toastContainer);
-      }
-
-      const toast = document.createElement('div');
-      toast.className = `action-toast-item toast-${stageKey}`;
-      toast.innerHTML = `
-        <span class="toast-indicator"></span>
-        <span class="toast-text">${message}</span>
-      `;
-
-      toastContainer.appendChild(toast);
-
-      // Trigger enter animation
-      requestAnimationFrame(() => {
-        toast.classList.add('visible');
-      });
-
-      // Auto-dismiss
-      setTimeout(() => {
-        toast.classList.remove('visible');
-        setTimeout(() => toast.remove(), 400);
-      }, 3500);
     }
   }
 
-  // Initialize on DOM load
-  document.addEventListener('DOMContentLoaded', () => {
-    window.EarlySightActionCenter = new ActionCenterApp();
-  });
+  parseUrlParameters() {
+    const params = new URLSearchParams(window.location.search);
+    const actionParam = params.get('actionId') || params.get('issue');
+    const riskParam = params.get('riskId');
+    const zoneParam = params.get('zone');
 
-})();
+    if (actionParam) {
+      this.urlRequestedActionId = actionParam;
+    }
+
+    if (riskParam) {
+      this.filters.riskId = riskParam;
+      const riskSelect = document.getElementById('filterRiskSelect');
+      if (riskSelect) riskSelect.value = riskParam;
+    }
+
+    if (zoneParam) {
+      this.filters.location = zoneParam;
+      const locationSelect = document.getElementById('filterLocationSelect');
+      if (locationSelect) locationSelect.value = zoneParam;
+    }
+  }
+
+  bindEvents() {
+    // Search input
+    const searchInput = document.getElementById('actionSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.filters.search = e.target.value.trim();
+        this.renderActionsViews();
+      });
+    }
+
+    // Filter Selects
+    const prioritySelect = document.getElementById('filterPrioritySelect');
+    if (prioritySelect) {
+      prioritySelect.addEventListener('change', (e) => {
+        this.filters.priority = e.target.value;
+        this.renderActionsViews();
+      });
+    }
+
+    const statusSelect = document.getElementById('filterStatusSelect');
+    if (statusSelect) {
+      statusSelect.addEventListener('change', (e) => {
+        this.filters.status = e.target.value;
+        this.renderActionsViews();
+      });
+    }
+
+    const ownerSelect = document.getElementById('filterOwnerSelect');
+    if (ownerSelect) {
+      ownerSelect.addEventListener('change', (e) => {
+        this.filters.owner = e.target.value;
+        this.renderActionsViews();
+      });
+    }
+
+    const locationSelect = document.getElementById('filterLocationSelect');
+    if (locationSelect) {
+      locationSelect.addEventListener('change', (e) => {
+        this.filters.location = e.target.value;
+        this.renderActionsViews();
+      });
+    }
+
+    const riskSelect = document.getElementById('filterRiskSelect');
+    if (riskSelect) {
+      riskSelect.addEventListener('change', (e) => {
+        this.filters.riskId = e.target.value;
+        this.renderActionsViews();
+      });
+    }
+
+    const verificationSelect = document.getElementById('filterVerificationSelect');
+    if (verificationSelect) {
+      verificationSelect.addEventListener('change', (e) => {
+        this.filters.verification = e.target.value;
+        this.renderActionsViews();
+      });
+    }
+
+    const resetBtn = document.getElementById('btnResetActionFilters');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        this.resetFilters();
+      });
+    }
+
+    // View Switcher (Board vs Table)
+    const btnViewBoard = document.getElementById('btnViewBoard');
+    const btnViewTable = document.getElementById('btnViewTable');
+    if (btnViewBoard && btnViewTable) {
+      btnViewBoard.addEventListener('click', () => {
+        this.currentViewMode = 'board';
+        btnViewBoard.classList.add('active');
+        btnViewTable.classList.remove('active');
+        document.getElementById('actionBoardSection').style.display = 'block';
+        document.getElementById('actionTableSection').style.display = 'none';
+      });
+
+      btnViewTable.addEventListener('click', () => {
+        this.currentViewMode = 'table';
+        btnViewTable.classList.add('active');
+        btnViewBoard.classList.remove('active');
+        document.getElementById('actionBoardSection').style.display = 'none';
+        document.getElementById('actionTableSection').style.display = 'block';
+      });
+    }
+
+    // Drawer Close Buttons & Backdrop
+    const drawerCloseBtn = document.getElementById('closeActionDrawerBtn');
+    const drawerBackdrop = document.getElementById('actionDrawerBackdrop');
+    if (drawerCloseBtn) {
+      drawerCloseBtn.addEventListener('click', () => this.closeActionInspector());
+    }
+    if (drawerBackdrop) {
+      drawerBackdrop.addEventListener('click', () => this.closeActionInspector());
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isDrawerOpen) {
+        this.closeActionInspector();
+      }
+    });
+
+    // Mock Action State Transition Buttons inside Inspector
+    this.bindDrawerTransitionControls();
+  }
+
+  bindDrawerTransitionControls() {
+    const btnAssign = document.getElementById('drawerBtnAssign');
+    const btnStart = document.getElementById('drawerBtnStart');
+    const btnResolve = document.getElementById('drawerBtnResolve');
+    const btnVerifyReq = document.getElementById('drawerBtnVerifyReq');
+    const btnVerifyConfirm = document.getElementById('drawerBtnVerifyConfirm');
+
+    if (btnAssign) {
+      btnAssign.addEventListener('click', () => this.updateActiveActionStatus('ASSIGNED', 'status-assigned'));
+    }
+    if (btnStart) {
+      btnStart.addEventListener('click', () => this.updateActiveActionStatus('IN PROGRESS', 'status-in-progress'));
+    }
+    if (btnResolve) {
+      btnResolve.addEventListener('click', () => this.updateActiveActionStatus('RESOLVED', 'status-resolved'));
+    }
+    if (btnVerifyReq) {
+      btnVerifyReq.addEventListener('click', () => this.updateActiveActionStatus('AWAITING VERIFICATION', 'status-awaiting-verification'));
+    }
+    if (btnVerifyConfirm) {
+      btnVerifyConfirm.addEventListener('click', () => this.updateActiveActionStatus('VERIFIED', 'status-verified'));
+    }
+  }
+
+  updateActiveActionStatus(newStatus, newClass) {
+    if (!this.activeAction) return;
+
+    this.activeAction.status = newStatus;
+    this.activeAction.statusBadgeClass = newClass;
+    this.activeAction.statusCategory = newStatus.toLowerCase().replace(/\s+/g, '_');
+
+    if (newStatus === 'VERIFIED') {
+      this.activeAction.verificationState = 'Resolution Verified (Audited)';
+      if (this.activeAction.checklist) {
+        this.activeAction.checklist.forEach(c => c.checked = true);
+      }
+    }
+
+    // Update in actions array
+    const targetIdx = this.actions.findIndex(a => a.id === this.activeAction.id);
+    if (targetIdx !== -1) {
+      this.actions[targetIdx] = JSON.parse(JSON.stringify(this.activeAction));
+    }
+
+    // Re-populate drawer & views
+    this.populateDrawer(this.activeAction);
+    this.renderPriorityActions();
+    this.renderActionsViews();
+    this.showToast(`Action ${this.activeAction.id} status updated to: ${newStatus}`);
+  }
+
+  showToast(message) {
+    let container = document.getElementById('actionToastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'actionToastContainer';
+      container.className = 'action-toast-container';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'action-toast-pill font-mono';
+    toast.innerHTML = `<span>✓</span> <span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  resetFilters() {
+    this.filters = {
+      search: '',
+      priority: 'all',
+      status: 'all',
+      owner: 'all',
+      location: 'all',
+      riskId: 'all',
+      verification: 'all'
+    };
+
+    const s = document.getElementById('actionSearchInput');
+    const p = document.getElementById('filterPrioritySelect');
+    const st = document.getElementById('filterStatusSelect');
+    const o = document.getElementById('filterOwnerSelect');
+    const l = document.getElementById('filterLocationSelect');
+    const r = document.getElementById('filterRiskSelect');
+    const v = document.getElementById('filterVerificationSelect');
+
+    if (s) s.value = '';
+    if (p) p.value = 'all';
+    if (st) st.value = 'all';
+    if (o) o.value = 'all';
+    if (l) l.value = 'all';
+    if (r) r.value = 'all';
+    if (v) v.value = 'all';
+
+    this.renderActionsViews();
+  }
+
+  renderWorkflowStrip() {
+    const strip = document.getElementById('closedLoopWorkflowStrip');
+    if (!strip) return;
+
+    strip.innerHTML = ACTION_WORKFLOW_STAGES.map((st, idx) => `
+      <div class="workflow-loop-step ${idx === 3 ? 'step-active' : ''}">
+        <div class="loop-step-header font-mono">
+          <span class="loop-step-num">${st.step}</span>
+          <span class="loop-step-name">${st.name}</span>
+        </div>
+        <div class="loop-step-subtitle font-sans">${st.subtitle}</div>
+        <p class="loop-step-desc font-sans">${st.desc}</p>
+      </div>
+      ${idx < ACTION_WORKFLOW_STAGES.length - 1 ? `
+        <div class="loop-step-connector" aria-hidden="true">➔</div>
+      ` : ''}
+    `).join('');
+  }
+
+  renderPriorityActions() {
+    const container = document.getElementById('priorityActionsGrid');
+    if (!container) return;
+
+    // Show high priority actions (P1/P2 first)
+    const priorityItems = this.actions.slice(0, 4);
+
+    container.innerHTML = priorityItems.map(item => `
+      <div class="priority-action-card" data-action-id="${item.id}">
+        <div class="priority-card-top font-mono">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="action-id-tag font-mono">${item.id}</span>
+            <span class="stat-badge ${item.priority === 'P1' ? 'badge-vermilion' : 'badge-amber'} font-mono">${item.priority}</span>
+          </div>
+          <span class="action-status-badge ${item.statusBadgeClass} font-mono">${item.status}</span>
+        </div>
+
+        <h4 class="priority-card-title">${item.title}</h4>
+        
+        <div class="priority-card-meta font-mono">
+          <span class="meta-risk">⚠️ ${item.riskTitle}</span>
+          <span class="meta-loc">📍 ${item.location}</span>
+        </div>
+
+        <p class="priority-card-action-text font-sans">
+          <strong>Recommended:</strong> ${item.recommendedAction}
+        </p>
+
+        <div class="priority-card-footer font-mono">
+          <span class="owner-pill">👤 ${item.owner}</span>
+          <span class="due-pill">⏱ Due: ${item.dueDate}</span>
+        </div>
+
+        <div class="priority-card-hover-cue font-mono">
+          Click to Open Action Inspector ➔
+        </div>
+      </div>
+    `).join('');
+
+    // Bind card clicks
+    container.querySelectorAll('.priority-action-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const actionId = e.currentTarget.getAttribute('data-action-id');
+        const target = this.actions.find(a => a.id === actionId);
+        if (target) {
+          this.openActionInspector(target);
+        }
+      });
+    });
+  }
+
+  getFilteredActions() {
+    return this.actions.filter(item => {
+      if (this.filters.search) {
+        const q = this.filters.search.toLowerCase();
+        const m = item.id.toLowerCase().includes(q) ||
+          item.title.toLowerCase().includes(q) ||
+          item.riskTitle.toLowerCase().includes(q) ||
+          item.location.toLowerCase().includes(q) ||
+          item.owner.toLowerCase().includes(q) ||
+          item.recommendedAction.toLowerCase().includes(q);
+        if (!m) return false;
+      }
+
+      if (this.filters.priority !== 'all') {
+        if (!item.priority.toLowerCase().includes(this.filters.priority.toLowerCase())) return false;
+      }
+
+      if (this.filters.status !== 'all') {
+        if (item.status.toUpperCase() !== this.filters.status.toUpperCase() &&
+            item.statusCategory !== this.filters.status.toLowerCase()) {
+          return false;
+        }
+      }
+
+      if (this.filters.owner !== 'all') {
+        if (!item.owner.toLowerCase().includes(this.filters.owner.toLowerCase())) return false;
+      }
+
+      if (this.filters.location !== 'all') {
+        const locSlug = this.filters.location.toLowerCase().replace(/\s+/g, '-');
+        if (item.zoneSlug !== locSlug && !item.location.toLowerCase().includes(this.filters.location.toLowerCase())) {
+          return false;
+        }
+      }
+
+      if (this.filters.riskId !== 'all') {
+        const rNorm = this.filters.riskId.toUpperCase();
+        if (item.riskId !== rNorm && (item.riskIdAlt && item.riskIdAlt !== rNorm) && !item.riskTitle.toLowerCase().includes(this.filters.riskId.toLowerCase())) {
+          return false;
+        }
+      }
+
+      if (this.filters.verification !== 'all') {
+        const vNorm = this.filters.verification.toLowerCase();
+        if (vNorm === 'verified' && !item.verificationState.toLowerCase().includes('verified')) return false;
+        if (vNorm === 'awaiting' && !item.verificationState.toLowerCase().includes('awaiting') && !item.verificationState.toLowerCase().includes('pending')) return false;
+      }
+
+      return true;
+    });
+  }
+
+  renderActionsViews() {
+    const filtered = this.getFilteredActions();
+    const countEl = document.getElementById('actionResultsCount');
+    if (countEl) {
+      countEl.textContent = `Showing ${filtered.length} of ${this.actions.length} Operational Actions`;
+    }
+
+    this.renderBoardView(filtered);
+    this.renderTableView(filtered);
+  }
+
+  renderBoardView(filtered) {
+    const boardContainer = document.getElementById('actionBoardColumnsGrid');
+    if (!boardContainer) return;
+
+    // 5 Board Columns: RECOMMENDED, ASSIGNED, IN PROGRESS, AWAITING VERIFICATION, VERIFIED
+    const columnsConfig = [
+      { id: "recommended", title: "RECOMMENDED", statusMatches: ["RECOMMENDED"] },
+      { id: "assigned", title: "ASSIGNED", statusMatches: ["ASSIGNED", "BLOCKED"] },
+      { id: "in_progress", title: "IN PROGRESS", statusMatches: ["IN PROGRESS"] },
+      { id: "awaiting_verification", title: "AWAITING VERIFICATION", statusMatches: ["AWAITING VERIFICATION"] },
+      { id: "verified", title: "VERIFIED", statusMatches: ["RESOLVED", "VERIFIED"] }
+    ];
+
+    boardContainer.innerHTML = columnsConfig.map(col => {
+      const itemsInCol = filtered.filter(item => col.statusMatches.includes(item.status));
+      return `
+        <div class="action-board-column" data-col-id="${col.id}">
+          <div class="board-col-header font-mono">
+            <span class="board-col-title">${col.title}</span>
+            <span class="board-col-count font-mono">${itemsInCol.length}</span>
+          </div>
+
+          <div class="board-col-cards-stack">
+            ${itemsInCol.map(item => `
+              <div class="board-item-card" data-action-id="${item.id}">
+                <div class="board-item-top font-mono">
+                  <span class="action-id-tag">${item.id}</span>
+                  <span class="stat-badge ${item.priority === 'P1' ? 'badge-vermilion' : 'badge-amber'}">${item.priority}</span>
+                </div>
+                <h5 class="board-item-title font-sans">${item.title}</h5>
+                <div class="board-item-risk font-mono text-muted">⚠️ ${item.riskTitle}</div>
+                <div class="board-item-footer font-mono">
+                  <span class="board-item-owner">👤 ${item.owner}</span>
+                  <span class="board-item-due">⏱ ${item.dueDate}</span>
+                </div>
+              </div>
+            `).join('')}
+            ${itemsInCol.length === 0 ? `
+              <div class="board-col-empty font-mono">No actions in this stage</div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Bind board card clicks
+    boardContainer.querySelectorAll('.board-item-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-action-id');
+        const target = this.actions.find(a => a.id === id);
+        if (target) this.openActionInspector(target);
+      });
+    });
+  }
+
+  renderTableView(filtered) {
+    const tbody = document.getElementById('actionTableBody');
+    if (!tbody) return;
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="11" style="text-align:center; padding:32px; color:var(--ink-secondary);">
+            No operational actions found matching filter criteria.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(item => `
+      <tr class="action-table-row" data-action-id="${item.id}">
+        <td class="font-mono"><strong>${item.id}</strong></td>
+        <td class="font-sans">
+          <div style="font-weight:700; color:var(--ink-primary);">${item.riskTitle}</div>
+          <div class="font-mono text-muted" style="font-size:0.72rem;">Score: ${item.riskScore} (${item.riskId})</div>
+        </td>
+        <td class="font-mono" style="font-size:0.75rem;">${item.location}</td>
+        <td class="font-sans" style="font-size:0.78rem; max-width:240px;">${item.recommendedAction}</td>
+        <td class="font-sans" style="font-size:0.78rem;">${item.owner}</td>
+        <td>
+          <span class="stat-badge ${item.priority === 'P1' ? 'badge-vermilion' : 'badge-amber'} font-mono">${item.priority}</span>
+        </td>
+        <td>
+          <span class="action-status-badge ${item.statusBadgeClass} font-mono">${item.status}</span>
+        </td>
+        <td class="font-mono text-muted" style="font-size:0.72rem;">${item.createdDate}</td>
+        <td class="font-mono" style="font-size:0.72rem;"><strong>${item.dueDate}</strong></td>
+        <td class="font-mono" style="font-size:0.72rem;">
+          <span class="${item.verificationState.includes('Verified') ? 'text-forest font-bold' : 'text-muted'}">${item.verificationState}</span>
+        </td>
+        <td>
+          <button class="btn-table-inspect font-mono" data-inspect-action-id="${item.id}">
+            Inspect ➔
+          </button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('.btn-table-inspect').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-inspect-action-id');
+        const target = this.actions.find(a => a.id === id);
+        if (target) this.openActionInspector(target);
+      });
+    });
+  }
+
+  openActionInspector(action) {
+    this.activeAction = action;
+    this.isDrawerOpen = true;
+
+    this.populateDrawer(action);
+
+    const drawer = document.getElementById('actionInspectorDrawer');
+    const backdrop = document.getElementById('actionDrawerBackdrop');
+    if (drawer) drawer.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  populateDrawer(action) {
+    const idEl = document.getElementById('drawerActionId');
+    const titleEl = document.getElementById('drawerActionTitle');
+    const statusEl = document.getElementById('drawerActionStatus');
+    const priorityEl = document.getElementById('drawerActionPriority');
+    const riskTitleEl = document.getElementById('drawerActionRiskTitle');
+    const riskScoreEl = document.getElementById('drawerActionRiskScore');
+    const locEl = document.getElementById('drawerActionLocation');
+    const ownerEl = document.getElementById('drawerActionOwner');
+    const leadEl = document.getElementById('drawerActionLeadTech');
+    const dueEl = document.getElementById('drawerActionDueDate');
+    const actionDescEl = document.getElementById('drawerActionRecommendedText');
+
+    if (idEl) idEl.textContent = action.id;
+    if (titleEl) titleEl.textContent = action.title;
+    if (statusEl) {
+      statusEl.textContent = action.status;
+      statusEl.className = `action-status-badge ${action.statusBadgeClass} font-mono`;
+    }
+    if (priorityEl) {
+      priorityEl.textContent = `${action.priority} Urgent`;
+      priorityEl.className = `stat-badge ${action.priority === 'P1' ? 'badge-vermilion' : 'badge-amber'} font-mono`;
+    }
+    if (riskTitleEl) riskTitleEl.textContent = action.riskTitle;
+    if (riskScoreEl) riskScoreEl.textContent = `Score: ${action.riskScore} / 100 (${action.leadTime})`;
+    if (locEl) locEl.textContent = action.location;
+    if (ownerEl) ownerEl.textContent = action.owner;
+    if (leadEl) leadEl.textContent = action.leadTech;
+    if (dueEl) dueEl.textContent = `${action.dueDate} (${action.daysRemaining} days)`;
+    if (actionDescEl) actionDescEl.textContent = action.recommendedAction;
+
+    // SECTION 7: WHY WAS THIS ACTION RECOMMENDED?
+    const whyRiskEl = document.getElementById('drawerWhyRiskName');
+    const whyEvidenceListEl = document.getElementById('drawerWhyEvidenceList');
+    const whyPatternEl = document.getElementById('drawerWhyPatternName');
+    const whyReasonEl = document.getElementById('drawerWhyReasonText');
+
+    if (action.whyRecommended) {
+      if (whyRiskEl) whyRiskEl.textContent = action.whyRecommended.riskName;
+      if (whyEvidenceListEl && action.whyRecommended.evidenceSummary) {
+        whyEvidenceListEl.innerHTML = action.whyRecommended.evidenceSummary.map(e => `
+          <li style="display:flex; align-items:flex-start; gap:6px;">
+            <span style="color:var(--color-rust); font-weight:bold;">•</span>
+            <span>${e}</span>
+          </li>
+        `).join('');
+      }
+      if (whyPatternEl) whyPatternEl.textContent = action.whyRecommended.patternName;
+      if (whyReasonEl) whyReasonEl.textContent = action.whyRecommended.reasonNarrative;
+    }
+
+    // SECTION 8: ACTION PROGRESS TIMELINE
+    const timelineContainer = document.getElementById('drawerProgressTimelineContainer');
+    if (timelineContainer && action.progressTimeline) {
+      timelineContainer.innerHTML = action.progressTimeline.map(item => `
+        <div class="progress-timeline-row state-${item.state}">
+          <div class="timeline-row-bullet font-mono">
+            ${item.state === 'completed' ? '✓' : (item.state === 'current' ? '▶' : '○')}
+          </div>
+          <div class="timeline-row-content">
+            <div class="timeline-row-top font-mono">
+              <span class="timeline-row-stage">${item.stage}</span>
+              <span class="timeline-row-date">${item.date}</span>
+            </div>
+            <div class="timeline-row-desc font-sans">${item.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // SECTION 9: RESOLUTION VERIFICATION (Before / After)
+    if (action.resolutionVerification) {
+      const b = action.resolutionVerification.before;
+      const a = action.resolutionVerification.after;
+      
+      const bMoist = document.getElementById('drawerVerifBeforeMoisture');
+      const bRecurr = document.getElementById('drawerVerifBeforeRecurr');
+      const bScore = document.getElementById('drawerVerifBeforeScore');
+      const aMoist = document.getElementById('drawerVerifAfterMoisture');
+      const aRecurr = document.getElementById('drawerVerifAfterRecurr');
+      const aScore = document.getElementById('drawerVerifAfterScore');
+      const resBadge = document.getElementById('drawerVerifResultBadge');
+      const resExpl = document.getElementById('drawerVerifExplanation');
+
+      if (bMoist) bMoist.textContent = b.moistureProbe;
+      if (bRecurr) bRecurr.textContent = b.leakageRecurrence;
+      if (bScore) bScore.textContent = b.riskScore;
+      if (aMoist) aMoist.textContent = a.moistureProbe;
+      if (aRecurr) aRecurr.textContent = a.leakageRecurrence;
+      if (aScore) aScore.textContent = a.riskScore;
+      if (resBadge) resBadge.textContent = action.resolutionVerification.verificationResult;
+      if (resExpl) resExpl.textContent = action.resolutionVerification.explanation;
+    }
+
+    // SECTION 10: VERIFICATION CHECKLIST
+    const checklistContainer = document.getElementById('drawerVerificationChecklist');
+    if (checklistContainer && action.checklist) {
+      checklistContainer.innerHTML = action.checklist.map(chk => `
+        <label class="verification-chk-item font-sans">
+          <input type="checkbox" data-chk-id="${chk.id}" ${chk.checked ? 'checked' : ''} class="chk-box-input">
+          <span class="chk-label-text ${chk.checked ? 'chk-done' : ''}">${chk.text}</span>
+        </label>
+      `).join('');
+
+      // Bind checkbox toggles
+      checklistContainer.querySelectorAll('.chk-box-input').forEach(box => {
+        box.addEventListener('change', (e) => {
+          const chkId = e.target.getAttribute('data-chk-id');
+          const targetChk = action.checklist.find(c => c.id === chkId);
+          if (targetChk) {
+            targetChk.checked = e.target.checked;
+            e.target.nextElementSibling.classList.toggle('chk-done', targetChk.checked);
+          }
+        });
+      });
+    }
+
+    // SECTION 12: DEEP LINKS
+    const linkRisk = document.getElementById('drawerActionDeepRisk');
+    const linkEvidence = document.getElementById('drawerActionDeepEvidence');
+    const linkSignals = document.getElementById('drawerActionDeepSignals');
+    const linkTimeline = document.getElementById('drawerActionDeepTimeline');
+    const linkMap = document.getElementById('drawerActionDeepMap');
+
+    if (linkRisk) linkRisk.setAttribute('href', `risks.html?riskId=${action.riskId}`);
+    if (linkEvidence) linkEvidence.setAttribute('href', `evidence.html?riskId=${action.riskId}`);
+    if (linkSignals) linkSignals.setAttribute('href', `signals.html?zone=${action.zoneSlug}`);
+    if (linkTimeline) linkTimeline.setAttribute('href', `timeline.html?zone=${action.zoneSlug}&case=0`);
+    if (linkMap) linkMap.setAttribute('href', `map.html?zone=${action.zoneSlug}`);
+  }
+
+  closeActionInspector() {
+    this.isDrawerOpen = false;
+    const drawer = document.getElementById('actionInspectorDrawer');
+    const backdrop = document.getElementById('actionDrawerBackdrop');
+    if (drawer) drawer.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// Auto-instantiate when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  window.actionsController = new ActionsController();
+  window.actionsController.init();
+});

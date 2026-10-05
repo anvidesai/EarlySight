@@ -46,6 +46,7 @@ import './micro-interactions.js';
     { title: 'AI Operational Copilot', category: 'Navigation', url: 'copilot.html', desc: 'Industrial AI Assistant connected to cross-silo data' },
     { title: 'Action Center', category: 'Navigation', url: 'actions.html', desc: 'Closed-loop 6-stage operational resolution tracking' },
     { title: 'Resolution & Impact Monitoring', category: 'Navigation', url: 'impact.html', desc: 'Audited post-intervention signal decay and ROI proof' },
+    { title: 'Notifications & System Health', category: 'Navigation', url: 'notifications.html', desc: 'Operational alerts, data freshness, intelligence pipelines, and system telemetry' },
     { title: 'Multi-Org Workspaces', category: 'Navigation', url: 'workspace.html', desc: 'Air-gapped tenant workspaces across colleges, hospitals, factories & communities' },
     { title: 'Sub-Slab Pressurized Flange (Joint 4B-12)', category: 'Alert', url: 'evidence.html', desc: 'Alert EW-2026-088 • Block A Trench 4B • 14.2 Days Lead' },
     { title: 'OR Suite 04 Differential Pressure Dip', category: 'Alert', url: 'workspace.html', desc: 'City Hospital Clean Core • 7.8 Days Lead • High Hazard' },
@@ -81,6 +82,7 @@ import './micro-interactions.js';
       if (path.includes('actions.html')) return 'actions';
       if (path.includes('impact.html')) return 'resolution';
       if (path.includes('workspace.html') || path.includes('organizations.html')) return 'workspace';
+      if (path.includes('notifications.html')) return 'systemHealth';
       
       // Hash-based check on index.html
       const hash = window.location.hash.toLowerCase();
@@ -335,6 +337,15 @@ import './micro-interactions.js';
             <div class="nav-group-label font-mono">SYSTEM</div>
             <ul class="sidebar-nav-list">
               <li>
+                <a href="notifications.html" class="sidebar-nav-item ${activeKey === 'systemHealth' ? 'active' : ''}" data-nav="systemHealth">
+                  <span class="nav-item-icon text-teal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                  </span>
+                  <span class="nav-item-text">System Health</span>
+                  <span class="nav-badge-pill badge-conf font-mono">98%</span>
+                </a>
+              </li>
+              <li>
                 <button class="sidebar-nav-item btn-nav-settings" id="btnSidebarSettings">
                   <span class="nav-item-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
@@ -454,6 +465,9 @@ import './micro-interactions.js';
       } else if (activeKey === 'workspace') {
         activeStage = 4;
         stageBadgeText = "MULTI-FACILITY INTELLIGENCE";
+      } else if (activeKey === 'systemHealth') {
+        activeStage = 7;
+        stageBadgeText = "SYSTEM HEALTH & TELEMETRY";
       }
 
       const ribbonHtml = `
@@ -610,8 +624,9 @@ import './micro-interactions.js';
             </a>
           </div>
 
-          <div class="flyout-footer">
-            <a href="actions.html" class="btn-flyout-all">Go to Action Center &rarr;</a>
+          <div class="flyout-footer" style="display:flex; justify-content:space-between; gap:8px;">
+            <a href="actions.html" class="btn-flyout-all" style="flex:1;">Action Center &rarr;</a>
+            <a href="notifications.html" class="btn-flyout-all" style="flex:1; text-align:right;">All Alerts &rarr;</a>
           </div>
         </div>
       `;

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Notifications & System Health (Milestone 10)</title>
+  <meta name="description" content="EarlySight Notifications & System Health workspace. Monitor operational alerts, data freshness, intelligence pipelines, and component readiness across industrial facilities.">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="map-page-body notif-page-body">
+
+  <!-- Top Enterprise Header (Graceful fallback before global-nav.js mounts) -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">System Health</span>
+      </div>
+    </a>
+
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Dashboard</a>
+      <a href="signals.html" class="view-switch-btn" style="text-decoration:none;">Signals (M4)</a>
+      <a href="risks.html" class="view-switch-btn" style="text-decoration:none;">Risks (M5)</a>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none;">Map (M6)</a>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none;">Timeline (M6)</a>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none;">Evidence (M7)</a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none;">Actions (M8)</a>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none;">AI Copilot (M9)</a>
+      <button class="view-switch-btn active">System Health (M10)</button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>STAGE 08 • SYSTEM HEALTH // TELEMETRY</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main System Health Container -->
+  <main class="risks-page-container notif-page-container">
+
+    <!-- Unified Story Workflow Ribbon -->
+    <div class="risk-workflow-ribbon earlysight-workflow-ribbon">
+      <span class="workflow-ribbon-tag">OPERATIONAL LIFECYCLE:</span>
+      <div class="workflow-steps">
+        <span class="workflow-step">SIGNALS</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step">PATTERN</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step">RISK</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step">EVIDENCE</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step">ACTION</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step">COPILOT</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step active-step" style="color:var(--color-teal, #0D9488); font-weight:700;">SYSTEM HEALTH (M10)</span>
+      </div>
+    </div>
+
+    <!-- SECTION 1: OPERATIONAL HEADER -->
+    <section class="risks-header-banner notif-hero-banner" style="margin-bottom: 20px;">
+      <div class="risks-banner-top">
+        <div>
+          <div class="banner-eyebrow font-mono">
+            <span class="badge-status-pill badge-healthy" id="headerStatusBadge">SYSTEM STATUS // OPERATIONAL</span>
+            <span class="eyebrow-divider">•</span>
+            <span>TELEMETRY &amp; ALERT MONITORING CENTER // MILESTONE 10</span>
+          </div>
+          <h1 class="risks-banner-title">
+            SYSTEM HEALTH
+          </h1>
+          <p class="risks-banner-desc">
+            Monitor alerts, data freshness, intelligence pipelines, and operational readiness across early warning sensors and models.
+          </p>
+          <div class="copilot-disclaimer-tag font-mono text-muted text-xs" style="margin-top: 6px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Frontend demonstration using simulated system telemetry.</span>
+          </div>
+        </div>
+
+        <!-- SECTION 13: DEMO SYSTEM STATE SWITCHER -->
+        <div class="notif-demo-state-box">
+          <div class="demo-state-header font-mono">
+            <span class="demo-state-label font-bold">DEMO SYSTEM STATE:</span>
+            <span class="demo-state-badge">Simulated Mode</span>
+          </div>
+          <div class="demo-state-btn-group" role="group" aria-label="Simulated system state options">
+            <button type="button" class="demo-state-btn active" data-state="operational" title="Simulate nominal operations">
+              <span class="demo-state-dot dot-operational"></span>
+              <span>OPERATIONAL</span>
+            </button>
+            <button type="button" class="demo-state-btn" data-state="attention" title="Simulate elevated latency / warning state">
+              <span class="demo-state-dot dot-attention"></span>
+              <span>ATTENTION REQUIRED</span>
+            </button>
+            <button type="button" class="demo-state-btn" data-state="degraded" title="Simulate pipeline degradation / stale sources">
+              <span class="demo-state-dot dot-degraded"></span>
+              <span>DEGRADED</span>
+            </button>
+          </div>
+          <span class="demo-state-hint font-mono text-muted text-xs">Interactive demonstration only. Does not alter real infrastructure.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SYSTEM HEALTH SUMMARY (KPI STRIP) -->
+    <section class="notif-summary-strip" aria-label="System Health Summary">
+      <div class="notif-summary-label font-mono">
+        <span>CURRENT OPERATIONAL TELEMETRY:</span>
+      </div>
+      <div class="notif-metrics-grid">
+        <div class="notif-metric-card" id="cardOverallHealth">
+          <span class="metric-title font-mono">Overall Health</span>
+          <span class="metric-number font-bold text-teal" id="metricOverallHealthVal">98.4%</span>
+          <span class="metric-sub font-mono text-muted" id="metricOverallHealthSub">Operational</span>
+        </div>
+
+        <div class="notif-metric-card" id="cardDataSources">
+          <span class="metric-title font-mono">Data Sources</span>
+          <span class="metric-number font-bold" id="metricDataSourcesVal">12 / 12</span>
+          <span class="metric-sub font-mono text-muted" id="metricDataSourcesSub">Connected</span>
+        </div>
+
+        <div class="notif-metric-card" id="cardPipeline">
+          <span class="metric-title font-mono">Pipeline Health</span>
+          <span class="metric-number font-bold text-emerald" id="metricPipelineVal">6 / 6</span>
+          <span class="metric-sub font-mono text-muted" id="metricPipelineSub">Healthy</span>
+        </div>
+
+        <div class="notif-metric-card" id="cardFreshness">
+          <span class="metric-title font-mono">Data Freshness</span>
+          <span class="metric-number font-bold" id="metricFreshnessVal">98%</span>
+          <span class="metric-sub font-mono text-muted" id="metricFreshnessSub">Within SLA</span>
+        </div>
+
+        <div class="notif-metric-card" id="cardAlerts">
+          <span class="metric-title font-mono">Active Alerts</span>
+          <span class="metric-number font-bold text-vermilion" id="metricAlertsVal">04</span>
+          <span class="metric-sub font-mono text-muted" id="metricAlertsSub">Attention</span>
+        </div>
+
+        <div class="notif-metric-card" id="cardLastSync">
+          <span class="metric-title font-mono">Last Sync</span>
+          <span class="metric-number font-bold font-mono" id="metricSyncVal">2 min ago</span>
+          <span class="metric-sub font-mono text-muted" id="metricSyncSub">Healthy</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN TWO-COLUMN MONITORING WORKSPACE -->
+    <div class="notif-workspace-grid">
+
+      <!-- LEFT COLUMN: SYSTEM TELEMETRY, PIPELINE, SOURCES & EVENTS -->
+      <div class="notif-col-left">
+
+        <!-- SECTION 3: SYSTEM HEALTH STATUS (8 COMPONENTS) -->
+        <section class="notif-panel-box" aria-labelledby="headingSystemHealthStatus">
+          <div class="panel-box-header">
+            <div>
+              <span class="panel-eyebrow font-mono">ENGINEERING SUBSYSTEMS</span>
+              <h2 class="panel-title" id="headingSystemHealthStatus">SYSTEM HEALTH STATUS</h2>
+            </div>
+            <span class="panel-badge font-mono">8 Components</span>
+          </div>
+          <p class="panel-desc text-xs text-muted">
+            Continuous health telemetry for multi-modal ingestion, pattern synthesis, risk evaluation, and action tracking.
+          </p>
+
+          <div class="system-components-grid" id="systemComponentsGrid">
+            <!-- Dynamically populated via notifications.js -->
+          </div>
+        </section>
+
+        <!-- SECTION 9: PIPELINE HEALTH -->
+        <section class="notif-panel-box" aria-labelledby="headingPipelineHealth">
+          <div class="panel-box-header">
+            <div>
+              <span class="panel-eyebrow font-mono">END-TO-END FLOW</span>
+              <h2 class="panel-title" id="headingPipelineHealth">INTELLIGENCE PIPELINE HEALTH</h2>
+            </div>
+            <span class="panel-badge font-mono">9 Stages Nominal</span>
+          </div>
+          <p class="panel-desc text-xs text-muted">
+            Telemetry transit from raw data source ingress through causal explainability to operational copilot cache.
+          </p>
+
+          <div class="pipeline-track-wrapper">
+            <div class="pipeline-stages-track" id="pipelineStagesTrack">
+              <!-- Dynamically populated via notifications.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: DATA SOURCE HEALTH -->
+        <section class="notif-panel-box" aria-labelledby="headingDataSources">
+          <div class="panel-box-header">
+            <div>
+              <span class="panel-eyebrow font-mono">INGRESS CHANNELS</span>
+              <h2 class="panel-title" id="headingDataSources">DATA SOURCE HEALTH</h2>
+            </div>
+            <span class="panel-badge font-mono">6 Core Modalities</span>
+          </div>
+          <p class="panel-desc text-xs text-muted">
+            Real-time synchronization status, daily ingested event counts, and freshness SLA for all EarlySight source types.
+          </p>
+
+          <div class="data-sources-list" id="dataSourcesList">
+            <!-- Dynamically populated via notifications.js -->
+          </div>
+        </section>
+
+        <!-- SECTION 8: DATA FRESHNESS -->
+        <section class="notif-panel-box" aria-labelledby="headingDataFreshness">
+          <div class="panel-box-header">
+            <div>
+              <span class="panel-eyebrow font-mono">SLA MONITORING</span>
+              <h2 class="panel-title" id="headingDataFreshness">DATA FRESHNESS</h2>
+            </div>
+            <div class="freshness-legend font-mono text-xs">
+              <span class="legend-item"><span class="legend-dot dot-healthy"></span> Within SLA</span>
+              <span class="legend-item"><span class="legend-dot dot-attention"></span> Delayed</span>
+              <span class="legend-item"><span class="legend-dot dot-degraded"></span> Stale</span>
+            </div>
+          </div>
+          <p class="panel-desc text-xs text-muted">
+            Time-to-update metrics across all primary EarlySight operational intelligence domains.
+          </p>
+
+          <div class="data-freshness-grid" id="dataFreshnessGrid">
+            <!-- Dynamically populated via notifications.js -->
+          </div>
+        </section>
+
+        <!-- SECTION 14: SYSTEM HEALTH EXPLANATION -->
+        <section class="notif-panel-box explanation-panel-box" aria-labelledby="headingWhatHealthMeans">
+          <div class="panel-box-header">
+            <div>
+              <span class="panel-eyebrow font-mono">OPERATIONAL DEFINITIONS</span>
+              <h2 class="panel-title" id="headingWhatHealthMeans">WHAT SYSTEM HEALTH MEANS</h2>
+            </div>
+          </div>
+          <div class="health-meanings-grid">
+            <div class="meaning-card card-operational">
+              <div class="meaning-header">
+                <span class="status-indicator-dot"></span>
+                <span class="meaning-name font-bold font-mono">OPERATIONAL</span>
+              </div>
+              <p class="meaning-text text-xs text-muted">
+                Core intelligence pipelines are processing normally. Ingestion latencies remain under SLA thresholds with continuous pattern convergence.
+              </p>
+            </div>
+
+            <div class="meaning-card card-attention">
+              <div class="meaning-header">
+                <span class="status-indicator-dot"></span>
+                <span class="meaning-name font-bold font-mono">ATTENTION REQUIRED</span>
+              </div>
+              <p class="meaning-text text-xs text-muted">
+                A component or data source needs operator review. Processing is operational, but latency or queue buffering is approaching SLA tolerance.
+              </p>
+            </div>
+
+            <div class="meaning-card card-degraded">
+              <div class="meaning-header">
+                <span class="status-indicator-dot"></span>
+                <span class="meaning-name font-bold font-mono">DEGRADED</span>
+              </div>
+              <p class="meaning-text text-xs text-muted">
+                Processing continues, but freshness or availability has fallen below the expected threshold. Risk models may reflect delayed data.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 10: SYSTEM EVENTS -->
+        <section class="notif-panel-box" aria-labelledby="headingSystemEvents">
+          <div class="panel-box-header">
+            <div>
+              <span class="panel-eyebrow font-mono">TELEMETRY AUDIT</span>
+              <h2 class="panel-title" id="headingSystemEvents">RECENT SYSTEM EVENTS</h2>
+            </div>
+            <span class="panel-badge font-mono">Latest 24h</span>
+          </div>
+          <p class="panel-desc text-xs text-muted">
+            Chronological audit stream of subsystem synchronization, Bayesian recalculations, and model cycles.
+          </p>
+
+          <div class="system-events-list" id="systemEventsList">
+            <!-- Dynamically populated via notifications.js -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN: NOTIFICATION CENTER -->
+      <div class="notif-col-right">
+
+        <!-- SECTION 5 & 11: NOTIFICATION CENTER -->
+        <section class="notif-panel-box notif-center-panel" aria-labelledby="headingNotificationCenter">
+          <div class="panel-box-header notif-center-header">
+            <div class="notif-header-title-wrap">
+              <span class="panel-eyebrow font-mono">OPERATIONAL DISPATCH</span>
+              <h2 class="panel-title" id="headingNotificationCenter">NOTIFICATION CENTER</h2>
+            </div>
+            <div class="notif-header-actions">
+              <span class="notif-unread-badge font-mono" id="notifUnreadBadge">04 Unread</span>
+              <button type="button" class="btn-mark-all-read font-mono text-xs" id="btnMarkAllAsRead" title="Mark all notifications as reviewed">
+                Mark all as read
+              </button>
+            </div>
+          </div>
+
+          <!-- Category Filter Tabs -->
+          <div class="notif-filter-tabs" role="tablist" aria-label="Notification category filter">
+            <button type="button" class="notif-filter-tab active" data-category="All" role="tab">All</button>
+            <button type="button" class="notif-filter-tab" data-category="Critical" role="tab">Critical</button>
+            <button type="button" class="notif-filter-tab" data-category="Risk" role="tab">Risk</button>
+            <button type="button" class="notif-filter-tab" data-category="Action" role="tab">Action</button>
+            <button type="button" class="notif-filter-tab" data-category="Evidence" role="tab">Evidence</button>
+            <button type="button" class="notif-filter-tab" data-category="System" role="tab">System</button>
+            <button type="button" class="notif-filter-tab" data-category="Resolved" role="tab">Resolved</button>
+          </div>
+
+          <!-- Search & Secondary Filter Controls -->
+          <div class="notif-controls-bar">
+            <div class="notif-search-input-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="notifSearchInput" class="notif-search-input font-mono" placeholder="Search alerts by title, risk, action, location..." aria-label="Search notifications">
+            </div>
+
+            <div class="notif-secondary-filters">
+              <div class="filter-select-wrap">
+                <label for="filterSeveritySelect" class="filter-label font-mono">SEVERITY:</label>
+                <select id="filterSeveritySelect" class="filter-select font-mono">
+                  <option value="All">All Severities</option>
+                  <option value="Critical">Critical</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+
+              <div class="filter-select-wrap">
+                <label for="filterLocationSelect" class="filter-label font-mono">LOCATION:</label>
+                <select id="filterLocationSelect" class="filter-select font-mono">
+                  <option value="All">All Locations</option>
+                  <option value="Block A">Block A</option>
+                  <option value="Power Island">Power Island</option>
+                  <option value="Assembly Bay">Assembly Bay</option>
+                  <option value="Utility Zone">Utility Zone</option>
+                  <option value="Clean Core">Clean Core</option>
+                  <option value="Metro Municipal">Metro Municipal</option>
+                </select>
+              </div>
+
+              <div class="filter-select-wrap">
+                <label for="filterTimeSelect" class="filter-label font-mono">TIME:</label>
+                <select id="filterTimeSelect" class="filter-select font-mono">
+                  <option value="All">All Time</option>
+                  <option value="24h">Last 24h</option>
+                  <option value="7d">Last 7d</option>
+                  <option value="30d">Last 30d</option>
+                </select>
+              </div>
+
+              <div class="filter-unread-toggle">
+                <label class="unread-checkbox-label font-mono">
+                  <input type="checkbox" id="chkUnreadOnly" class="styled-checkbox">
+                  <span>Unread only</span>
+                </label>
+              </div>
+
+              <button type="button" class="btn-reset-filters font-mono text-xs" id="btnResetFilters" title="Clear all search and filter conditions">
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Result Status Bar -->
+          <div class="notif-status-bar font-mono text-xs">
+            <span id="notifFilteredCount">Showing 12 of 12 notifications</span>
+            <span class="text-muted">Click any notification to open detail inspector</span>
+          </div>
+
+          <!-- SECTION 7: ALERT PRIORITY VISUALIZATION -->
+          <div class="alert-priority-box">
+            <div class="priority-box-top font-mono text-xs">
+              <span class="font-bold">ALERT PRIORITY DISTRIBUTION</span>
+              <span class="text-muted">Click segment to filter</span>
+            </div>
+            <div class="alert-priority-bar" id="alertPriorityBar" role="group" aria-label="Alert priority distribution">
+              <!-- Dynamically populated via notifications.js -->
+            </div>
+            <div class="priority-counts-row" id="priorityCountsRow">
+              <!-- Dynamically populated via notifications.js -->
+            </div>
+          </div>
+
+          <!-- Notifications List Container -->
+          <div class="notifications-list" id="notificationsList" role="feed" aria-busy="false" aria-label="Operational Notifications">
+            <!-- Dynamically populated via notifications.js -->
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SECTION 6: NOTIFICATION DETAIL INSPECTOR DRAWER -->
+  <aside class="notif-detail-drawer" id="notifDetailDrawer" aria-hidden="true" aria-label="Notification Detail Inspector">
+    <div class="drawer-header">
+      <div class="drawer-header-left">
+        <span class="drawer-eyebrow font-mono" id="inspCategory">RISK</span>
+        <h2 class="drawer-title font-bold" id="inspTitle">Notification Detail</h2>
+      </div>
+      <div class="drawer-header-actions">
+        <button type="button" class="btn-drawer-read-toggle font-mono text-xs" id="inspBtnToggleRead">Mark as Read</button>
+        <button type="button" class="drawer-close-btn" id="btnCloseDrawer" aria-label="Close Inspector">&times;</button>
+      </div>
+    </div>
+
+    <div class="drawer-content">
+
+      <!-- Drawer Metadata Summary Strip -->
+      <section class="drawer-section drawer-meta-strip font-mono text-xs">
+        <div class="drawer-meta-item">
+          <span class="meta-label text-muted">Severity:</span>
+          <span class="insp-badge font-bold" id="inspSeverity">Critical</span>
+        </div>
+        <div class="drawer-meta-item">
+          <span class="meta-label text-muted">Entity:</span>
+          <span class="meta-val font-bold text-teal" id="inspEntity">RSK-001</span>
+        </div>
+        <div class="drawer-meta-item">
+          <span class="meta-label text-muted">Location:</span>
+          <span class="meta-val" id="inspLocation">Block A / Trench 4B</span>
+        </div>
+        <div class="drawer-meta-item">
+          <span class="meta-label text-muted">Time:</span>
+          <span class="meta-val" id="inspTimestamp">2 min ago</span>
+        </div>
+      </section>
+
+      <!-- EVENT: What happened? -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-heading font-mono">
+          <span class="heading-bullet font-mono text-teal">01</span>
+          <span>EVENT — WHAT HAPPENED?</span>
+        </h3>
+        <div class="drawer-card-box">
+          <p class="drawer-body-text" id="inspWhatHappened">
+            Description of the operational event and triggering precursor signals.
+          </p>
+        </div>
+      </section>
+
+      <!-- IMPACT: Why does it matter? -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-heading font-mono">
+          <span class="heading-bullet font-mono text-amber">02</span>
+          <span>IMPACT — WHY IT MATTERS</span>
+        </h3>
+        <div class="drawer-card-box">
+          <p class="drawer-body-text" id="inspWhyItMatters">
+            System consequences, downtime risks, and escalation timeline.
+          </p>
+        </div>
+      </section>
+
+      <!-- RELATED INTELLIGENCE -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-heading font-mono">
+          <span class="heading-bullet font-mono text-emerald">03</span>
+          <span>RELATED OPERATIONAL INTELLIGENCE</span>
+        </h3>
+        <div class="drawer-intel-grid font-mono text-xs">
+          <div class="intel-tag-box">
+            <span class="intel-label text-muted">Signal Precursor:</span>
+            <span class="intel-id font-bold text-teal" id="inspSignalId">SIG-031</span>
+          </div>
+          <div class="intel-tag-box">
+            <span class="intel-label text-muted">Detected Pattern:</span>
+            <span class="intel-id font-bold text-amber" id="inspPatternId">PAT-006</span>
+          </div>
+          <div class="intel-tag-box">
+            <span class="intel-label text-muted">Synthesized Risk:</span>
+            <span class="intel-id font-bold text-vermilion" id="inspRiskId">RSK-001</span>
+          </div>
+          <div class="intel-tag-box">
+            <span class="intel-label text-muted">Causal Evidence:</span>
+            <span class="intel-id font-bold text-teal" id="inspEvidenceId">EVD-033</span>
+          </div>
+          <div class="intel-tag-box">
+            <span class="intel-label text-muted">Recommended Action:</span>
+            <span class="intel-id font-bold text-emerald" id="inspActionId">ACT-001</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECOMMENDED NEXT STEP -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-heading font-mono">
+          <span class="heading-bullet font-mono text-vermilion">04</span>
+          <span>RECOMMENDED NEXT STEP</span>
+        </h3>
+        <div class="drawer-card-box drawer-recommendation-box">
+          <p class="drawer-body-text font-bold" id="inspRecommendation">
+            Targeted inspection and verification protocol.
+          </p>
+        </div>
+      </section>
+
+      <!-- CROSS-PAGE DEEP LINKS -->
+      <section class="drawer-section drawer-deep-links-section">
+        <span class="drawer-section-label font-mono">NAVIGATE EARLYSIGHT INTELLIGENCE:</span>
+        <div class="drawer-deep-links-grid font-mono">
+          <a href="signals.html" id="inspLinkSignal" class="btn-drawer-deep-link">
+            <span>View Signal (M4)</span> <span>→</span>
+          </a>
+          <a href="risks.html" id="inspLinkRisk" class="btn-drawer-deep-link">
+            <span>View Risk Dossier (M5)</span> <span>→</span>
+          </a>
+          <a href="evidence.html" id="inspLinkEvidence" class="btn-drawer-deep-link">
+            <span>View Evidence (M7)</span> <span>→</span>
+          </a>
+          <a href="timeline.html" id="inspLinkTimeline" class="btn-drawer-deep-link">
+            <span>View Timeline (M6)</span> <span>→</span>
+          </a>
+          <a href="actions.html" id="inspLinkAction" class="btn-drawer-deep-link">
+            <span>View Action Center (M8)</span> <span>→</span>
+          </a>
+          <a href="map.html" id="inspLinkMap" class="btn-drawer-deep-link">
+            <span>View Location on Map (M6)</span> <span>→</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </aside>
+
+  <!-- Drawer Backdrop -->
+  <div class="notif-drawer-backdrop" id="notifDrawerBackdrop" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="/src/js/notifications-entry.js"></script>
+</body>
+</html>

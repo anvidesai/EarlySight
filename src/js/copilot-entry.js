@@ -1,10 +1,8 @@
 /**
- * EarlySight — AI Copilot Page Entry
+ * EarlySight — AI Copilot Page Entry (Milestone 9)
  */
 import '../styles/styles.css';
-import '../data/signals-data.js';
-import '../data/dashboard-data.js';
-import '../data/ai-assistant-data.js';
-import './ai-assistant.js';
+import '../data/copilot-data.js';
+import './copilot.js';
 import './global-nav.js';
 import './micro-interactions.js';
