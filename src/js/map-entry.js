@@ -23,14 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initial focus: if anchor block A exists, open its revelation drawer after 400ms for immediate impact
+  // Initial focus: check for URL parameter ?zone=, otherwise default to Block A
   setTimeout(() => {
     const zones = typeof FACILITY_MAP_ZONES !== 'undefined' ? FACILITY_MAP_ZONES : window.FACILITY_MAP_ZONES;
-    if (zones) {
-      const blockA = zones.find(z => z.id === 'block-a');
-      if (blockA && window.signalMapEngine) {
-        window.signalMapEngine.revealClusterDetails(blockA);
+    if (zones && window.signalMapEngine) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedZoneId = urlParams.get('zone');
+      const targetZone = requestedZoneId ? zones.find(z => z.id === requestedZoneId) : zones.find(z => z.id === 'block-a');
+      if (targetZone) {
+        window.signalMapEngine.focusAndInspectZone(targetZone.id);
       }
     }
-  }, 400);
+  }, 350);
 });

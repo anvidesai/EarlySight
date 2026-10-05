@@ -25,9 +25,12 @@ class EarlySightTimelineController {
   }
 
   init() {
+    this.parseUrlParameters();
     this.renderCaseStudyHeader();
+    this.renderRiskLifecycleTrack();
+    this.renderRiskTrajectoryStrip();
     this.renderLifecycleStepper();
-    this.renderTimelineCards();
+    this.renderChronologicalEvents();
     this.renderTrendCharts();
     this.renderFrequencyAnalytics();
     this.renderHistoricalComparison();
@@ -36,6 +39,29 @@ class EarlySightTimelineController {
     
     // Select initial stage
     this.selectStage(1, false);
+  }
+
+  parseUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const caseParam = urlParams.get('case');
+    const zoneParam = urlParams.get('zone');
+
+    if (caseParam !== null) {
+      const idx = parseInt(caseParam, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < this.caseStudies.length) {
+        this.activeCaseIndex = idx;
+      }
+    } else if (zoneParam) {
+      const matchedIdx = this.caseStudies.findIndex(c => c.zoneId === zoneParam);
+      if (matchedIdx !== -1) {
+        this.activeCaseIndex = matchedIdx;
+      }
+    }
+
+    const selectEl = document.getElementById('timelineCaseSelect');
+    if (selectEl) {
+      selectEl.value = this.activeCaseIndex.toString();
+    }
   }
 
   renderCaseStudyHeader() {
@@ -53,6 +79,238 @@ class EarlySightTimelineController {
     if (confidenceEl) confidenceEl.textContent = c.confidence;
     if (costAvertedEl) costAvertedEl.textContent = c.avertedLossUSD;
     if (descEl) descEl.textContent = c.summary;
+  }
+
+  renderRiskLifecycleTrack() {
+    const container = document.getElementById('visualRiskLifecycleTrack');
+    if (!container) return;
+
+    const track = this.currentCase.lifecycleTrack || [
+      { key: "detected", name: "DETECTED", time: "Day 1", status: "completed", description: "Signal logged" },
+      { key: "forming", name: "FORMING", time: "Day 2", status: "completed", description: "Repeated signals" },
+      { key: "emerging", name: "EMERGING", time: "Day 3", status: "completed", description: "Pattern identified" },
+      { key: "active", name: "ACTIVE", time: "Day 5", status: "completed", description: "Risk Score Peak" },
+      { key: "de-escalating", name: "DE-ESCALATING", time: "Day 8", status: "completed", description: "Action taken" },
+      { key: "resolved", name: "RESOLVED", time: "Day 10", status: "current", description: "Mitigated" }
+    ];
+
+    container.innerHTML = track.map((step, idx) => {
+      const isLast = idx === track.length - 1;
+      return `
+        <div class="lifecycle-track-cell" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:10px 12px; display:flex; flex-direction:column; gap:4px; border-top:3px solid ${isLast ? 'var(--color-forest,#1B4332)' : (idx >= 3 ? 'var(--color-rust,#C85A32)' : 'var(--color-amber,#C27803)')};">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="font-mono" style="font-size:0.68rem; font-weight:800; color:var(--ink-primary); letter-spacing:0.4px;">
+              0${idx + 1}. ${step.name}
+            </span>
+            <span style="font-size:0.65rem; color:var(--ink-muted); font-family:var(--font-mono);">${step.time.split('•')[0].trim()}</span>
+          </div>
+          <div style="font-size:0.73rem; color:var(--ink-secondary); line-height:1.35; margin-top:2px;">
+            ${step.description}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  renderRiskTrajectoryStrip() {
+    const container = document.getElementById('trajectoryScoreStrip');
+    if (!container) return;
+
+    const traj = this.currentCase.riskTrajectory;
+    if (!traj || !traj.points) return;
+
+    container.innerHTML = traj.points.map((pt, idx) => {
+      const isPeak = pt.phase === 'peak';
+      const isDeesc = pt.phase === 'de-escalation';
+      const arrow = idx < traj.points.length - 1 ? '<span style="color:var(--ink-muted); font-size:0.8rem; font-weight:700;">→</span>' : '';
+      
+      const badgeStyle = isPeak 
+        ? 'background:rgba(200,90,50,0.15); color:var(--color-rust,#C85A32); border:1px solid var(--color-rust,#C85A32);'
+        : (isDeesc 
+          ? 'background:rgba(27,67,50,0.1); color:var(--color-forest,#1B4332); border:1px solid var(--color-forest,#1B4332);'
+          : 'background:var(--color-ivory-subtle,#F4F0E8); color:var(--ink-primary); border:1px solid var(--border-subtle,#E4E0D8);');
+
+      return `
+        <div style="display:inline-flex; align-items:center; gap:8px;">
+          <div class="trajectory-pill" style="display:flex; align-items:center; gap:8px; padding:5px 10px; border-radius:6px; ${badgeStyle}" title="${pt.label} (${pt.time})">
+            <span class="font-mono" style="font-size:0.68rem; color:var(--ink-muted); text-transform:uppercase;">${pt.day}</span>
+            <strong class="font-mono" style="font-size:0.95rem;">${pt.score}</strong>
+            <span style="font-size:0.68rem; color:var(--ink-secondary);">${pt.label.split(' ')[0]}</span>
+          </div>
+          ${arrow}
+        </div>
+      `;
+    }).join('');
+  }
+
+  renderChronologicalEvents(filterHorizon = 'all') {
+    const container = document.getElementById('chronologicalCardsContainer');
+    if (!container) return;
+
+    let events = this.currentCase.chronologicalEvents || [];
+    
+    // Optional horizon filtering
+    if (filterHorizon === '24h') {
+      events = events.slice(0, 2);
+    } else if (filterHorizon === '7d') {
+      events = events.slice(0, Math.min(events.length, 6));
+    }
+
+    const tallyEl = document.getElementById('timelineActiveEventsTally');
+    if (tallyEl) {
+      tallyEl.textContent = `${events.length} CHRONOLOGICAL EVENTS // ${this.currentCase.shortTitle.toUpperCase()}`;
+    }
+
+    container.innerHTML = events.map((evt, idx) => {
+      const isSelected = idx === 0;
+      const isCritical = evt.severity === 'Critical';
+      const isHigh = evt.severity === 'High';
+      const isMed = evt.severity === 'Medium';
+      const dotColor = isCritical ? 'dot-vermilion' : (isHigh ? 'dot-amber' : (isMed ? 'dot-amber' : 'dot-slate'));
+
+      return `
+        <article class="timeline-event-row-card ${isSelected ? 'stage-card-active' : ''}" 
+                 id="eventCard-${evt.id}" 
+                 data-event-id="${evt.id}"
+                 style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:8px; padding:16px 18px; margin-bottom:12px; cursor:pointer; transition:all 0.15s ease;"
+                 onclick="window.timelineController.selectEvent('${evt.id}')">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="indicator-dot ${dotColor}"></span>
+              <span class="font-mono text-muted" style="font-size:0.72rem; font-weight:700; text-transform:uppercase;">
+                ${evt.dayLabel} • ${evt.time}
+              </span>
+              <span class="risk-severity-pill ${isCritical ? 'badge-severity-critical' : (isHigh ? 'badge-severity-high' : 'badge-severity-moderate')}" style="font-size:0.65rem; padding:2px 6px;">
+                ${evt.eventType.toUpperCase()}
+              </span>
+            </div>
+            <span class="font-mono" style="font-size:0.72rem; color:var(--ink-muted);">
+              📍 ${evt.location}
+            </span>
+          </div>
+
+          <h3 style="font-size:1.02rem; font-weight:700; color:var(--ink-primary); margin:4px 0 6px 0;">
+            "${evt.headline}"
+          </h3>
+
+          <p style="font-size:0.82rem; color:var(--ink-secondary); margin:0 0 10px 0; line-height:1.45;">
+            ${evt.description}
+          </p>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px; border-top:1px dashed var(--border-subtle,#E4E0D8); font-size:0.74rem; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-family:var(--font-mono); color:var(--ink-muted);">
+                Evidence: <strong style="color:var(--ink-primary);">${evt.evidenceType}</strong>
+              </span>
+              <span style="font-family:var(--font-mono); color:var(--ink-muted);">
+                Confidence: <strong style="color:var(--color-rust,#C85A32);">${evt.confidence}</strong>
+              </span>
+              ${evt.score ? `<span style="font-family:var(--font-mono); color:var(--color-rust,#C85A32); font-weight:700;">Score: ${evt.score}/100</span>` : ''}
+            </div>
+            <span class="font-mono" style="font-size:0.72rem; color:var(--color-rust,#C85A32); font-weight:700;">
+              Inspect Event Context &rarr;
+            </span>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    // Select the first event by default into the inspector
+    if (events.length > 0) {
+      this.selectEvent(events[0].id);
+    }
+  }
+
+  selectEvent(eventId) {
+    const events = this.currentCase.chronologicalEvents || [];
+    const evt = events.find(e => e.id === eventId) || events[0];
+    if (!evt) return;
+
+    // Highlight card
+    const cards = document.querySelectorAll('.timeline-event-row-card');
+    cards.forEach(c => {
+      if (c.getAttribute('data-event-id') === eventId) {
+        c.classList.add('stage-card-active');
+        c.style.borderColor = 'var(--color-rust,#C85A32)';
+      } else {
+        c.classList.remove('stage-card-active');
+        c.style.borderColor = 'var(--border-subtle,#E4E0D8)';
+      }
+    });
+
+    this.renderEventDetailInspector(evt);
+  }
+
+  renderEventDetailInspector(evt) {
+    const inspector = document.getElementById('eventDetailInspectorCard');
+    if (!inspector) return;
+
+    inspector.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span class="font-mono" style="font-size:0.7rem; font-weight:800; color:var(--color-rust,#C85A32); text-transform:uppercase; letter-spacing:0.5px;">
+          EVENT DETAIL INSPECTOR (SECTION 14)
+        </span>
+        <span class="risk-severity-pill ${evt.severity === 'Critical' ? 'badge-severity-critical' : 'badge-severity-high'}" style="font-size:0.65rem;">
+          ${evt.eventType.toUpperCase()}
+        </span>
+      </div>
+
+      <h3 style="font-size:1.15rem; font-weight:800; color:var(--ink-primary); margin:0 0 6px 0;">
+        ${this.currentCase.shortTitle}
+      </h3>
+      <div style="font-size:0.86rem; color:var(--color-rust,#C85A32); font-weight:600; margin-bottom:14px;">
+        "${evt.headline}"
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.76rem;">
+        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+          <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">DETECTED</span>
+          <strong>${evt.dateFormatted}</strong>
+        </div>
+        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+          <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">LOCATION</span>
+          <strong>${evt.location}</strong>
+        </div>
+        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+          <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">EVIDENCE</span>
+          <strong>${evt.evidenceType}</strong>
+        </div>
+        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+          <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">CONFIDENCE</span>
+          <strong style="color:var(--color-rust,#C85A32);">${evt.confidence}</strong>
+        </div>
+      </div>
+
+      <!-- Why It Matters Block (Section 14) -->
+      <div style="background:var(--color-ivory-subtle,#F4F0E8); border-left:3px solid var(--color-rust,#C85A32); padding:10px 12px; border-radius:4px; margin-bottom:16px;">
+        <div class="font-mono" style="font-size:0.68rem; font-weight:700; color:var(--color-rust,#C85A32); text-transform:uppercase; margin-bottom:4px;">
+          WHY IT MATTERS:
+        </div>
+        <p style="font-size:0.8rem; color:var(--ink-primary); line-height:1.45; margin:0; font-style:italic;">
+          "${evt.whyItMatters}"
+        </p>
+      </div>
+
+      <!-- Operational Description -->
+      <p style="font-size:0.8rem; color:var(--ink-secondary); line-height:1.45; margin-bottom:16px;">
+        ${evt.description}
+      </p>
+
+      <!-- Section 14 Actions Navigation -->
+      <div style="display:flex; flex-direction:column; gap:8px; padding-top:14px; border-top:1px solid var(--border-subtle,#E4E0D8);">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <a href="${evt.actions.viewSignals}" class="drawer-btn-secondary" style="text-decoration:none; text-align:center; font-size:0.78rem; padding:8px 10px; display:flex; align-items:center; justify-content:center; gap:5px;">
+            <span>📋 View Related Signals</span>
+          </a>
+          <a href="${evt.actions.viewRisk}" class="drawer-btn-secondary" style="text-decoration:none; text-align:center; font-size:0.78rem; padding:8px 10px; display:flex; align-items:center; justify-content:center; gap:5px;">
+            <span>🛡️ View Risk</span>
+          </a>
+        </div>
+        <a href="${evt.actions.viewMap}" class="drawer-btn-primary" style="text-decoration:none; text-align:center; font-size:0.82rem; background:var(--color-rust,#C85A32); color:#FFFFFF; padding:9px 12px; border-radius:6px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <span>📍 View on Facility Map ↗</span>
+        </a>
+      </div>
+    `;
   }
 
   renderLifecycleStepper() {
@@ -535,14 +793,23 @@ class EarlySightTimelineController {
     this.renderTrendCharts();
   }
 
+  filterChronologicalHorizon(horizon) {
+    this.renderChronologicalEvents(horizon);
+  }
+
   switchCaseStudy(caseIndex) {
     this.activeCaseIndex = caseIndex;
     this.activeStageIndex = 1;
     if (this.isPlaying) this.togglePlayback();
 
+    const selectEl = document.getElementById('timelineCaseSelect');
+    if (selectEl) selectEl.value = caseIndex.toString();
+
     this.renderCaseStudyHeader();
+    this.renderRiskLifecycleTrack();
+    this.renderRiskTrajectoryStrip();
     this.renderLifecycleStepper();
-    this.renderTimelineCards();
+    this.renderChronologicalEvents();
     this.renderTrendCharts();
     this.renderFrequencyAnalytics();
     this.renderHistoricalComparison();
@@ -585,6 +852,17 @@ class EarlySightTimelineController {
     if (playBtn) playBtn.addEventListener('click', () => this.togglePlayback());
     if (nextBtn) nextBtn.addEventListener('click', () => this.nextStage());
     if (prevBtn) prevBtn.addEventListener('click', () => this.prevStage());
+
+    // Time horizon filter buttons (Section 15: Last 24h, Last 7d, Last 30d, Custom / All)
+    const timeHorizonBtns = document.querySelectorAll('.time-filter-btn');
+    timeHorizonBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        timeHorizonBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const horizon = btn.getAttribute('data-horizon');
+        this.filterChronologicalHorizon(horizon);
+      });
+    });
 
     // Timeframe filter buttons (Daily, Weekly, Monthly)
     const tfBtns = document.querySelectorAll('.timeline-tf-btn');

@@ -239,6 +239,21 @@ class EarlySightSignalMap {
       });
     }
 
+    // 0. Primary Milestone 6 Filters (Section 8)
+    const primaryBtns = document.querySelectorAll('.map-primary-btn');
+    const activeFilterBadge = document.getElementById('activeFilterBadge');
+    primaryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        primaryBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+        if (activeFilterBadge) {
+          activeFilterBadge.textContent = btn.textContent.trim().toUpperCase();
+        }
+        this.setPrimaryFilter(filter);
+      });
+    });
+
     // 7. Location Filter Buttons / Select
     const locBtns = document.querySelectorAll('.map-loc-btn');
     locBtns.forEach(btn => {
@@ -416,6 +431,57 @@ class EarlySightSignalMap {
     const badge = document.getElementById('mapZoomLevelBadge');
     if (badge) {
       badge.textContent = `${Math.round(this.scale * 100)}%`;
+    }
+  }
+
+  setPrimaryFilter(filter) {
+    if (filter === 'all') {
+      this.activeSeverityFilter = 'all';
+      this.activeLocationFilter = 'all';
+      this.animateMergeTo(1.0);
+      this.resetView();
+    } else if (filter === 'signals') {
+      this.activeSeverityFilter = 'all';
+      this.animateMergeTo(0.0);
+    } else if (filter === 'clusters') {
+      this.activeSeverityFilter = 'all';
+      this.animateMergeTo(1.0);
+    } else if (filter === 'risks') {
+      this.activeSeverityFilter = 'all';
+      this.animateMergeTo(1.0);
+      this.focusAndInspectZone('block-a');
+    } else if (filter === 'critical') {
+      this.activeSeverityFilter = 'critical';
+      this.animateMergeTo(1.0);
+      this.focusAndInspectZone('power-island');
+    } else if (filter === 'high') {
+      this.activeSeverityFilter = 'high';
+      this.animateMergeTo(1.0);
+      this.focusAndInspectZone('block-a');
+    } else if (filter === 'medium') {
+      this.activeSeverityFilter = 'moderate';
+      this.animateMergeTo(1.0);
+      this.focusAndInspectZone('block-b');
+    } else if (filter === 'low') {
+      this.activeSeverityFilter = 'low';
+      this.animateMergeTo(1.0);
+      this.focusAndInspectZone('logistics-yard');
+    }
+    this.updateStatsBar();
+  }
+
+  focusAndInspectZone(zoneId) {
+    const zone = FACILITY_MAP_ZONES.find(z => z.id === zoneId);
+    if (zone) {
+      const locBtns = document.querySelectorAll('.map-loc-btn');
+      locBtns.forEach(b => {
+        if (b.getAttribute('data-zone') === zoneId) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+      this.activeLocationFilter = zoneId;
+      this.focusOnZone(zone);
+      this.revealClusterDetails(zone);
+      this.updateStatsBar();
     }
   }
 
@@ -861,14 +927,19 @@ class EarlySightSignalMap {
 
         </div>
 
-        <!-- Action Buttons -->
-        <div class="drawer-actions-row">
-          <button class="drawer-btn-primary" onclick="alert('Prescriptive Work Order dispatched for ${zone.shortCode}: WO-2026-${Math.floor(1000 + Math.random() * 9000)}')">
-            Dispatch Work Order
-          </button>
-          <button class="drawer-btn-secondary" onclick="if(window.dashboardController){window.dashboardController.inspectMapZone('${zone.id}')}">
-            Open Full Dossier
-          </button>
+        <!-- Section 7 Action Navigation: View Signals, View Risk, View in Timeline -->
+        <div class="drawer-actions-row" style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <a href="signals.html?zone=${zone.id}" class="drawer-btn-secondary" style="text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.78rem; padding:8px 10px;">
+              <span>📋 View Signals (${matchingSignals.length})</span>
+            </a>
+            <a href="risks.html?riskId=${zone.riskId || 'RSK-01'}" class="drawer-btn-secondary" style="text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.78rem; padding:8px 10px;">
+              <span>🛡️ View Risk (${zone.riskId || 'RSK-01'})</span>
+            </a>
+          </div>
+          <a href="timeline.html?zone=${zone.id}&case=${zone.timelineCaseIndex || 0}" class="drawer-btn-primary" style="text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; font-size:0.82rem; background:var(--color-rust,#C85A32); color:#FFFFFF; padding:9px 12px; border-radius:6px; font-weight:700;">
+            <span>⏱️ View in Timeline (Chronological Evolution) &rarr;</span>
+          </a>
         </div>
 
       </div>

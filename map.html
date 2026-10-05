@@ -73,11 +73,176 @@
   <!-- Main Map Page Container -->
   <main class="map-page-container">
     
+    <!-- Milestone 6: EarlySight Workflow Ribbon -->
+    <nav class="earlysight-workflow-ribbon" aria-label="Operational Intelligence Progression" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:8px 14px; margin-bottom:14px; display:flex; align-items:center; gap:8px; font-size:0.75rem; overflow-x:auto;">
+      <span class="workflow-ribbon-label" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap;">INTELLIGENCE FLOW:</span>
+      <span class="workflow-step active" style="font-weight:700; color:var(--color-rust,#C85A32); background:rgba(200,90,50,0.08); padding:2px 7px; border-radius:4px; white-space:nowrap;">WHERE &amp; WHEN (M6)</span>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="signals.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">SIGNAL (M4)</a>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <span class="workflow-step" style="color:var(--ink-secondary); font-weight:600; white-space:nowrap;">REPETITION</span>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <span class="workflow-step" style="color:var(--ink-secondary); font-weight:600; white-space:nowrap;">PATTERN</span>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="risks.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">RISK (M5)</a>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="actions.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">ACTION</a>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="impact.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">RESOLUTION</a>
+    </nav>
+
+    <!-- Part A: Map Overview Banner (Section 1) -->
+    <section class="risks-header-banner" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:8px; padding:18px 22px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; box-shadow:var(--shadow-sm);">
+      <div class="risks-header-left">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+          <span class="font-mono text-muted" style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.5px;">Operational Spatial Intelligence // Milestone 6</span>
+        </div>
+        <h1 style="font-size:1.35rem; font-weight:700; color:var(--ink-primary); margin:4px 0 2px 0; letter-spacing:-0.3px;">Facility Operational Site Map &amp; Risk Radar</h1>
+        <p style="font-size:0.84rem; color:var(--ink-secondary); margin:0; max-width:760px; line-height:1.45;">
+          <strong>Where are signals and emerging risks concentrating?</strong> EarlySight identifies spatial convergence across physical plant zones before localized component degradation halts high-throughput production lines.
+        </p>
+      </div>
+      <div class="risks-kpi-strip" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div class="risks-kpi-chip" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:6px 12px; font-family:var(--font-mono); min-width:95px;">
+          <span class="kpi-label" style="font-size:0.68rem; text-transform:uppercase; color:var(--ink-muted); display:block; margin-bottom:2px;">Active Signals</span>
+          <span class="kpi-val" id="bannerActiveSignalsCount" style="font-size:1.05rem; font-weight:700; color:var(--ink-primary);">54 Signals</span>
+        </div>
+        <div class="risks-kpi-chip" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:6px 12px; font-family:var(--font-mono); min-width:95px;">
+          <span class="kpi-label" style="font-size:0.68rem; text-transform:uppercase; color:var(--ink-muted); display:block; margin-bottom:2px;">Monitored Zones</span>
+          <span class="kpi-val" style="font-size:1.05rem; font-weight:700; color:var(--ink-primary);">6 Zones</span>
+        </div>
+        <div class="risks-kpi-chip" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:6px 12px; font-family:var(--font-mono); min-width:95px;">
+          <span class="kpi-label" style="font-size:0.68rem; text-transform:uppercase; color:var(--ink-muted); display:block; margin-bottom:2px;">Risk Hotspots</span>
+          <span class="kpi-val" style="font-size:1.05rem; font-weight:700; color:var(--color-rust,#C85A32);">4 Active</span>
+        </div>
+        <div class="risks-kpi-chip" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:6px 12px; font-family:var(--font-mono); min-width:95px;">
+          <span class="kpi-label" style="font-size:0.68rem; text-transform:uppercase; color:var(--ink-muted); display:block; margin-bottom:2px;">Primary Epicenter</span>
+          <span class="kpi-val" style="font-size:1.05rem; font-weight:700; color:var(--color-rust,#C85A32);">Block A (86)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Part 9: Spatial Convergence Panel (Section 9) -->
+    <section class="spatial-convergence-section" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-left:4px solid var(--color-rust,#C85A32); border-radius:8px; padding:16px 20px; margin-bottom:18px; box-shadow:var(--shadow-sm);">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="indicator-dot dot-vermilion"></span>
+            <span class="font-mono" style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--color-rust,#C85A32); letter-spacing:0.5px;">
+              SPATIAL CONVERGENCE INTELLIGENCE
+            </span>
+          </div>
+          <h3 style="font-size:1.05rem; font-weight:700; color:var(--ink-primary); margin:4px 0 2px 0;">
+            Multi-Signal Spatial Convergence Across Monitored Facility Zones
+          </h3>
+          <p style="font-size:0.8rem; color:var(--ink-secondary); margin:0;">
+            EarlySight does not just know <em>where</em> one report happened. It identifies <strong>where multiple related signals are converging</strong> across physical plant zones before equipment failure occurs.
+          </p>
+        </div>
+        <div style="font-size:0.75rem; font-family:var(--font-mono); color:var(--ink-muted); display:flex; align-items:center; gap:6px;">
+          <span>Click any hotspot to focus map</span>
+        </div>
+      </div>
+
+      <div class="spatial-convergence-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px;" id="spatialConvergenceHotspotsContainer">
+        <!-- Hotspot 1: Block A -->
+        <div class="convergence-card" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:12px 14px; cursor:pointer; transition:all 0.15s ease;" onclick="if(window.signalMapEngine) window.signalMapEngine.focusAndInspectZone('block-a')">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span class="font-mono" style="font-size:0.72rem; font-weight:700; color:var(--color-rust,#C85A32);">BLOCK A (TRENCH 4B)</span>
+            <span class="risk-severity-pill badge-severity-high" style="font-size:0.62rem; padding:2px 6px;">HIGH • 86</span>
+          </div>
+          <div style="font-size:0.82rem; font-weight:700; color:var(--ink-primary); margin-bottom:4px;">17 related signals • 4-day recurrence</div>
+          <div style="font-size:0.74rem; color:var(--color-rust,#C85A32); font-weight:600; margin-bottom:6px;">+320% frequency surge → Water Infrastructure Risk</div>
+          <div style="font-size:0.72rem; color:var(--ink-muted); line-height:1.35;">
+            Sub-slab seepage migrating toward drive cable conduits and Cleanroom Cell C.
+          </div>
+          <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:0.7rem;">
+            <span style="color:var(--ink-muted);">P1 Immediate</span>
+            <span style="color:var(--color-rust,#C85A32); font-weight:700;">Focus Zone &rarr;</span>
+          </div>
+        </div>
+
+        <!-- Hotspot 2: Power Island -->
+        <div class="convergence-card" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:12px 14px; cursor:pointer; transition:all 0.15s ease;" onclick="if(window.signalMapEngine) window.signalMapEngine.focusAndInspectZone('power-island')">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span class="font-mono" style="font-size:0.72rem; font-weight:700; color:var(--color-rust,#C85A32);">POWER ISLAND (BUS 3B)</span>
+            <span class="risk-severity-pill badge-severity-critical" style="font-size:0.62rem; padding:2px 6px;">CRITICAL • 88</span>
+          </div>
+          <div style="font-size:0.82rem; font-weight:700; color:var(--ink-primary); margin-bottom:4px;">15 signals • 3 thermal anomalies</div>
+          <div style="font-size:0.74rem; color:var(--color-rust,#C85A32); font-weight:600; margin-bottom:6px;">2 maintenance reports → Thermal Overload Risk</div>
+          <div style="font-size:0.72rem; color:var(--ink-muted); line-height:1.35;">
+            13.8 kV Phase B harmonic distortion producing +6.1°C hot spot on bus joint.
+          </div>
+          <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:0.7rem;">
+            <span style="color:var(--ink-muted);">P1 Immediate</span>
+            <span style="color:var(--color-rust,#C85A32); font-weight:700;">Focus Zone &rarr;</span>
+          </div>
+        </div>
+
+        <!-- Hotspot 3: Assembly Bay 4 -->
+        <div class="convergence-card" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:12px 14px; cursor:pointer; transition:all 0.15s ease;" onclick="if(window.signalMapEngine) window.signalMapEngine.focusAndInspectZone('block-a')">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span class="font-mono" style="font-size:0.72rem; font-weight:700; color:var(--color-rust,#C85A32);">ASSEMBLY BAY 4 (DRIVE AX-402)</span>
+            <span class="risk-severity-pill badge-severity-high" style="font-size:0.62rem; padding:2px 6px;">HIGH • 78</span>
+          </div>
+          <div style="font-size:0.82rem; font-weight:700; color:var(--ink-primary); margin-bottom:4px;">8 signals • Operator complaints</div>
+          <div style="font-size:0.74rem; color:var(--color-rust,#C85A32); font-weight:600; margin-bottom:6px;">+2.84σ jitter surge → Drive Feeder Risk</div>
+          <div style="font-size:0.72rem; color:var(--ink-muted); line-height:1.35;">
+            High-frequency harmonic envelope jitter aligns with metallic fines in lube sample.
+          </div>
+          <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:0.7rem;">
+            <span style="color:var(--ink-muted);">P1 Immediate</span>
+            <span style="color:var(--color-rust,#C85A32); font-weight:700;">Focus Zone &rarr;</span>
+          </div>
+        </div>
+
+        <!-- Hotspot 4: Block C -->
+        <div class="convergence-card" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:12px 14px; cursor:pointer; transition:all 0.15s ease;" onclick="if(window.signalMapEngine) window.signalMapEngine.focusAndInspectZone('block-c')">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span class="font-mono" style="font-size:0.72rem; font-weight:700; color:var(--color-rust,#C85A32);">BLOCK C (PRESS STATION #2)</span>
+            <span class="risk-severity-pill badge-severity-high" style="font-size:0.62rem; padding:2px 6px;">HIGH • 64</span>
+          </div>
+          <div style="font-size:0.82rem; font-weight:700; color:var(--ink-primary); margin-bottom:4px;">12 signals • 48 Hz cavitation acoustic ping</div>
+          <div style="font-size:0.74rem; color:var(--color-rust,#C85A32); font-weight:600; margin-bottom:6px;">+16% / week acceleration → Extrusion Press Risk</div>
+          <div style="font-size:0.72rem; color:var(--ink-muted); line-height:1.35;">
+            Suction head depression entrains air bubbles causing valve spool cavitation pitting.
+          </div>
+          <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:0.7rem;">
+            <span style="color:var(--ink-muted);">P2 High</span>
+            <span style="color:var(--color-rust,#C85A32); font-weight:700;">Focus Zone &rarr;</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="signal-map-section-wrapper" id="signalMapWrapper" style="margin-bottom:0; flex:1;">
       
       <!-- Stage 6 Filter & Control Command Center -->
       <div class="map-controls-panel">
         
+        <!-- Row 0: Milestone 6 Primary Layer & Severity Filters (Section 8) -->
+        <div class="map-controls-row" style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 12px; border-radius:6px; border:1px solid var(--border-subtle,#E4E0D8); margin-bottom:10px;">
+          <div class="map-filter-group" style="flex:1;">
+            <span class="map-filter-label" style="font-weight:700; color:var(--ink-primary);">Primary View Filter:</span>
+            <div class="map-pill-buttons" id="primaryMapTypeFilters">
+              <button class="map-primary-btn active" data-filter="all"><span>All Intelligence</span></button>
+              <button class="map-primary-btn" data-filter="signals"><span>● Signals</span></button>
+              <button class="map-primary-btn" data-filter="clusters"><span>● Clusters</span></button>
+              <button class="map-primary-btn" data-filter="risks"><span>◆ Risks</span></button>
+              <span style="width:1px; height:18px; background:var(--border-subtle); margin:0 4px;"></span>
+              <button class="map-primary-btn" data-filter="critical"><span style="color:var(--color-rust,#C85A32); font-weight:700;">Critical (88)</span></button>
+              <button class="map-primary-btn" data-filter="high"><span style="color:var(--color-rust,#C85A32);">High (86, 78, 64)</span></button>
+              <button class="map-primary-btn" data-filter="medium"><span>Medium (42)</span></button>
+              <button class="map-primary-btn" data-filter="low"><span>Low (22)</span></button>
+            </div>
+          </div>
+          <div style="font-size:0.72rem; font-family:var(--font-mono); color:var(--ink-muted); display:flex; align-items:center; gap:8px;">
+            <span>Active State:</span>
+            <strong id="activeFilterBadge" style="color:var(--color-rust,#C85A32);">ALL INTELLIGENCE</strong>
+          </div>
+        </div>
+
         <!-- Row 1: Search, Location Filter & Date Range Filter -->
         <div class="map-controls-row">
           
@@ -88,7 +253,7 @@
             <span class="map-search-matches-pill" id="mapSearchMatchesBadge">0 matches</span>
           </div>
 
-          <!-- Location Filter Pills -->
+          <!-- Location Filter Pills (Section 2 exact zones) -->
           <div class="map-filter-group">
             <span class="map-filter-label">Facility Zone:</span>
             <div class="map-pill-buttons">
@@ -101,7 +266,7 @@
                 <span class="map-count-badge">17</span>
               </button>
               <button class="map-loc-btn" data-zone="block-b">
-                <span>Block B</span>
+                <span>Utility Zone</span>
                 <span class="map-count-badge">9</span>
               </button>
               <button class="map-loc-btn" data-zone="block-c">
@@ -113,11 +278,11 @@
                 <span class="map-count-badge">15</span>
               </button>
               <button class="map-loc-btn" data-zone="logistics-yard">
-                <span>Logistics</span>
+                <span>Stockyard</span>
                 <span class="map-count-badge">8</span>
               </button>
               <button class="map-loc-btn" data-zone="chemical-env">
-                <span>Chemical & Env</span>
+                <span>Engineering Bldg</span>
                 <span class="map-count-badge">10</span>
               </button>
             </div>
@@ -273,23 +438,51 @@
           </div>
         </div>
 
-        <!-- Muted Palette Severity Legend -->
-        <div class="map-legend-strip">
+        <!-- Section 6: Compact Operational Map Legend -->
+        <div class="map-legend-strip" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:0.75rem;">
+          <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:var(--ink-muted); text-transform:uppercase;">
+            MAP LEGEND:
+          </div>
+          <!-- Entity Types -->
+          <div class="legend-item" title="Isolated observation or single precursor event">
+            <span class="legend-dot" style="background:#475569; width:7px; height:7px; border-radius:50%;"></span>
+            <span>● Signal</span>
+          </div>
+          <div class="legend-item" title="Concentrated precursor cluster around equipment bay">
+            <span class="legend-dot" style="background:#C27803; width:9px; height:9px; border-radius:50%; box-shadow:0 0 0 2px rgba(194,120,3,0.25);"></span>
+            <span>● Signal Cluster</span>
+          </div>
+          <div class="legend-item" title="Emerging risk with quantified lead time">
+            <span style="display:inline-block; width:7px; height:7px; background:var(--color-rust,#C85A32); transform:rotate(45deg); margin-right:3px;"></span>
+            <span>◆ Emerging Risk</span>
+          </div>
+          <div class="legend-item" title="Active operational risk requiring prioritization">
+            <span style="display:inline-block; width:7px; height:7px; background:#A43A2A; border-radius:1px; margin-right:3px;"></span>
+            <span>■ Active Risk</span>
+          </div>
+          <div class="legend-item" title="Mitigated area with verified baseline stability">
+            <span style="display:inline-block; width:7px; height:7px; border:1.8px solid var(--color-sage,#4D7C5D); border-radius:50%; background:transparent; margin-right:3px;"></span>
+            <span>○ Resolved Area</span>
+          </div>
+          
+          <span style="width:1px; height:14px; background:var(--border-subtle); margin:0 2px;"></span>
+
+          <!-- Severity Levels -->
           <div class="legend-item">
-            <span class="legend-dot" style="background:#C85A32;"></span>
-            <span>Critical Severity</span>
+            <span class="legend-dot" style="background:#A43A2A;"></span>
+            <span>Critical</span>
           </div>
           <div class="legend-item">
             <span class="legend-dot" style="background:#C85A32;"></span>
-            <span>High Severity</span>
+            <span>High</span>
           </div>
           <div class="legend-item">
-            <span class="legend-dot" style="background:#B87333;"></span>
-            <span>Moderate Severity</span>
+            <span class="legend-dot" style="background:#C27803;"></span>
+            <span>Medium</span>
           </div>
           <div class="legend-item">
             <span class="legend-dot" style="background:#475569;"></span>
-            <span>Baseline Signal</span>
+            <span>Low</span>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
  * Handles Startup Animation Orchestration, UI Transitions & Stage-Wise Interaction
  */
 
-import { EARLYSIGHT_SIGNALS, SIGNAL_CONNECTIONS } from '../data/signals-data.js';
+import { EARLYSIGHT_SIGNALS, SIGNAL_CONNECTIONS, PIPELINE_STAGES, SYNTHESIZED_RISK } from '../data/signals-data.js';
 import { EarlySightAnimation } from './animation.js';
 
 document.addEventListener('DOMContentLoaded', () => {

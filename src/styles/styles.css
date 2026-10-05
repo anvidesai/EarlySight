@@ -15013,6 +15013,684 @@ body.sidebar-collapsed .global-story-banner {
   opacity: 0.6;
 }
 
+/* ==========================================================================
+   MILESTONE 3: RISK INTELLIGENCE & VISUALIZATIONS
+   ========================================================================== */
+
+/* PART 1: Risk Overview Hierarchy Cards */
+.risk-score-card {
+  border-left: 3px solid var(--color-rust, #A43A2A);
+}
+
+.metric-illustrative-pill {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  background: var(--bg-canvas-subtle, #F4F0E8);
+  color: var(--ink-muted, #57606A);
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle, #E4E0D8);
+}
+
+.metric-score-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.risk-score-val {
+  color: var(--color-rust, #A43A2A);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.metric-score-denom {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-muted, #57606A);
+}
+
+.risk-trajectory-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.trajectory-increasing {
+  background: var(--color-rust-subtle, #FDF1EE);
+  color: var(--color-rust, #A43A2A);
+  border: 1px solid var(--color-rust-border, rgba(164, 58, 42, 0.25));
+}
+
+.trajectory-arrow {
+  font-weight: 900;
+}
+
+.badge-urgent {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid rgba(185, 28, 28, 0.2);
+}
+
+.badge-forming {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid rgba(180, 83, 9, 0.2);
+}
+
+.badge-resolved {
+  background: #D1FAE5;
+  color: #047857;
+  border: 1px solid rgba(4, 120, 87, 0.2);
+}
+
+.metric-operational-q {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--ink-secondary, #2B3036);
+  margin-top: 2px;
+}
+
+.metric-footnote {
+  font-size: 0.68rem;
+  color: var(--ink-muted, #57606A);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+/* PART 2: Risk Trend Header & Trajectory Controls */
+.trend-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.trend-toggle-group {
+  display: inline-flex;
+  background: var(--bg-canvas-subtle, #F4F0E8);
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.trend-toggle-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--ink-secondary, #2B3036);
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.trend-toggle-btn:hover {
+  color: var(--ink-primary, #1C2024);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.trend-toggle-btn.active {
+  background: #FFFFFF;
+  color: var(--ink-primary, #1C2024);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.trend-status-banner {
+  background: var(--bg-canvas, #FAF8F5);
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-left: 3px solid var(--color-rust, #A43A2A);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 0.78rem;
+  color: var(--ink-secondary, #2B3036);
+  line-height: 1.4;
+}
+
+.trend-status-banner strong {
+  color: var(--ink-primary, #1C2024);
+}
+
+/* Operational Question Subtitle */
+.dash-viz-sub-q {
+  font-size: 0.72rem;
+  color: var(--ink-muted, #57606A);
+  margin-top: 2px;
+  font-weight: normal;
+  display: block;
+}
+
+/* PART 4: Signature Intelligence Visual: Signal → Pattern → Risk */
+.signature-intelligence-card {
+  background: var(--bg-card, #FFFFFF);
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-radius: 8px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(28, 32, 36, 0.04);
+}
+
+.sig-scenario-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sig-scenario-tab {
+  background: var(--bg-canvas-subtle, #F4F0E8);
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  font-family: var(--font-sans, inherit);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--ink-secondary, #2B3036);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sig-scenario-tab:hover {
+  background: #EDE8DE;
+  color: var(--ink-primary, #1C2024);
+}
+
+.sig-scenario-tab.active {
+  background: var(--color-forest, #1B4332);
+  color: #FFFFFF;
+  border-color: var(--color-forest, #1B4332);
+}
+
+.signature-convergence-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 60px 1.2fr 40px 1.15fr;
+  align-items: center;
+  gap: 0;
+  margin-top: 18px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 992px) {
+  .signature-convergence-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+.signal-bracket-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.signal-col-header {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted, #57606A);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.signal-mini-card {
+  background: var(--bg-canvas, #FAF8F5);
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+
+.signal-mini-card:hover {
+  border-color: var(--color-forest, #1B4332);
+  background: #FFFFFF;
+}
+
+.signal-mini-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signal-mini-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-primary, #1C2024);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.signal-type-tag {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: var(--ink-muted, #57606A);
+}
+
+.signal-mini-desc {
+  font-size: 0.72rem;
+  color: var(--ink-secondary, #2B3036);
+  line-height: 1.3;
+}
+
+.signal-mini-meta {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: var(--ink-muted, #57606A);
+}
+
+/* SVG Vector Bracket for Desktop */
+.convergence-bracket-wrap {
+  width: 60px;
+  height: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.convergence-bracket-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mobile-down-arrow {
+  display: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-forest, #1B4332);
+  text-align: center;
+  margin: 4px 0;
+}
+
+@media (max-width: 992px) {
+  .convergence-bracket-wrap {
+    display: none;
+  }
+  .mobile-down-arrow {
+    display: block;
+  }
+}
+
+/* Pattern Centroid Column */
+.pattern-centroid-col {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pattern-centroid-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--color-amber, #C27803);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(194, 120, 3, 0.08);
+}
+
+.pattern-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pattern-card-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-primary, #1C2024);
+  line-height: 1.3;
+}
+
+.pattern-badges-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pattern-badge-pill {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.pattern-desc {
+  font-size: 0.74rem;
+  color: var(--ink-secondary, #2B3036);
+  line-height: 1.35;
+}
+
+/* Middle Arrow */
+.convergence-arrow-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-forest, #1B4332);
+}
+
+@media (max-width: 992px) {
+  .convergence-arrow-col {
+    display: none;
+  }
+}
+
+/* Risk Outcome Column */
+.risk-outcome-col {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.risk-outcome-card {
+  background: var(--color-rust-subtle, #FDF1EE);
+  border: 1.5px solid var(--color-rust, #A43A2A);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(164, 58, 42, 0.08);
+}
+
+.risk-outcome-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.risk-severity-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--color-rust, #A43A2A);
+}
+
+.risk-score-display {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-rust, #A43A2A);
+}
+
+.risk-location-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-primary, #1C2024);
+}
+
+.risk-impact-note {
+  font-size: 0.72rem;
+  color: var(--ink-secondary, #2B3036);
+  line-height: 1.35;
+}
+
+/* PART 5: What Changed Panel */
+.what-changed-panel {
+  background: var(--bg-canvas, #FAF8F5);
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+
+.what-changed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.what-changed-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-primary, #1C2024);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.what-changed-sub {
+  font-size: 0.72rem;
+  color: var(--ink-muted, #57606A);
+}
+
+.what-changed-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .what-changed-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .what-changed-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.what-changed-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.what-changed-val {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.what-changed-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--ink-primary, #1C2024);
+}
+
+.what-changed-desc {
+  font-size: 0.68rem;
+  color: var(--ink-muted, #57606A);
+  line-height: 1.3;
+}
+
+/* PART 6: Evidence Connection Panel */
+.evidence-connection-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-left: 3px solid var(--color-forest, #1B4332);
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.evidence-conn-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.evidence-conn-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-primary, #1C2024);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.btn-evidence-dossier {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-forest, #1B4332);
+  text-decoration: none;
+  background: var(--color-forest-subtle, #EDF3F0);
+  border: 1px solid var(--color-forest-border, rgba(27, 67, 50, 0.22));
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.btn-evidence-dossier:hover {
+  background: var(--color-forest, #1B4332);
+  color: #FFFFFF;
+}
+
+.evidence-reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+}
+
+@media (max-width: 768px) {
+  .evidence-reasons-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.evidence-reason-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--ink-secondary, #2B3036);
+  line-height: 1.35;
+}
+
+.evidence-reason-bullet {
+  color: var(--color-forest, #1B4332);
+  font-weight: 800;
+}
+
+/* Responsive Polish for Milestone 3 Visualizations */
+@media (max-width: 768px) {
+  .dash-viz-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .trend-header-controls {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .sig-scenario-nav {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .sig-scenario-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sig-scenario-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dash-viz-card,
+  .signature-intelligence-card {
+    padding: 14px 12px;
+  }
+
+  .what-changed-panel,
+  .evidence-connection-panel {
+    padding: 12px 10px;
+  }
+
+  .trend-line-chart-wrap svg {
+    min-width: 100%;
+  }
+
+  .severity-donut-svg-wrap {
+    width: 110px;
+    height: 110px;
+  }
+
+  .donut-center-number {
+    font-size: 1.15rem;
+  }
+
+  .risk-overview-cockpit {
+    padding: 14px 12px;
+    gap: 12px;
+    grid-template-columns: 1fr;
+  }
+
+  .cockpit-metric-block {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle, #E4E0D8);
+    padding-bottom: 10px;
+  }
+
+  .cockpit-metric-block:last-child {
+    border-bottom: none;
+  }
+}
+
 /* Operational Matrix Styling for Risks Page */
 .risk-matrix-wrapper {
   background: var(--bg-card, #FFFFFF);
@@ -15315,7 +15993,107 @@ body.sidebar-collapsed .global-story-banner {
   gap: 10px;
 }
 
+/* ==========================================================================
+   MILESTONE 6 — MAP & TIMELINE INTELLIGENCE STYLES
+   Operational spatial convergence, risk trajectory, lifecycle track & responsive
+   ========================================================================== */
+.earlysight-workflow-ribbon {
+  scrollbar-width: none;
+}
+.earlysight-workflow-ribbon::-webkit-scrollbar {
+  display: none;
+}
 
+.map-primary-btn {
+  background: transparent;
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-secondary, #636B65);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
 
+.map-primary-btn:hover {
+  background: #FFFFFF;
+  color: var(--ink-primary, #1A1C1A);
+  border-color: var(--border-strong, #8C948E);
+}
 
+.map-primary-btn.active {
+  background: #FFFFFF;
+  color: var(--ink-primary, #1A1C1A);
+  border-color: var(--color-rust, #C85A32);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
 
+.convergence-card:hover {
+  border-color: var(--color-rust, #C85A32) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.time-filter-btn {
+  background: var(--bg-canvas, #FAF8F5);
+  border: 1px solid var(--border-subtle, #E4E0D8);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-secondary, #636B65);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.time-filter-btn:hover {
+  background: #FFFFFF;
+  color: var(--ink-primary, #1A1C1A);
+}
+
+.time-filter-btn.active {
+  background: #FFFFFF;
+  color: var(--ink-primary, #1A1C1A);
+  border-color: var(--color-rust, #C85A32);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.timeline-event-row-card:hover {
+  border-color: var(--color-rust, #C85A32) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 992px) {
+  .timeline-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .event-detail-inspector-card {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .risk-lifecycle-track {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .spatial-convergence-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .cluster-details-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .risk-lifecycle-track {
+    grid-template-columns: 1fr !important;
+  }
+}

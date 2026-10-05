@@ -70,6 +70,24 @@
   <!-- Main Timeline Container -->
   <main class="timeline-page-container">
 
+    <!-- Milestone 6: EarlySight Workflow Ribbon -->
+    <nav class="earlysight-workflow-ribbon" aria-label="Operational Intelligence Progression" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:8px 14px; margin-bottom:14px; display:flex; align-items:center; gap:8px; font-size:0.75rem; overflow-x:auto;">
+      <span class="workflow-ribbon-label" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap;">INTELLIGENCE FLOW:</span>
+      <span class="workflow-step active" style="font-weight:700; color:var(--color-rust,#C85A32); background:rgba(200,90,50,0.08); padding:2px 7px; border-radius:4px; white-space:nowrap;">WHEN &amp; TIMELINE (M6)</span>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="signals.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">SIGNAL (M4)</a>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <span class="workflow-step" style="color:var(--ink-secondary); font-weight:600; white-space:nowrap;">REPETITION</span>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <span class="workflow-step" style="color:var(--ink-secondary); font-weight:600; white-space:nowrap;">PATTERN</span>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="risks.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">RISK (M5)</a>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="actions.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">ACTION</a>
+      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
+      <a href="impact.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">RESOLUTION</a>
+    </nav>
+
     <!-- Executive Problem Overview Header Card -->
     <section class="timeline-hero-card">
       <div class="timeline-hero-top">
@@ -83,9 +101,10 @@
 
         <div class="case-switcher-box">
           <label for="timelineCaseSelect" class="font-mono text-muted" style="font-size:0.7rem; text-transform:uppercase;">Select Problem Case Study:</label>
-          <select id="timelineCaseSelect" class="map-styled-select" style="min-width:260px;">
+          <select id="timelineCaseSelect" class="map-styled-select" style="min-width:280px;">
             <option value="0">Block A — Water Infrastructure Issue (High Severity)</option>
             <option value="1">Block C — Hydraulic Valve Cavitation (High Severity)</option>
+            <option value="2">Power Island — Switchgear Busbar 3B Thermal Overload (Critical)</option>
           </select>
         </div>
       </div>
@@ -111,78 +130,61 @@
       </div>
     </section>
 
-    <!-- Interactive Operational Lifecycle Flow Ribbon: Signal -> Related Signal -> Recurring Pattern -> Emerging Risk -> Action -> Resolution -->
-    <div class="causal-pipeline-container" id="operationalTimelineRibbon" style="margin-bottom:20px;">
-      <div class="causal-pipeline-header">
-        <div class="causal-pipeline-title-group">
-          <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
-          <h3 class="dash-viz-title">Operational Early Warning Lifecycle Track</h3>
+    <!-- Section 13 & 16: Risk Lifecycle Track & Compact Risk Score Trajectory -->
+    <section class="timeline-trajectory-lifecycle-card" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:8px; padding:16px 20px; margin-bottom:18px; box-shadow:var(--shadow-sm);">
+      
+      <!-- Top Row: Risk Lifecycle Track (Section 16: DETECTED → FORMING → EMERGING → ACTIVE → DE-ESCALATING → RESOLVED) -->
+      <div style="margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+            <span class="font-mono text-muted" style="font-size:0.72rem; text-transform:uppercase; font-weight:700; letter-spacing:0.5px;">
+              RISK LIFECYCLE PROGRESSION (SECTION 16)
+            </span>
+          </div>
+          <span style="font-size:0.75rem; color:var(--ink-muted); font-family:var(--font-mono);">
+            DETECTED → FORMING → EMERGING → ACTIVE → DE-ESCALATING → RESOLVED
+          </span>
         </div>
-        <span class="dash-viz-badge badge-forest-subtle">Click Step to Inspect Telemetry</span>
+
+        <div class="risk-lifecycle-track" id="visualRiskLifecycleTrack" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:8px;">
+          <!-- Populated by timelineController.renderRiskLifecycleTrack() -->
+        </div>
       </div>
 
-      <div class="causal-pipeline-flow" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
-        <!-- Step 1: Signal -->
-        <div class="causal-node-card" style="cursor:pointer;" onclick="window.timelineController && window.timelineController.selectStage(1, true)">
-          <div class="causal-node-top">
-            <span class="causal-node-step">01. Inception</span>
-            <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">T-28d</span>
+      <!-- Bottom Row: Compact Risk Score Trajectory Strip (Section 13) & Time Filters (Section 15) -->
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding-top:14px; border-top:1px solid var(--border-subtle,#E4E0D8);">
+        
+        <!-- Compact Score Trajectory Strip (Section 13: 68 → 74 → 80 → 86 → 41 → 18) -->
+        <div style="flex:1; min-width:320px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span class="font-mono" style="font-size:0.7rem; font-weight:700; color:var(--color-rust,#C85A32); text-transform:uppercase;">
+              RISK SCORE TRAJECTORY OVER TIME (SECTION 13):
+            </span>
+            <span style="font-size:0.75rem; color:var(--ink-secondary);">
+              <span style="color:var(--color-rust,#C85A32); font-weight:700;">↑ Escalation</span> &nbsp;then&nbsp; <span style="color:var(--color-forest,#1B4332); font-weight:700;">↓ De-escalation</span>
+            </span>
           </div>
-          <div class="causal-node-title">Signal</div>
-          <div class="causal-node-desc">Sub-threshold transient pressure dip (120ms).</div>
+          
+          <div class="trajectory-score-strip" id="trajectoryScoreStrip" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <!-- Trajectory pills rendered by controller -->
+          </div>
         </div>
 
-        <!-- Step 2: Related Signal -->
-        <div class="causal-node-card" style="cursor:pointer;" onclick="window.timelineController && window.timelineController.selectStage(2, true)">
-          <div class="causal-node-top">
-            <span class="causal-node-step">02. Cross-Silo</span>
-            <span class="causal-node-badge" style="background:#FAF8F5; color:#57606A;">T-21d</span>
+        <!-- Section 15: Compact Time Horizon Filters -->
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="font-mono text-muted" style="font-size:0.72rem; text-transform:uppercase;">Time Horizon:</span>
+          <div class="map-pill-buttons" id="timelineHorizonFilters">
+            <button class="time-filter-btn" data-horizon="24h"><span>Last 24h</span></button>
+            <button class="time-filter-btn" data-horizon="7d"><span>Last 7d</span></button>
+            <button class="time-filter-btn active" data-horizon="30d"><span>Last 30d</span></button>
+            <button class="time-filter-btn" data-horizon="all"><span>Custom / All</span></button>
           </div>
-          <div class="causal-node-title">Related Signal</div>
-          <div class="causal-node-desc">Shift complaint & grease sample fines.</div>
         </div>
 
-        <!-- Step 3: Recurring Pattern -->
-        <div class="causal-node-card" style="cursor:pointer;" onclick="window.timelineController && window.timelineController.selectStage(3, true)">
-          <div class="causal-node-top">
-            <span class="causal-node-step">03. Coherence</span>
-            <span class="causal-node-badge" style="background:rgba(194,120,3,0.1); color:#C27803;">T-14d</span>
-          </div>
-          <div class="causal-node-title">Recurring Pattern</div>
-          <div class="causal-node-desc">91.4% spatial-temporal match confirmed.</div>
-        </div>
-
-        <!-- Step 4: Emerging Risk -->
-        <div class="causal-node-card" style="cursor:pointer; border-left:3px solid var(--color-rust);" onclick="window.timelineController && window.timelineController.selectStage(5, true)">
-          <div class="causal-node-top">
-            <span class="causal-node-step" style="color:var(--color-rust);">04. Warning</span>
-            <span class="causal-node-badge" style="background:#FDF1EE; color:#A43A2A;">T-10d</span>
-          </div>
-          <div class="causal-node-title">Emerging Risk</div>
-          <div class="causal-node-desc">Impending cage spallation • 18d lead time.</div>
-        </div>
-
-        <!-- Step 5: Action -->
-        <div class="causal-node-card" style="cursor:pointer; border-left:3px solid var(--color-forest);" onclick="window.timelineController && window.timelineController.selectStage(6, true)">
-          <div class="causal-node-top">
-            <span class="causal-node-step">05. Closed-Loop</span>
-            <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">T-7d</span>
-          </div>
-          <div class="causal-node-title">Action</div>
-          <div class="causal-node-desc">Prescriptive work order executed in PM window.</div>
-        </div>
-
-        <!-- Step 6: Resolution -->
-        <div class="causal-node-card" style="cursor:pointer; border-left:3px solid var(--color-sage);" onclick="window.timelineController && window.timelineController.selectStage(7, true)">
-          <div class="causal-node-top">
-            <span class="causal-node-step" style="color:var(--color-sage);">06. Verified</span>
-            <span class="causal-node-badge" style="background:#EDF4F0; color:#4D7C5D;">T-0d</span>
-          </div>
-          <div class="causal-node-title">Resolution</div>
-          <div class="causal-node-desc">-95% anomaly decay • $512k loss averted.</div>
-        </div>
       </div>
-    </div>
+
+    </section>
 
     <!-- Sticky Interactive Lifecycle Stepper (The Core 7-Step Progression) -->
     <nav class="sticky-stepper-panel" aria-label="Problem Development Lifecycle">
@@ -210,22 +212,30 @@
       </div>
     </nav>
 
-    <!-- SECTION 1: Chronological Problem Development Cards -->
+    <!-- SECTION 1: Chronological Problem Development Cards & Event Detail Inspector (Sections 10, 11, 12, 14) -->
     <section class="timeline-progression-section">
       <div class="section-block-header">
         <div>
           <h2 class="section-block-title">
             <span class="indicator-dot dot-vermilion"></span>
-            <span>Chronological Lifecycle Evolution</span>
+            <span>Chronological Lifecycle Evolution &amp; Evidence Timeline</span>
           </h2>
           <p style="font-size:0.78rem; color:var(--ink-secondary); margin-top:3px;">
             Watch how a problem develops step-by-step from initial isolated noise into an actionable multi-modal early warning.
           </p>
         </div>
-        <span class="section-block-badge font-mono">Scroll or click stepper to inspect</span>
+        <span class="section-block-badge font-mono" id="timelineActiveEventsTally">CHRONOLOGICAL EVENT SEQUENCE</span>
       </div>
 
-      <div class="chronological-cards-list" id="chronologicalCardsContainer"></div>
+      <!-- Two-column layout: Chronological Event Cards Feed + Sticky Event Context Inspector (Section 14) -->
+      <div class="timeline-layout-grid" style="display:grid; grid-template-columns: 1.55fr 1fr; gap:16px; align-items:start;">
+        <div class="chronological-cards-list" id="chronologicalCardsContainer"></div>
+        
+        <!-- Section 14: Sticky Event Detail Inspector -->
+        <div class="event-detail-inspector-card" id="eventDetailInspectorCard" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:8px; padding:18px; position:sticky; top:80px; box-shadow:var(--shadow-sm);">
+          <!-- Populated by timelineController.renderEventDetailInspector() -->
+        </div>
+      </div>
     </section>
 
     <!-- SECTION 2: Trend Charts with Daily / Weekly / Monthly Filtering -->

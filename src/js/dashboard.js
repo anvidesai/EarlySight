@@ -17,11 +17,198 @@ import {
 } from '../data/dashboard-data.js';
 import { FACILITY_MAP_ZONES, FACILITY_SIGNALS_DATA } from '../data/signal-map-data.js';
 
+// Operational Signature Convergence Scenarios (Signal -> Pattern -> Risk)
+const SIGNATURE_SCENARIOS = {
+  water: {
+    id: "water",
+    title: "Water Infrastructure Risk",
+    asset: "Block A Trench 4B Main Feeder",
+    signals: [
+      { id: "SIG-W01", name: "Water Leakage #01", type: "Maintenance Log", desc: "Flange 4B micro-drip noted during shift walk", time: "4d ago", dot: "#B87333", location: "Block A Trench 4B" },
+      { id: "SIG-W02", name: "Water Leakage #02", type: "Acoustic Sensor", desc: "Floor moisture cavitation hiss (1.4 kHz)", time: "2d ago", dot: "#2563EB", location: "Trench 4B Bay 2" },
+      { id: "SIG-W03", name: "Water Leakage #03", type: "SCADA Telemetry", desc: "Differential pressure drop (-0.4 bar delta)", time: "6h ago", dot: "#1B4332", location: "Aux Bypass BV-12" }
+    ],
+    pattern: {
+      name: "Repeated Moisture Accumulation Pattern",
+      signalCount: "12 Related Signals",
+      coherence: "91% Coherence",
+      velocity: "+35% Velocity Surge",
+      timeframe: "4 Days Continuous",
+      desc: "Temporal-spatial clustering matches recurring gasket weepage accelerating into joint failure."
+    },
+    risk: {
+      level: "HIGH RISK",
+      score: "87",
+      scoreMax: "100",
+      location: "Block A — Trench 4B Main Feeder",
+      leadTime: "14 Days Lead Time",
+      impact: "$120k Electrical Trench Flooding",
+      status: "Investigation Work Order Dispatched"
+    },
+    whatChanged: {
+      metric1: { val: "↑ 35%", label: "Water leakage signals", sub: "Surge in precursor volume across Block A over 72h" },
+      metric2: { val: "+3", label: "Related incidents detected", sub: "Cross-correlated within 8.5m radius of Trench 4B" },
+      metric3: { val: "↑ Med → High", label: "Risk level escalation", sub: "Flange joint failure probability crossed threshold" },
+      metric4: { val: "+2", label: "New connected signals", sub: "SCADA pressure telemetry and shift logs linked" }
+    },
+    evidence: [
+      { bold: "12 Related Signals:", text: "Ingested across 3 independent operational silos (Maintenance, Acoustic Sensor, SCADA)." },
+      { bold: "Repeated Over 4 Days:", text: "Precursors recurred consistently across multiple operational shifts without clearing." },
+      { bold: "Spatial Co-location:", text: "All 12 signals originated within a 4.2-meter radius of Block A Trench 4B." },
+      { bold: "Increasing Frequency:", text: "Signal arrival interval compressed from 28h down to 3.2h (+35% velocity)." }
+    ],
+    evidenceLink: "evidence.html?alert=RSK-01"
+  },
+  bearing: {
+    id: "bearing",
+    title: "Drive Feeder Cage Failure",
+    asset: "Drive AX-402 (High-Throughput Feeder #4)",
+    signals: [
+      { id: "SIG-B01", name: "Vibration Harmonic #01", type: "Accelerometer S-04", desc: "3,420 Hz envelope resonance harmonic detected", time: "8d ago", dot: "#A43A2A", location: "Feeder #4 Inboard" },
+      { id: "SIG-B02", name: "Audible Hiss #02", type: "Shift Operator Log", desc: "Operator note: High-pitched motor scraping at 1,400 RPM", time: "5d ago", dot: "#B87333", location: "Assembly Bay 4" },
+      { id: "SIG-B03", name: "Thermal Bloom #03", type: "FLIR Thermal Scan", desc: "+4.7°C flanged casing differential above baseline", time: "18h ago", dot: "#C27803", location: "Drive AX-402 Housing" }
+    ],
+    pattern: {
+      name: "Coherent Bearing Cage Spallation",
+      signalCount: "24 Related Signals",
+      coherence: "94.6% Coherence",
+      velocity: "Accelerating Trend",
+      timeframe: "18 Days Lead Window",
+      desc: "Tribological grease degradation matches high-frequency harmonics and casing thermal gradient."
+    },
+    risk: {
+      level: "CRITICAL RISK",
+      score: "94",
+      scoreMax: "100",
+      location: "Assembly Bay 4 — Drive Feeder #4",
+      leadTime: "18 Days Countdown",
+      impact: "$340k Assembly Line Halt",
+      status: "Immediate Reliability WO Dispatched"
+    },
+    whatChanged: {
+      metric1: { val: "↑ 48%", label: "High-frequency harmonics", sub: "3,420 Hz resonance power density surged 48%" },
+      metric2: { val: "+4", label: "Operator log mentions", sub: "Vibration notes logged in morning & night shifts" },
+      metric3: { val: "↑ High → Crit", label: "Risk level escalation", sub: "Bearing cage spallation crossed critical boundary" },
+      metric4: { val: "+3", label: "New connected streams", sub: "FLIR thermal, SCADA amperage, and lube analysis" }
+    },
+    evidence: [
+      { bold: "24 Related Signals:", text: "Multi-modal correlation across vibration telemetry, operator logs, and FLIR thermal scans." },
+      { bold: "Repeated Over 18 Days:", text: "Harmonic amplitude escalated steadily with continuous machine runtime." },
+      { bold: "Identical Subsystem:", text: "All indicators isolated to Drive AX-402 inboard roller bearing housing." },
+      { bold: "Geometric Phase Match:", text: "Envelope frequency corresponds exactly to bearing cage rotational defect frequency." }
+    ],
+    evidenceLink: "evidence.html?alert=EW-2026-091"
+  },
+  hydraulic: {
+    id: "hydraulic",
+    title: "Extrusion Press Valve Drift",
+    asset: "Primary Extrusion Press #2 (Pump Station B)",
+    signals: [
+      { id: "SIG-H01", name: "Cavitation Burst #01", type: "Acoustic Transducer", desc: "Ultrasonic cavitation micro-bursts on pump suction", time: "6d ago", dot: "#2563EB", location: "Pump Station B" },
+      { id: "SIG-H02", name: "Valve Lag #02", type: "SCADA Controller", desc: "Proportional spool valve response delay +140ms", time: "3d ago", dot: "#C27803", location: "Press #2 Manifold" },
+      { id: "SIG-H03", name: "Fluid Micro-wear #03", type: "Fluid Lab Sample", desc: "ISO 4406 particulate elevation in quarterly oil draw", time: "24h ago", dot: "#1B4332", location: "Hydraulic Loop B" }
+    ],
+    pattern: {
+      name: "Valve Response Lag & Cavitation",
+      signalCount: "12 Related Signals",
+      coherence: "91.2% Coherence",
+      velocity: "Increasing Velocity",
+      timeframe: "12 Days to Breach",
+      desc: "Differential valve hysteresis correlates with fluid aeration and acoustic cavitation spikes."
+    },
+    risk: {
+      level: "HIGH RISK",
+      score: "91",
+      scoreMax: "100",
+      location: "Block C — Extrusion Press #2",
+      leadTime: "12 Days Lead Time",
+      impact: "$210k Secondary Damage",
+      status: "Preventive Seal Service Scheduled"
+    },
+    whatChanged: {
+      metric1: { val: "↑ 28%", label: "Cavitation burst frequency", sub: "Acoustic transducer logged 28% increase in bursts" },
+      metric2: { val: "+2", label: "Valve lag anomalies", sub: "Response delay increased from 45ms to 140ms" },
+      metric3: { val: "↑ Med → High", label: "Risk level escalation", sub: "Spool erosion probability crossed warning threshold" },
+      metric4: { val: "+2", label: "New connected streams", sub: "SCADA valve timing and particulate oil analysis" }
+    },
+    evidence: [
+      { bold: "12 Related Signals:", text: "Correlated across SCADA valve timing, acoustic sensors, and fluid lab analysis." },
+      { bold: "Repeated Over 12 Days:", text: "Micro-cavitation events occurred predictably during high-pressure cycles." },
+      { bold: "Localized Hydraulic Loop:", text: "Confined to Pump Station B high-pressure manifold feeding Press #2." },
+      { bold: "Coherent Time-Lag:", text: "Spool hysteresis perfectly mirrors fluid temperature rise (+3.4°C)." }
+    ],
+    evidenceLink: "evidence.html?alert=EW-2026-088"
+  }
+};
+
+// Operational Risk Trend Trajectory Datasets (Answers: Is the situation getting better or worse?)
+const TREND_TRAJECTORIES = {
+  increasing: {
+    key: "increasing",
+    badge: "↑ Increasing Risk (+18% over 14d)",
+    badgeClass: "badge-trend-alert",
+    statusNote: "<strong>Status: ESCALATING (Situation is getting worse)</strong> — 3 correlated signal clusters breached early-warning threshold at T-10d. Precursor arrival velocity accelerated +34%.",
+    signalPath: "M 50,158 L 135,152 L 220,140 L 305,124 L 390,92 L 475,58 L 560,32",
+    signalArea: "M 50,158 L 135,152 L 220,140 L 305,124 L 390,92 L 475,58 L 560,32 L 560,170 L 50,170 Z",
+    riskPath: "M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38",
+    riskArea: "M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38 L 560,170 L 50,170 Z",
+    points: [
+      { x: 50, y: 158, title: "T-28d: 12 signals (sub-threshold normal)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 135, y: 152, title: "T-21d: 18 signals (isolated noise)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 220, y: 140, title: "T-14d: 26 signals (multi-modal correlation begins)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 305, y: 110, title: "T-10d: 42 signals (Breached MTGNN Threshold • 18d Lead)", stroke: "#C27803", fill: "#FFF" },
+      { x: 390, y: 72, title: "T-6d: 65 signals (Precursor surge accelerates)", stroke: "#A43A2A", fill: "#FFF" },
+      { x: 475, y: 46, title: "T-3d: 94 signals (Active Early Warning)", stroke: "#A43A2A", fill: "#FFF" },
+      { x: 560, y: 38, title: "Today: Risk Score 72/100 • 128 Signals • Action Dispatched", stroke: "#A43A2A", fill: "#A43A2A" }
+    ]
+  },
+  stable: {
+    key: "stable",
+    badge: "→ Stable Baseline (±2% variance)",
+    badgeClass: "badge-forest-subtle",
+    statusNote: "<strong>Status: STABLE (Situation steady)</strong> — Telemetry variance remains within safe tolerances. Sub-threshold indicators have not formed coherent failure patterns.",
+    signalPath: "M 50,145 L 135,148 L 220,144 L 305,146 L 390,143 L 475,145 L 560,144",
+    signalArea: "M 50,145 L 135,148 L 220,144 L 305,146 L 390,143 L 475,145 L 560,144 L 560,170 L 50,170 Z",
+    riskPath: "M 50,152 L 135,150 L 220,153 L 305,150 L 390,151 L 475,149 L 560,150",
+    riskArea: "M 50,152 L 135,150 L 220,153 L 305,150 L 390,151 L 475,149 L 560,150 L 560,170 L 50,170 Z",
+    points: [
+      { x: 50, y: 152, title: "T-28d: Risk 22/100 (Safe)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 135, y: 150, title: "T-21d: Risk 24/100 (Safe)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 220, y: 153, title: "T-14d: Risk 21/100 (Safe)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 305, y: 150, title: "T-10d: Risk 24/100 (Sub-threshold)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 390, y: 151, title: "T-6d: Risk 23/100 (Sub-threshold)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 475, y: 149, title: "T-3d: Risk 25/100 (Normal)", stroke: "#1B4332", fill: "#FFF" },
+      { x: 560, y: 150, title: "Today: Risk Score 24/100 • Nominal baseline", stroke: "#1B4332", fill: "#1B4332" }
+    ]
+  },
+  decreasing: {
+    key: "decreasing",
+    badge: "↓ Decreasing Risk (-32% post-remediation)",
+    badgeClass: "badge-forest-subtle",
+    statusNote: "<strong>Status: IMPROVING (Situation is getting better)</strong> — Field engineering replaced defective flange seal; vibration harmonics and moisture readings restored to baseline.",
+    signalPath: "M 50,42 L 135,55 L 220,78 L 305,112 L 390,138 L 475,152 L 560,160",
+    signalArea: "M 50,42 L 135,55 L 220,78 L 305,112 L 390,138 L 475,152 L 560,160 L 560,170 L 50,170 Z",
+    riskPath: "M 50,48 L 135,62 L 220,88 L 305,120 L 390,146 L 475,158 L 560,164",
+    riskArea: "M 50,48 L 135,62 L 220,88 L 305,120 L 390,146 L 475,158 L 560,164 L 560,170 L 50,170 Z",
+    points: [
+      { x: 50, y: 48, title: "T-28d: Peak Precursor Alarm (Risk 82/100)", stroke: "#A43A2A", fill: "#FFF" },
+      { x: 135, y: 62, title: "T-21d: Work Order Dispatched", stroke: "#A43A2A", fill: "#FFF" },
+      { x: 220, y: 88, title: "T-14d: Maintenance Executed", stroke: "#C27803", fill: "#FFF" },
+      { x: 305, y: 120, title: "T-10d: Telemetry normalization begun", stroke: "#1B4332", fill: "#FFF" },
+      { x: 390, y: 146, title: "T-6d: Harmonics dropped below threshold", stroke: "#1B4332", fill: "#FFF" },
+      { x: 475, y: 158, title: "T-3d: Secondary moisture cleared", stroke: "#1B4332", fill: "#FFF" },
+      { x: 560, y: 164, title: "Today: Risk Score 18/100 • Full Resolution Verified", stroke: "#1B4332", fill: "#1B4332" }
+    ]
+  }
+};
+
 class EarlySightDashboard {
   constructor() {
     this.currentFilter = 'all';
     this.searchQuery = '';
     this.activeView = 'dashboard'; // 'hero' or 'dashboard'
+    this.activeTrajectory = 'increasing'; // 'increasing', 'stable', or 'decreasing'
+    this.activeScenario = 'water'; // 'water', 'bearing', or 'hydraulic'
     
     this.init();
   }
@@ -150,62 +337,86 @@ class EarlySightDashboard {
     });
   }
 
-  // 1. Overview Section
+  // 1. Overview Section — Operational Risk Intelligence Hierarchy (Milestone 3 - Part 1)
   renderMetricsOverview() {
     const container = document.getElementById('dashMetricsRow');
     if (!container) return;
 
     container.innerHTML = `
-      <div class="metric-card-compact">
+      <!-- Card 1: Overall Risk Score (Illustrative Synthesis Index) -->
+      <div class="metric-card-compact risk-score-card">
         <div class="metric-card-top">
-          <span class="metric-sub-label">Active Signals</span>
-          <span class="indicator-dot dot-slate"></span>
+          <span class="metric-sub-label">Overall Risk</span>
+          <span class="metric-illustrative-pill" title="Illustrative frontend score for synthesis">Mock Index</span>
         </div>
-        <div class="metric-primary-val">${DASHBOARD_METRICS.activeSignalsCount || 128} <span class="metric-unit">Signals</span></div>
-        <div class="metric-footer-note text-muted">Across 6 enterprise operational zones</div>
+        <div class="metric-score-row">
+          <div class="metric-primary-val risk-score-val">72 <span class="metric-score-denom">/ 100</span></div>
+          <div class="risk-trajectory-pill trajectory-increasing" title="Precursor acceleration detected">
+            <span class="trajectory-arrow">↑</span> Increasing
+          </div>
+        </div>
+        <div class="metric-operational-q">How serious is the current situation?</div>
+        <div class="metric-footer-note text-rust">Illustrative frontend score • Non-predictive mock value</div>
       </div>
 
+      <!-- Card 2: Active Risks (Concrete Countdown Early Warnings) -->
+      <div class="metric-card-compact">
+        <div class="metric-card-top">
+          <span class="metric-sub-label">Active Risks</span>
+          <span class="indicator-dot dot-vermilion"></span>
+        </div>
+        <div class="metric-score-row">
+          <div class="metric-primary-val">04 <span class="metric-unit">Active</span></div>
+          <span class="risk-trajectory-pill badge-urgent">Critical Countdown</span>
+        </div>
+        <div class="metric-operational-q">Immediate operational threats</div>
+        <div class="metric-footer-note text-vermilion">Lead times: 12d to 31d prior to failure</div>
+      </div>
+
+      <!-- Card 3: Emerging Risks (Precursor Patterns Forming) -->
       <div class="metric-card-compact">
         <div class="metric-card-top">
           <span class="metric-sub-label">Emerging Risks</span>
-          <span class="indicator-dot dot-vermilion"></span>
-        </div>
-        <div class="metric-primary-val">0${DASHBOARD_METRICS.emergingRisksCount || 7} <span class="metric-unit">Identified</span></div>
-        <div class="metric-footer-note text-vermilion">Correlated pre-failure patterns</div>
-      </div>
-
-      <div class="metric-card-compact">
-        <div class="metric-card-top">
-          <span class="metric-sub-label">High Priority Issues</span>
           <span class="indicator-dot dot-amber"></span>
         </div>
-        <div class="metric-primary-val">${DASHBOARD_METRICS.highPriorityCount || 12} <span class="metric-unit">Issues</span></div>
-        <div class="metric-footer-note text-amber">Requires active engineering review</div>
+        <div class="metric-score-row">
+          <div class="metric-primary-val">02 <span class="metric-unit">Patterns</span></div>
+          <span class="risk-trajectory-pill badge-forming">Weak Signals</span>
+        </div>
+        <div class="metric-operational-q">Weak signal convergence forming</div>
+        <div class="metric-footer-note text-amber">Crossing correlation threshold</div>
       </div>
 
+      <!-- Card 4: Resolved Risks (Post-Intervention Verified) -->
       <div class="metric-card-compact">
         <div class="metric-card-top">
-          <span class="metric-sub-label">Open Actions</span>
+          <span class="metric-sub-label">Resolved Risks</span>
           <span class="indicator-dot dot-emerald"></span>
         </div>
-        <div class="metric-primary-val">${DASHBOARD_METRICS.openActionsCount || 19} <span class="metric-unit">Actions</span></div>
-        <div class="metric-footer-note text-emerald">8 in progress • 5 assigned • 6 waiting</div>
+        <div class="metric-score-row">
+          <div class="metric-primary-val">08 <span class="metric-unit">Resolved</span></div>
+          <span class="risk-trajectory-pill badge-resolved">Intervention Verified</span>
+        </div>
+        <div class="metric-operational-q">Post-intervention stability</div>
+        <div class="metric-footer-note text-emerald">Closed-loop telemetry confirmed</div>
       </div>
     `;
   }
 
-  // Operational Data Visualizations:
-  // A. Emerging Risk Trend (SVG Line Chart)
-  // B. Signal Severity Distribution (Compact Donut & Segmented Bar)
-  // C. Risk Overview Cockpit (Score / Status / Confidence / Lead Time)
-  // D. Signal -> Pattern -> Risk -> Recommended Action Visual Pipeline Strip
+  // Operational Data Visualizations (Milestone 3: Parts 2, 3, 4, 5, 6):
+  // Part 2 — Emerging Risk Trend (SVG Line/Area Chart with Increasing / Stable / Decreasing views)
+  // Part 3 — Severity Distribution (Compact Donut, Categorized List, Segmented Bar)
+  // Part 4 — Signature Visualization (SIGNAL -> PATTERN -> RISK Convergence Visual)
+  // Part 5 — "What Changed?" Intelligence Panel (4 Precursor Deltas)
+  // Part 6 — Evidence Connection (Lightweight Forensics & Dossier Link)
   renderOperationalVisualizations() {
     const container = document.getElementById('dashOperationalViz');
     if (!container) return;
 
-    // A. Trend Points Calculation (30-day window with MTGNN detection threshold)
-    // Signal volume: 12 -> 16 -> 24 -> 38 -> 65 -> 94 -> 128
-    // Risk curve: 14 -> 18 -> 26 -> 52 (breach) -> 74 -> 88 -> 92
+    const traj = TREND_TRAJECTORIES[this.activeTrajectory] || TREND_TRAJECTORIES.increasing;
+    const scen = SIGNATURE_SCENARIOS[this.activeScenario] || SIGNATURE_SCENARIOS.water;
+
+    // Trend SVG
     const trendSvg = `
       <svg viewBox="0 0 600 200" preserveAspectRatio="none">
         <defs>
@@ -237,79 +448,112 @@ class EarlySightDashboard {
 
         <!-- MTGNN Pre-Failure Detection Threshold (Dashed Amber) -->
         <line x1="45" y1="110" x2="575" y2="110" class="chart-threshold-line"/>
-        <rect x="350" y="98" width="220" height="18" rx="3" fill="#FAF8F5" stroke="#E4E0D8" stroke-width="1"/>
-        <text x="460" y="110" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#C27803">
+        <rect x="340" y="98" width="235" height="18" rx="3" fill="#FAF8F5" stroke="#E4E0D8" stroke-width="1"/>
+        <text x="457" y="110" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#C27803">
           MTGNN DETECTION THRESHOLD (18d LEAD)
         </text>
 
         <!-- Shaded Areas -->
-        <path d="M 50,158 L 135,152 L 220,140 L 305,124 L 390,92 L 475,58 L 560,32 L 560,170 L 50,170 Z" fill="url(#signalAreaGrad)"/>
-        <path d="M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38 L 560,170 L 50,170 Z" fill="url(#riskAreaGrad)"/>
+        <path d="${traj.signalArea}" fill="url(#signalAreaGrad)"/>
+        <path d="${traj.riskArea}" fill="url(#riskAreaGrad)"/>
 
         <!-- Signal Precursor Velocity Line (Deep Forest Green) -->
-        <path d="M 50,158 L 135,152 L 220,140 L 305,124 L 390,92 L 475,58 L 560,32" class="chart-line-signal"/>
+        <path d="${traj.signalPath}" class="chart-line-signal"/>
 
         <!-- Synthesized Risk Escalation Curve (Muted Rust) -->
-        <path d="M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38" class="chart-line-risk"/>
+        <path d="${traj.riskPath}" class="chart-line-risk"/>
 
         <!-- Data Points on Curve -->
-        <circle cx="50" cy="158" r="3.5" class="chart-dot-point" stroke="#1B4332"><title>Aug 26: 12 signals (sub-threshold)</title></circle>
-        <circle cx="135" cy="152" r="3.5" class="chart-dot-point" stroke="#1B4332"><title>Sep 02: 18 signals (isolated noise)</title></circle>
-        <circle cx="220" cy="140" r="3.5" class="chart-dot-point" stroke="#1B4332"><title>Sep 09: 26 signals (multi-modal correlation)</title></circle>
-        <circle cx="305" cy="124" r="4.5" class="chart-dot-point" stroke="#C27803"><title>Sep 14: 42 signals (Pattern Confirmed - 18d Lead Time)</title></circle>
-        <circle cx="390" cy="92" r="4.5" class="chart-dot-point" stroke="#A43A2A"><title>Sep 18: 65 signals (Precursor Surge)</title></circle>
-        <circle cx="475" cy="58" r="4.5" class="chart-dot-point" stroke="#A43A2A"><title>Sep 21: 94 signals (Early Warning Active)</title></circle>
-        <circle cx="560" cy="32" r="5" class="chart-dot-point" stroke="#A43A2A" fill="#A43A2A"><title>Today: 128 signals (Closed-Loop Action In Progress)</title></circle>
+        ${traj.points.map(p => `
+          <circle cx="${p.x}" cy="${p.y}" r="4" class="chart-dot-point" stroke="${p.stroke}" fill="${p.fill}">
+            <title>${p.title}</title>
+          </circle>
+        `).join('')}
 
         <!-- X-Axis Labels -->
-        <text x="50" y="186" text-anchor="middle" class="chart-text-axis">T-28d (Aug 26)</text>
+        <text x="50" y="186" text-anchor="middle" class="chart-text-axis">T-28d</text>
         <text x="135" y="186" text-anchor="middle" class="chart-text-axis">T-21d</text>
         <text x="220" y="186" text-anchor="middle" class="chart-text-axis">T-14d</text>
         <text x="305" y="186" text-anchor="middle" class="chart-text-axis">T-10d (Pattern)</text>
         <text x="390" y="186" text-anchor="middle" class="chart-text-axis">T-6d</text>
         <text x="475" y="186" text-anchor="middle" class="chart-text-axis">T-3d</text>
-        <text x="560" y="186" text-anchor="middle" class="chart-text-axis" font-weight="700" fill="#1C2024">Today (Sep 24)</text>
+        <text x="560" y="186" text-anchor="middle" class="chart-text-axis" font-weight="700" fill="#1C2024">Today</text>
       </svg>
     `;
 
-    // B. Donut SVG Calculation
+    // Severity Donut SVG
     // Total 128: Low 64 (50%), Med 38 (29.7%), High 18 (14.1%), Crit 8 (6.2%)
-    // Circumference = 2 * PI * 44 = 276.46
-    // Low: 138.23, Med: 82.1, High: 38.9, Crit: 17.2
     const donutSvg = `
       <svg viewBox="0 0 120 120">
-        <!-- Background circle -->
         <circle cx="60" cy="60" r="44" fill="none" stroke="#E4E0D8" stroke-width="14"/>
-        <!-- Low: 50% (offset 0) -->
+        <!-- Low: 50% -->
         <circle cx="60" cy="60" r="44" fill="none" stroke="#4D7C5D" stroke-width="14"
           stroke-dasharray="138.2 276.5" stroke-dashoffset="0"/>
-        <!-- Medium: 29.7% (offset -138.2) -->
+        <!-- Medium: 29.7% -->
         <circle cx="60" cy="60" r="44" fill="none" stroke="#C27803" stroke-width="14"
           stroke-dasharray="82.1 276.5" stroke-dashoffset="-138.2"/>
-        <!-- High: 14.1% (offset -220.3) -->
+        <!-- High: 14.1% -->
         <circle cx="60" cy="60" r="44" fill="none" stroke="#A43A2A" stroke-width="14"
           stroke-dasharray="38.9 276.5" stroke-dashoffset="-220.3"/>
-        <!-- Critical: 6.2% (offset -259.2) -->
+        <!-- Critical: 6.2% -->
         <circle cx="60" cy="60" r="44" fill="none" stroke="#7A2417" stroke-width="14"
           stroke-dasharray="17.3 276.5" stroke-dashoffset="-259.2"/>
       </svg>
     `;
 
+    // Vector Bracket SVG for Signature Convergence Visual
+    // Connects 3 vertical signal cards to 1 pattern centroid
+    const bracketSvg = `
+      <svg viewBox="0 0 60 230" class="convergence-bracket-svg" preserveAspectRatio="none">
+        <!-- 3 Horizontal Branches from Signals at Y=35, 115, 195 -->
+        <line x1="0" y1="35" x2="24" y2="35" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="0" y1="115" x2="24" y2="115" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="0" y1="195" x2="24" y2="195" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Vertical Trunk -->
+        <line x1="24" y1="35" x2="24" y2="195" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Convergence Stem pointing Right into Pattern Card -->
+        <line x1="24" y1="115" x2="52" y2="115" stroke="#1B4332" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="50,111 58,115 50,119" fill="#1B4332"/>
+      </svg>
+    `;
+
     container.innerHTML = `
-      <!-- Row 1: Emerging Risk Trend Line Chart & Signal Severity Distribution Donut -->
+      <!-- Row 1: PART 2 (Risk Trend) & PART 3 (Severity Distribution) -->
       <div class="dash-viz-row-top">
         
-        <!-- Panel A: Emerging Risk Trend Line Chart -->
+        <!-- Panel A: PART 2 — Emerging Risk Trend Visualization -->
         <div class="dash-viz-card">
           <div class="dash-viz-card-header">
-            <div class="dash-viz-title-group">
-              <span class="indicator-dot dot-vermilion"></span>
-              <h3 class="dash-viz-title">Emerging Risk & Signal Activity Trend</h3>
+            <div>
+              <div class="dash-viz-title-group">
+                <span class="indicator-dot dot-vermilion"></span>
+                <h3 class="dash-viz-title">Emerging Risk Trend</h3>
+              </div>
+              <span class="dash-viz-sub-q">Answers: "Is the situation getting better or worse?"</span>
             </div>
-            <span class="dash-viz-badge badge-trend-alert">+34% Precursor Velocity</span>
+
+            <div class="trend-header-controls">
+              <div class="trend-toggle-group" role="group" aria-label="Risk Trajectory View Selector">
+                <button class="trend-toggle-btn ${this.activeTrajectory === 'increasing' ? 'active' : ''}" data-trajectory="increasing" title="View active escalating surge trajectory">
+                  ↑ Increasing
+                </button>
+                <button class="trend-toggle-btn ${this.activeTrajectory === 'stable' ? 'active' : ''}" data-trajectory="stable" title="View normal baseline trajectory">
+                  → Stable
+                </button>
+                <button class="trend-toggle-btn ${this.activeTrajectory === 'decreasing' ? 'active' : ''}" data-trajectory="decreasing" title="View post-intervention recovery trajectory">
+                  ↓ Decreasing
+                </button>
+              </div>
+              <span class="dash-viz-badge ${traj.badgeClass}" id="trendBadgeLabel">${traj.badge}</span>
+            </div>
           </div>
 
-          <div class="trend-line-chart-wrap">
+          <!-- Operational Status Interpretation Note -->
+          <div class="trend-status-banner" id="trendStatusBanner">
+            ${traj.statusNote}
+          </div>
+
+          <div class="trend-line-chart-wrap" id="trendChartWrap">
             ${trendSvg}
           </div>
 
@@ -320,21 +564,24 @@ class EarlySightDashboard {
             </div>
             <div class="chart-legend-indicator">
               <span class="legend-swatch" style="background:#A43A2A;"></span>
-              <span>Synthesized Risk Index (88/100)</span>
+              <span>Synthesized Risk Score (72/100)</span>
             </div>
             <div class="chart-legend-indicator">
               <span class="legend-swatch" style="background:#C27803; border-top:1px dashed #C27803;"></span>
-              <span>Detection Threshold (T-18d)</span>
+              <span>Pre-Failure Threshold (T-18d)</span>
             </div>
           </div>
         </div>
 
-        <!-- Panel B: Signal Severity Distribution -->
+        <!-- Panel B: PART 3 — Severity Distribution Visualization -->
         <div class="dash-viz-card">
           <div class="dash-viz-card-header">
-            <div class="dash-viz-title-group">
-              <span class="indicator-dot dot-slate"></span>
-              <h3 class="dash-viz-title">Signal Severity Distribution</h3>
+            <div>
+              <div class="dash-viz-title-group">
+                <span class="indicator-dot dot-slate"></span>
+                <h3 class="dash-viz-title">Risk Severity Distribution</h3>
+              </div>
+              <span class="dash-viz-sub-q">Answers: "How serious are the detected risks?"</span>
             </div>
             <span class="dash-viz-badge badge-forest-subtle">128 Total Signals</span>
           </div>
@@ -383,7 +630,7 @@ class EarlySightDashboard {
             </div>
           </div>
 
-          <div class="severity-bar-multi" title="Proportional Severity Strip">
+          <div class="severity-bar-multi" title="Proportional Severity Strip: Critical (6.2%), High (14.1%), Medium (29.7%), Low (50.0%)">
             <div class="severity-bar-seg" style="width:6.2%; background:#7A2417;" title="Critical: 8"></div>
             <div class="severity-bar-seg" style="width:14.1%; background:#A43A2A;" title="High: 18"></div>
             <div class="severity-bar-seg" style="width:29.7%; background:#C27803;" title="Medium: 38"></div>
@@ -393,7 +640,183 @@ class EarlySightDashboard {
 
       </div>
 
-      <!-- Row 2: Panel C — Risk Overview & Confidence Cockpit -->
+      <!-- Row 2: PART 4 — SIGNATURE VISUALIZATION (SIGNAL -> PATTERN -> RISK) -->
+      <div class="signature-intelligence-card" id="signatureIntelligenceCard">
+        <div class="dash-viz-card-header">
+          <div>
+            <div class="dash-viz-title-group">
+              <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+              <h3 class="dash-viz-title">Signal Convergence & Emerging Risk Synthesis</h3>
+            </div>
+            <span class="dash-viz-sub-q">Answers: "How did EarlySight identify this emerging risk?" (Signals → Pattern → Risk)</span>
+          </div>
+
+          <!-- Interactive Scenario Switcher -->
+          <div class="sig-scenario-nav">
+            <button class="sig-scenario-tab ${this.activeScenario === 'water' ? 'active' : ''}" data-scenario="water">
+              Water Leakage (Block A)
+            </button>
+            <button class="sig-scenario-tab ${this.activeScenario === 'bearing' ? 'active' : ''}" data-scenario="bearing">
+              Drive Feeder (AX-402)
+            </button>
+            <button class="sig-scenario-tab ${this.activeScenario === 'hydraulic' ? 'active' : ''}" data-scenario="hydraulic">
+              Extrusion Press (Block C)
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-Column Convergence Flow: Signals Bracket -> Pattern Centroid -> Emerging Risk Outcome -->
+        <div class="signature-convergence-grid">
+          
+          <!-- Column 1: SIGNALS (Scattered precursor indicators) -->
+          <div class="signal-bracket-col">
+            <div class="signal-col-header">
+              <span>01. Ingested Precursor Signals</span>
+              <span class="font-mono text-muted">${scen.signals.length} Signals</span>
+            </div>
+
+            ${scen.signals.map(s => `
+              <div class="signal-mini-card">
+                <div class="signal-mini-top">
+                  <span class="signal-mini-title">
+                    <span class="indicator-dot" style="background:${s.dot};"></span>
+                    <strong>${s.name}</strong>
+                  </span>
+                  <span class="signal-type-tag">${s.type}</span>
+                </div>
+                <div class="signal-mini-desc">${s.desc}</div>
+                <div class="signal-mini-meta">${s.location} • ${s.time}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Desktop SVG Bracket Connector -->
+          <div class="convergence-bracket-wrap" aria-hidden="true">
+            ${bracketSvg}
+          </div>
+          <div class="mobile-down-arrow" aria-hidden="true">&darr;</div>
+
+          <!-- Column 2: PATTERN (Correlated Synthesis Centroid) -->
+          <div class="pattern-centroid-col">
+            <div class="signal-col-header">
+              <span>02. Correlated Pattern</span>
+              <span class="font-mono" style="color:var(--color-amber);">${scen.pattern.coherence}</span>
+            </div>
+
+            <div class="pattern-centroid-card">
+              <div class="pattern-card-header">
+                <span class="pattern-badge-pill" style="background:rgba(194,120,3,0.12); color:#C27803;">
+                  ${scen.pattern.signalCount}
+                </span>
+                <span class="pattern-badge-pill" style="background:rgba(27,67,50,0.1); color:#1B4332;">
+                  ${scen.pattern.velocity}
+                </span>
+              </div>
+              <div class="pattern-card-title">${scen.pattern.name}</div>
+              <div class="pattern-desc">${scen.pattern.desc}</div>
+              <div class="signal-mini-meta" style="border-top:1px dashed var(--border-subtle); padding-top:4px;">
+                MTGNN Graph Attention • ${scen.pattern.timeframe}
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Connector Arrow -->
+          <div class="convergence-arrow-col" aria-hidden="true">&rarr;</div>
+          <div class="mobile-down-arrow" aria-hidden="true">&darr;</div>
+
+          <!-- Column 3: EMERGING RISK (Proactive Warning Forecast) -->
+          <div class="risk-outcome-col">
+            <div class="signal-col-header">
+              <span>03. Emerging Risk Forecast</span>
+              <span class="font-mono text-muted">${scen.risk.leadTime}</span>
+            </div>
+
+            <div class="risk-outcome-card">
+              <div class="risk-outcome-header">
+                <span class="risk-severity-banner">
+                  <span class="indicator-dot dot-vermilion"></span>
+                  ${scen.risk.level}
+                </span>
+                <span class="risk-score-display">${scen.risk.score} <span style="font-size:0.75rem; font-weight:normal; color:#57606A;">/ 100</span></span>
+              </div>
+              <div class="risk-location-tag">${scen.risk.location}</div>
+              <div class="risk-impact-note">Predicted Impact: <strong>${scen.risk.impact}</strong></div>
+              <div class="signal-mini-meta" style="color:var(--color-forest); font-weight:600; border-top:1px dashed var(--border-subtle); padding-top:4px;">
+                Status: ${scen.risk.status}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PART 5: "WHAT CHANGED?" INTELLIGENCE SECTION -->
+        <div class="what-changed-panel">
+          <div class="what-changed-header">
+            <div>
+              <h4 class="what-changed-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span>Recent Operational Changes & Precursor Shifts</span>
+              </h4>
+              <span class="what-changed-sub">Answers: "What changed recently across monitored facility assets?"</span>
+            </div>
+            <span class="metric-illustrative-pill">72-Hour Delta Tracking</span>
+          </div>
+
+          <div class="what-changed-grid">
+            <div class="what-changed-card">
+              <div class="what-changed-val" style="color:var(--color-rust);">${scen.whatChanged.metric1.val}</div>
+              <div class="what-changed-label">${scen.whatChanged.metric1.label}</div>
+              <div class="what-changed-desc">${scen.whatChanged.metric1.sub}</div>
+            </div>
+
+            <div class="what-changed-card">
+              <div class="what-changed-val" style="color:var(--color-amber);">${scen.whatChanged.metric2.val}</div>
+              <div class="what-changed-label">${scen.whatChanged.metric2.label}</div>
+              <div class="what-changed-desc">${scen.whatChanged.metric2.sub}</div>
+            </div>
+
+            <div class="what-changed-card">
+              <div class="what-changed-val" style="color:var(--color-rust);">${scen.whatChanged.metric3.val}</div>
+              <div class="what-changed-label">${scen.whatChanged.metric3.label}</div>
+              <div class="what-changed-desc">${scen.whatChanged.metric3.sub}</div>
+            </div>
+
+            <div class="what-changed-card">
+              <div class="what-changed-val" style="color:var(--color-forest);">${scen.whatChanged.metric4.val}</div>
+              <div class="what-changed-label">${scen.whatChanged.metric4.label}</div>
+              <div class="what-changed-desc">${scen.whatChanged.metric4.sub}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PART 6: EVIDENCE CONNECTION -->
+        <div class="evidence-connection-panel">
+          <div class="evidence-conn-header">
+            <div>
+              <h4 class="evidence-conn-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Evidence Connection: Why EarlySight Highlighted This Risk</span>
+              </h4>
+              <span class="dash-viz-sub-q">Answers: "Why should I trust this warning?" (${scen.risk.level} • ${scen.asset})</span>
+            </div>
+            <a href="${scen.evidenceLink}" class="btn-evidence-dossier" id="evidenceDossierLink">
+              Inspect Evidence Dossier &rarr;
+            </a>
+          </div>
+
+          <div class="evidence-reasons-grid">
+            ${scen.evidence.map(ev => `
+              <div class="evidence-reason-item">
+                <span class="evidence-reason-bullet">•</span>
+                <span><strong>${ev.bold}</strong> ${ev.text}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Row 3: Operational Cockpit (Score / Confidence / Lead Time / Outage Risk) -->
       <div class="risk-overview-cockpit">
         
         <div class="cockpit-metric-block">
@@ -403,11 +826,11 @@ class EarlySightDashboard {
               <circle cx="22" cy="22" r="18" fill="none" stroke="#A43A2A" stroke-width="4"
                 stroke-dasharray="113.1" stroke-dashoffset="24.8"/>
             </svg>
-            <span class="cockpit-score-val" style="position:absolute;">78</span>
+            <span class="cockpit-score-val" style="position:absolute;">72</span>
           </div>
           <div class="cockpit-metric-text">
             <span class="cockpit-metric-label">Composite Risk Index</span>
-            <span class="cockpit-metric-main" style="color:var(--color-rust);">78 / 100</span>
+            <span class="cockpit-metric-main" style="color:var(--color-rust);">72 / 100</span>
             <span class="cockpit-metric-sub">Elevated Precursor Activity</span>
           </div>
         </div>
@@ -415,8 +838,8 @@ class EarlySightDashboard {
         <div class="cockpit-metric-block">
           <div class="cockpit-metric-text">
             <span class="cockpit-metric-label">Active Emerging Risks</span>
-            <span class="cockpit-metric-main">07 Projections</span>
-            <span class="cockpit-metric-sub">1 Critical • 2 High • 2 Med • 2 Low</span>
+            <span class="cockpit-metric-main">04 Early Warnings</span>
+            <span class="cockpit-metric-sub">1 Critical • 2 High • 1 Moderate</span>
           </div>
         </div>
 
@@ -437,72 +860,52 @@ class EarlySightDashboard {
         </div>
 
       </div>
-
-      <!-- Row 3: Panel D — Signal -> Pattern -> Risk -> Action Visual Relationship -->
-      <div class="causal-pipeline-container">
-        <div class="causal-pipeline-header">
-          <div class="causal-pipeline-title-group">
-            <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
-            <h3 class="dash-viz-title">Operational Causal Chain</h3>
-          </div>
-          <span class="dash-viz-badge badge-forest-subtle">Core EarlySight Architecture</span>
-        </div>
-
-        <div class="causal-pipeline-flow">
-          
-          <!-- Step 1: Multiple Signals -->
-          <div class="causal-node-card">
-            <div class="causal-node-top">
-              <span class="causal-node-step">01. Ingestion</span>
-              <span class="causal-node-badge" style="background:rgba(27,67,50,0.08); color:#1B4332;">128 Signals</span>
-            </div>
-            <div class="causal-node-title">Multiple Scattered Signals</div>
-            <div class="causal-node-desc">Acoustic transducers, vibration telemetry, shift logs & FLIR scans across 6 plant zones.</div>
-            <div class="causal-node-meta">Sub-threshold noise in isolated silos</div>
-          </div>
-
-          <div class="causal-connector-arrow">&rarr;</div>
-
-          <!-- Step 2: Related Pattern -->
-          <div class="causal-node-card">
-            <div class="causal-node-top">
-              <span class="causal-node-step">02. Synthesis</span>
-              <span class="causal-node-badge" style="background:rgba(194,120,3,0.1); color:#C27803;">91.4% Coherence</span>
-            </div>
-            <div class="causal-node-title">Related Pattern Identified</div>
-            <div class="causal-node-desc">3,420 Hz envelope harmonic correlates with bearing relubrication & thermal bloom.</div>
-            <div class="causal-node-meta">MTGNN spatial-temporal graph match</div>
-          </div>
-
-          <div class="causal-connector-arrow">&rarr;</div>
-
-          <!-- Step 3: Emerging Risk -->
-          <div class="causal-node-card" style="border-left:3px solid var(--color-rust);">
-            <div class="causal-node-top">
-              <span class="causal-node-step" style="color:var(--color-rust);">03. Warning</span>
-              <span class="causal-node-badge" style="background:#FDF1EE; color:#A43A2A;">18d Lead Time</span>
-            </div>
-            <div class="causal-node-title">Emerging Risk Forecast</div>
-            <div class="causal-node-desc">Impending sub-surface bearing cage spallation forecast before motor seizure.</div>
-            <div class="causal-node-meta">Quantified hazard • $340k risk</div>
-          </div>
-
-          <div class="causal-connector-arrow">&rarr;</div>
-
-          <!-- Step 4: Recommended Action -->
-          <div class="causal-node-card" style="border-left:3px solid var(--color-forest);">
-            <div class="causal-node-top">
-              <span class="causal-node-step">04. Closed-Loop</span>
-              <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">WO Dispatched</span>
-            </div>
-            <div class="causal-node-title">Recommended Action</div>
-            <div class="causal-node-desc">Deploy ultrasonic detector & replace drive bearing during scheduled shift window.</div>
-            <div class="causal-node-meta">Zero unplanned downtime confirmed</div>
-          </div>
-
-        </div>
-      </div>
     `;
+
+    this.bindOperationalEvents();
+  }
+
+  // Trajectory Switcher for Part 2
+  switchTrajectory(trajectoryKey) {
+    if (TREND_TRAJECTORIES[trajectoryKey]) {
+      this.activeTrajectory = trajectoryKey;
+      this.renderOperationalVisualizations();
+    }
+  }
+
+  // Scenario Switcher for Part 4, 5, 6
+  switchSignatureScenario(scenarioKey) {
+    if (SIGNATURE_SCENARIOS[scenarioKey]) {
+      this.activeScenario = scenarioKey;
+      this.renderOperationalVisualizations();
+    }
+  }
+
+  // Event bindings for operational visualization interactive controls
+  bindOperationalEvents() {
+    // Trajectory toggle buttons (Part 2)
+    const trajButtons = document.querySelectorAll('.trend-toggle-btn');
+    trajButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = btn.getAttribute('data-trajectory');
+        if (key && key !== this.activeTrajectory) {
+          this.switchTrajectory(key);
+        }
+      });
+    });
+
+    // Scenario toggle tabs (Part 4)
+    const scenarioTabs = document.querySelectorAll('.sig-scenario-tab');
+    scenarioTabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = tab.getAttribute('data-scenario');
+        if (key && key !== this.activeScenario) {
+          this.switchSignatureScenario(key);
+        }
+      });
+    });
   }
 
 
