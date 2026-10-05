@@ -7,6 +7,8 @@
  * Alerts, Teams, Reports, Analytics, and Scoped AI Assistant.
  */
 
+import '../data/organizations-data.js';
+
 (function () {
   'use strict';
 

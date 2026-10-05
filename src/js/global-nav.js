@@ -21,6 +21,8 @@
  * - Global Search (Cmd+K / Ctrl+K Command Palette)
  */
 
+import './micro-interactions.js';
+
 (function () {
   'use strict';
 
@@ -104,6 +106,10 @@
         document.body.classList.add('sidebar-collapsed');
       }
 
+      // Wrap page content inside independent scroll container
+      this.wrapContentScrollContainer();
+      this.patchWindowScroll();
+
       // Inject HTML DOM
       this.renderSidebar();
       this.renderTopbar();
@@ -123,6 +129,64 @@
         motionScript.src = 'micro-interactions.js';
         document.body.appendChild(motionScript);
       }
+    }
+
+    wrapContentScrollContainer() {
+      let scrollContainer = document.getElementById('earlysightMainScroll');
+      if (scrollContainer) return scrollContainer;
+
+      scrollContainer = document.createElement('div');
+      scrollContainer.id = 'earlysightMainScroll';
+      scrollContainer.className = 'earlysight-main-scroll';
+
+      // Elements to exclude from moving inside scroll container
+      const excludeClasses = [
+        'global-sidebar',
+        'global-topbar',
+        'global-story-banner',
+        'global-modal-backdrop',
+        'global-flyout-popover',
+        'ai-evidence-modal',
+        'signal-modal-backdrop',
+        'floating-ai-launcher',
+        'mobile-sidebar-backdrop',
+        'action-toast-container'
+      ];
+
+      const nodesToMove = [];
+      Array.from(document.body.childNodes).forEach(node => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const tagName = node.tagName.toLowerCase();
+          if (tagName === 'script' || tagName === 'style') return;
+          if (excludeClasses.some(cls => node.classList && node.classList.contains(cls))) return;
+          if (node.id === 'earlysightMainScroll') return;
+        }
+        nodesToMove.push(node);
+      });
+
+      document.body.appendChild(scrollContainer);
+      nodesToMove.forEach(node => scrollContainer.appendChild(node));
+
+      return scrollContainer;
+    }
+
+    patchWindowScroll() {
+      if (window._earlysightScrollPatched) return;
+      window._earlysightScrollPatched = true;
+
+      const origScrollTo = window.scrollTo.bind(window);
+      window.scrollTo = function(...args) {
+        const container = document.getElementById('earlysightMainScroll');
+        if (container) {
+          if (typeof args[0] === 'object' && args[0] !== null) {
+            container.scrollTo(args[0]);
+          } else {
+            container.scrollTo(args[0], args[1]);
+          }
+        } else {
+          origScrollTo(...args);
+        }
+      };
     }
 
     renderSidebar() {
@@ -917,6 +981,43 @@
       document.addEventListener('click', () => {
         this.closeAllFlyouts();
       });
+
+      // Internal Hash Smooth Scrolling within #earlysightMainScroll
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href*="#"]');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href) return;
+        
+        const hashIdx = href.indexOf('#');
+        if (hashIdx === -1) return;
+        const pathPart = href.substring(0, hashIdx);
+        const hashPart = href.substring(hashIdx + 1);
+        if (!hashPart) return;
+
+        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        if (pathPart === '' || pathPart === currentPath || (pathPart === 'index.html' && (currentPath === '' || currentPath === 'index.html'))) {
+          const targetEl = document.getElementById(hashPart);
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (window.history && window.history.pushState) {
+              window.history.pushState(null, '', '#' + hashPart);
+            }
+          }
+        }
+      });
+
+      // Initial hash positioning on page load
+      if (window.location.hash) {
+        const targetId = window.location.hash.substring(1);
+        setTimeout(() => {
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 150);
+      }
     }
 
     toggleSidebar() {

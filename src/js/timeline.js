@@ -4,6 +4,8 @@
  * Daily/Weekly/Monthly Filtering, Trend Charts, Frequency Surge & Historical Comparison.
  */
 
+import '../data/timeline-data.js';
+
 class EarlySightTimelineController {
   constructor() {
     this.caseStudies = window.TIMELINE_CASE_STUDIES || [];

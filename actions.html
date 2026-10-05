@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Action Center & Resolution Tracking (Stage 10)</title>
   <meta name="description" content="Industrial operational resolution tracking workflow: Detected to Verified to Assigned to Action Taken to Resolved to Impact Verified. Assignee management, deadlines, prescriptive actions, and smooth status animations.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -155,7 +156,112 @@
       <div class="action-kpi-card">
         <span class="action-kpi-label">SLA On-Time Compliance</span>
         <span class="action-kpi-val" id="kpiSla">98.4%</span>
-        <span class="action-kpi-sub">Target: &lt; 4.2d Mean Lead</span>
+      </div>
+    </section>
+
+    <!-- 1. Compact Resolution Progress & Pipeline Strip -->
+    <section class="resolution-progress-panel" id="resolutionProgressPanel">
+      <div class="res-progress-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+          <h3 class="dash-viz-title">Resolution Pipeline Status & Impact Monitoring</h3>
+        </div>
+        <span class="dash-viz-badge badge-forest-subtle">$1,922,000 Loss Averted</span>
+      </div>
+
+      <!-- Segmented Resolution Progress Bar -->
+      <div class="res-progress-bar-wrap" title="Resolution Distribution: 19 Open, 8 In Progress, 18 Resolved">
+        <div style="width:43%; background:#A43A2A;" title="Open Actions: 19 (43%)"></div>
+        <div style="width:18%; background:#C27803;" title="In Progress: 8 (18%)"></div>
+        <div style="width:39%; background:#4D7C5D;" title="Resolved & Verified: 18 (39%)"></div>
+      </div>
+
+      <div class="res-progress-chips-row">
+        <div class="res-progress-chip" style="border-left:3px solid var(--color-rust);">
+          <div>
+            <span class="font-mono text-muted" style="font-size:0.68rem; text-transform:uppercase; display:block;">Open Actions</span>
+            <strong style="font-size:0.92rem; color:var(--ink-primary);">19 Actions</strong>
+            <span style="font-size:0.7rem; color:var(--ink-secondary); display:block;">Requires Engineering Allocation</span>
+          </div>
+        </div>
+
+        <div class="res-progress-chip" style="border-left:3px solid var(--color-amber);">
+          <div>
+            <span class="font-mono text-muted" style="font-size:0.68rem; text-transform:uppercase; display:block;">In Progress</span>
+            <strong style="font-size:0.92rem; color:var(--ink-primary);">08 Interventions</strong>
+            <span style="font-size:0.7rem; color:var(--ink-secondary); display:block;">Active Field Work Orders</span>
+          </div>
+        </div>
+
+        <div class="res-progress-chip" style="border-left:3px solid var(--color-sage);">
+          <div>
+            <span class="font-mono text-muted" style="font-size:0.68rem; text-transform:uppercase; display:block;">Resolved & Verified</span>
+            <strong style="font-size:0.92rem; color:var(--ink-primary);">18 Issues</strong>
+            <span style="font-size:0.7rem; color:var(--ink-secondary); display:block;">Post-Fix Telemetry Validated</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Before -> Action -> After Operational Telemetry Panel -->
+    <section class="before-after-container" id="beforeAfterSection">
+      <div class="causal-pipeline-header">
+        <div class="causal-pipeline-title-group">
+          <span class="indicator-dot dot-vermilion"></span>
+          <h3 class="dash-viz-title">Operational Proof: Before &rarr; Action &rarr; After Telemetry</h3>
+        </div>
+        <span class="dash-viz-badge badge-trend-alert">Sub-Surface Bearing Cage Fatigue (AX-402)</span>
+      </div>
+
+      <div class="before-after-grid">
+        <!-- Before Pane -->
+        <div class="before-after-pane pane-before">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="pane-badge" style="background:#FDF1EE; color:#A43A2A;">Before • Precursor</span>
+            <span class="font-mono text-muted" style="font-size:0.7rem;">T-18 Days</span>
+          </div>
+          <div class="pane-title">Sub-Surface Fatigue Inception</div>
+          <div class="pane-metric-line"><strong>Vibration:</strong> +2.84&sigma; (3,420 Hz envelope harmonic)</div>
+          <div class="pane-metric-line"><strong>Thermal Delta:</strong> +4.7&deg;C casing bloom</div>
+          <div class="pane-metric-line"><strong>Lubricant:</strong> Heavy ferrous micro-spalls</div>
+          <div style="font-size:0.74rem; color:var(--color-rust); font-weight:600; margin-top:4px;">
+            Impending shaft seizure &bull; $340k downtime risk
+          </div>
+        </div>
+
+        <div class="causal-connector-arrow">&rarr;</div>
+
+        <!-- Action Pane -->
+        <div class="before-after-pane pane-action">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="pane-badge" style="background:#EDF3F0; color:#1B4332;">Action • Prescriptive</span>
+            <span class="font-mono text-muted" style="font-size:0.7rem;">WO-2026-9810</span>
+          </div>
+          <div class="pane-title">Targeted Bearing Replacement</div>
+          <div class="pane-metric-line"><strong>Responsible:</strong> Mechanical Reliability</div>
+          <div class="pane-metric-line"><strong>Lead Tech:</strong> R. Kowalski (Field PM)</div>
+          <div class="pane-metric-line"><strong>Window:</strong> Planned shift turnaround (4.2 hrs)</div>
+          <div style="font-size:0.74rem; color:var(--color-forest); font-weight:600; margin-top:4px;">
+            Zero unplanned line downtime halts incurred
+          </div>
+        </div>
+
+        <div class="causal-connector-arrow">&rarr;</div>
+
+        <!-- After Pane -->
+        <div class="before-after-pane pane-after">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="pane-badge" style="background:#EDF4F0; color:#4D7C5D;">After • Verified</span>
+            <span class="font-mono text-muted" style="font-size:0.7rem;">T-0 Days</span>
+          </div>
+          <div class="pane-title">Normal Baseline Restored</div>
+          <div class="pane-metric-line"><strong>Vibration:</strong> 0.8 g-pk baseline (-95% anomaly decay)</div>
+          <div class="pane-metric-line"><strong>Thermal Profile:</strong> +0.2&deg;C nominal ambient tracking</div>
+          <div class="pane-metric-line"><strong>Telemetric Proof:</strong> 7 consecutive shifts verified</div>
+          <div style="font-size:0.74rem; color:var(--color-sage); font-weight:600; margin-top:4px;">
+            Averted $340,000 loss &bull; 48 hours continuous run
+          </div>
+        </div>
       </div>
     </section>
 
@@ -343,9 +449,6 @@
   <div id="actionToastContainer" class="action-toast-container"></div>
 
   <!-- Scripts -->
-  <script src="actions-data.js"></script>
-  <script src="actions.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/actions-entry.js"></script>
 </body>
 </html>

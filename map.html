@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Interactive Signal Map & Geospatial Intelligence</title>
   <meta name="description" content="Interactive map-style page visualizing where operational problems are emerging across enterprise plant zones. Features zoom, search, location, date, signal and risk filtering with cluster merge synthesis.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -309,38 +310,7 @@
   </div>
 
   <!-- Scripts -->
-  <script src="signals-data.js"></script>
-  <script src="dashboard-data.js"></script>
-  <script src="signal-map-data.js"></script>
-  <script src="signal-map.js"></script>
-  <script src="dashboard.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
-
-  <script>
-    // Initialize standalone map page engine
-    document.addEventListener('DOMContentLoaded', () => {
-      window.signalMapEngine = new EarlySightSignalMap('facilityMapCanvas', 'signalMapWrapper');
-      
-      // Modal close listener
-      const modal = document.getElementById('signalModal');
-      const closeBtn = document.getElementById('modalClose');
-      if (closeBtn && modal) {
-        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) modal.classList.remove('active');
-        });
-      }
-
-      // Initial focus: if anchor block A exists, open its revelation drawer after 500ms for immediate impact
-      setTimeout(() => {
-        const blockA = FACILITY_MAP_ZONES.find(z => z.id === 'block-a');
-        if (blockA && window.signalMapEngine) {
-          window.signalMapEngine.revealClusterDetails(blockA);
-        }
-      }, 400);
-    });
-  </script>
+  <script type="module" src="/src/js/map-entry.js"></script>
 
 </body>
 </html>

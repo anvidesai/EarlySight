@@ -1022,4 +1022,8 @@ class EarlySightAnimation {
   }
 }
 
-window.EarlySightAnimation = EarlySightAnimation;
+if (typeof window !== 'undefined') {
+  window.EarlySightAnimation = EarlySightAnimation;
+}
+
+export { EarlySightAnimation };

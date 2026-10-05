@@ -15,9 +15,9 @@ const FACILITY_MAP_ZONES = [
     description: "Multi-axis feeders, precision machining bays, auxiliary fluid distribution",
     bounds: { x: 40, y: 40, width: 330, height: 230 },
     centroid: { x: 205, y: 155 },
-    themeColor: "#D94E34", // Muted Vermilion
-    lightColor: "rgba(217, 78, 52, 0.05)",
-    borderColor: "rgba(217, 78, 52, 0.35)",
+    themeColor: "#A43A2A", // Muted Rust
+    lightColor: "rgba(164, 58, 42, 0.05)",
+    borderColor: "rgba(164, 58, 42, 0.35)",
     riskBadge: "High Severity",
     severity: "High",
     primaryRiskTitle: "Water Infrastructure Issue",
@@ -47,9 +47,9 @@ const FACILITY_MAP_ZONES = [
     description: "Central chilled water loops, air compression headers, heat exchanger bank",
     bounds: { x: 410, y: 40, width: 330, height: 230 },
     centroid: { x: 575, y: 155 },
-    themeColor: "#D97706", // Muted Amber
-    lightColor: "rgba(217, 119, 6, 0.05)",
-    borderColor: "rgba(217, 119, 6, 0.35)",
+    themeColor: "#C27803", // Muted Amber
+    lightColor: "rgba(194, 120, 3, 0.05)",
+    borderColor: "rgba(194, 120, 3, 0.35)",
     riskBadge: "Moderate Severity",
     severity: "Moderate",
     primaryRiskTitle: "Cleanroom HVAC Chilled Water Loop Drift",
@@ -79,9 +79,9 @@ const FACILITY_MAP_ZONES = [
     description: "Primary hydraulic press stations, proportional valve manifolds, accumulator tanks",
     bounds: { x: 780, y: 40, width: 330, height: 230 },
     centroid: { x: 945, y: 155 },
-    themeColor: "#EA580C", // Terracotta
-    lightColor: "rgba(234, 88, 12, 0.05)",
-    borderColor: "rgba(234, 88, 12, 0.35)",
+    themeColor: "#A43A2A", // Muted Rust
+    lightColor: "rgba(164, 58, 42, 0.05)",
+    borderColor: "rgba(164, 58, 42, 0.35)",
     riskBadge: "High Severity",
     severity: "High",
     primaryRiskTitle: "Hydraulic Proportional Valve Cavitation Drift",
@@ -111,9 +111,9 @@ const FACILITY_MAP_ZONES = [
     description: "Turbine generator trains, switchgear busbars, step-down transformers",
     bounds: { x: 40, y: 310, width: 330, height: 230 },
     centroid: { x: 205, y: 425 },
-    themeColor: "#D94E34", // Muted Vermilion
-    lightColor: "rgba(217, 78, 52, 0.05)",
-    borderColor: "rgba(217, 78, 52, 0.35)",
+    themeColor: "#A43A2A", // Muted Rust
+    lightColor: "rgba(164, 58, 42, 0.05)",
+    borderColor: "rgba(164, 58, 42, 0.35)",
     riskBadge: "High Severity",
     severity: "High",
     primaryRiskTitle: "Stator Winding Asymmetric Thermal Degradation",
@@ -143,9 +143,9 @@ const FACILITY_MAP_ZONES = [
     description: "Overland bulk conveyor belts, autonomous guided vehicles (AGVs), palletizing",
     bounds: { x: 410, y: 310, width: 330, height: 230 },
     centroid: { x: 575, y: 425 },
-    themeColor: "#B45309", // Warm Ochre
-    lightColor: "rgba(180, 83, 9, 0.05)",
-    borderColor: "rgba(180, 83, 9, 0.35)",
+    themeColor: "#C27803", // Muted Amber
+    lightColor: "rgba(194, 120, 3, 0.05)",
+    borderColor: "rgba(194, 120, 3, 0.35)",
     riskBadge: "Moderate Severity",
     severity: "Moderate",
     primaryRiskTitle: "Conveyor Reducer Tooth Micro-Pitting",
@@ -175,11 +175,11 @@ const FACILITY_MAP_ZONES = [
     description: "Continuous polymerizer reactors, flue gas baghouses, boiler feed pumps",
     bounds: { x: 780, y: 310, width: 330, height: 230 },
     centroid: { x: 945, y: 425 },
-    themeColor: "#059669", // Muted Sage Emerald
-    lightColor: "rgba(5, 150, 105, 0.05)",
-    borderColor: "rgba(5, 150, 105, 0.35)",
-    riskBadge: "Moderate Severity",
-    severity: "Moderate",
+    themeColor: "#4D7C5D", // Soft Sage
+    lightColor: "rgba(77, 124, 93, 0.05)",
+    borderColor: "rgba(77, 124, 93, 0.35)",
+    riskBadge: "Low Severity",
+    severity: "Low",
     primaryRiskTitle: "Reactor Agitator Mechanical Seal Face Micro-Chipping",
     primaryRiskSummary: "10 related signals • Micro-vibration acoustic signature • 84.2% Confidence",
     signalsCount: 10,
@@ -1650,3 +1650,13 @@ const FACILITY_SIGNALS_DATA = [
     color: "#D94E34"
   }
 ];
+
+if (typeof window !== 'undefined') {
+  window.FACILITY_MAP_ZONES = FACILITY_MAP_ZONES;
+  window.FACILITY_SIGNALS_DATA = FACILITY_SIGNALS_DATA;
+}
+
+export {
+  FACILITY_MAP_ZONES,
+  FACILITY_SIGNALS_DATA
+};

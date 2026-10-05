@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Risk & Alerts Monitoring</title>
   <meta name="description" content="Operational emerging risk and alert surveillance. Synthesizes weak multi-modal signals into prioritized early warnings categorized by Low, Medium, High, and Critical severity.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -235,6 +236,12 @@
       </div>
     </div>
 
+    <!-- 1. Risk Severity Matrix (Probability vs Severity) -->
+    <div class="risk-matrix-wrapper" id="riskSeverityMatrix"></div>
+
+    <!-- 2. Risk Progression Timeline -->
+    <div class="causal-pipeline-container" id="riskProgressionTimeline" style="margin-bottom:22px;"></div>
+
     <!-- Filter Bar -->
     <div class="risks-filter-bar">
       <input type="text" id="riskSearchInput" class="risks-search-input" placeholder="Search by risk title, location, subsystem...">
@@ -265,98 +272,6 @@
 
   </main>
 
-  <script src="dashboard-data.js"></script>
-  <script src="global-nav.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('risksGridContainer');
-      const searchInput = document.getElementById('riskSearchInput');
-      const severityFilter = document.getElementById('riskSeverityFilter');
-      const locationFilter = document.getElementById('riskLocationFilter');
-
-      const risks = window.EMERGING_RISKS_PANEL || [];
-
-      function getBadge(sev) {
-        const s = sev.toLowerCase();
-        if (s === 'critical') return '<span class="risk-severity-pill badge-severity-critical">Critical</span>';
-        if (s === 'high') return '<span class="risk-severity-pill badge-severity-high">High</span>';
-        if (s === 'medium') return '<span class="risk-severity-pill badge-severity-medium">Medium</span>';
-        return '<span class="risk-severity-pill badge-severity-low">Low</span>';
-      }
-
-      function render(items) {
-        if (!container) return;
-        if (items.length === 0) {
-          container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:48px; color:var(--ink-muted);">No emerging risks match your criteria.</div>';
-          return;
-        }
-
-        container.innerHTML = items.map(r => `
-          <div class="risk-card" onclick="location.href='evidence.html'">
-            <div class="risk-card-top">
-              ${getBadge(r.severity)}
-              <span class="risk-status-pill ${r.statusBadgeClass}">${r.status}</span>
-            </div>
-
-            <div>
-              <h3 class="risk-card-title">${r.title}</h3>
-              <div class="risk-location-row" style="margin-top:4px;">
-                <span class="location-marker-dot"></span>
-                <span>Location: <strong>${r.location}</strong></span>
-                <span>•</span>
-                <span class="font-mono text-muted">${r.subsystem || 'Subsystem'}</span>
-              </div>
-            </div>
-
-            <div class="risk-signals-strip">
-              <span><strong>${r.signalsCount}</strong> related signals</span>
-              <span class="text-vermilion">Trend: ${r.trend}</span>
-            </div>
-
-            <div class="risk-rec-action-box">
-              <strong>Recommended Action:</strong>
-              ${r.recommendedAction || 'Schedule preventive inspection and review telemetry baseline.'}
-            </div>
-
-            <div class="risk-metrics-row">
-              <div class="risk-metric-col">
-                <span class="m-label">Confidence</span>
-                <span class="m-val text-teal">${r.confidence}</span>
-              </div>
-              <div class="risk-metric-col">
-                <span class="m-label">Last Detected</span>
-                <span class="m-val">${r.lastDetected || r.lastUpdated}</span>
-              </div>
-              <div class="risk-metric-col">
-                <span class="m-label">First Seen</span>
-                <span class="m-val">${r.firstDetected}</span>
-              </div>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      function filter() {
-        const q = searchInput.value.toLowerCase();
-        const sev = severityFilter.value;
-        const loc = locationFilter.value;
-
-        const filtered = risks.filter(r => {
-          const matchQ = !q || r.title.toLowerCase().includes(q) || r.location.toLowerCase().includes(q) || (r.subsystem && r.subsystem.toLowerCase().includes(q));
-          const matchSev = sev === 'all' || r.severity.toLowerCase() === sev.toLowerCase();
-          const matchLoc = loc === 'all' || r.location.toLowerCase().includes(loc.toLowerCase());
-          return matchQ && matchSev && matchLoc;
-        });
-
-        render(filtered);
-      }
-
-      searchInput.addEventListener('input', filter);
-      severityFilter.addEventListener('change', filter);
-      locationFilter.addEventListener('change', filter);
-
-      render(risks);
-    });
-  </script>
+  <script type="module" src="/src/js/risks-entry.js"></script>
 </body>
 </html>

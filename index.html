@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — AI-Powered Early Warning System for Emerging Problems</title>
   <meta name="description" content="From scattered signals to actionable early warnings. EarlySight transforms multi-modal operational noise into prioritized, auditable risk alerts.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -84,6 +85,7 @@
     </div>
   </header>
 
+  <main class="dashboard-page-main" id="mainDashboardPage">
   <!-- STAGE 1 — Hero Section: Clean Presentation-Ready Landing -->
   <section class="hero-stage-section" id="heroStage">
     <div class="hero-container">
@@ -457,9 +459,10 @@
       </div>
     </div>
 
-    <!-- Section 1: Overview (Metrics Grid) -->
+    <!-- Section 1: Overview (Metrics Grid & Operational Visualizations) -->
     <div class="dashboard-content-block" data-block-type="overview">
       <div class="dash-metrics-grid" id="dashMetricsRow"></div>
+      <div class="dash-operational-viz-container" id="dashOperationalViz"></div>
     </div>
 
     <!-- STAGE 4 — PROMINENT EMERGING RISKS PANEL -->
@@ -935,6 +938,7 @@
       </div>
     </div>
   </footer>
+  </main>
 
   <!-- AI Assistant Evidence Record Inspector Modal -->
   <div class="ai-evidence-modal" id="aiEvidenceModal" role="dialog" aria-hidden="true">
@@ -959,17 +963,7 @@
   </button>
 
   <!-- Script Includes -->
-  <script src="signals-data.js"></script>
-  <script src="dashboard-data.js"></script>
-  <script src="signal-map-data.js"></script>
-  <script src="animation.js"></script>
-  <script src="app.js"></script>
-  <script src="signal-map.js"></script>
-  <script src="dashboard.js"></script>
-  <script src="ai-assistant-data.js"></script>
-  <script src="ai-assistant.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/index-entry.js"></script>
 
 </body>
 </html>

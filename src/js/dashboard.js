@@ -5,6 +5,18 @@
  * Emphasizes compact cards, clean typography & subtle indicators (no excessive icons)
  */
 
+import {
+  DASHBOARD_METRICS,
+  ACTIVE_EARLY_WARNINGS,
+  EMERGING_ISSUES,
+  VERIFIED_ALERTS,
+  UNDER_INVESTIGATION,
+  RESOLVED_ISSUES,
+  IMPACT_METRICS,
+  EMERGING_RISKS_PANEL
+} from '../data/dashboard-data.js';
+import { FACILITY_MAP_ZONES, FACILITY_SIGNALS_DATA } from '../data/signal-map-data.js';
+
 class EarlySightDashboard {
   constructor() {
     this.currentFilter = 'all';
@@ -16,6 +28,7 @@ class EarlySightDashboard {
 
   init() {
     this.renderMetricsOverview();
+    this.renderOperationalVisualizations();
     this.renderEmergingRisksPanel();
     if (typeof this.initSignalMap === 'function') {
       this.initSignalMap();
@@ -180,6 +193,318 @@ class EarlySightDashboard {
       </div>
     `;
   }
+
+  // Operational Data Visualizations:
+  // A. Emerging Risk Trend (SVG Line Chart)
+  // B. Signal Severity Distribution (Compact Donut & Segmented Bar)
+  // C. Risk Overview Cockpit (Score / Status / Confidence / Lead Time)
+  // D. Signal -> Pattern -> Risk -> Recommended Action Visual Pipeline Strip
+  renderOperationalVisualizations() {
+    const container = document.getElementById('dashOperationalViz');
+    if (!container) return;
+
+    // A. Trend Points Calculation (30-day window with MTGNN detection threshold)
+    // Signal volume: 12 -> 16 -> 24 -> 38 -> 65 -> 94 -> 128
+    // Risk curve: 14 -> 18 -> 26 -> 52 (breach) -> 74 -> 88 -> 92
+    const trendSvg = `
+      <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="signalAreaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1B4332" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#1B4332" stop-opacity="0.01"/>
+          </linearGradient>
+          <linearGradient id="riskAreaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#A43A2A" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#A43A2A" stop-opacity="0.01"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Horizontal Gridlines -->
+        <line x1="45" y1="25" x2="575" y2="25" class="chart-grid-line"/>
+        <line x1="45" y1="65" x2="575" y2="65" class="chart-grid-line"/>
+        <line x1="45" y1="105" x2="575" y2="105" class="chart-grid-line"/>
+        <line x1="45" y1="145" x2="575" y2="145" class="chart-grid-line"/>
+
+        <!-- Y-Axis Labels -->
+        <text x="36" y="29" text-anchor="end" class="chart-text-axis">100</text>
+        <text x="36" y="69" text-anchor="end" class="chart-text-axis">75</text>
+        <text x="36" y="109" text-anchor="end" class="chart-text-axis">50</text>
+        <text x="36" y="149" text-anchor="end" class="chart-text-axis">25</text>
+        <text x="36" y="175" text-anchor="end" class="chart-text-axis">0</text>
+
+        <!-- Baseline Axis Line -->
+        <line x1="45" y1="170" x2="575" y2="170" class="chart-axis-line"/>
+
+        <!-- MTGNN Pre-Failure Detection Threshold (Dashed Amber) -->
+        <line x1="45" y1="110" x2="575" y2="110" class="chart-threshold-line"/>
+        <rect x="350" y="98" width="220" height="18" rx="3" fill="#FAF8F5" stroke="#E4E0D8" stroke-width="1"/>
+        <text x="460" y="110" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#C27803">
+          MTGNN DETECTION THRESHOLD (18d LEAD)
+        </text>
+
+        <!-- Shaded Areas -->
+        <path d="M 50,158 L 135,152 L 220,140 L 305,124 L 390,92 L 475,58 L 560,32 L 560,170 L 50,170 Z" fill="url(#signalAreaGrad)"/>
+        <path d="M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38 L 560,170 L 50,170 Z" fill="url(#riskAreaGrad)"/>
+
+        <!-- Signal Precursor Velocity Line (Deep Forest Green) -->
+        <path d="M 50,158 L 135,152 L 220,140 L 305,124 L 390,92 L 475,58 L 560,32" class="chart-line-signal"/>
+
+        <!-- Synthesized Risk Escalation Curve (Muted Rust) -->
+        <path d="M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38" class="chart-line-risk"/>
+
+        <!-- Data Points on Curve -->
+        <circle cx="50" cy="158" r="3.5" class="chart-dot-point" stroke="#1B4332"><title>Aug 26: 12 signals (sub-threshold)</title></circle>
+        <circle cx="135" cy="152" r="3.5" class="chart-dot-point" stroke="#1B4332"><title>Sep 02: 18 signals (isolated noise)</title></circle>
+        <circle cx="220" cy="140" r="3.5" class="chart-dot-point" stroke="#1B4332"><title>Sep 09: 26 signals (multi-modal correlation)</title></circle>
+        <circle cx="305" cy="124" r="4.5" class="chart-dot-point" stroke="#C27803"><title>Sep 14: 42 signals (Pattern Confirmed - 18d Lead Time)</title></circle>
+        <circle cx="390" cy="92" r="4.5" class="chart-dot-point" stroke="#A43A2A"><title>Sep 18: 65 signals (Precursor Surge)</title></circle>
+        <circle cx="475" cy="58" r="4.5" class="chart-dot-point" stroke="#A43A2A"><title>Sep 21: 94 signals (Early Warning Active)</title></circle>
+        <circle cx="560" cy="32" r="5" class="chart-dot-point" stroke="#A43A2A" fill="#A43A2A"><title>Today: 128 signals (Closed-Loop Action In Progress)</title></circle>
+
+        <!-- X-Axis Labels -->
+        <text x="50" y="186" text-anchor="middle" class="chart-text-axis">T-28d (Aug 26)</text>
+        <text x="135" y="186" text-anchor="middle" class="chart-text-axis">T-21d</text>
+        <text x="220" y="186" text-anchor="middle" class="chart-text-axis">T-14d</text>
+        <text x="305" y="186" text-anchor="middle" class="chart-text-axis">T-10d (Pattern)</text>
+        <text x="390" y="186" text-anchor="middle" class="chart-text-axis">T-6d</text>
+        <text x="475" y="186" text-anchor="middle" class="chart-text-axis">T-3d</text>
+        <text x="560" y="186" text-anchor="middle" class="chart-text-axis" font-weight="700" fill="#1C2024">Today (Sep 24)</text>
+      </svg>
+    `;
+
+    // B. Donut SVG Calculation
+    // Total 128: Low 64 (50%), Med 38 (29.7%), High 18 (14.1%), Crit 8 (6.2%)
+    // Circumference = 2 * PI * 44 = 276.46
+    // Low: 138.23, Med: 82.1, High: 38.9, Crit: 17.2
+    const donutSvg = `
+      <svg viewBox="0 0 120 120">
+        <!-- Background circle -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#E4E0D8" stroke-width="14"/>
+        <!-- Low: 50% (offset 0) -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#4D7C5D" stroke-width="14"
+          stroke-dasharray="138.2 276.5" stroke-dashoffset="0"/>
+        <!-- Medium: 29.7% (offset -138.2) -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#C27803" stroke-width="14"
+          stroke-dasharray="82.1 276.5" stroke-dashoffset="-138.2"/>
+        <!-- High: 14.1% (offset -220.3) -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#A43A2A" stroke-width="14"
+          stroke-dasharray="38.9 276.5" stroke-dashoffset="-220.3"/>
+        <!-- Critical: 6.2% (offset -259.2) -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#7A2417" stroke-width="14"
+          stroke-dasharray="17.3 276.5" stroke-dashoffset="-259.2"/>
+      </svg>
+    `;
+
+    container.innerHTML = `
+      <!-- Row 1: Emerging Risk Trend Line Chart & Signal Severity Distribution Donut -->
+      <div class="dash-viz-row-top">
+        
+        <!-- Panel A: Emerging Risk Trend Line Chart -->
+        <div class="dash-viz-card">
+          <div class="dash-viz-card-header">
+            <div class="dash-viz-title-group">
+              <span class="indicator-dot dot-vermilion"></span>
+              <h3 class="dash-viz-title">Emerging Risk & Signal Activity Trend</h3>
+            </div>
+            <span class="dash-viz-badge badge-trend-alert">+34% Precursor Velocity</span>
+          </div>
+
+          <div class="trend-line-chart-wrap">
+            ${trendSvg}
+          </div>
+
+          <div class="chart-legend-row">
+            <div class="chart-legend-indicator">
+              <span class="legend-swatch" style="background:#1B4332;"></span>
+              <span>Signal Volume (128 Ingested)</span>
+            </div>
+            <div class="chart-legend-indicator">
+              <span class="legend-swatch" style="background:#A43A2A;"></span>
+              <span>Synthesized Risk Index (88/100)</span>
+            </div>
+            <div class="chart-legend-indicator">
+              <span class="legend-swatch" style="background:#C27803; border-top:1px dashed #C27803;"></span>
+              <span>Detection Threshold (T-18d)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel B: Signal Severity Distribution -->
+        <div class="dash-viz-card">
+          <div class="dash-viz-card-header">
+            <div class="dash-viz-title-group">
+              <span class="indicator-dot dot-slate"></span>
+              <h3 class="dash-viz-title">Signal Severity Distribution</h3>
+            </div>
+            <span class="dash-viz-badge badge-forest-subtle">128 Total Signals</span>
+          </div>
+
+          <div class="severity-dist-body">
+            <div class="severity-donut-svg-wrap">
+              ${donutSvg}
+              <div class="donut-center-metric">
+                <span class="donut-center-number">128</span>
+                <span class="donut-center-label">Signals</span>
+              </div>
+            </div>
+
+            <div class="severity-dist-list">
+              <div class="severity-dist-item">
+                <div class="severity-dist-item-left">
+                  <span class="severity-dist-pill" style="background:#7A2417;"></span>
+                  <span>Critical Severity</span>
+                </div>
+                <span class="severity-dist-count" style="color:#7A2417;">08 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(6.2%)</span></span>
+              </div>
+
+              <div class="severity-dist-item">
+                <div class="severity-dist-item-left">
+                  <span class="severity-dist-pill" style="background:#A43A2A;"></span>
+                  <span>High Severity</span>
+                </div>
+                <span class="severity-dist-count" style="color:#A43A2A;">18 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(14.1%)</span></span>
+              </div>
+
+              <div class="severity-dist-item">
+                <div class="severity-dist-item-left">
+                  <span class="severity-dist-pill" style="background:#C27803;"></span>
+                  <span>Medium Severity</span>
+                </div>
+                <span class="severity-dist-count" style="color:#C27803;">38 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(29.7%)</span></span>
+              </div>
+
+              <div class="severity-dist-item">
+                <div class="severity-dist-item-left">
+                  <span class="severity-dist-pill" style="background:#4D7C5D;"></span>
+                  <span>Low Severity</span>
+                </div>
+                <span class="severity-dist-count" style="color:#4D7C5D;">64 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(50.0%)</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="severity-bar-multi" title="Proportional Severity Strip">
+            <div class="severity-bar-seg" style="width:6.2%; background:#7A2417;" title="Critical: 8"></div>
+            <div class="severity-bar-seg" style="width:14.1%; background:#A43A2A;" title="High: 18"></div>
+            <div class="severity-bar-seg" style="width:29.7%; background:#C27803;" title="Medium: 38"></div>
+            <div class="severity-bar-seg" style="width:50.0%; background:#4D7C5D;" title="Low: 64"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Row 2: Panel C — Risk Overview & Confidence Cockpit -->
+      <div class="risk-overview-cockpit">
+        
+        <div class="cockpit-metric-block">
+          <div class="cockpit-score-ring">
+            <svg viewBox="0 0 44 44" style="width:100%; height:100%; transform:rotate(-90deg);">
+              <circle cx="22" cy="22" r="18" fill="none" stroke="#E4E0D8" stroke-width="4"/>
+              <circle cx="22" cy="22" r="18" fill="none" stroke="#A43A2A" stroke-width="4"
+                stroke-dasharray="113.1" stroke-dashoffset="24.8"/>
+            </svg>
+            <span class="cockpit-score-val" style="position:absolute;">78</span>
+          </div>
+          <div class="cockpit-metric-text">
+            <span class="cockpit-metric-label">Composite Risk Index</span>
+            <span class="cockpit-metric-main" style="color:var(--color-rust);">78 / 100</span>
+            <span class="cockpit-metric-sub">Elevated Precursor Activity</span>
+          </div>
+        </div>
+
+        <div class="cockpit-metric-block">
+          <div class="cockpit-metric-text">
+            <span class="cockpit-metric-label">Active Emerging Risks</span>
+            <span class="cockpit-metric-main">07 Projections</span>
+            <span class="cockpit-metric-sub">1 Critical • 2 High • 2 Med • 2 Low</span>
+          </div>
+        </div>
+
+        <div class="cockpit-metric-block">
+          <div class="cockpit-metric-text">
+            <span class="cockpit-metric-label">Model Confidence</span>
+            <span class="cockpit-metric-main" style="color:var(--color-forest);">${DASHBOARD_METRICS.modelConfidenceAvg || '93.8%'}</span>
+            <span class="cockpit-metric-sub">MTGNN Graph Attention Verified</span>
+          </div>
+        </div>
+
+        <div class="cockpit-metric-block">
+          <div class="cockpit-metric-text">
+            <span class="cockpit-metric-label">Actionable Lead Time</span>
+            <span class="cockpit-metric-main">${DASHBOARD_METRICS.meanLeadTimeDays || 19.4} Days</span>
+            <span class="cockpit-metric-sub">Averted Loss: ${DASHBOARD_METRICS.totalDowntimeAvertedUSD || '$1,840,000'}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Row 3: Panel D — Signal -> Pattern -> Risk -> Action Visual Relationship -->
+      <div class="causal-pipeline-container">
+        <div class="causal-pipeline-header">
+          <div class="causal-pipeline-title-group">
+            <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+            <h3 class="dash-viz-title">Operational Causal Chain</h3>
+          </div>
+          <span class="dash-viz-badge badge-forest-subtle">Core EarlySight Architecture</span>
+        </div>
+
+        <div class="causal-pipeline-flow">
+          
+          <!-- Step 1: Multiple Signals -->
+          <div class="causal-node-card">
+            <div class="causal-node-top">
+              <span class="causal-node-step">01. Ingestion</span>
+              <span class="causal-node-badge" style="background:rgba(27,67,50,0.08); color:#1B4332;">128 Signals</span>
+            </div>
+            <div class="causal-node-title">Multiple Scattered Signals</div>
+            <div class="causal-node-desc">Acoustic transducers, vibration telemetry, shift logs & FLIR scans across 6 plant zones.</div>
+            <div class="causal-node-meta">Sub-threshold noise in isolated silos</div>
+          </div>
+
+          <div class="causal-connector-arrow">&rarr;</div>
+
+          <!-- Step 2: Related Pattern -->
+          <div class="causal-node-card">
+            <div class="causal-node-top">
+              <span class="causal-node-step">02. Synthesis</span>
+              <span class="causal-node-badge" style="background:rgba(194,120,3,0.1); color:#C27803;">91.4% Coherence</span>
+            </div>
+            <div class="causal-node-title">Related Pattern Identified</div>
+            <div class="causal-node-desc">3,420 Hz envelope harmonic correlates with bearing relubrication & thermal bloom.</div>
+            <div class="causal-node-meta">MTGNN spatial-temporal graph match</div>
+          </div>
+
+          <div class="causal-connector-arrow">&rarr;</div>
+
+          <!-- Step 3: Emerging Risk -->
+          <div class="causal-node-card" style="border-left:3px solid var(--color-rust);">
+            <div class="causal-node-top">
+              <span class="causal-node-step" style="color:var(--color-rust);">03. Warning</span>
+              <span class="causal-node-badge" style="background:#FDF1EE; color:#A43A2A;">18d Lead Time</span>
+            </div>
+            <div class="causal-node-title">Emerging Risk Forecast</div>
+            <div class="causal-node-desc">Impending sub-surface bearing cage spallation forecast before motor seizure.</div>
+            <div class="causal-node-meta">Quantified hazard • $340k risk</div>
+          </div>
+
+          <div class="causal-connector-arrow">&rarr;</div>
+
+          <!-- Step 4: Recommended Action -->
+          <div class="causal-node-card" style="border-left:3px solid var(--color-forest);">
+            <div class="causal-node-top">
+              <span class="causal-node-step">04. Closed-Loop</span>
+              <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">WO Dispatched</span>
+            </div>
+            <div class="causal-node-title">Recommended Action</div>
+            <div class="causal-node-desc">Deploy ultrasonic detector & replace drive bearing during scheduled shift window.</div>
+            <div class="causal-node-meta">Zero unplanned downtime confirmed</div>
+          </div>
+
+        </div>
+      </div>
+    `;
+  }
+
 
   // Prominent Emerging Risks Panel (Card Fields: Problem title, Location, Related signals, Trend, Severity, Confidence, First detected, Last updated, Status, Recommended action)
   renderEmergingRisksPanel() {
@@ -792,4 +1117,9 @@ class EarlySightDashboard {
 }
 
 // Global instance
-window.dashboardController = new EarlySightDashboard();
+if (typeof window !== 'undefined') {
+  window.dashboardController = new EarlySightDashboard();
+  window.EarlySightDashboard = EarlySightDashboard;
+}
+
+export { EarlySightDashboard };

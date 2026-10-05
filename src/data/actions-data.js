@@ -603,7 +603,18 @@ class ActionCenterStore {
   }
 }
 
-window.EarlySightActionStore = new ActionCenterStore();
-window.WORKFLOW_STAGES = WORKFLOW_STAGES;
-window.TEAMS_LIST = TEAMS_LIST;
-window.PRIORITIES = PRIORITIES;
+if (typeof window !== 'undefined') {
+  window.EarlySightActionStore = new ActionCenterStore();
+  window.WORKFLOW_STAGES = WORKFLOW_STAGES;
+  window.TEAMS_LIST = TEAMS_LIST;
+  window.PRIORITIES = PRIORITIES;
+  window.INITIAL_ACTION_ISSUES = INITIAL_ACTION_ISSUES;
+}
+
+export {
+  ActionCenterStore,
+  WORKFLOW_STAGES,
+  TEAMS_LIST,
+  PRIORITIES,
+  INITIAL_ACTION_ISSUES
+};

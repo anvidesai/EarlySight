@@ -6,12 +6,14 @@
  * SCADA telemetry, CMMS work orders, operator shift logs, and geospatial clusters.
  */
 
+import { AI_ASSISTANT_KNOWLEDGE_BASE } from '../data/ai-assistant-data.js';
+
 (function () {
   'use strict';
 
   class EarlySightAIAssistant {
     constructor() {
-      this.kb = window.AI_ASSISTANT_KNOWLEDGE_BASE || {};
+      this.kb = (typeof AI_ASSISTANT_KNOWLEDGE_BASE !== 'undefined' ? AI_ASSISTANT_KNOWLEDGE_BASE : window.AI_ASSISTANT_KNOWLEDGE_BASE) || {};
       this.history = [...(this.kb.initialHistory || [])];
       this.historyFilterTerm = "";
       

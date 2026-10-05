@@ -10,6 +10,8 @@
  * 6. Prominent Evidence Strength Disclaimer (Communicating evidence strength, not certainty)
  */
 
+import '../data/evidence-data.js';
+
 (function () {
   'use strict';
 

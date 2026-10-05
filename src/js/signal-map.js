@@ -14,6 +14,8 @@
  * - Cluster Revelation: Location, Related Signals, Emerging Issue, Confidence, Trend
  */
 
+import { FACILITY_MAP_ZONES, FACILITY_SIGNALS_DATA } from '../data/signal-map-data.js';
+
 class EarlySightSignalMap {
   constructor(canvasId, containerId) {
     this.canvas = document.getElementById(canvasId);
@@ -1001,6 +1003,9 @@ class EarlySightSignalMap {
     // 2. Inter-Bay Conduits
     this.drawConduitNetwork(ctx);
 
+    // 2.5 Risk-Density Heat Visualization
+    this.drawRiskDensityAuras(ctx, time);
+
     // 3. Facility Zones & Bays
     this.drawFacilityZones(ctx, time);
 
@@ -1082,6 +1087,43 @@ class EarlySightSignalMap {
     ctx.restore();
   }
 
+  drawRiskDensityAuras(ctx, time) {
+    ctx.save();
+    for (const zone of FACILITY_MAP_ZONES) {
+      const isSelected = this.activeLocationFilter === 'all' || this.activeLocationFilter === zone.id;
+      if (!isSelected) continue;
+
+      const isHighRisk = zone.severity === 'High' || zone.severity === 'Critical';
+      const cx = zone.centroid.x;
+      const cy = zone.centroid.y;
+
+      if (isHighRisk) {
+        // Emerging risk area: subtle warm rust/amber density gradient aura
+        const auraPulse = Math.sin(time * 0.002 + cx * 0.01) * 6;
+        const grad = ctx.createRadialGradient(cx, cy, 20, cx, cy, 140 + auraPulse);
+        grad.addColorStop(0, 'rgba(164, 58, 42, 0.12)'); // Muted Rust
+        grad.addColorStop(0.5, 'rgba(194, 120, 3, 0.05)'); // Muted Amber
+        grad.addColorStop(1, 'rgba(250, 248, 245, 0.0)');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 150 + auraPulse, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Normal operating area: faint soft sage aura
+        const grad = ctx.createRadialGradient(cx, cy, 15, cx, cy, 110);
+        grad.addColorStop(0, 'rgba(77, 124, 93, 0.05)'); // Soft Sage
+        grad.addColorStop(1, 'rgba(250, 248, 245, 0.0)');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 115, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
   drawFacilityZones(ctx, time) {
     for (const zone of FACILITY_MAP_ZONES) {
       const b = zone.bounds;
@@ -1114,6 +1156,27 @@ class EarlySightSignalMap {
       ctx.fillStyle = '#64748B';
       ctx.font = '500 10px "Inter", -apple-system, sans-serif';
       ctx.fillText(`• ${zone.category}`, b.x + 12 + codeW + 8, b.y + 18);
+
+      // Distinct Operational Status Badge in Zone Header
+      const isEmerging = zone.severity === 'High' || zone.severity === 'Critical';
+      const statusText = isEmerging ? 'EMERGING RISK' : 'NORMAL BASELINE';
+      const statusColor = isEmerging ? '#A43A2A' : '#4D7C5D';
+      const statusBg = isEmerging ? 'rgba(164, 58, 42, 0.12)' : 'rgba(77, 124, 93, 0.12)';
+
+      ctx.save();
+      ctx.font = '700 8.5px "JetBrains Mono", monospace';
+      const statusW = ctx.measureText(statusText).width + 12;
+      const badgeX = b.x + b.width - statusW - 10;
+      const badgeY = b.y + 6;
+      this.drawRoundedRect(ctx, badgeX, badgeY, statusW, 16, 4);
+      ctx.fillStyle = statusBg;
+      ctx.fill();
+      ctx.strokeStyle = statusColor;
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+      ctx.fillStyle = statusColor;
+      ctx.fillText(statusText, badgeX + 6, badgeY + 11.5);
+      ctx.restore();
 
       // Bay sub-rectangles
       ctx.strokeStyle = 'rgba(203, 213, 225, 0.6)';
@@ -1413,4 +1476,8 @@ class EarlySightSignalMap {
 }
 
 // Global initialization
-window.EarlySightSignalMap = EarlySightSignalMap;
+if (typeof window !== 'undefined') {
+  window.EarlySightSignalMap = EarlySightSignalMap;
+}
+
+export { EarlySightSignalMap };

@@ -6,6 +6,8 @@
  * telemetry decay breakdowns, and master verification ledger.
  */
 
+import '../data/impact-data.js';
+
 (function () {
   'use strict';
 

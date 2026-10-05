@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Trends & Timeline Analysis (Stage 7)</title>
   <meta name="description" content="Chronological problem development timeline showing how operational precursors emerge, repeat, form patterns, increase in frequency, trigger early warnings, and undergo verified remediation with quantified historical comparisons.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -109,6 +110,79 @@
         </div>
       </div>
     </section>
+
+    <!-- Interactive Operational Lifecycle Flow Ribbon: Signal -> Related Signal -> Recurring Pattern -> Emerging Risk -> Action -> Resolution -->
+    <div class="causal-pipeline-container" id="operationalTimelineRibbon" style="margin-bottom:20px;">
+      <div class="causal-pipeline-header">
+        <div class="causal-pipeline-title-group">
+          <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+          <h3 class="dash-viz-title">Operational Early Warning Lifecycle Track</h3>
+        </div>
+        <span class="dash-viz-badge badge-forest-subtle">Click Step to Inspect Telemetry</span>
+      </div>
+
+      <div class="causal-pipeline-flow" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;">
+        <!-- Step 1: Signal -->
+        <div class="causal-node-card" style="cursor:pointer;" onclick="window.timelineController && window.timelineController.selectStage(1, true)">
+          <div class="causal-node-top">
+            <span class="causal-node-step">01. Inception</span>
+            <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">T-28d</span>
+          </div>
+          <div class="causal-node-title">Signal</div>
+          <div class="causal-node-desc">Sub-threshold transient pressure dip (120ms).</div>
+        </div>
+
+        <!-- Step 2: Related Signal -->
+        <div class="causal-node-card" style="cursor:pointer;" onclick="window.timelineController && window.timelineController.selectStage(2, true)">
+          <div class="causal-node-top">
+            <span class="causal-node-step">02. Cross-Silo</span>
+            <span class="causal-node-badge" style="background:#FAF8F5; color:#57606A;">T-21d</span>
+          </div>
+          <div class="causal-node-title">Related Signal</div>
+          <div class="causal-node-desc">Shift complaint & grease sample fines.</div>
+        </div>
+
+        <!-- Step 3: Recurring Pattern -->
+        <div class="causal-node-card" style="cursor:pointer;" onclick="window.timelineController && window.timelineController.selectStage(3, true)">
+          <div class="causal-node-top">
+            <span class="causal-node-step">03. Coherence</span>
+            <span class="causal-node-badge" style="background:rgba(194,120,3,0.1); color:#C27803;">T-14d</span>
+          </div>
+          <div class="causal-node-title">Recurring Pattern</div>
+          <div class="causal-node-desc">91.4% spatial-temporal match confirmed.</div>
+        </div>
+
+        <!-- Step 4: Emerging Risk -->
+        <div class="causal-node-card" style="cursor:pointer; border-left:3px solid var(--color-rust);" onclick="window.timelineController && window.timelineController.selectStage(5, true)">
+          <div class="causal-node-top">
+            <span class="causal-node-step" style="color:var(--color-rust);">04. Warning</span>
+            <span class="causal-node-badge" style="background:#FDF1EE; color:#A43A2A;">T-10d</span>
+          </div>
+          <div class="causal-node-title">Emerging Risk</div>
+          <div class="causal-node-desc">Impending cage spallation • 18d lead time.</div>
+        </div>
+
+        <!-- Step 5: Action -->
+        <div class="causal-node-card" style="cursor:pointer; border-left:3px solid var(--color-forest);" onclick="window.timelineController && window.timelineController.selectStage(6, true)">
+          <div class="causal-node-top">
+            <span class="causal-node-step">05. Closed-Loop</span>
+            <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">T-7d</span>
+          </div>
+          <div class="causal-node-title">Action</div>
+          <div class="causal-node-desc">Prescriptive work order executed in PM window.</div>
+        </div>
+
+        <!-- Step 6: Resolution -->
+        <div class="causal-node-card" style="cursor:pointer; border-left:3px solid var(--color-sage);" onclick="window.timelineController && window.timelineController.selectStage(7, true)">
+          <div class="causal-node-top">
+            <span class="causal-node-step" style="color:var(--color-sage);">06. Verified</span>
+            <span class="causal-node-badge" style="background:#EDF4F0; color:#4D7C5D;">T-0d</span>
+          </div>
+          <div class="causal-node-title">Resolution</div>
+          <div class="causal-node-desc">-95% anomaly decay • $512k loss averted.</div>
+        </div>
+      </div>
+    </div>
 
     <!-- Sticky Interactive Lifecycle Stepper (The Core 7-Step Progression) -->
     <nav class="sticky-stepper-panel" aria-label="Problem Development Lifecycle">
@@ -507,10 +581,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="timeline-data.js"></script>
-  <script src="timeline.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/timeline-entry.js"></script>
 
 </body>
 </html>

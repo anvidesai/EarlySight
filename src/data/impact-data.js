@@ -293,4 +293,8 @@ const IMPACT_MONITORING_DATA = {
   ]
 };
 
-window.IMPACT_MONITORING_DATA = IMPACT_MONITORING_DATA;
+if (typeof window !== 'undefined') {
+  window.IMPACT_MONITORING_DATA = IMPACT_MONITORING_DATA;
+}
+
+export { IMPACT_MONITORING_DATA };

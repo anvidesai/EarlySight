@@ -3,6 +3,9 @@
  * Handles Startup Animation Orchestration, UI Transitions & Stage-Wise Interaction
  */
 
+import { EARLYSIGHT_SIGNALS, SIGNAL_CONNECTIONS } from '../data/signals-data.js';
+import { EarlySightAnimation } from './animation.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
   const heroBeacon = document.getElementById('heroBeacon');

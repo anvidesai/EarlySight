@@ -276,4 +276,8 @@ const EVIDENCE_ALERTS_DATA = [
 ];
 
 // Export to window
-window.EVIDENCE_ALERTS_DATA = EVIDENCE_ALERTS_DATA;
+if (typeof window !== 'undefined') {
+  window.EVIDENCE_ALERTS_DATA = EVIDENCE_ALERTS_DATA;
+}
+
+export { EVIDENCE_ALERTS_DATA };

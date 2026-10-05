@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Operational Signals & Signal Detail</title>
   <meta name="description" content="Unified operational signals registry for EarlySight. Real-time search, multi-variable filtering, correlation tracking, and deep AI-assisted signal explainability dossiers.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -466,7 +467,8 @@
           <span class="kpi-val text-forest">1,420 / s</span>
         </div>
       </div>
-    </div>
+    <!-- Operational Analytics Strip (Frequency, Categories, Severity, Recurring Patterns, Connections) -->
+    <div class="signals-operational-analytics-strip" id="signalsAnalyticsStrip"></div>
 
     <!-- Filter Controls Card -->
     <div class="signals-filter-card">
@@ -635,149 +637,7 @@
   </div>
 
   <!-- Scripts -->
-  <script src="signals-data.js"></script>
-  <script src="global-nav.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const tableBody = document.getElementById('signalsTableBody');
-      const searchInput = document.getElementById('signalSearchInput');
-      const categoryFilter = document.getElementById('signalCategoryFilter');
-      const locationFilter = document.getElementById('signalLocationFilter');
-      const severityFilter = document.getElementById('signalSeverityFilter');
-      const statusFilter = document.getElementById('signalStatusFilter');
-      const dateFilter = document.getElementById('signalDateFilter');
+  <script type="module" src="/src/js/signals-entry.js"></script>
 
-      // Modal elements
-      const modal = document.getElementById('signalDetailModal');
-      const closeDrawerBtn = document.getElementById('closeDrawerBtn');
-      const drawerCloseFooterBtn = document.getElementById('drawerCloseFooterBtn');
-
-      const signals = window.OPERATIONAL_SIGNALS_REGISTRY || [];
-
-      function getSeverityBadge(sev) {
-        const s = sev.toLowerCase();
-        if (s === 'critical') return '<span class="risk-severity-pill badge-severity-critical">Critical</span>';
-        if (s === 'high') return '<span class="risk-severity-pill badge-severity-high">High</span>';
-        if (s === 'medium') return '<span class="risk-severity-pill badge-severity-medium">Medium</span>';
-        return '<span class="risk-severity-pill badge-severity-low">Low</span>';
-      }
-
-      function getStatusBadge(st) {
-        return `<span class="risk-status-pill badge-status-investigation">${st}</span>`;
-      }
-
-      function renderTable(data) {
-        if (!tableBody) return;
-        if (data.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:32px; color:var(--ink-muted);">No operational signals match your filter criteria.</td></tr>`;
-          return;
-        }
-
-        tableBody.innerHTML = data.map(item => `
-          <tr data-id="${item.id}" onclick="inspectSignal('${item.id}')">
-            <td>
-              <div class="signal-title-cell">
-                <span class="signal-id-tag">${item.id}</span>
-                <span class="signal-title-text">${item.title}</span>
-              </div>
-            </td>
-            <td><span class="signal-category-badge">${item.category}</span></td>
-            <td><strong style="color:var(--ink-primary);">${item.location}</strong></td>
-            <td>${getSeverityBadge(item.severity)}</td>
-            <td>${getStatusBadge(item.status)}</td>
-            <td><span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-secondary);">${item.detected}</span></td>
-            <td>
-              <span style="background:var(--color-ivory-subtle); padding:3px 8px; border-radius:4px; font-weight:600; font-size:0.78rem; border:1px solid var(--border-subtle); color:var(--intel-primary);">
-                ${item.relatedCount} signals
-              </span>
-            </td>
-            <td>
-              <button class="signal-action-btn" onclick="event.stopPropagation(); inspectSignal('${item.id}')">
-                Inspect &rarr;
-              </button>
-            </td>
-          </tr>
-        `).join('');
-      }
-
-      function applyFilters() {
-        const q = searchInput.value.toLowerCase();
-        const cat = categoryFilter.value;
-        const loc = locationFilter.value;
-        const sev = severityFilter.value;
-        const stat = statusFilter.value;
-
-        const filtered = signals.filter(s => {
-          const matchQ = !q || s.title.toLowerCase().includes(q) || s.description.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) || s.location.toLowerCase().includes(q);
-          const matchCat = cat === 'all' || s.category.toLowerCase() === cat.toLowerCase();
-          const matchLoc = loc === 'all' || s.location.toLowerCase().includes(loc.toLowerCase());
-          const matchSev = sev === 'all' || s.severity.toLowerCase() === sev.toLowerCase();
-          const matchStat = stat === 'all' || s.status.toLowerCase() === stat.toLowerCase();
-
-          return matchQ && matchCat && matchLoc && matchSev && matchStat;
-        });
-
-        renderTable(filtered);
-      }
-
-      window.inspectSignal = function(id) {
-        const item = signals.find(s => s.id === id) || signals[0];
-        if (!item) return;
-
-        document.getElementById('drawerSignalTitle').textContent = item.title;
-        document.getElementById('drawerDescription').textContent = item.description;
-        document.getElementById('drawerSourceMeta').textContent = `Source: ${item.source} • Ingested: ${item.createdDate}`;
-        document.getElementById('drawerLocationVal').textContent = `${item.location} (${item.locationsCount || 4} points)`;
-        document.getElementById('drawerSeverityVal').textContent = `${item.severity} Severity • ${item.status}`;
-        document.getElementById('drawerRelatedVal').textContent = `${item.relatedCount} Related Signals`;
-        document.getElementById('drawerFrequencyVal').textContent = item.frequencyTrend || 'Increasing frequency';
-        document.getElementById('drawerAiAnalysis').textContent = item.aiAnalysis;
-        document.getElementById('drawerRecommendedAction').textContent = item.recommendedAction;
-
-        // Evidence
-        const evContainer = document.getElementById('drawerEvidenceList');
-        if (evContainer) {
-          evContainer.innerHTML = (item.evidence || []).map(e => `
-            <div class="evidence-card-item">
-              <span class="ev-type">${e.type}</span>
-              <span class="ev-title">${e.title}</span>
-              <span class="ev-detail">${e.detail}</span>
-            </div>
-          `).join('');
-        }
-
-        // Timeline
-        const tlContainer = document.getElementById('drawerTimelineList');
-        if (tlContainer) {
-          tlContainer.innerHTML = (item.timeline || []).map(t => `
-            <div class="timeline-step-item">
-              <div class="step-period">${t.period} &bull; ${t.count} signals</div>
-              <div class="step-desc">${t.note}</div>
-            </div>
-          `).join('');
-        }
-
-        modal.classList.add('open');
-      };
-
-      function closeModal() {
-        modal.classList.remove('open');
-      }
-
-      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeModal);
-      if (drawerCloseFooterBtn) drawerCloseFooterBtn.addEventListener('click', closeModal);
-      if (modal) {
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) closeModal();
-        });
-      }
-
-      [searchInput, categoryFilter, locationFilter, severityFilter, statusFilter, dateFilter].forEach(el => {
-        if (el) el.addEventListener('input', applyFilters);
-      });
-
-      renderTable(signals);
-    });
-  </script>
 </body>
 </html>

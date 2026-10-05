@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Multi-Organization Workspace (Stage 12)</title>
   <meta name="description" content="Multi-tenant operational intelligence platform with strict workspace separation. Dedicated dashboards, signals, alerts, teams, reports, analytics, and scoped AI Copilot for ABC College, City Hospital, Green Residency, and Apex Industrial.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -406,9 +407,6 @@
   <div class="action-toast-container" id="workspaceToastContainer" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="organizations-data.js"></script>
-  <script src="workspace.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/workspace-entry.js"></script>
 </body>
 </html>

@@ -1222,4 +1222,8 @@ const MULTI_ORG_DATA = {
   }
 };
 
-window.MULTI_ORG_DATA = MULTI_ORG_DATA;
+if (typeof window !== 'undefined') {
+  window.MULTI_ORG_DATA = MULTI_ORG_DATA;
+}
+
+export { MULTI_ORG_DATA };

@@ -503,4 +503,8 @@ const TIMELINE_CASE_STUDIES = [
 ];
 
 // Export to window
-window.TIMELINE_CASE_STUDIES = TIMELINE_CASE_STUDIES;
+if (typeof window !== 'undefined') {
+  window.TIMELINE_CASE_STUDIES = TIMELINE_CASE_STUDIES;
+}
+
+export { TIMELINE_CASE_STUDIES };

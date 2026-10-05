@@ -11,6 +11,8 @@
  * - Toast notification system for state transitions
  */
 
+import '../data/actions-data.js';
+
 (function () {
   'use strict';
 

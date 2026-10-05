@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Impact Monitoring & Resolution Audit (Stage 11)</title>
   <meta name="description" content="Operational impact monitoring interface proving whether interventions actually reduced problems. Quantifies before-action precursor frequency, executed field actions, and after-action signal decay with clean trend visualizations, resolution status, and monitoring periods.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -642,9 +643,6 @@
   <div class="action-toast-container" id="impactToastContainer" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="impact-data.js"></script>
-  <script src="impact.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/impact-entry.js"></script>
 </body>
 </html>
