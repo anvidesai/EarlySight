@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Multi-Organization Workspace (Stage 12)</title>
+  <meta name="description" content="Multi-tenant operational intelligence platform with strict workspace separation. Dedicated dashboards, signals, alerts, teams, reports, analytics, and scoped AI Copilot for ABC College, City Hospital, Green Residency, and Apex Industrial.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="map-page-body workspace-page-body theme-abc-college" id="workspaceAppBody">
+
+  <!-- Top Enterprise Navigation Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge" id="headerOrgBadge">Workspace</span>
+      </div>
+    </a>
+
+    <!-- Universal EarlySight Stage Switcher -->
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Dashboard</a>
+      <button class="view-switch-btn active" id="btnNavWorkspace">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Multi-Org Workspace</span>
+      </button>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Action Center &rarr;</span>
+      </a>
+      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-emerald"></span>
+        <span>Impact Audit &rarr;</span>
+      </a>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>AI Copilot &rarr;</span>
+      </a>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-amber"></span>
+        <span>Signal Map &rarr;</span>
+      </a>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Timeline &rarr;</span>
+      </a>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-blue"></span>
+        <span>Evidence &rarr;</span>
+      </a>
+    </div>
+
+    <!-- Active Organization Dropdown & Switcher Button -->
+    <div style="display: flex; align-items: center; gap: 12px;">
+      
+      <!-- Interactive Organization Selector Button -->
+      <div class="org-selector-wrapper">
+        <button class="org-selector-btn" id="btnOpenOrgSelector" aria-haspopup="dialog" aria-expanded="false" title="Switch Organization Workspace">
+          <div class="org-selector-icon" id="headerOrgIcon">
+            <!-- Org SVG Logo -->
+          </div>
+          <div class="org-selector-info">
+            <span class="org-selector-label font-mono">ACTIVE WORKSPACE</span>
+            <span class="org-selector-name" id="headerOrgName">ABC College</span>
+          </div>
+          <span class="org-selector-caret">&#9662;</span>
+        </button>
+      </div>
+
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>AIR-GAPPED TENANT ISOLATION</span>
+      </div>
+
+      <button class="btn-header-cta" id="btnHeaderSwitchWorkspace">
+        Switch Org
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Multi-Organization Workspace Container -->
+  <main class="workspace-page-container">
+
+    <!-- Workspace Hero & Strict Security Isolation Banner -->
+    <section class="workspace-security-banner" id="workspaceSecurityBanner">
+      <div class="security-banner-top">
+        <div class="security-banner-left">
+          <div class="security-badge-group">
+            <span class="security-pill font-mono">
+              <span class="security-dot"></span>
+              <span id="bannerSecurityTier">SOC2 Type II • Academic FERPA Air-Gapped</span>
+            </span>
+            <span class="tenant-code-pill font-mono" id="bannerTenantCode">TENANT-EDU-01</span>
+          </div>
+
+          <div class="workspace-brand-row">
+            <div class="workspace-brand-icon" id="bannerOrgIcon">
+              <!-- Rendered via JS -->
+            </div>
+            <div>
+              <h1 class="workspace-org-title" id="bannerOrgTitle">ABC College</h1>
+              <p class="workspace-org-subtitle" id="bannerOrgSubtitle">
+                Main Academic Quad, Science Laboratories &amp; Residence Halls
+              </p>
+            </div>
+          </div>
+
+          <div class="workspace-meta-line font-mono" id="bannerLocationMeta">
+            North Campus, Gate 4 &bull; 14 Buildings &bull; 18,500 Students
+          </div>
+        </div>
+
+        <div class="security-banner-right">
+          <div class="workspace-switch-card">
+            <span class="switch-card-title font-mono">SELECT ORGANIZATION WORKSPACE:</span>
+            <div class="quick-org-pills-row" id="quickOrgPillsContainer">
+              <!-- Quick Switch Pills Rendered via JS -->
+            </div>
+            <div class="switch-card-note">
+              <span class="note-lock-icon">&#128274;</span>
+              <span>All signals, alerts, teams, and AI memory are isolated per workspace.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 Mandatory Organization Navigation Tabs -->
+      <nav class="workspace-module-tabs" role="tablist" aria-label="Organization Modules">
+        <button class="module-tab active" data-tab="dashboard" role="tab" aria-selected="true">
+          <span class="tab-icon">&#9638;</span>
+          <span>Dashboard</span>
+        </button>
+        <button class="module-tab" data-tab="signals" role="tab" aria-selected="false">
+          <span class="tab-icon">&#128225;</span>
+          <span>Signals</span>
+          <span class="tab-badge" id="tabBadgeSignals">14</span>
+        </button>
+        <button class="module-tab" data-tab="alerts" role="tab" aria-selected="false">
+          <span class="tab-icon">&#9888;</span>
+          <span>Alerts</span>
+          <span class="tab-badge badge-alert" id="tabBadgeAlerts">2</span>
+        </button>
+        <button class="module-tab" data-tab="teams" role="tab" aria-selected="false">
+          <span class="tab-icon">&#128101;</span>
+          <span>Teams</span>
+          <span class="tab-badge" id="tabBadgeTeams">4</span>
+        </button>
+        <button class="module-tab" data-tab="reports" role="tab" aria-selected="false">
+          <span class="tab-icon">&#128196;</span>
+          <span>Reports</span>
+          <span class="tab-badge" id="tabBadgeReports">3</span>
+        </button>
+        <button class="module-tab" data-tab="analytics" role="tab" aria-selected="false">
+          <span class="tab-icon">&#128200;</span>
+          <span>Analytics</span>
+        </button>
+        <button class="module-tab" data-tab="aiAssistant" role="tab" aria-selected="false">
+          <span class="tab-icon">&#9889;</span>
+          <span>AI Assistant</span>
+          <span class="tab-badge badge-ai">Scoped</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- SECTION CONTENT PANELS (Exclusively Rendered per Organization) -->
+
+    <!-- 1. DASHBOARD VIEW -->
+    <section class="workspace-tab-panel active" id="panel-dashboard" role="tabpanel">
+      <!-- Executive KPI Ribbon for this Organization -->
+      <div class="workspace-kpi-grid" id="orgKpiGrid">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Facility Spatial Breakdown & Active Hazards -->
+      <div class="workspace-dash-layout">
+        <!-- Left: Monitored Facility Zones -->
+        <div class="dash-block-panel">
+          <div class="panel-header-strip">
+            <div class="header-left">
+              <span class="status-dot dot-emerald"></span>
+              <h3 class="panel-heading">Monitored Facility Zones</h3>
+            </div>
+            <span class="font-mono text-xs text-muted" id="dashTotalAssets">86 Monitored Assets</span>
+          </div>
+
+          <div class="facility-zones-list" id="dashFacilityZonesList">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Right: Organization Priority Warnings & Lead Risks -->
+        <div class="dash-block-panel">
+          <div class="panel-header-strip">
+            <div class="header-left">
+              <span class="status-dot dot-vermilion"></span>
+              <h3 class="panel-heading">Priority Emerging Warnings</h3>
+            </div>
+            <span class="font-mono text-xs text-vermilion" id="dashActiveAlertCount">2 Active</span>
+          </div>
+
+          <div class="priority-alerts-summary-list" id="dashPriorityAlertsList">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Remediation Milestone Banner -->
+      <div class="workspace-milestone-callout">
+        <span class="milestone-star">&#9733;</span>
+        <div class="milestone-text-block">
+          <span class="milestone-label font-mono">LATEST VERIFIED OPERATIONAL MILESTONE:</span>
+          <span class="milestone-text" id="dashMilestoneText">
+            Averted chemical lab shutdown during midterm exams via 18-day predictive scrubber warning.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SIGNALS VIEW -->
+    <section class="workspace-tab-panel" id="panel-signals" role="tabpanel" style="display: none;">
+      <div class="module-action-bar">
+        <div class="search-input-wrapper">
+          <input type="text" id="signalsSearchInput" class="map-styled-input" placeholder="Search signals by keyword, asset, or room...">
+        </div>
+        <div class="filter-pills-row" id="signalsModalityFilters">
+          <button class="filter-pill active" data-modality="all">All Modalities</button>
+          <button class="filter-pill" data-modality="IoT">IoT Sensors</button>
+          <button class="filter-pill" data-modality="Acoustic">Acoustic / FLIR</button>
+          <button class="filter-pill" data-modality="Probe">Probes</button>
+        </div>
+      </div>
+
+      <div class="signals-cards-grid" id="orgSignalsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- 3. ALERTS VIEW -->
+    <section class="workspace-tab-panel" id="panel-alerts" role="tabpanel" style="display: none;">
+      <div class="module-header-note">
+        <h3 class="panel-heading">Organization Emerging Hazards &amp; Early Warnings</h3>
+        <p class="text-sm text-muted">Engineering validated hazard signatures crossing multi-modal coherence thresholds with quantified lead time before failure.</p>
+      </div>
+
+      <div class="alerts-cards-stack" id="orgAlertsStack">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- 4. TEAMS VIEW -->
+    <section class="workspace-tab-panel" id="panel-teams" role="tabpanel" style="display: none;">
+      <div class="module-header-note">
+        <h3 class="panel-heading">Domain Engineering Squads &amp; Operational Leads</h3>
+        <p class="text-sm text-muted">Specialized response teams and certified personnel dedicated to this organization's assets and physical systems.</p>
+      </div>
+
+      <div class="teams-cards-grid" id="orgTeamsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- 5. REPORTS VIEW -->
+    <section class="workspace-tab-panel" id="panel-reports" role="tabpanel" style="display: none;">
+      <div class="module-action-bar">
+        <div class="search-input-wrapper">
+          <input type="text" id="reportsSearchInput" class="map-styled-input" placeholder="Search audited reports, work orders, or compliance filings...">
+        </div>
+        <button class="btn-header-cta" id="btnExportAllReports">
+          Download All Audited Reports (ZIP)
+        </button>
+      </div>
+
+      <div class="reports-table-container">
+        <table class="impact-table" id="reportsTable">
+          <thead>
+            <tr>
+              <th class="font-mono">REPORT ID</th>
+              <th class="font-mono">TITLE / SCOPE</th>
+              <th class="font-mono">AUTHOR</th>
+              <th class="font-mono">DATE</th>
+              <th class="font-mono">COMPLIANCE CODE</th>
+              <th class="font-mono">STATUS</th>
+              <th class="font-mono text-center">ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="orgReportsTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. ANALYTICS VIEW -->
+    <section class="workspace-tab-panel" id="panel-analytics" role="tabpanel" style="display: none;">
+      <div class="analytics-layout-grid">
+        <!-- Monthly Averted Disruption Loss Bar Chart -->
+        <div class="analytics-card">
+          <div class="card-header-clean">
+            <span class="font-mono text-xs font-bold text-muted">Averted Disruption Loss (FY 2026)</span>
+            <span class="font-mono font-bold text-emerald" id="analyticsTotalSavings">$485,000 Total</span>
+          </div>
+          <div class="chart-container-bar" id="analyticsMonthlyChart">
+            <!-- SVG Bars Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Risk Category Distribution Breakdown -->
+        <div class="analytics-card">
+          <div class="card-header-clean">
+            <span class="font-mono text-xs font-bold text-muted">Precursor Risk Domain Distribution</span>
+            <span class="font-mono text-xs text-muted">100% Normalized</span>
+          </div>
+          <div class="risk-distribution-list" id="analyticsRiskDistList">
+            <!-- Distribution Meters Rendered via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Lead-Time Lead Metrics Strip -->
+      <div class="analytics-metrics-strip" id="analyticsMetricsStrip">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- 7. AI ASSISTANT VIEW (Strictly Scoped) -->
+    <section class="workspace-tab-panel" id="panel-aiAssistant" role="tabpanel" style="display: none;">
+      <div class="ai-workspace-cockpit">
+        <!-- Copilot Scope Header -->
+        <div class="copilot-scope-header">
+          <div class="scope-icon-wrapper">
+            <span class="copilot-pulse-dot"></span>
+            <span class="scope-brand-name font-mono" id="aiCopilotIdentity">ABC College Operations Copilot</span>
+          </div>
+          <div class="scope-security-badge font-mono">
+            &#128274; AIR-GAPPED: NO EXTERNAL TENANT DATA INGESTION
+          </div>
+        </div>
+
+        <!-- Prompt Suggestions Strip -->
+        <div class="copilot-prompts-strip">
+          <span class="prompts-label font-mono">SUGGESTED OPERATIONAL QUERIES:</span>
+          <div class="prompts-pills-row" id="aiSuggestedPromptsRow">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Chat Feed Window -->
+        <div class="copilot-chat-window" id="aiChatWindow">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Input Bar -->
+        <div class="copilot-input-bar">
+          <input type="text" id="aiChatInput" class="copilot-text-input" placeholder="Ask AI Copilot about this organization's assets, telemetry, or reports...">
+          <button class="btn-copilot-send" id="btnAiChatSend">
+            Ask Copilot &rarr;
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- INTERACTIVE ORGANIZATION SELECTOR MODAL -->
+  <div class="modal-overlay" id="orgSelectorModal" style="display: none;">
+    <div class="org-modal-content">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-eyebrow font-mono">EARLYSIGHT WORKSPACE DIRECTORY</span>
+          <h2 class="modal-title">Select Organization Workspace</h2>
+        </div>
+        <button class="modal-close-btn" id="btnOrgModalClose" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <div class="org-modal-body">
+        <p class="org-modal-intro">
+          Each organization maintains a strictly isolated workspace environment with its own telemetry feeds, emerging risk signals, work orders, personnel, and scoped AI Copilot.
+        </p>
+
+        <!-- 4 Organization Cards Grid -->
+        <div class="org-directory-grid" id="orgDirectoryGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <span class="font-mono text-xs text-muted">Active Tenant: <strong id="modalActiveTenantCode">TENANT-EDU-01</strong></span>
+        <button class="btn-modal-primary" id="btnDismissOrgModal">Close Directory</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Toast Notification Container -->
+  <div class="action-toast-container" id="workspaceToastContainer" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="organizations-data.js"></script>
+  <script src="workspace.js"></script>
+  <script src="global-nav.js"></script>
+  <script src="micro-interactions.js"></script>
+</body>
+</html>

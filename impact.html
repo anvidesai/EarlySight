@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarlySight — Impact Monitoring & Resolution Audit (Stage 11)</title>
+  <meta name="description" content="Operational impact monitoring interface proving whether interventions actually reduced problems. Quantifies before-action precursor frequency, executed field actions, and after-action signal decay with clean trend visualizations, resolution status, and monitoring periods.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="map-page-body impact-page-body">
+
+  <!-- Top Enterprise Navigation Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
+          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
+          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
+          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">EarlySight</span>
+        <span class="brand-subtitle-badge">Impact Monitoring</span>
+      </div>
+    </a>
+
+    <!-- Universal EarlySight Stage Switcher -->
+    <div class="view-switcher-pill">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Dashboard</a>
+      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>Workspaces 🏢</span>
+      </a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Action Center</span>
+      </a>
+      <button class="view-switch-btn active" id="btnNavImpact">
+        <span class="indicator-dot dot-emerald"></span>
+        <span>Impact Monitoring</span>
+      </button>
+      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-teal"></span>
+        <span>AI Copilot</span>
+      </a>
+      <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-amber"></span>
+        <span>Signal Map &rarr;</span>
+      </a>
+      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Timeline &rarr;</span>
+      </a>
+      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-blue"></span>
+        <span>Evidence &rarr;</span>
+      </a>
+    </div>
+
+    <!-- Header Actions & Verification Badge -->
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div class="header-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>STAGE 11 ACTIVE &bull; IMPACT VERIFICATION ONLINE</span>
+      </div>
+      <button class="btn-header-cta" id="btnExportCertificate" onclick="window.impactController && window.impactController.openAuditCertificate()">
+        Export Audit Certificate
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Impact Monitoring Container -->
+  <main class="impact-page-container">
+
+    <!-- Executive KPI Ribbon / Proof of Value -->
+    <section class="impact-kpi-ribbon" aria-label="Executive Value Metrics">
+      <div class="impact-kpi-card">
+        <div class="impact-kpi-header">
+          <span class="impact-kpi-label">AVG SIGNAL REDUCTION</span>
+          <span class="impact-kpi-badge badge-emerald">Audited</span>
+        </div>
+        <div class="impact-kpi-val text-emerald" id="kpiAvgReduction">-95.2%</div>
+        <div class="impact-kpi-sub">Precursor frequency decay post-intervention</div>
+      </div>
+
+      <div class="impact-kpi-card">
+        <div class="impact-kpi-header">
+          <span class="impact-kpi-label">TOTAL AVERTED LOSS</span>
+          <span class="impact-kpi-badge badge-blue">FY 2026</span>
+        </div>
+        <div class="impact-kpi-val" id="kpiTotalSavings">$1,922,000</div>
+        <div class="impact-kpi-sub">Catastrophic downtime &amp; damage averted</div>
+      </div>
+
+      <div class="impact-kpi-card">
+        <div class="impact-kpi-header">
+          <span class="impact-kpi-label">DOWNTIME HOURS SAVED</span>
+          <span class="impact-kpi-badge badge-amber">5 Assets</span>
+        </div>
+        <div class="impact-kpi-val text-amber" id="kpiDowntimeHours">180 hrs</div>
+        <div class="impact-kpi-sub">Unplanned production line outage avoided</div>
+      </div>
+
+      <div class="impact-kpi-card">
+        <div class="impact-kpi-header">
+          <span class="impact-kpi-label">TRUE POSITIVE RATE</span>
+          <span class="impact-kpi-badge badge-emerald">Verified</span>
+        </div>
+        <div class="impact-kpi-val text-emerald" id="kpiTruePositive">100%</div>
+        <div class="impact-kpi-sub">0 false alerts across audited interventions</div>
+      </div>
+
+      <div class="impact-kpi-card">
+        <div class="impact-kpi-header">
+          <span class="impact-kpi-label">TIME TO STABILIZATION</span>
+          <span class="impact-kpi-badge badge-neutral">MTTS</span>
+        </div>
+        <div class="impact-kpi-val" id="kpiTimeToStabilize">3.4 days</div>
+        <div class="impact-kpi-sub">Average return to nominal baseline</div>
+      </div>
+    </section>
+
+    <!-- Hero / Case Selector Section -->
+    <section class="impact-hero-section">
+      <div class="impact-hero-top">
+        <div class="impact-hero-left">
+          <div class="impact-eyebrow font-mono">
+            <span class="eyebrow-pill">STAGE 11 VERIFICATION AUDIT</span>
+            <span class="eyebrow-divider">&bull;</span>
+            <span id="activeCaseAssetTag" class="font-mono text-muted">DI Water Main Joint 4B-12</span>
+          </div>
+          <h1 class="impact-main-title" id="activeCaseTitle">
+            Sub-Slab Pressurized Water Seepage on Flange 4B-12
+          </h1>
+          <p class="impact-main-desc" id="activeCaseDesc">
+            Proving physical remediation efficacy through cross-silo precursor signal tracking. Monitors whether maintenance intervention successfully suppressed anomalous failure precursors and restored baseline physical equilibrium.
+          </p>
+        </div>
+
+        <div class="impact-hero-right">
+          <div class="impact-lead-card">
+            <div class="lead-card-row">
+              <span class="lead-label font-mono">AUDIT TICKET:</span>
+              <span class="lead-val font-mono" id="activeCaseTicketId">IMP-2026-088</span>
+            </div>
+            <div class="lead-card-row">
+              <span class="lead-label font-mono">LINKED EARLY WARNING:</span>
+              <a href="evidence.html" class="lead-val font-mono text-vermilion" id="activeCaseAlertLink">EW-2026-088 &rarr;</a>
+            </div>
+            <div class="lead-card-row">
+              <span class="lead-label font-mono">RESPONSIBLE TEAM:</span>
+              <span class="lead-val" id="activeCaseTeam">Civil & Piping Infrastructure</span>
+            </div>
+            <div class="lead-card-row">
+              <span class="lead-label font-mono">LEAD TECHNICIAN:</span>
+              <span class="lead-val" id="activeCasePerson">Marcus Vance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Audited Intervention Case Tabs -->
+      <div class="impact-case-pills-bar" role="tablist" aria-label="Select Audited Intervention">
+        <div class="pills-label font-mono">AUDITED CASES:</div>
+        <div class="pills-scroll-track" id="casePillsContainer">
+          <!-- Populated dynamically via impact.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE STAGE 11 IMPACT VISUALIZATION: Before Action -> Action Taken -> After Action -->
+    <section class="impact-flow-section" aria-label="Before vs Action vs After Transformation">
+      <div class="section-title-strip">
+        <div class="title-strip-left">
+          <span class="badge-status-ring"></span>
+          <h2 class="section-heading">Closed-Loop Impact Transformation Flow</h2>
+        </div>
+        <div class="title-strip-note font-mono">
+          PRIMARY AUDIT HYPOTHESIS: Did the physical action halt precursor emergence?
+        </div>
+      </div>
+
+      <!-- 3-Step Impact Chain Grid -->
+      <div class="impact-transformation-grid">
+
+        <!-- 1. BEFORE ACTION CARD -->
+        <div class="impact-step-card step-before" id="cardBeforeAction">
+          <div class="step-card-header">
+            <div class="step-phase-badge badge-phase-before">
+              <span class="dot-indicator dot-vermilion"></span>
+              <span>BEFORE ACTION</span>
+            </div>
+            <span class="step-urgency-tag font-mono">Active Hazard State</span>
+          </div>
+
+          <div class="step-giant-counter">
+            <span class="giant-num text-vermilion" id="valBeforeCount">17</span>
+            <span class="giant-unit">related signals</span>
+          </div>
+
+          <div class="step-metrics-list">
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Precursor Frequency:</span>
+              <span class="step-m-val font-mono text-vermilion" id="valBeforeFreq">4.8 signals / day</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Mean Time Between Signals:</span>
+              <span class="step-m-val font-mono" id="valBeforeMTBS">6.2 hours</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Trajectory:</span>
+              <span class="step-m-val font-mono text-vermilion">&uarr; Accelerating (+340% 72h)</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Risk Exposure:</span>
+              <span class="step-m-val font-mono" id="valBeforeRisk">$512,000 / 36h Downtime</span>
+            </div>
+          </div>
+
+          <div class="step-card-footer">
+            <div class="footer-callout callout-danger">
+              <span class="callout-icon">&excl;</span>
+              <span class="callout-text">Unaddressed micro-pressure drops &amp; soil moisture saturation nearing 3.3kV conduit inundation threshold.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLOW CONNECTOR 1 -->
+        <div class="impact-flow-arrow" aria-hidden="true">
+          <div class="arrow-line"></div>
+          <div class="arrow-badge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+          <span class="arrow-label font-mono">INTERVENTION</span>
+        </div>
+
+        <!-- 2. ACTION TAKEN CARD -->
+        <div class="impact-step-card step-action" id="cardActionTaken">
+          <div class="step-card-header">
+            <div class="step-phase-badge badge-phase-action">
+              <span class="dot-indicator dot-amber"></span>
+              <span>ACTION TAKEN</span>
+            </div>
+            <span class="step-wo-badge font-mono" id="valActionWO">WO-2026-8841</span>
+          </div>
+
+          <div class="action-body-wrapper">
+            <div class="action-title font-mono" id="valActionDate">
+              Sep 20, 2026 &mdash; 02:30 (Midnight Shift)
+            </div>
+            <p class="action-description-text" id="valActionSummary">
+              Isolated auxiliary trench bypass loop, conducted ultrasonic bolt elongation check, replaced degraded EPDM elastomer with chemical-resistant Viton FKM gasket ring, retorqued studs to 340 Nm, and cleared concrete raceway drainage channel.
+            </p>
+          </div>
+
+          <div class="step-metrics-list">
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Technician Lead:</span>
+              <span class="step-m-val" id="valActionTech">Marcus Vance (Sr Piping)</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Asset Location:</span>
+              <span class="step-m-val font-mono" id="valActionLocation">Block A &bull; Trench 4B / Bay 4</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Execution Window:</span>
+              <span class="step-m-val font-mono">Scheduled 3.5h Outage</span>
+            </div>
+          </div>
+
+          <div class="step-card-footer">
+            <div class="footer-callout callout-neutral">
+              <span class="callout-icon">&check;</span>
+              <span class="callout-text">Physical root cause remediated. Joint torqued to manufacturer spec; telemetry watch initiated.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLOW CONNECTOR 2 -->
+        <div class="impact-flow-arrow" aria-hidden="true">
+          <div class="arrow-line"></div>
+          <div class="arrow-badge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+          <span class="arrow-label font-mono">STABILIZATION</span>
+        </div>
+
+        <!-- 3. AFTER ACTION CARD -->
+        <div class="impact-step-card step-after" id="cardAfterAction">
+          <div class="step-card-header">
+            <div class="step-phase-badge badge-phase-after">
+              <span class="dot-indicator dot-emerald"></span>
+              <span>AFTER ACTION</span>
+            </div>
+            <span class="step-reduction-badge font-mono" id="valReductionPill">-94.1% DECAY</span>
+          </div>
+
+          <div class="step-giant-counter">
+            <span class="giant-num text-emerald" id="valAfterCount">6</span>
+            <span class="giant-unit">related signals</span>
+            <span class="giant-sub-residual font-mono" id="valResidualText">(Decaying to 1 residual)</span>
+          </div>
+
+          <div class="step-metrics-list">
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Precursor Frequency:</span>
+              <span class="step-m-val font-mono text-emerald" id="valAfterFreq">0.14 signals / day</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Mean Time Between Signals:</span>
+              <span class="step-m-val font-mono" id="valAfterMTBS">168.0 hours (&gt; 7 days)</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Frequency Delta:</span>
+              <span class="step-m-val font-mono text-emerald" id="valFreqDelta">&darr; -97.1% reduction</span>
+            </div>
+            <div class="step-metric-row">
+              <span class="step-m-label font-mono">Quantified Averted Loss:</span>
+              <span class="step-m-val font-mono text-emerald" id="valAfterSavings">$512,000 Confirmed</span>
+            </div>
+          </div>
+
+          <div class="step-card-footer">
+            <div class="footer-callout callout-success">
+              <span class="callout-icon">&starf;</span>
+              <span class="callout-text">Nominal baseline restored. Ultrasonic acoustic hiss eliminated; soil moisture returned to ambient dry baseline.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MANDATORY STAGE 11 DIMENSIONS BAR -->
+      <div class="impact-mandatory-bar" role="region" aria-label="Audited Dimensions">
+        
+        <div class="dim-item">
+          <span class="dim-icon-pill" aria-hidden="true">&bull;</span>
+          <div class="dim-content">
+            <span class="dim-label font-mono">SIGNAL FREQ BEFORE INTERVENTION</span>
+            <span class="dim-value font-mono text-vermilion" id="dimFreqBefore">4.8 signals / day</span>
+            <span class="dim-meta font-mono" id="dimMTBSBefore">MTBS: 6.2 hours</span>
+          </div>
+        </div>
+
+        <div class="dim-item-divider" aria-hidden="true"></div>
+
+        <div class="dim-item">
+          <span class="dim-icon-pill dim-icon-emerald" aria-hidden="true">&bull;</span>
+          <div class="dim-content">
+            <span class="dim-label font-mono">SIGNAL FREQ AFTER INTERVENTION</span>
+            <span class="dim-value font-mono text-emerald" id="dimFreqAfter">0.14 signals / day</span>
+            <span class="dim-meta font-mono" id="dimMTBSAfter">MTBS: 168.0 hours</span>
+          </div>
+        </div>
+
+        <div class="dim-item-divider" aria-hidden="true"></div>
+
+        <div class="dim-item">
+          <span class="dim-icon-pill dim-icon-teal" aria-hidden="true">&check;</span>
+          <div class="dim-content">
+            <span class="dim-label font-mono">RESOLUTION STATUS</span>
+            <span class="dim-value" id="dimResolutionStatus">
+              <span class="status-chip chip-verified" id="dimStatusBadge">Verified Remediated</span>
+            </span>
+            <span class="dim-meta font-mono" id="dimStatusSignoff">Engineering Sign-off Approved</span>
+          </div>
+        </div>
+
+        <div class="dim-item-divider" aria-hidden="true"></div>
+
+        <div class="dim-item">
+          <span class="dim-icon-pill dim-icon-blue" aria-hidden="true">&#9719;</span>
+          <div class="dim-content">
+            <span class="dim-label font-mono">MONITORING PERIOD</span>
+            <span class="dim-value font-mono" id="dimMonitoringPeriod">14-Day Post-Intervention Audit</span>
+            <span class="dim-meta font-mono" id="dimPeriodDates">Sep 20 &ndash; Oct 04, 2026</span>
+          </div>
+        </div>
+
+        <div class="dim-item-divider" aria-hidden="true"></div>
+
+        <div class="dim-item">
+          <span class="dim-icon-pill dim-icon-emerald" aria-hidden="true">&darr;</span>
+          <div class="dim-content">
+            <span class="dim-label font-mono">CURRENT TREND</span>
+            <span class="dim-value text-emerald font-mono" id="dimCurrentTrend">Decaying to Baseline (-94.1%)</span>
+            <span class="dim-meta font-mono" id="dimTrendSub">Stable Equilibrium</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CLEAN TREND VISUALIZATION: Dual-Phase Telemetry Chart (Before vs Demarcation vs After) -->
+    <section class="impact-trend-section" aria-label="Trend Visualization">
+      <div class="trend-section-header">
+        <div class="trend-header-left">
+          <div class="trend-badge-group">
+            <span class="badge-dot dot-emerald"></span>
+            <span class="font-mono text-xs uppercase font-bold text-muted">PRE-VS-POST INTERVENTION TELEMETRY TRAJECTORY</span>
+          </div>
+          <h2 class="trend-header-title">Signal Frequency &amp; Decay Curve</h2>
+          <p class="trend-header-subtitle">
+            Visualizing the transition across the Day 0 physical intervention boundary. Vermilion denotes the precursor surge phase; Emerald highlights the steep post-remediation signal decay.
+          </p>
+        </div>
+
+        <!-- Metric & Granularity Toggles -->
+        <div class="trend-controls-right">
+          <div class="trend-metric-toggle" role="group" aria-label="Chart Metric Mode">
+            <button class="trend-toggle-btn active" id="btnToggleFreq" data-mode="frequency">
+              Signal Frequency (Rate/Day)
+            </button>
+            <button class="trend-toggle-btn" id="btnToggleDaily" data-mode="daily">
+              Daily Signal Count (Bars)
+            </button>
+            <button class="trend-toggle-btn" id="btnToggleCumulative" data-mode="cumulative">
+              Cumulative Decay
+            </button>
+          </div>
+
+          <div class="trend-legend">
+            <span class="legend-item">
+              <span class="legend-swatch swatch-vermilion"></span>
+              <span>Pre-Intervention Surge</span>
+            </span>
+            <span class="legend-item">
+              <span class="legend-swatch swatch-action"></span>
+              <span>Action Boundary (Day 0)</span>
+            </span>
+            <span class="legend-item">
+              <span class="legend-swatch swatch-emerald"></span>
+              <span>Post-Action Decay</span>
+            </span>
+            <span class="legend-item">
+              <span class="legend-swatch swatch-baseline"></span>
+              <span>Nominal Baseline</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Clean Trend Chart Container (High-Resolution SVG Engine) -->
+      <div class="trend-chart-viewport" id="trendChartViewport">
+        <svg id="trendSvgChart" class="trend-svg-canvas" viewBox="0 0 1000 380" preserveAspectRatio="none">
+          <!-- Dynamically populated via impact.js -->
+        </svg>
+
+        <!-- Interactive Floating Tooltip -->
+        <div class="chart-tooltip" id="chartTooltip" style="display: none;">
+          <div class="tooltip-header font-mono" id="ttDay">Day -1 (Sep 19)</div>
+          <div class="tooltip-phase font-mono" id="ttPhase">Pre-Intervention Phase</div>
+          <div class="tooltip-row">
+            <span class="tt-label font-mono">Signal Frequency:</span>
+            <span class="tt-val font-mono" id="ttFreq">4.8 signals/day</span>
+          </div>
+          <div class="tooltip-row">
+            <span class="tt-label font-mono">Daily Raw Signals:</span>
+            <span class="tt-val font-mono" id="ttCount">7 events</span>
+          </div>
+          <div class="tooltip-note" id="ttNote">
+            Multiple ultrasonic micro-pulses recorded in Trench 4B raceway.
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Scrub Bar Controls -->
+      <div class="trend-scrubber-bar">
+        <div class="scrub-label font-mono">INSPECT TRAJECTORY STEP:</div>
+        <div class="scrub-pips-track" id="scrubPipsTrack">
+          <!-- Step pips Day -5 to Day +5 rendered via impact.js -->
+        </div>
+        <button class="btn-scrub-play" id="btnPlayTrajectory" title="Animate Decay Curve">
+          &#9658; Animate Trajectory
+        </button>
+      </div>
+    </section>
+
+    <!-- MULTI-MODALITY TELEMETRY DECAY BREAKDOWN -->
+    <section class="impact-telemetry-section" aria-label="Physical Sensor Streams">
+      <div class="section-title-strip">
+        <div class="title-strip-left">
+          <span class="badge-status-ring"></span>
+          <h2 class="section-heading">Cross-Silo Physical Telemetry Decay Matrix</h2>
+        </div>
+        <div class="title-strip-note font-mono">
+          PHYSICAL PROOF: Verification across individual sensor modalities
+        </div>
+      </div>
+
+      <div class="telemetry-streams-grid" id="telemetryStreamsContainer">
+        <!-- Dynamically rendered by impact.js -->
+      </div>
+    </section>
+
+    <!-- SIDE-BY-SIDE CONTRAST & VERIFICATION NOTES -->
+    <section class="impact-contrast-section" aria-label="Before and After Contrast">
+      <div class="contrast-grid">
+        
+        <!-- Before State Summary Card -->
+        <div class="contrast-card card-unmitigated">
+          <div class="contrast-card-header">
+            <div class="contrast-title-group">
+              <span class="contrast-phase-badge font-mono">PRE-INTERVENTION RISK TRAJECTORY</span>
+              <h3 class="contrast-title">Unmitigated Threat Projection</h3>
+            </div>
+            <span class="contrast-badge-danger font-mono">Averted Catastrophe</span>
+          </div>
+          <div class="contrast-body">
+            <p class="contrast-text">
+              Prior to maintenance intervention, micro-pressure drops on Trench Joint 4B-12 had escalated to 4.8 events daily. SCADA primary thresholds remained unbreached because individual transients were below the legacy 2.0 bar alarm threshold.
+            </p>
+            <div class="contrast-specs-list">
+              <div class="spec-row">
+                <span class="spec-label font-mono">Averted Downtime:</span>
+                <span class="spec-val font-mono text-vermilion">36 Hours Unplanned Halt</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label font-mono">Financial Exposure:</span>
+                <span class="spec-val font-mono text-vermilion">$512,000 Potential Loss</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label font-mono">Cascading Risk:</span>
+                <span class="spec-val" id="specCascading">Cleanroom Cell C subterranean water inundation &amp; 3.3kV conduit short circuit</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- After State Summary Card -->
+        <div class="contrast-card card-stabilized">
+          <div class="contrast-card-header">
+            <div class="contrast-title-group">
+              <span class="contrast-phase-badge font-mono text-emerald">POST-INTERVENTION STABILIZATION</span>
+              <h3 class="contrast-title">Physical Equilibrium Restored</h3>
+            </div>
+            <span class="contrast-badge-success font-mono">Remediation Certified</span>
+          </div>
+          <div class="contrast-body">
+            <p class="contrast-text" id="activeVerificationNotes">
+              Ultrasonic acoustic imaging confirms zero micro-cavitation leakage along joint 4B-12 circumference. Soil probe SM-4B shows normal moisture decay gradient as concrete slab dries out. Pressure transducer PT-102 holds nominal 4.2 bar with zero cyclic pulsation. True positive early warning confirmed.
+            </p>
+            <div class="contrast-specs-list">
+              <div class="spec-row">
+                <span class="spec-label font-mono">Resolution Status:</span>
+                <span class="spec-val font-mono text-emerald">Verified Remediated (Sign-Off Logged)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label font-mono">Signal Reduction:</span>
+                <span class="spec-val font-mono text-emerald" id="specReductionPct">-94.1% Sustained</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label font-mono">Audit Standard:</span>
+                <span class="spec-val font-mono">ISO 13374 Condition Monitoring / Level 4 Prognostic</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MASTER INTERVENTION IMPACT AUDIT LEDGER (Tabular Overview of All 5 Cases) -->
+    <section class="impact-ledger-section" aria-label="Audited Interventions Ledger">
+      <div class="ledger-header-row">
+        <div>
+          <h2 class="section-heading">Master Audited Interventions Ledger</h2>
+          <p class="text-sm text-muted">Comprehensive cross-facility record of all early warning remediations, signal decay rates, and verified downtime savings.</p>
+        </div>
+
+        <!-- Table Filters & Search -->
+        <div class="ledger-actions-row">
+          <div class="ledger-search-box">
+            <input type="text" id="ledgerSearchInput" class="map-styled-input" placeholder="Search asset, ticket, or team...">
+          </div>
+          <div class="ledger-filter-pills">
+            <button class="filter-pill active" data-filter="all">All (5)</button>
+            <button class="filter-pill" data-filter="verified">Verified Remediated (4)</button>
+            <button class="filter-pill" data-filter="monitoring">Monitoring in Progress (1)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ledger Table Container -->
+      <div class="ledger-table-wrapper">
+        <table class="impact-table" id="impactMasterTable">
+          <thead>
+            <tr>
+              <th class="font-mono">TICKET / ASSET</th>
+              <th class="font-mono">BEFORE ACTION</th>
+              <th class="font-mono text-center">ACTION EXECUTED</th>
+              <th class="font-mono">AFTER ACTION</th>
+              <th class="font-mono">SIGNAL FREQUENCY</th>
+              <th class="font-mono">RESOLUTION STATUS</th>
+              <th class="font-mono">MONITORING PERIOD</th>
+              <th class="font-mono">CURRENT TREND</th>
+              <th class="font-mono text-right">SAVINGS</th>
+              <th class="font-mono text-center">ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="ledgerTableBody">
+            <!-- Populated via impact.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ENGINEERING AUDIT CERTIFICATE MODAL -->
+  <div class="modal-overlay" id="auditCertModal" style="display: none;">
+    <div class="audit-modal-content">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-eyebrow font-mono">EARLYSIGHT INTERVENTION AUDIT CERTIFICATE</span>
+          <h2 class="modal-title" id="certModalTitle">Closed-Loop Operational Verification Record</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCertModalClose" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <div class="modal-body-cert" id="certModalBody">
+        <!-- Rendered dynamically via impact.js -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-modal-secondary" id="btnPrintCert">Print Audit Record</button>
+        <button class="btn-modal-primary" id="btnDismissCert">Close Certificate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Toast Notification Container -->
+  <div class="action-toast-container" id="impactToastContainer" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="impact-data.js"></script>
+  <script src="impact.js"></script>
+  <script src="global-nav.js"></script>
+  <script src="micro-interactions.js"></script>
+</body>
+</html>

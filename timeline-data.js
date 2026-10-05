@@ -1,0 +1,506 @@
+/**
+ * EarlySight — Trends & Timeline Dataset (Stage 7)
+ * Comprehensive chronological problem development, frequency changes,
+ * multi-modal precursors, and historical incident comparisons.
+ *
+ * Core Lifecycle Stages:
+ * 1. First Signal (Weak precursor, isolated telemetry noise)
+ * 2. Repeated Reports (Multiple disparate maintenance & operator mentions)
+ * 3. Pattern Detected (MTGNN cross-silo graph correlation threshold crossed)
+ * 4. Frequency Increased (Precursor arrival velocity accelerates exponentially)
+ * 5. Early Warning Generated (Actionable notification with quantified lead time & confidence)
+ * 6. Action Taken (Prescriptive work order executed before failure threshold)
+ * 7. Impact Monitored (Post-intervention verification, zero downtime, confirmed averted loss)
+ */
+
+const TIMELINE_CASE_STUDIES = [
+  {
+    id: "water-infrastructure-block-a",
+    name: "Block A — Sub-Slab Water Infrastructure Micro-Leakage",
+    shortTitle: "Water Infrastructure Issue",
+    location: "Block A (Precision Assembly & Machining)",
+    severity: "High",
+    confidence: "87.0%",
+    totalLeadTimeDays: 14.2,
+    avertedDowntimeHours: 38,
+    avertedLossUSD: "$512,000",
+    summary: "Micro-leakage on pressurized auxiliary supply flange 4B-12 migrating along sub-slab utility conduit toward Cleanroom Cell C. Detected 14 days before floor inundation and motor drive flooding.",
+    
+    // The 7 Required Chronological Problem Development Stages
+    lifecycleStages: [
+      {
+        stageIndex: 1,
+        stageId: "first-signal",
+        stageName: "First Signal",
+        timelineLabel: "T-28 Days",
+        date: "2026-08-27",
+        dateFormatted: "Aug 27, 2026 • 04:18 AM",
+        signalCount: 1,
+        frequencyRate: "0.04 signals/day",
+        confidence: "14.2%",
+        anomalyScore: 0.18,
+        status: "Logged (Sub-Threshold)",
+        headline: "Transient Suction Pressure Micro-Oscillation",
+        description: "Primary booster pump P-102 suction transducer logged a subtle 1.4 bar negative pressure transient lasting 120ms during morning line ramp-up. Standard SCADA dismissed this as normal valve cycling noise.",
+        modality: "Sensor",
+        modalityIcon: "⚡",
+        modalityColor: "#475569",
+        asset: "Feed Conduit 4B / Booster Pump P-102",
+        telemetryReading: "Suction P: 4.8 bar (-1.4 bar spike, 120ms)",
+        operationalRisk: "Negligible on single reading; easily obscured by plant noise floor.",
+        keyInsight: "SCADA alarm threshold is set at ±3.0 bar continuous. EarlySight records raw sub-threshold transients in deep historian memory."
+      },
+      {
+        stageIndex: 2,
+        stageId: "repeated-reports",
+        stageName: "Repeated Reports",
+        timelineLabel: "T-21 Days",
+        date: "2026-09-03",
+        dateFormatted: "Sep 03, 2026 • 02:45 PM",
+        signalCount: 4,
+        frequencyRate: "0.25 signals/day",
+        confidence: "32.6%",
+        anomalyScore: 0.38,
+        status: "Fragmented Precursors",
+        headline: "Operator Note & Unscheduled Gasket Inspection",
+        description: "Line operator recorded a faint high-frequency acoustic hiss near Machining Bay 1. Two days later, a maintenance technician filed a minor work order noting localized floor moisture along cable trench 4B, attributed to condensation runoff.",
+        modality: "Complaint & Maintenance",
+        modalityIcon: "📋",
+        modalityColor: "#D97706",
+        asset: "Trench 4B / Assembly Bay 4",
+        telemetryReading: "Acoustic Noise: 68.4 dBA (+6 dBA baseline) • Floor Dampness Sensor: 42% RH",
+        operationalRisk: "Disconnected human reports filed in separate CMMS and paper shift logs without joint correlation.",
+        keyInsight: "Cross-silo reports live in silos: maintenance sees minor moisture, operations hears slight hiss, instrumentation sees minor pressure drift."
+      },
+      {
+        stageIndex: 3,
+        stageId: "pattern-detected",
+        stageName: "Pattern Detected",
+        timelineLabel: "T-16 Days",
+        date: "2026-09-08",
+        dateFormatted: "Sep 08, 2026 • 09:12 AM",
+        signalCount: 8,
+        frequencyRate: "0.85 signals/day",
+        confidence: "64.8%",
+        anomalyScore: 0.62,
+        status: "Pattern Coalescence",
+        headline: "Cross-Silo Spatial-Temporal Graph Correlation",
+        description: "EarlySight's MTGNN engine detected strong spatial co-occurrence between the booster pump pressure transients, trench moisture reports, and a subtle temperature divergence (-2.1°C) on a handheld FLIR thermal scan taken during monthly inspection.",
+        modality: "Image & Historian",
+        modalityIcon: "📷",
+        modalityColor: "#0D9488",
+        asset: "Conduit Flange 4B-12 / Cleanroom Cell C Boundary",
+        telemetryReading: "Thermal Delta: -2.1°C sub-slab thermal plume • Cross-Silo Correlation: r = 0.78",
+        operationalRisk: "Seepage migrating toward sub-slab electrical conduit raceways housing drive power cables.",
+        keyInsight: "Individual signals remain well below legacy alarms, but their joint mathematical probability of co-occurrence by chance is P < 0.003."
+      },
+      {
+        stageIndex: 4,
+        stageId: "frequency-increased",
+        stageName: "Frequency Increased",
+        timelineLabel: "T-12 Days",
+        date: "2026-09-12",
+        dateFormatted: "Sep 12, 2026 • 11:30 PM",
+        signalCount: 14,
+        frequencyRate: "2.10 signals/day",
+        confidence: "78.4%",
+        anomalyScore: 0.81,
+        status: "Exponential Velocity",
+        headline: "Signal Arrival Velocity Surges +340%",
+        description: "Precursor frequency spiked dramatically: 6 multi-modal events occurred within 48 hours, including micro-cavitation acoustic emissions on CNC Mill #12 coolant line and relative humidity creeping up by +8% inside sealed Cleanroom Cell C.",
+        modality: "Sensors & Ultrasonic",
+        modalityIcon: "⚡",
+        modalityColor: "#D94E34",
+        asset: "Cleanroom Cell C / CNC Mill #12",
+        telemetryReading: "Signal Velocity: 2.1 signals/day (vs. baseline 0.12) • Cleanroom RH: 54.8% (+8.2%)",
+        operationalRisk: "Sub-slab trench saturation reaching capacity; water heading toward Cleanroom Cell C foundation barrier.",
+        keyInsight: "Rate of change (acceleration) is the critical early warning signature: the problem is no longer stationary."
+      },
+      {
+        stageIndex: 5,
+        stageId: "early-warning-generated",
+        stageName: "Early Warning Generated",
+        timelineLabel: "T-10 Days",
+        date: "2026-09-14",
+        dateFormatted: "Sep 14, 2026 • 06:00 AM",
+        signalCount: 17,
+        frequencyRate: "3.40 signals/day",
+        confidence: "87.0%",
+        anomalyScore: 0.94,
+        status: "Actionable Early Warning",
+        headline: "High-Confidence Early Warning Dispatched (14.2 Days Lead)",
+        description: "EarlySight generated Alert EW-2026-088: 'Sub-Slab Pressurized Water Seepage on Flange 4B-12 with 87% Confidence.' Root cause identified as EPDM gasket embrittlement with hydraulic short-cycling shock. Estimated lead time: 14.2 days before motor trench flooding.",
+        modality: "EarlySight AI Synthesis",
+        modalityIcon: "⚠️",
+        modalityColor: "#D94E34",
+        asset: "Facility Quad Block A / Joint 4B-12",
+        telemetryReading: "Confidence: 87.0% • Lead Time: 14.2 Days • Impact Estimate: $480,000 - $540,000",
+        operationalRisk: "Without intervention, catastrophic breach projected within 14 days, flooding assembly line drive axes.",
+        keyInsight: "Legacy SCADA still shows all green alarms. EarlySight alerts plant engineering 14 full days before threshold breach."
+      },
+      {
+        stageIndex: 6,
+        stageId: "action-taken",
+        stageName: "Action Taken",
+        timelineLabel: "T-7 Days",
+        date: "2026-09-17",
+        dateFormatted: "Sep 17, 2026 • 01:15 PM",
+        signalCount: 17,
+        frequencyRate: "0.40 signals/day",
+        confidence: "87.0%",
+        anomalyScore: 0.42,
+        status: "Prescriptive Execution",
+        headline: "Targeted Gasket Replacement During Scheduled Shift Changeover",
+        description: "Engineering team used EarlySight's acoustic pinpointing guidance to inspect joint 4B-12 during a planned 45-minute shift break. Verified degraded elastomer seal ring with 1.8mm tear. Replaced with reinforced Viton gasket; recalibrated booster pressure deadband.",
+        modality: "Prescriptive Maintenance",
+        modalityIcon: "🔧",
+        modalityColor: "#059669",
+        asset: "Flange Joint 4B-12 / Trench Isolation Valve",
+        telemetryReading: "Intervention Window: 35 Minutes • Parts Cost: $340 • Unplanned Outage: 0 Hours",
+        operationalRisk: "Controlled resolution; zero disruption to ongoing assembly output.",
+        keyInsight: "Action was taken proactively during routine break rather than as an emergency 3-day production shutdown."
+      },
+      {
+        stageIndex: 7,
+        stageId: "impact-monitored",
+        stageName: "Impact Monitored",
+        timelineLabel: "T-0 Days (Present)",
+        date: "2026-09-24",
+        dateFormatted: "Sep 24, 2026 • 12:00 PM",
+        signalCount: 17,
+        frequencyRate: "0.02 signals/day",
+        confidence: "98.4% Resolved",
+        anomalyScore: 0.05,
+        status: "Closed-Loop Verification",
+        headline: "Zero Downtime Confirmed • $512,000 Financial Loss Averted",
+        description: "Post-intervention monitoring over 7 days confirms all pressure transients have vanished (6.2 bar ±0.03 nominal). Trench floor moisture sensors dried to 14% RH. Cleanroom relative humidity restored to 44.0%. 38 hours of catastrophic production downtime averted.",
+        modality: "Verification & Telemetry",
+        modalityIcon: "✅",
+        modalityColor: "#059669",
+        asset: "Facility Quad Block A (Nominal Operations)",
+        telemetryReading: "Pressure Stability: 100% • Cleanroom Compliance: 100% • Downtime Averted: 38h",
+        operationalRisk: "Fully mitigated; operational baseline re-established and documented.",
+        keyInsight: "EarlySight provides mathematically verifiable closed-loop proof that the failure mode was permanently eliminated."
+      }
+    ],
+
+    // Daily Timeline Data (Past 30 Days)
+    dailyData: [
+      { date: "2026-08-25", dayLabel: "Aug 25", signals: 0, frequencyRate: 0.0, confidence: 10, anomaly: 0.08, stage: "Baseline", cumulative: 0 },
+      { date: "2026-08-26", dayLabel: "Aug 26", signals: 0, frequencyRate: 0.0, confidence: 11, anomaly: 0.09, stage: "Baseline", cumulative: 0 },
+      { date: "2026-08-27", dayLabel: "Aug 27", signals: 1, frequencyRate: 0.05, confidence: 14, anomaly: 0.18, stage: "1. First Signal", cumulative: 1, highlight: true },
+      { date: "2026-08-28", dayLabel: "Aug 28", signals: 0, frequencyRate: 0.05, confidence: 15, anomaly: 0.16, stage: "Monitoring", cumulative: 1 },
+      { date: "2026-08-29", dayLabel: "Aug 29", signals: 0, frequencyRate: 0.05, confidence: 15, anomaly: 0.15, stage: "Monitoring", cumulative: 1 },
+      { date: "2026-08-30", dayLabel: "Aug 30", signals: 0, frequencyRate: 0.04, confidence: 16, anomaly: 0.15, stage: "Monitoring", cumulative: 1 },
+      { date: "2026-08-31", dayLabel: "Aug 31", signals: 1, frequencyRate: 0.08, confidence: 18, anomaly: 0.22, stage: "Monitoring", cumulative: 2 },
+      { date: "2026-09-01", dayLabel: "Sep 01", signals: 0, frequencyRate: 0.08, confidence: 20, anomaly: 0.20, stage: "Monitoring", cumulative: 2 },
+      { date: "2026-09-02", dayLabel: "Sep 02", signals: 1, frequencyRate: 0.12, confidence: 24, anomaly: 0.28, stage: "Monitoring", cumulative: 3 },
+      { date: "2026-09-03", dayLabel: "Sep 03", signals: 1, frequencyRate: 0.25, confidence: 32, anomaly: 0.38, stage: "2. Repeated Reports", cumulative: 4, highlight: true },
+      { date: "2026-09-04", dayLabel: "Sep 04", signals: 0, frequencyRate: 0.25, confidence: 35, anomaly: 0.35, stage: "Monitoring", cumulative: 4 },
+      { date: "2026-09-05", dayLabel: "Sep 05", signals: 1, frequencyRate: 0.30, confidence: 40, anomaly: 0.42, stage: "Monitoring", cumulative: 5 },
+      { date: "2026-09-06", dayLabel: "Sep 06", signals: 1, frequencyRate: 0.40, confidence: 48, anomaly: 0.49, stage: "Monitoring", cumulative: 6 },
+      { date: "2026-09-07", dayLabel: "Sep 07", signals: 1, frequencyRate: 0.55, confidence: 56, anomaly: 0.55, stage: "Monitoring", cumulative: 7 },
+      { date: "2026-09-08", dayLabel: "Sep 08", signals: 1, frequencyRate: 0.85, confidence: 65, anomaly: 0.62, stage: "3. Pattern Detected", cumulative: 8, highlight: true },
+      { date: "2026-09-09", dayLabel: "Sep 09", signals: 1, frequencyRate: 0.95, confidence: 68, anomaly: 0.66, stage: "Pattern Growing", cumulative: 9 },
+      { date: "2026-09-10", dayLabel: "Sep 10", signals: 2, frequencyRate: 1.20, confidence: 72, anomaly: 0.72, stage: "Accelerating", cumulative: 11 },
+      { date: "2026-09-11", dayLabel: "Sep 11", signals: 1, frequencyRate: 1.50, confidence: 75, anomaly: 0.76, stage: "Accelerating", cumulative: 12 },
+      { date: "2026-09-12", dayLabel: "Sep 12", signals: 2, frequencyRate: 2.10, confidence: 78, anomaly: 0.81, stage: "4. Frequency Increased", cumulative: 14, highlight: true },
+      { date: "2026-09-13", dayLabel: "Sep 13", signals: 2, frequencyRate: 2.80, confidence: 83, anomaly: 0.88, stage: "Imminent Precursor", cumulative: 16 },
+      { date: "2026-09-14", dayLabel: "Sep 14", signals: 1, frequencyRate: 3.40, confidence: 87, anomaly: 0.94, stage: "5. Early Warning Generated", cumulative: 17, highlight: true },
+      { date: "2026-09-15", dayLabel: "Sep 15", signals: 0, frequencyRate: 2.20, confidence: 87, anomaly: 0.90, stage: "Work Order Scheduled", cumulative: 17 },
+      { date: "2026-09-16", dayLabel: "Sep 16", signals: 0, frequencyRate: 1.40, confidence: 87, anomaly: 0.85, stage: "Shift Prep", cumulative: 17 },
+      { date: "2026-09-17", dayLabel: "Sep 17", signals: 0, frequencyRate: 0.40, confidence: 87, anomaly: 0.42, stage: "6. Action Taken", cumulative: 17, highlight: true },
+      { date: "2026-09-18", dayLabel: "Sep 18", signals: 0, frequencyRate: 0.15, confidence: 91, anomaly: 0.22, stage: "Verifying Recovery", cumulative: 17 },
+      { date: "2026-09-19", dayLabel: "Sep 19", signals: 0, frequencyRate: 0.08, confidence: 94, anomaly: 0.15, stage: "Stabilized", cumulative: 17 },
+      { date: "2026-09-20", dayLabel: "Sep 20", signals: 0, frequencyRate: 0.05, confidence: 96, anomaly: 0.10, stage: "Stabilized", cumulative: 17 },
+      { date: "2026-09-21", dayLabel: "Sep 21", signals: 0, frequencyRate: 0.03, confidence: 97, anomaly: 0.08, stage: "Stabilized", cumulative: 17 },
+      { date: "2026-09-22", dayLabel: "Sep 22", signals: 0, frequencyRate: 0.02, confidence: 98, anomaly: 0.06, stage: "Stabilized", cumulative: 17 },
+      { date: "2026-09-23", dayLabel: "Sep 23", signals: 0, frequencyRate: 0.02, confidence: 98, anomaly: 0.05, stage: "Nominal Baseline", cumulative: 17 },
+      { date: "2026-09-24", dayLabel: "Sep 24", signals: 0, frequencyRate: 0.02, confidence: 98, anomaly: 0.05, stage: "7. Impact Monitored", cumulative: 17, highlight: true }
+    ],
+
+    // Weekly Aggregation (12 Weeks Horizon)
+    weeklyData: [
+      { weekLabel: "W-11 (Jul 06)", signals: 0, frequencyRate: 0.00, confidence: 8, anomaly: 0.04, stage: "Normal Baseline" },
+      { weekLabel: "W-10 (Jul 13)", signals: 0, frequencyRate: 0.00, confidence: 9, anomaly: 0.05, stage: "Normal Baseline" },
+      { weekLabel: "W-09 (Jul 20)", signals: 1, frequencyRate: 0.14, confidence: 10, anomaly: 0.08, stage: "Transient Spike" },
+      { weekLabel: "W-08 (Jul 27)", signals: 0, frequencyRate: 0.00, confidence: 10, anomaly: 0.05, stage: "Normal Baseline" },
+      { weekLabel: "W-07 (Aug 03)", signals: 0, frequencyRate: 0.00, confidence: 11, anomaly: 0.06, stage: "Normal Baseline" },
+      { weekLabel: "W-06 (Aug 10)", signals: 0, frequencyRate: 0.00, confidence: 12, anomaly: 0.07, stage: "Normal Baseline" },
+      { weekLabel: "W-05 (Aug 17)", signals: 0, frequencyRate: 0.00, confidence: 12, anomaly: 0.08, stage: "Normal Baseline" },
+      { weekLabel: "W-04 (Aug 24)", signals: 2, frequencyRate: 0.28, confidence: 18, anomaly: 0.22, stage: "1. First Signal (Aug 27)" },
+      { weekLabel: "W-03 (Aug 31)", signals: 3, frequencyRate: 0.42, confidence: 35, anomaly: 0.38, stage: "2. Repeated Reports" },
+      { weekLabel: "W-02 (Sep 07)", signals: 6, frequencyRate: 0.85, confidence: 68, anomaly: 0.65, stage: "3. Pattern Detected" },
+      { weekLabel: "W-01 (Sep 14)", signals: 6, frequencyRate: 0.85, confidence: 87, anomaly: 0.94, stage: "4 & 5. Warning & Action" },
+      { weekLabel: "W-00 (Sep 21)", signals: 0, frequencyRate: 0.00, confidence: 98, anomaly: 0.05, stage: "7. Impact Monitored" }
+    ],
+
+    // Monthly View (6 Months Horizon)
+    monthlyData: [
+      { monthLabel: "Apr 2026", signals: 1, frequencyRate: 0.03, confidence: 8, anomaly: 0.05, notes: "Nominal operations" },
+      { monthLabel: "May 2026", signals: 0, frequencyRate: 0.00, confidence: 9, anomaly: 0.04, notes: "Scheduled maintenance" },
+      { monthLabel: "Jun 2026", signals: 2, frequencyRate: 0.06, confidence: 11, anomaly: 0.07, notes: "Summer thermal load shift" },
+      { monthLabel: "Jul 2026", signals: 1, frequencyRate: 0.03, confidence: 10, anomaly: 0.06, notes: "Stable baseline" },
+      { monthLabel: "Aug 2026", signals: 3, frequencyRate: 0.10, confidence: 22, anomaly: 0.24, notes: "First precursors emerge" },
+      { monthLabel: "Sep 2026", signals: 14, frequencyRate: 0.46, confidence: 87, anomaly: 0.94, notes: "Pattern surge & resolved early" }
+    ],
+
+    // Historical Incident Comparison (Unmitigated 2024 Event vs. Mitigated 2026 Event)
+    historicalComparison: {
+      pastIncidentTitle: "2024 Trench Seepage & Drive Inundation (Unmitigated)",
+      pastIncidentDate: "November 14, 2024",
+      pastIncidentLoss: "$1,420,000",
+      pastIncidentDowntime: "46 Hours Plant Stoppage",
+      mitigatedEventTitle: "2026 Flange 4B-12 Proactive Intervention (EarlySight Mitigated)",
+      mitigatedEventDate: "September 17, 2026",
+      mitigatedLoss: "$340 (Gasket Replacement Only)",
+      mitigatedDowntime: "0 Hours (Executed During Shift Change)",
+      netSavingsUSD: "$1,419,660",
+      
+      comparisonMetrics: [
+        {
+          label: "Detection Lead Time",
+          unmitigated: "12 Hours (Alarm sounded after water hit floor)",
+          mitigated: "14.2 Days Earlier (Detected sub-slab micro-leak)",
+          advantage: "+13.7 Days Early Advantage"
+        },
+        {
+          label: "Trigger Mechanism",
+          unmitigated: "Catastrophic High-Level Water Float Switch Trip",
+          mitigated: "Multi-Modal Graph Correlation (MTGNN P<0.003)",
+          advantage: "100% Sub-Threshold Detection"
+        },
+        {
+          label: "Impact on Line Motors",
+          unmitigated: "3 Servo Drives submerged; replaced under emergency freight",
+          mitigated: "Zero moisture contact; drives 100% operational",
+          advantage: "3 Drives Saved ($186,000)"
+        },
+        {
+          label: "Cleanroom Decontamination",
+          unmitigated: "Required 72-hour bio-scrub & particle certification",
+          mitigated: "Zero cleanroom atmosphere penetration",
+          advantage: "72h Cleanroom Delay Averted"
+        },
+        {
+          label: "Maintenance Cost",
+          unmitigated: "$480,000 direct repair + $940,000 idle capacity",
+          mitigated: "$340 Viton seal ring + 35 min labor",
+          advantage: "99.9% Cost Reduction"
+        }
+      ],
+
+      // Trajectory Curves for Comparison Chart
+      trajectories: [
+        { day: -28, label: "T-28d", unmitigatedAnomaly: 0.12, mitigatedAnomaly: 0.18, scadaAlarmThreshold: 1.0 },
+        { day: -24, label: "T-24d", unmitigatedAnomaly: 0.18, mitigatedAnomaly: 0.22, scadaAlarmThreshold: 1.0 },
+        { day: -21, label: "T-21d", unmitigatedAnomaly: 0.24, mitigatedAnomaly: 0.38, scadaAlarmThreshold: 1.0 },
+        { day: -16, label: "T-16d", unmitigatedAnomaly: 0.36, mitigatedAnomaly: 0.62, scadaAlarmThreshold: 1.0 },
+        { day: -12, label: "T-12d", unmitigatedAnomaly: 0.52, mitigatedAnomaly: 0.81, scadaAlarmThreshold: 1.0 },
+        { day: -10, label: "T-10d", unmitigatedAnomaly: 0.68, mitigatedAnomaly: 0.94, scadaAlarmThreshold: 1.0, earlySightAlertPoint: true },
+        { day: -7,  label: "T-7d",  unmitigatedAnomaly: 0.88, mitigatedAnomaly: 0.42, scadaAlarmThreshold: 1.0, actionTakenPoint: true },
+        { day: -4,  label: "T-4d",  unmitigatedAnomaly: 1.15, mitigatedAnomaly: 0.15, scadaAlarmThreshold: 1.0, pastLegacyAlarmPoint: true },
+        { day: -2,  label: "T-2d",  unmitigatedAnomaly: 1.74, mitigatedAnomaly: 0.08, scadaAlarmThreshold: 1.0 },
+        { day: 0,   label: "T-0d",  unmitigatedAnomaly: 2.80, mitigatedAnomaly: 0.05, scadaAlarmThreshold: 1.0, pastCatastrophicFailure: true }
+      ]
+    },
+
+    // Modality breakdown for frequency shift
+    modalityBreakdown: [
+      { type: "Sensors", count: 6, percentage: "35%", icon: "⚡", color: "#1B4332" },
+      { type: "Maintenance Logs", count: 4, percentage: "24%", icon: "🔧", color: "#B87333" },
+      { type: "Operator Complaints", count: 3, percentage: "18%", icon: "📋", color: "#C85A32" },
+      { type: "FLIR Thermal Scans", count: 2, percentage: "12%", icon: "📷", color: "#5E7E6C" },
+      { type: "Historian Transients", count: 2, percentage: "11%", icon: "📊", color: "#415A4D" }
+    ]
+  },
+
+  {
+    id: "hydraulic-cavitation-block-c",
+    name: "Block C — Hydraulic Proportional Valve Cavitation",
+    shortTitle: "Valve Cavitation Drift",
+    location: "Block C (Continuous Forming)",
+    severity: "High",
+    confidence: "91.2%",
+    totalLeadTimeDays: 12.0,
+    avertedDowntimeHours: 24,
+    avertedLossUSD: "$340,000",
+    summary: "Metering edge micro-cavitation spalling on proportional valve PV-02 causing billet thickness ripple. Detected 12 days before total hydraulic seal failure.",
+    lifecycleStages: [
+      {
+        stageIndex: 1,
+        stageId: "first-signal",
+        stageName: "First Signal",
+        timelineLabel: "T-25 Days",
+        date: "2026-08-30",
+        dateFormatted: "Aug 30, 2026 • 08:20 AM",
+        signalCount: 1,
+        frequencyRate: "0.04 signals/day",
+        confidence: "18.0%",
+        anomalyScore: 0.20,
+        status: "Sub-Threshold Noise",
+        headline: "Transient Suction Negative Head Spike",
+        description: "Variable vane pump suction pressure transducer recorded a brief 0.6 bar negative depression during high-flow cylinder retraction.",
+        modality: "Sensor",
+        modalityIcon: "⚡",
+        modalityColor: "#475569",
+        asset: "Pump Station B / Variable Vane Pump",
+        telemetryReading: "Suction Delta: -0.6 bar (40ms transient)",
+        operationalRisk: "Negligible to legacy supervisory system.",
+        keyInsight: "Entrained air micro-bubbles begin forming in oil during repetitive rapid duty cycles."
+      },
+      {
+        stageIndex: 2,
+        stageId: "repeated-reports",
+        stageName: "Repeated Reports",
+        timelineLabel: "T-18 Days",
+        date: "2026-09-06",
+        dateFormatted: "Sep 06, 2026 • 04:10 PM",
+        signalCount: 3,
+        frequencyRate: "0.18 signals/day",
+        confidence: "34.5%",
+        anomalyScore: 0.35,
+        status: "Emerging Indicators",
+        headline: "High-Frequency Ultrasonic Noise & Oil Foam Note",
+        description: "Operator noted slight sponginess on hydraulic ram cylinder 2. Lubrication technician recorded mild surface foaming in oil sight glass.",
+        modality: "Complaint & Maintenance",
+        modalityIcon: "📋",
+        modalityColor: "#D97706",
+        asset: "Press Station #2 / Fluid Reservoir",
+        telemetryReading: "Acoustic Noise: 72 dBA • Oil Aeration: 4.8% volume",
+        operationalRisk: "Premature wear on proportional spool metering edges.",
+        keyInsight: "Bubbles collapse violently under 210 bar working pressure, creating micro-jets that spall steel."
+      },
+      {
+        stageIndex: 3,
+        stageId: "pattern-detected",
+        stageName: "Pattern Detected",
+        timelineLabel: "T-14 Days",
+        date: "2026-09-10",
+        dateFormatted: "Sep 10, 2026 • 10:30 AM",
+        signalCount: 6,
+        frequencyRate: "0.60 signals/day",
+        confidence: "66.4%",
+        anomalyScore: 0.60,
+        status: "Causal Graph Active",
+        headline: "Spool Hysteresis Co-Occurs with Billet Thickness Ripple",
+        description: "EarlySight correlated valve LVDT position feedback lag (14ms hysteresis) with laser thickness gauge micro-ripples on extruded aluminum billets.",
+        modality: "Sensor & Quality",
+        modalityIcon: "⚡",
+        modalityColor: "#0D9488",
+        asset: "Proportional Valve PV-02 / Laser Gauge LG-1",
+        telemetryReading: "Spool Lag: 14ms (baseline 3ms) • Thickness Variance: ±0.18mm",
+        operationalRisk: "Sub-quality product batches risking customer returns.",
+        keyInsight: "Quality variance directly traces to mechanical valve stick-slip caused by cavitation pitting."
+      },
+      {
+        stageIndex: 4,
+        stageId: "frequency-increased",
+        stageName: "Frequency Increased",
+        timelineLabel: "T-10 Days",
+        date: "2026-09-14",
+        dateFormatted: "Sep 14, 2026 • 07:15 PM",
+        signalCount: 9,
+        frequencyRate: "1.80 signals/day",
+        confidence: "82.1%",
+        anomalyScore: 0.79,
+        status: "Velocity Surge",
+        headline: "Signal Frequency Quadruples",
+        description: "Valve coil temperature climbed +14°C due to excessive dither current trying to overcome spool sticking. Four ultrasonic spikes logged in 24 hours.",
+        modality: "Sensors & FLIR",
+        modalityIcon: "⚡",
+        modalityColor: "#D94E34",
+        asset: "Valve Block VB-4",
+        telemetryReading: "Coil Temp: 78°C (+14°C) • Ultrasonic Peak: 48 kHz",
+        operationalRisk: "Imminent catastrophic spool lockup or coil burnout.",
+        keyInsight: "Hydraulic pressure spikes feeding back into manifold gallery."
+      },
+      {
+        stageIndex: 5,
+        stageId: "early-warning-generated",
+        stageName: "Early Warning Generated",
+        timelineLabel: "T-8 Days",
+        date: "2026-09-16",
+        dateFormatted: "Sep 16, 2026 • 05:40 AM",
+        signalCount: 12,
+        frequencyRate: "2.80 signals/day",
+        confidence: "91.2%",
+        anomalyScore: 0.92,
+        status: "Actionable Warning",
+        headline: "Early Warning EW-2026-094 Dispatched (12 Days Lead)",
+        description: "EarlySight recommended proactive replacement of valve spool cartridge PV-02 and replenishment of anti-foaming additive before seal blowout.",
+        modality: "AI Synthesis",
+        modalityIcon: "⚠️",
+        modalityColor: "#D94E34",
+        asset: "Valve Block VB-4 / PV-02",
+        telemetryReading: "Confidence: 91.2% • Lead Time: 12 Days • Averted Loss: $340,000",
+        operationalRisk: "High risk of 24h press downtime if valve blows out during forming.",
+        keyInsight: "Intervention queued for off-peak maintenance window."
+      },
+      {
+        stageIndex: 6,
+        stageId: "action-taken",
+        stageName: "Action Taken",
+        timelineLabel: "T-5 Days",
+        date: "2026-09-19",
+        dateFormatted: "Sep 19, 2026 • 11:00 AM",
+        signalCount: 12,
+        frequencyRate: "0.20 signals/day",
+        confidence: "91.2%",
+        anomalyScore: 0.35,
+        status: "Replaced Spool",
+        headline: "Replaced Proportional Spool & De-Aerated Reservoir",
+        description: "Engineering swapped the valve cartridge in 25 minutes, flushed accumulator manifold, and added anti-foaming agent. Cavitation pitting confirmed on removed spool.",
+        modality: "Maintenance",
+        modalityIcon: "🔧",
+        modalityColor: "#059669",
+        asset: "Proportional Valve PV-02",
+        telemetryReading: "Execution: 25 Mins • Cost: $850 • Lost Hours: 0",
+        operationalRisk: "Fully managed resolution.",
+        keyInsight: "Micro-cavitation scars verified with handheld microscope."
+      },
+      {
+        stageIndex: 7,
+        stageId: "impact-monitored",
+        stageName: "Impact Monitored",
+        timelineLabel: "T-0 Days (Present)",
+        date: "2026-09-24",
+        dateFormatted: "Sep 24, 2026 • 12:00 PM",
+        signalCount: 12,
+        frequencyRate: "0.01 signals/day",
+        confidence: "99.1% Resolved",
+        anomalyScore: 0.04,
+        status: "Closed-Loop Success",
+        headline: "Billet Dimensional Tolerance Restored to ±0.02mm",
+        description: "Post-intervention telemetry shows smooth 3ms spool response. Thickness ripple eliminated. Zero quality scrap generated.",
+        modality: "Verification",
+        modalityIcon: "✅",
+        modalityColor: "#059669",
+        asset: "Press Station #2",
+        telemetryReading: "Lag: 3.1ms • Scrap: 0% • Downtime Averted: 24h",
+        operationalRisk: "Zero residual risk.",
+        keyInsight: "Savings documented at $340,000 with proof of averted catastrophic hydraulic lock."
+      }
+    ],
+    dailyData: [
+      { date: "2026-08-25", dayLabel: "Aug 25", signals: 0, frequencyRate: 0.0, confidence: 10, anomaly: 0.05, stage: "Baseline", cumulative: 0 },
+      { date: "2026-08-30", dayLabel: "Aug 30", signals: 1, frequencyRate: 0.04, confidence: 18, anomaly: 0.20, stage: "1. First Signal", cumulative: 1, highlight: true },
+      { date: "2026-09-06", dayLabel: "Sep 06", signals: 2, frequencyRate: 0.18, confidence: 34, anomaly: 0.35, stage: "2. Repeated Reports", cumulative: 3, highlight: true },
+      { date: "2026-09-10", dayLabel: "Sep 10", signals: 3, frequencyRate: 0.60, confidence: 66, anomaly: 0.60, stage: "3. Pattern Detected", cumulative: 6, highlight: true },
+      { date: "2026-09-14", dayLabel: "Sep 14", signals: 3, frequencyRate: 1.80, confidence: 82, anomaly: 0.79, stage: "4. Frequency Increased", cumulative: 9, highlight: true },
+      { date: "2026-09-16", dayLabel: "Sep 16", signals: 3, frequencyRate: 2.80, confidence: 91, anomaly: 0.92, stage: "5. Early Warning Generated", cumulative: 12, highlight: true },
+      { date: "2026-09-19", dayLabel: "Sep 19", signals: 0, frequencyRate: 0.20, confidence: 91, anomaly: 0.35, stage: "6. Action Taken", cumulative: 12, highlight: true },
+      { date: "2026-09-24", dayLabel: "Sep 24", signals: 0, frequencyRate: 0.01, confidence: 99, anomaly: 0.04, stage: "7. Impact Monitored", cumulative: 12, highlight: true }
+    ],
+    modalityBreakdown: [
+      { type: "Sensors", count: 5, percentage: "42%", icon: "⚡", color: "#1B4332" },
+      { type: "Maintenance Logs", count: 3, percentage: "25%", icon: "🔧", color: "#B87333" },
+      { type: "Operator Complaints", count: 2, percentage: "17%", icon: "📋", color: "#C85A32" },
+      { type: "FLIR Thermal Scans", count: 1, percentage: "8%", icon: "📷", color: "#5E7E6C" },
+      { type: "Historian Transients", count: 1, percentage: "8%", icon: "📊", color: "#415A4D" }
+    ]
+  }
+];
+
+// Export to window
+window.TIMELINE_CASE_STUDIES = TIMELINE_CASE_STUDIES;
