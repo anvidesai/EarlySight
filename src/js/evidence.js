@@ -488,7 +488,7 @@ class EvidenceController {
       const c2Y = endY;
 
       const isHighlighted = this.selectedGraphNodeId === link.from || this.selectedGraphNodeId === link.to;
-      const strokeColor = isHighlighted ? '#C85A32' : 'rgba(140, 148, 142, 0.45)';
+      const strokeColor = isHighlighted ? '#EF7B7B' : 'rgba(98, 125, 152, 0.35)';
       const strokeWidth = isHighlighted ? 2.5 : 1.5;
       const strokeDash = isHighlighted ? 'none' : '4 3';
 

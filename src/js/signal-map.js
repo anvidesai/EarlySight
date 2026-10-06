@@ -812,7 +812,7 @@ class EarlySightSignalMap {
           <span class="indicator-dot ${zone.severity === 'Critical' ? 'dot-vermilion' : (zone.severity === 'High' ? 'dot-amber' : 'dot-slate')}"></span>
           <span class="drawer-header-tag">${zone.shortCode} GEOSPATIAL CLUSTER</span>
         </div>
-        <button class="drawer-close-btn" id="closeClusterDrawer" title="Close Cluster Inspector">&times;</button>
+        <button class="drawer-close-btn" id="closeClusterDrawer" title="Close Cluster Inspector" aria-label="Close Cluster Inspector">&times;</button>
       </div>
 
       <div class="drawer-scroll-body">
@@ -937,7 +937,7 @@ class EarlySightSignalMap {
               <span>🛡️ View Risk (${zone.riskId || 'RSK-01'})</span>
             </a>
           </div>
-          <a href="timeline.html?zone=${zone.id}&case=${zone.timelineCaseIndex || 0}" class="drawer-btn-primary" style="text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; font-size:0.82rem; background:var(--color-rust,#C85A32); color:#FFFFFF; padding:9px 12px; border-radius:6px; font-weight:700;">
+          <a href="timeline.html?zone=${zone.id}&case=${zone.timelineCaseIndex || 0}" class="drawer-btn-primary" style="text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; font-size:0.82rem; background:#EF7B7B; color:#FFFFFF; padding:9px 12px; border-radius:6px; font-weight:700;">
             <span>⏱️ View in Timeline (Chronological Evolution) &rarr;</span>
           </a>
         </div>
@@ -1095,10 +1095,10 @@ class EarlySightSignalMap {
   }
 
   drawFloorplanGrid(ctx, w, h) {
-    ctx.fillStyle = '#FAF8F5';
+    ctx.fillStyle = '#F8FAFC';
     ctx.fillRect(0, 0, w, h);
 
-    ctx.strokeStyle = 'rgba(218, 214, 206, 0.45)';
+    ctx.strokeStyle = 'rgba(217, 226, 236, 0.7)';
     ctx.lineWidth = 0.8;
 
     const gridSize = 40;
@@ -1113,11 +1113,11 @@ class EarlySightSignalMap {
     }
     ctx.stroke();
 
-    ctx.strokeStyle = '#E2DDD4';
+    ctx.strokeStyle = '#D9E2EC';
     ctx.lineWidth = 1.5;
     ctx.strokeRect(15, 15, w - 30, h - 30);
 
-    ctx.fillStyle = '#94A3B8';
+    ctx.fillStyle = '#627D98';
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.fillText('FACILITY SCHEMATIC // COMPLEX QUAD-A THROUGH F // UTM 44.912°N 93.341°W', 30, 30);
     ctx.fillText('PAN & ZOOM ACTIVE • REAL-TIME OPERATIONAL SENSING TOPOLOGY', w - 440, 30);
@@ -1129,7 +1129,7 @@ class EarlySightSignalMap {
     ctx.setLineDash([4, 6]);
 
     // Water Supply Line: Block B -> Block A
-    ctx.strokeStyle = 'rgba(37, 99, 235, 0.35)';
+    ctx.strokeStyle = 'rgba(120, 199, 199, 0.50)';
     ctx.beginPath();
     ctx.moveTo(575, 155);
     ctx.lineTo(370, 155);
@@ -1138,7 +1138,7 @@ class EarlySightSignalMap {
     ctx.stroke();
 
     // Hydraulic Line: Block B -> Block C
-    ctx.strokeStyle = 'rgba(234, 88, 12, 0.30)';
+    ctx.strokeStyle = 'rgba(242, 166, 90, 0.45)';
     ctx.beginPath();
     ctx.moveTo(575, 155);
     ctx.lineTo(780, 155);
@@ -1146,7 +1146,7 @@ class EarlySightSignalMap {
     ctx.stroke();
 
     // HV Bus Duct: Power Island -> Block A & C
-    ctx.strokeStyle = 'rgba(217, 78, 52, 0.28)';
+    ctx.strokeStyle = 'rgba(183, 167, 232, 0.45)';
     ctx.beginPath();
     ctx.moveTo(205, 425);
     ctx.lineTo(205, 270);
@@ -1169,22 +1169,23 @@ class EarlySightSignalMap {
       const cy = zone.centroid.y;
 
       if (isHighRisk) {
-        // Emerging risk area: subtle warm rust/amber density gradient aura
+        // Emerging risk area: subtle translucent pastel red/orange hotspot circle
         const auraPulse = Math.sin(time * 0.002 + cx * 0.01) * 6;
         const grad = ctx.createRadialGradient(cx, cy, 20, cx, cy, 140 + auraPulse);
-        grad.addColorStop(0, 'rgba(164, 58, 42, 0.12)'); // Muted Rust
-        grad.addColorStop(0.5, 'rgba(194, 120, 3, 0.05)'); // Muted Amber
-        grad.addColorStop(1, 'rgba(250, 248, 245, 0.0)');
+        grad.addColorStop(0, 'rgba(239, 123, 123, 0.22)');
+        grad.addColorStop(0.5, 'rgba(242, 166, 90, 0.12)');
+        grad.addColorStop(1, 'rgba(248, 250, 252, 0.0)');
         
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(cx, cy, 150 + auraPulse, 0, Math.PI * 2);
         ctx.fill();
       } else {
-        // Normal operating area: faint soft sage aura
+        // Normal operating area: faint soft green/teal translucent hotspot circle
         const grad = ctx.createRadialGradient(cx, cy, 15, cx, cy, 110);
-        grad.addColorStop(0, 'rgba(77, 124, 93, 0.05)'); // Soft Sage
-        grad.addColorStop(1, 'rgba(250, 248, 245, 0.0)');
+        grad.addColorStop(0, 'rgba(114, 198, 165, 0.18)');
+        grad.addColorStop(0.5, 'rgba(120, 199, 199, 0.08)');
+        grad.addColorStop(1, 'rgba(248, 250, 252, 0.0)');
         
         ctx.fillStyle = grad;
         ctx.beginPath();
@@ -1205,17 +1206,17 @@ class EarlySightSignalMap {
       ctx.save();
       ctx.globalAlpha = isSelected ? 1.0 : 0.25;
 
-      ctx.fillStyle = (isHovered || isDrawerSelected) ? '#FFFFFF' : '#FDFCFA';
+      ctx.fillStyle = '#FFFFFF';
       ctx.strokeStyle = (isDrawerSelected || (isSelected && this.activeLocationFilter === zone.id))
         ? zone.themeColor 
-        : (isHovered ? '#CBD5E1' : '#E2DDD4');
+        : (isHovered ? '#78C7C7' : '#D9E2EC');
       ctx.lineWidth = (isDrawerSelected || (isSelected && this.activeLocationFilter === zone.id)) ? 2.5 : 1;
 
       this.drawRoundedRect(ctx, b.x, b.y, b.width, b.height, 8);
       ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = (isSelected && this.activeLocationFilter === zone.id) ? zone.lightColor : 'rgba(241, 238, 233, 0.6)';
+      ctx.fillStyle = (isSelected && this.activeLocationFilter === zone.id) ? 'rgba(114, 198, 165, 0.12)' : '#F1F5F9';
       this.drawRoundedRect(ctx, b.x, b.y, b.width, 28, { tl: 8, tr: 8, bl: 0, br: 0 });
       ctx.fill();
 
@@ -1224,15 +1225,15 @@ class EarlySightSignalMap {
       ctx.fillText(zone.shortCode, b.x + 12, b.y + 18);
 
       const codeW = ctx.measureText(zone.shortCode).width;
-      ctx.fillStyle = '#64748B';
+      ctx.fillStyle = '#486581';
       ctx.font = '500 10px "Inter", -apple-system, sans-serif';
       ctx.fillText(`• ${zone.category}`, b.x + 12 + codeW + 8, b.y + 18);
 
       // Distinct Operational Status Badge in Zone Header
       const isEmerging = zone.severity === 'High' || zone.severity === 'Critical';
       const statusText = isEmerging ? 'EMERGING RISK' : 'NORMAL BASELINE';
-      const statusColor = isEmerging ? '#A43A2A' : '#4D7C5D';
-      const statusBg = isEmerging ? 'rgba(164, 58, 42, 0.12)' : 'rgba(77, 124, 93, 0.12)';
+      const statusColor = isEmerging ? '#B42318' : '#18794E';
+      const statusBg = isEmerging ? '#FDE2E2' : '#DDF5EA';
 
       ctx.save();
       ctx.font = '700 8.5px "JetBrains Mono", monospace';
@@ -1242,7 +1243,7 @@ class EarlySightSignalMap {
       this.drawRoundedRect(ctx, badgeX, badgeY, statusW, 16, 4);
       ctx.fillStyle = statusBg;
       ctx.fill();
-      ctx.strokeStyle = statusColor;
+      ctx.strokeStyle = isEmerging ? 'rgba(180, 35, 24, 0.25)' : 'rgba(24, 121, 78, 0.25)';
       ctx.lineWidth = 0.8;
       ctx.stroke();
       ctx.fillStyle = statusColor;
@@ -1250,15 +1251,15 @@ class EarlySightSignalMap {
       ctx.restore();
 
       // Bay sub-rectangles
-      ctx.strokeStyle = 'rgba(203, 213, 225, 0.6)';
+      ctx.strokeStyle = 'rgba(217, 226, 236, 0.85)';
       ctx.lineWidth = 0.8;
       ctx.setLineDash([2, 3]);
 
       for (const bay of zone.bays) {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.fillStyle = 'rgba(241, 245, 249, 0.70)';
         this.drawRoundedRect(ctx, bay.x, bay.y, bay.w, bay.h, 6);
         ctx.fill();
-        ctx.strokeStyle = 'rgba(203, 213, 225, 0.6)';
+        ctx.strokeStyle = 'rgba(217, 226, 236, 0.85)';
         ctx.stroke();
 
         // Determine if bay is on the right half or bottom half to position text safely away from center centroid
@@ -1267,7 +1268,7 @@ class EarlySightSignalMap {
 
         ctx.save();
         ctx.font = '600 10px "Inter", -apple-system, sans-serif';
-        ctx.fillStyle = '#334155';
+        ctx.fillStyle = '#172B4D';
 
         if (isRightSide) {
           ctx.textAlign = 'right';
@@ -1276,7 +1277,7 @@ class EarlySightSignalMap {
           ctx.fillText(bay.name, textX, textY);
 
           ctx.font = '500 9px "Inter", -apple-system, sans-serif';
-          ctx.fillStyle = '#64748B';
+          ctx.fillStyle = '#627D98';
           ctx.fillText(bay.asset, textX, textY + 12);
         } else {
           ctx.textAlign = 'left';
@@ -1285,7 +1286,7 @@ class EarlySightSignalMap {
           ctx.fillText(bay.name, textX, textY);
 
           ctx.font = '500 9px "Inter", -apple-system, sans-serif';
-          ctx.fillStyle = '#64748B';
+          ctx.fillStyle = '#627D98';
           ctx.fillText(bay.asset, textX, textY + 12);
         }
         ctx.restore();
@@ -1304,7 +1305,7 @@ class EarlySightSignalMap {
       if (!this.isSignalMatch(p)) continue;
       
       const grad = ctx.createLinearGradient(p.scatteredX, p.scatteredY, p.mergedX, p.mergedY);
-      grad.addColorStop(0, 'rgba(203, 213, 225, 0.05)');
+      grad.addColorStop(0, 'rgba(217, 226, 236, 0.15)');
       grad.addColorStop(1, `${p.color}55`);
 
       ctx.strokeStyle = grad;
@@ -1332,14 +1333,14 @@ class EarlySightSignalMap {
         const pulseR = p.currentRadius + 3 + Math.sin(time * 0.004 + p.floatSeed) * 2;
         ctx.beginPath();
         ctx.arc(p.currentX, p.currentY, pulseR, 0, Math.PI * 2);
-        ctx.fillStyle = p.severity === 'critical' ? 'rgba(217, 78, 52, 0.18)' : 'rgba(234, 88, 12, 0.14)';
+        ctx.fillStyle = p.severity === 'critical' ? 'rgba(239, 123, 123, 0.28)' : 'rgba(242, 166, 90, 0.25)';
         ctx.fill();
       }
 
       if (isHovered) {
         ctx.beginPath();
         ctx.arc(p.currentX, p.currentY, p.currentRadius + 6, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(217, 78, 52, 0.25)';
+        ctx.fillStyle = 'rgba(239, 123, 123, 0.30)';
         ctx.fill();
       }
 
@@ -1352,7 +1353,7 @@ class EarlySightSignalMap {
       ctx.stroke();
 
       if (isHovered && this.mergeProgress < 0.4) {
-        ctx.fillStyle = '#1E293B';
+        ctx.fillStyle = '#102A43';
         ctx.font = '700 9px "Inter", sans-serif';
         ctx.fillText(p.title, p.currentX + 9, p.currentY - 4);
       }
@@ -1401,16 +1402,16 @@ class EarlySightSignalMap {
       // 2. Cluster Outer Shadow & Ring
       ctx.beginPath();
       ctx.arc(cx, cy, baseR + 3, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
+      ctx.fillStyle = '#FFFFFF';
       ctx.fill();
-      ctx.strokeStyle = (isHovered || isDrawerSelected) ? zone.themeColor : '#CBD5E1';
+      ctx.strokeStyle = (isHovered || isDrawerSelected) ? zone.themeColor : '#D9E2EC';
       ctx.lineWidth = (isHovered || isDrawerSelected) ? 2.8 : 1.5;
       ctx.stroke();
 
       // 3. Cluster Center Disc Fill
       ctx.beginPath();
       ctx.arc(cx, cy, baseR, 0, Math.PI * 2);
-      ctx.fillStyle = count > 0 ? zone.themeColor : '#94A3B8';
+      ctx.fillStyle = count > 0 ? zone.themeColor : '#627D98';
       ctx.fill();
 
       // 4. Cluster Numeric Count & Micro-Label
@@ -1420,7 +1421,7 @@ class EarlySightSignalMap {
       ctx.textBaseline = 'middle';
       ctx.fillText(`${count}`, cx, cy - 3 * scale);
 
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
       ctx.font = `700 ${Math.round(7 * scale)}px "JetBrains Mono", monospace`;
       ctx.fillText(`SIGNALS`, cx, cy + 7 * scale);
 
@@ -1459,7 +1460,7 @@ class EarlySightSignalMap {
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = isHovered ? '#FFFFFF' : zone.themeColor;
+    ctx.fillStyle = isHovered ? '#FFFFFF' : '#102A43';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(tagText, x, by + tagH / 2);
@@ -1484,7 +1485,7 @@ class EarlySightSignalMap {
     const by = y - beaconH / 2;
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.strokeStyle = isHovered ? zone.themeColor : 'rgba(203, 213, 225, 0.9)';
+    ctx.strokeStyle = isHovered ? zone.themeColor : '#D9E2EC';
     ctx.lineWidth = isHovered ? 1.8 : 1.0;
     this.drawRoundedRect(ctx, bx, by, beaconW, beaconH, 9);
     ctx.fill();
@@ -1495,7 +1496,7 @@ class EarlySightSignalMap {
     ctx.fillStyle = zone.themeColor;
     ctx.fill();
 
-    ctx.fillStyle = isHovered ? zone.themeColor : '#1E293B';
+    ctx.fillStyle = isHovered ? '#102A43' : '#243B53';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText(displayTitle, bx + 15, by + beaconH / 2 + 0.5);
@@ -1505,12 +1506,12 @@ class EarlySightSignalMap {
 
   drawClusterSubDots(ctx, zone, cx, cy, signals) {
     const modalities = [
-      { type: 'Sensor', color: '#1B4332' },
-      { type: 'Maintenance', color: '#B87333' },
-      { type: 'Complaint', color: '#C85A32' },
-      { type: 'Image', color: '#5E7E6C' },
-      { type: 'Historical', color: '#415A4D' },
-      { type: 'Incident', color: '#C85A32' }
+      { type: 'Sensor', color: '#72C6A5' },
+      { type: 'Maintenance', color: '#F2A65A' },
+      { type: 'Complaint', color: '#EF7B7B' },
+      { type: 'Image', color: '#78C7C7' },
+      { type: 'Historical', color: '#B7A7E8' },
+      { type: 'Incident', color: '#F3A08C' }
     ];
 
     const present = modalities.filter(m => signals.some(s => s.type === m.type));

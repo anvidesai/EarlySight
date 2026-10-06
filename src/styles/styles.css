@@ -1,128 +1,158 @@
 /* ==========================================================================
-   EarlySight — Enterprise Modern Stylesheet
-   Theme: Warm Ivory Enterprise (#FAF8F5)
-   Visual Philosophy: Restraint, High Legibility, Structured Truth
+   EarlySight — Modern Operational Intelligence Dashboard
+   Theme: Clean, Light, Modern Operational Intelligence (#F8FAFC, #FFFFFF, #172B4D)
+   Visual Philosophy: Airy, Translucent, Calm, High Contrast Legibility, Professional Semantics
    ========================================================================== */
 
 :root {
   /* ==========================================================================
-     STAGE 15 — DISTINCTIVE AESTHETIC PALETTE TOKENS
+     CLEAN LIGHT OPERATIONAL INTELLIGENCE PALETTE TOKENS
      ========================================================================== */
 
-  /* 1. Deep Forest Green — Primary Actions & Important Intelligence Elements */
-  --color-forest: #1B4332;
-  --color-forest-hover: #153829;
-  --color-forest-dark: #0F241B;
-  --color-forest-light: rgba(27, 67, 50, 0.08);
-  --color-forest-subtle: #EDF3F0;
-  --color-forest-border: rgba(27, 67, 50, 0.22);
-  --color-forest-glow: rgba(27, 67, 50, 0.12);
-
-  /* Primary Action Alias */
-  --action-primary: var(--color-forest);
-  --action-primary-hover: var(--color-forest-hover);
-  --action-primary-active: var(--color-forest-dark);
-  --action-primary-text: #FFFFFF;
-
-  /* Important Intelligence Elements Alias */
-  --intel-primary: var(--color-forest);
-  --intel-surface: #EDF3F0;
-  --intel-border: #C2D5CA;
-  --intel-badge-bg: rgba(27, 67, 50, 0.09);
-  --intel-badge-text: #1B4332;
-
-  /* 2. Soft Sage — Safe / Resolved States & Supporting Operational Elements */
-  --color-sage: #4D7C5D;
-  --color-sage-hover: #3E634A;
-  --color-sage-dark: #2F4C38;
-  --color-sage-light: rgba(77, 124, 93, 0.08);
-  --color-sage-subtle: #EDF4F0;
-  --color-sage-border: rgba(77, 124, 93, 0.24);
-
-  /* Secondary Elements Alias */
-  --action-secondary: var(--color-sage);
-  --action-secondary-hover: var(--color-sage-hover);
-  --secondary-surface: #EDF4F0;
-  --secondary-border: #C6DCD0;
-  --secondary-text: #2F4C38;
-
-  /* 3. Warm Ivory / Off-White — Main Background & Surfaces */
-  --color-ivory: #FAF8F5;
-  --color-ivory-subtle: #F4F0E8;
+  /* 1. Backgrounds & Surfaces */
+  --bg-canvas: #F8FAFC;
+  --bg-canvas-subtle: #F1F5F9;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+  --bg-elevated: #FFFFFF;
+  --bg-surface: #FFFFFF;
+  --bg-tinted: rgba(255, 255, 255, 0.72);
+  --color-ivory: #F8FAFC;
+  --color-ivory-subtle: #F1F5F9;
   --color-ivory-card: #FFFFFF;
   --color-ivory-elevated: #FFFFFF;
-  --color-ivory-hover: #FCFBF8;
-  --bg-canvas: #FAF8F5;
-  --bg-canvas-subtle: #F4F0E8;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #FCFBF8;
-  --bg-elevated: #FFFFFF;
+  --color-ivory-hover: #F8FAFC;
 
-  /* 4. Muted Rust — High-Risk & Escalation States */
-  --color-rust: #A43A2A;
-  --color-rust-hover: #8F2D2D;
-  --color-rust-dark: #7A2417;
-  --color-rust-light: rgba(164, 58, 42, 0.08);
-  --color-rust-subtle: #FDF1EE;
-  --color-rust-border: rgba(164, 58, 42, 0.26);
+  /* 2. Visual Accent Colors (Soft Pastel Semantics) */
+  /* Soft Green (#72C6A5): healthy, resolved, positive trends, system health */
+  --color-forest: #72C6A5;
+  --color-forest-hover: #5EB693;
+  --color-forest-dark: #18794E;
+  --color-forest-light: rgba(114, 198, 165, 0.16);
+  --color-forest-subtle: #E8F6F0;
+  --color-forest-border: rgba(114, 198, 165, 0.35);
+  --color-forest-glow: rgba(114, 198, 165, 0.20);
 
-  /* Legacy & Semantic Mappings for High-Risk States */
-  --color-terracotta: var(--color-rust);
-  --color-terracotta-hover: var(--color-rust-hover);
-  --color-terracotta-dark: var(--color-rust-dark);
-  --color-terracotta-light: var(--color-rust-light);
-  --color-terracotta-subtle: var(--color-rust-subtle);
-  --color-terracotta-border: var(--color-rust-border);
-  --highlight-selected: var(--color-rust);
-  --attention-state: var(--color-rust);
-  --attention-surface: var(--color-rust-subtle);
-  --attention-border: #E8BDB5;
-  --attention-text: #8F2D2D;
+  /* Soft Orange (#F2A65A): actions, warnings, attention, operational activity */
+  --color-copper: #F2A65A;
+  --color-copper-muted: #D98838;
+  --color-copper-light: rgba(242, 166, 90, 0.16);
+  --color-terracotta: #F2A65A;
+  --color-terracotta-hover: #E59545;
+  --color-terracotta-dark: #9A4D00;
+  --color-terracotta-light: rgba(242, 166, 90, 0.16);
+  --color-terracotta-subtle: #FCE8D5;
+  --color-terracotta-border: rgba(242, 166, 90, 0.35);
+
+  /* Soft Red (#EF7B7B): critical, severe risks, urgent alerts */
+  --color-rust: #EF7B7B;
+  --color-rust-hover: #E56666;
+  --color-rust-dark: #B42318;
+  --color-rust-light: rgba(239, 123, 123, 0.16);
+  --color-rust-subtle: #FDE2E2;
+  --color-rust-border: rgba(239, 123, 123, 0.35);
+
+  /* Soft Yellow (#F4C96B): medium severity, caution, pending states */
+  --color-amber: #F4C96B;
+  --color-amber-hover: #E9BC58;
+  --color-amber-dark: #8A5A00;
+  --color-amber-light: rgba(244, 201, 107, 0.16);
+  --color-amber-subtle: #FFF2CC;
+  --color-amber-border: rgba(244, 201, 107, 0.35);
+
+  /* Soft Purple (#B7A7E8): AI Copilot, intelligent insights, special analytical elements */
+  --color-purple: #B7A7E8;
+  --color-purple-hover: #A492DE;
+  --color-purple-dark: #5A45A0;
+  --color-purple-light: rgba(183, 167, 232, 0.16);
+  --color-purple-subtle: rgba(183, 167, 232, 0.12);
+  --color-purple-border: rgba(183, 167, 232, 0.35);
+
+  /* Soft Teal (#78C7C7): signals, information, analytical visualizations */
+  --color-teal: #78C7C7;
+  --color-teal-hover: #66B8B8;
+  --color-teal-dark: #176B6B;
+  --color-teal-light: rgba(120, 199, 199, 0.16);
+  --color-teal-subtle: #E5F3F3;
+  --color-teal-border: rgba(120, 199, 199, 0.35);
+
+  /* Soft Coral (#F3A08C): secondary highlights, selected visual indicators */
+  --color-coral: #F3A08C;
+  --color-coral-hover: #E88E79;
+  --color-coral-dark: #A84E3A;
+  --color-coral-light: rgba(243, 160, 140, 0.16);
+
+  /* Supporting Sage alias to soft teal/green */
+  --color-sage: #78C7C7;
+  --color-sage-hover: #66B8B8;
+  --color-sage-dark: #176B6B;
+  --color-sage-light: rgba(120, 199, 199, 0.16);
+  --color-sage-subtle: #E5F3F3;
+  --color-sage-border: rgba(120, 199, 199, 0.35);
+
+  /* Semantic direct re-routes */
+  --accent-teal: var(--color-teal);
+  --accent-navy: #274C77;
+  --accent-slate: #627D98;
+  --accent-emerald: var(--color-forest);
+  --accent-blue: #274C77;
   --accent-risk: var(--color-rust);
   --accent-risk-light: var(--color-rust-light);
   --accent-risk-border: var(--color-rust-border);
-  --accent-vermilion: var(--color-rust);
-
-  /* 5. Muted Amber — Warnings & Attention States */
-  --color-amber: #C27803;
-  --color-amber-hover: #9A5B02;
-  --color-amber-dark: #784501;
-  --color-amber-light: rgba(194, 120, 3, 0.08);
-  --color-amber-subtle: #FDF7E7;
-  --color-amber-border: rgba(194, 120, 3, 0.25);
   --accent-amber: var(--color-amber);
   --accent-amber-light: var(--color-amber-light);
+  --accent-vermilion: var(--color-rust);
 
-  /* Direct Semantic Re-routes away from generic blue/teal AI styling */
-  --accent-teal: var(--color-forest);
-  --accent-navy: #1B4332;
-  --accent-slate: #57606A;
-  --accent-emerald: var(--color-sage);
-  --accent-blue: var(--color-forest);
+  /* Action Aliases */
+  --action-primary: #274C77;
+  --action-primary-hover: #16324F;
+  --action-primary-active: #102A43;
+  --action-primary-text: #FFFFFF;
 
-  /* 6. Soft Sand / Warm Neutral — Supporting UI Elements */
-  --color-sand: #EFECE6;
-  --color-sand-light: #F7F5F0;
-  --color-sand-muted: #E2DDD4;
-  --color-sand-border: #DED8CC;
-  --color-sand-dark: #CEC6B7;
-  --supporting-surface: #EFECE6;
-  --supporting-border: #DED8CC;
-  --supporting-pill: #EAE6DD;
-  --bg-pill: rgba(28, 32, 36, 0.04);
+  --action-secondary: #FFFFFF;
+  --action-secondary-hover: #F8FAFC;
+  --secondary-surface: #FFFFFF;
+  --secondary-border: #D9E2EC;
+  --secondary-text: #172B4D;
 
-  /* 7. Charcoal / Graphite — High-Legibility Primary Text */
-  --color-charcoal: #1C2024;
-  --color-charcoal-light: #2B3036;
-  --color-charcoal-muted: #57606A;
-  --color-charcoal-faint: #8C959F;
-  --ink-primary: #1C2024;
-  --ink-secondary: #2B3036;
-  --ink-muted: #57606A;
-  --ink-faint: #8C959F;
-  --border-subtle: rgba(28, 32, 36, 0.09);
-  --border-strong: rgba(28, 32, 36, 0.16);
-  --border-focus: var(--color-forest);
+  --intel-primary: #274C77;
+  --intel-surface: #FFFFFF;
+  --intel-border: #E3EAF2;
+  --intel-badge-bg: #E8F6F0;
+  --intel-badge-text: #16324F;
+
+  --highlight-selected: var(--color-forest);
+  --attention-state: var(--color-copper);
+  --attention-surface: #FCE8D5;
+  --attention-border: rgba(242, 166, 90, 0.4);
+  --attention-text: #9A4D00;
+
+  --color-sand: #FFFFFF;
+  --color-sand-light: #F8FAFC;
+  --color-sand-muted: #F1F5F9;
+  --color-sand-border: #E3EAF2;
+  --color-sand-dark: #E3EAF2;
+  --supporting-surface: #FFFFFF;
+  --supporting-border: #E3EAF2;
+  --supporting-pill: #F1F5F9;
+  --bg-pill: #F1F5F9;
+
+  /* 3. Typography: Clear, High-Contrast Modern Ink */
+  --color-charcoal: #172B4D;
+  --color-charcoal-light: #486581;
+  --color-charcoal-muted: #627D98;
+  --color-charcoal-faint: #627D98;
+  --ink-primary: #172B4D;
+  --ink-heading: #102A43;
+  --ink-secondary: #486581;
+  --ink-muted: #627D98;
+  --ink-faint: #627D98;
+
+  /* 4. Borders & Clean Shadows */
+  --border-subtle: #E3EAF2;
+  --border-medium: #D9E2EC;
+  --border-strong: #BAC7D5;
+  --border-focus: #72C6A5;
 
   /* Clean Spacing System */
   --space-2xs: 2px;
@@ -137,7 +167,7 @@
 
   /* Typography: Modern, Highly Readable & Professional Sans-Serif */
   --font-sans: "Inter", "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  --font-serif: var(--font-sans); /* Ensured consistent sans-serif throughout */
+  --font-serif: var(--font-sans);
   --font-mono: "JetBrains Mono", "SF Mono", "Consolas", monospace;
   --tracking-tighter: -0.03em;
   --tracking-tight: -0.018em;
@@ -148,11 +178,11 @@
   --lh-snug: 1.3;
   --lh-body: 1.55;
 
-  /* Soft Shadows: Warm Diffused Ambient Lighting (No Harsh Black or Neon Glows) */
-  --shadow-sm: 0 1px 3px rgba(35, 30, 22, 0.04), 0 1px 2px rgba(35, 30, 22, 0.02);
-  --shadow-md: 0 4px 16px -2px rgba(35, 30, 22, 0.05), 0 2px 6px -1px rgba(35, 30, 22, 0.03);
-  --shadow-lg: 0 12px 32px -4px rgba(35, 30, 22, 0.07), 0 4px 12px -2px rgba(35, 30, 22, 0.02);
-  --shadow-popover: 0 20px 48px -6px rgba(30, 25, 18, 0.10), 0 8px 16px -4px rgba(30, 25, 18, 0.03);
+  /* Soft Light Shadows */
+  --shadow-sm: 0 1px 3px rgba(16, 42, 67, 0.04), 0 1px 2px rgba(16, 42, 67, 0.02);
+  --shadow-md: 0 4px 18px rgba(16, 42, 67, 0.06), 0 2px 6px rgba(16, 42, 67, 0.03);
+  --shadow-lg: 0 10px 30px rgba(16, 42, 67, 0.08), 0 4px 12px rgba(16, 42, 67, 0.04);
+  --shadow-popover: 0 16px 40px rgba(16, 42, 67, 0.12), 0 6px 16px rgba(16, 42, 67, 0.06);
 }
 
 /* Base Reset */
@@ -180,7 +210,7 @@ body {
   position: relative;
 }
 
-/* Subtle architectural paper texture / fine microgrid */
+/* Airy, light operational background with subtle translucent wave/grid backdrop */
 body::before {
   content: "";
   position: fixed;
@@ -189,10 +219,13 @@ body::before {
   width: 100vw;
   height: 100vh;
   background-image: 
-    radial-gradient(circle at 50% 30%, rgba(217, 78, 52, 0.015) 0%, transparent 60%),
-    linear-gradient(to right, rgba(40, 30, 20, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(40, 30, 20, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 48px 48px, 48px 48px;
+    radial-gradient(circle at 12% 16%, rgba(114, 198, 165, 0.08) 0%, transparent 42%),
+    radial-gradient(circle at 88% 22%, rgba(120, 199, 199, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(242, 166, 90, 0.06) 0%, transparent 48%),
+    radial-gradient(circle at 75% 75%, rgba(183, 167, 232, 0.05) 0%, transparent 40%),
+    linear-gradient(to right, rgba(217, 226, 236, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 226, 236, 0.35) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
   pointer-events: none;
   z-index: 0;
 }
@@ -200,6 +233,35 @@ body::before {
 /* Typography Utilities */
 .font-serif { font-family: var(--font-serif); }
 .font-mono { font-family: var(--font-mono); }
+
+/* ==========================================================================
+   Accessibility: Focus-Visible Ring & Reduced Motion
+   ========================================================================== */
+:focus-visible {
+  outline: 2px solid var(--border-focus, #3B6EA8) !important;
+  outline-offset: 2px !important;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--border-focus, #3B6EA8) !important;
+  outline-offset: 2px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 /* ==========================================================================
    Header & Enterprise Brand Bar
@@ -1247,6 +1309,12 @@ body::before {
   }
 }
 
+@media (max-width: 480px) {
+  .pipeline-ribbon-container {
+    grid-template-columns: 1fr;
+  }
+}
+
 .pipeline-ribbon-step {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -1311,15 +1379,12 @@ body::before {
    ========================================================================== */
 .sandbox-grid-container {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap: 28px;
   margin-top: 40px;
-}
-
-@media (max-width: 960px) {
-  .sandbox-grid-container {
-    grid-template-columns: 1fr;
-  }
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .sandbox-card-panel {
@@ -1328,6 +1393,29 @@ body::before {
   border-radius: 14px;
   padding: 28px;
   box-shadow: var(--shadow-md);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 960px) {
+  .sandbox-grid-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sandbox-card-panel {
+    padding: 14px 12px !important;
+    border-radius: 10px;
+  }
+  .panel-header-row {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+  }
 }
 
 .panel-header-row {
@@ -1494,8 +1582,25 @@ body::before {
 
 .risk-metrics-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .risk-metrics-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .metric-tile {
+    padding: 8px 6px !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .risk-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 }
 
 .metric-tile {
@@ -1503,6 +1608,8 @@ body::before {
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 12px 14px;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .metric-tile-label {
@@ -1935,6 +2042,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-subtle);
@@ -1956,6 +2065,9 @@ body::before {
   background: var(--bg-pill);
   padding: 2px 8px;
   border-radius: 999px;
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
 }
 
 /* Compact Cards Layout */
@@ -2562,6 +2674,7 @@ body::before {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 14px;
+  max-width: 100%;
 }
 
 .map-filter-group {
@@ -2569,6 +2682,7 @@ body::before {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  max-width: 100%;
 }
 
 .map-filter-label {
@@ -2589,6 +2703,8 @@ body::before {
   border-radius: 8px;
   padding: 3px;
   gap: 3px;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 
 .map-loc-btn,
@@ -3084,6 +3200,9 @@ body::before {
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 4px 10px;
+  flex-wrap: wrap;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .map-date-input {
@@ -3596,13 +3715,36 @@ body::before {
   .map-synthesis-controls {
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .map-slider-container {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+  .map-date-range-bar {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .map-date-scrubber-box {
+    min-width: 0;
     width: 100%;
   }
   .cluster-details-drawer {
     width: 100%;
     max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .map-page-container {
+    padding: 12px 10px 48px 10px !important;
+  }
+  .signal-map-section-wrapper {
+    padding: 10px 10px !important;
   }
 }
 
@@ -3667,7 +3809,8 @@ body::before {
 
 .hero-case-selector-group {
   flex: 1;
-  min-width: 320px;
+  min-width: 280px;
+  max-width: 100%;
 }
 
 .timeline-eyebrow {
@@ -3698,6 +3841,28 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.case-switcher-box select,
+#timelineCaseSelect {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 640px) {
+  .hero-case-selector-group {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .case-switcher-box {
+    width: 100% !important;
+  }
+  #timelineCaseSelect {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
 }
 
 .timeline-kpi-ribbon {
@@ -13886,6 +14051,25 @@ body.mobile-sidebar-open .mobile-sidebar-backdrop {
     background: transparent !important;
   }
 
+  @media (max-width: 480px) {
+    .topbar-org-pill .topbar-org-name,
+    .topbar-org-caret {
+      display: none !important;
+    }
+    .topbar-org-pill {
+      padding: 6px !important;
+      max-width: 36px !important;
+      min-width: 36px !important;
+      justify-content: center !important;
+    }
+    #btnTopbarSettings {
+      display: none !important;
+    }
+    .topbar-right {
+      gap: 6px !important;
+    }
+  }
+
   /* ------------------------------------------------------------------------
      B. LARGE DASHBOARDS CONVERTED INTO HORIZONTAL SCROLLABLE SECTIONS
      ------------------------------------------------------------------------ */
@@ -14080,13 +14264,18 @@ body.mobile-sidebar-open .mobile-sidebar-backdrop {
     -webkit-overflow-scrolling: touch !important;
     gap: 8px !important;
     padding-bottom: 8px !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
-  .pipeline-step-node {
+  .pipeline-step-node,
+  .pipeline-ribbon-step {
     flex: 0 0 auto !important;
     scroll-snap-align: start !important;
     min-width: 135px !important;
     padding: 8px 12px !important;
+    box-sizing: border-box !important;
   }
 
   .pipeline-step-node .step-num {
@@ -15998,6 +16187,10 @@ body.sidebar-collapsed .global-story-banner {
    Operational spatial convergence, risk trajectory, lifecycle track & responsive
    ========================================================================== */
 .earlysight-workflow-ribbon {
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 .earlysight-workflow-ribbon::-webkit-scrollbar {
@@ -16848,10 +17041,15 @@ body.sidebar-collapsed .global-story-banner {
   align-items: stretch;
   gap: 8px;
   margin-top: 14px;
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 .workflow-loop-step {
   flex: 1;
+  min-width: 130px;
   background: var(--bg-canvas, #FAF8F5);
   border: 1px solid var(--border-subtle, #E4E0D8);
   border-radius: 6px;
@@ -17800,16 +17998,31 @@ body.sidebar-collapsed .global-story-banner {
 }
 
 /* Responsive Media Queries */
-@media (max-width: 992px) {
+@media (max-width: 1100px) {
   .priority-actions-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
   .action-board-columns-grid {
     grid-template-columns: repeat(3, 1fr) !important;
+    min-width: 680px;
+  }
+  .action-board-container {
+    overflow-x: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 }
 
 @media (max-width: 768px) {
+  .actions-page-container {
+    padding: 12px 10px 48px 10px !important;
+  }
+  .closed-loop-section,
+  .priority-actions-section,
+  .actions-registry-section {
+    padding: 14px 12px !important;
+  }
   .closed-loop-workflow-strip {
     flex-direction: column !important;
   }
@@ -17822,6 +18035,7 @@ body.sidebar-collapsed .global-story-banner {
   }
   .action-board-columns-grid {
     grid-template-columns: 1fr !important;
+    min-width: 0 !important;
   }
   .action-inspector-drawer {
     width: 100% !important;
@@ -18082,7 +18296,7 @@ body.sidebar-collapsed .global-story-banner {
 /* Two-Column Grid Layout */
 .copilot-workspace-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: minmax(0, 1fr) 340px;
   gap: 20px;
   align-items: start;
 }
@@ -18092,6 +18306,7 @@ body.sidebar-collapsed .global-story-banner {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-width: 0;
 }
 
 .copilot-response-card {
@@ -18631,7 +18846,7 @@ body.sidebar-collapsed .global-story-banner {
 }
 
 /* Responsive Media Queries for Copilot */
-@media (max-width: 992px) {
+@media (max-width: 1100px) {
   .copilot-workspace-grid {
     grid-template-columns: 1fr !important;
   }
@@ -20031,6 +20246,9 @@ body.sidebar-collapsed .global-story-banner {
     min-width: 0;
     box-sizing: border-box;
   }
+  .demo-state-btn-group {
+    flex-direction: column !important;
+  }
   .notif-metrics-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -20135,4 +20353,814 @@ body.sidebar-collapsed .global-story-banner {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ==========================================================================
+   CLEAN LIGHT MODERN OPERATIONAL INTELLIGENCE MASTER STYLES
+   Theme: #F8FAFC, #FFFFFF, #172B4D, #102A43, #486581, #627D98
+   Accents: #72C6A5, #F2A65A, #EF7B7B, #F4C96B, #B7A7E8, #78C7C7, #F3A08C
+   ========================================================================== */
+
+/* 1. Global Navigation & Topbar (Clean Light Specification) */
+.global-sidebar {
+  background: #FFFFFF !important;
+  border-right: 1px solid #D9E2EC !important;
+  box-shadow: 1px 0 4px rgba(16, 42, 67, 0.04) !important;
+}
+
+.sidebar-brand-header {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #D9E2EC !important;
+}
+
+.brand-title-main {
+  color: #102A43 !important;
+}
+
+.sidebar-org-box {
+  background: #F8FAFC !important;
+  border-bottom: 1px solid #D9E2EC !important;
+}
+
+.sidebar-org-trigger {
+  background: #FFFFFF !important;
+  border: 1px solid #D9E2EC !important;
+  color: #172B4D !important;
+}
+
+.sidebar-org-trigger:hover {
+  background: #F1F5F9 !important;
+  border-color: #BAC7D5 !important;
+}
+
+.sidebar-org-name {
+  color: #172B4D !important;
+  font-weight: 600 !important;
+}
+
+.sidebar-org-label {
+  color: #627D98 !important;
+}
+
+.nav-group-label {
+  color: #627D98 !important;
+  font-weight: 700 !important;
+  font-size: 0.68rem !important;
+  letter-spacing: 0.06em !important;
+}
+
+.sidebar-nav-item {
+  color: #274C77 !important;
+  font-weight: 500 !important;
+  transition: all 0.15s ease !important;
+}
+
+.sidebar-nav-item:hover {
+  background: rgba(232, 246, 240, 0.6) !important;
+  color: #16324F !important;
+}
+
+.sidebar-nav-item.active {
+  background: #E8F6F0 !important;
+  color: #16324F !important;
+  border-left: 3px solid #72C6A5 !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.sidebar-nav-item.active .nav-item-icon {
+  color: #16324F !important;
+}
+
+.global-topbar {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #D9E2EC !important;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.04) !important;
+}
+
+.topbar-search-trigger {
+  background: #F7F9FC !important;
+  border: 1px solid #D9E2EC !important;
+  color: #243B53 !important;
+}
+
+.topbar-search-trigger:hover {
+  border-color: #78C7C7 !important;
+  background: #FFFFFF !important;
+}
+
+.topbar-search-trigger .search-placeholder {
+  color: #829AB1 !important;
+}
+
+.topbar-search-trigger .search-kbd {
+  background: #FFFFFF !important;
+  border: 1px solid #D9E2EC !important;
+  color: #486581 !important;
+}
+
+.topbar-org-pill,
+.topbar-user-chip {
+  background: #F7F9FC !important;
+  border: 1px solid #D9E2EC !important;
+  color: #172B4D !important;
+}
+
+.topbar-org-pill:hover,
+.topbar-user-chip:hover {
+  background: #FFFFFF !important;
+  border-color: #BAC7D5 !important;
+}
+
+.topbar-icon-btn {
+  background: #F7F9FC !important;
+  border: 1px solid #D9E2EC !important;
+  color: #486581 !important;
+}
+
+.topbar-icon-btn:hover {
+  background: #FFFFFF !important;
+  color: #172B4D !important;
+  border-color: #BAC7D5 !important;
+}
+
+.global-story-banner {
+  background: #F4F8FC !important;
+  border-bottom: 1px solid #D9E2EC !important;
+}
+
+.story-stage-chip {
+  background: #FFFFFF !important;
+  border: 1px solid #D9E2EC !important;
+  color: #486581 !important;
+  font-weight: 500 !important;
+}
+
+.story-stage-chip.active {
+  background: #E8F6F0 !important;
+  color: #16324F !important;
+  border-color: #72C6A5 !important;
+  font-weight: 700 !important;
+}
+
+/* 2. Global Cards & Container Panels */
+.hero-visual-stage,
+.sig-analytics-panel,
+.signals-header-banner,
+.risks-header-banner,
+.timeline-hero-card,
+.timeline-trajectory-lifecycle-card,
+.signals-clusters-section,
+.signals-filter-card,
+.signals-table-card,
+.attention-needed-section,
+.risk-matrix-wrapper,
+.risk-matrix-panel,
+.notif-panel-box,
+.evidence-card-item,
+.action-board-container,
+.sandbox-card-panel,
+.emerging-risk-card,
+.action-card,
+.system-component-card,
+.signal-row-item,
+.attention-card,
+.sig-cluster-card,
+.hist-card,
+.copilot-insight-card,
+.notif-metric-card,
+.closed-loop-section,
+.copilot-response-card,
+.evidence-chain-node,
+.copilot-context-summary-wrap,
+.workspace-tenant-card {
+  border-radius: 8px !important;
+  border: 1px solid #E3EAF2 !important;
+  box-shadow: 0 4px 18px rgba(16, 42, 67, 0.06) !important;
+  background: #FFFFFF !important;
+  color: #172B4D !important;
+}
+
+.emerging-risk-card:hover,
+.action-card:hover,
+.system-component-card:hover,
+.signal-row-item:hover,
+.attention-card:hover,
+.sig-cluster-card:hover,
+.hist-card:hover,
+.copilot-insight-card:hover {
+  box-shadow: 0 6px 22px rgba(16, 42, 67, 0.09) !important;
+  border-color: #BAC7D5 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 3. Page Header Banners & Eyebrows */
+.signals-header-banner,
+.risks-header-banner,
+.timeline-hero-card,
+.copilot-hero-banner,
+.notif-hero-banner {
+  padding: 16px 20px !important;
+  margin-bottom: 16px !important;
+  background: #F4F8FC !important;
+  border: 1px solid #D9E2EC !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+  box-shadow: 0 2px 8px rgba(16, 42, 67, 0.04) !important;
+}
+
+.signals-header-left h1,
+.risks-header-left h1,
+.risks-banner-title,
+.timeline-main-title,
+.panel-title,
+.action-hero-title,
+.hero-title {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: #102A43 !important;
+  margin: 2px 0 4px 0 !important;
+  line-height: 1.25 !important;
+}
+
+.signals-header-left p,
+.risks-header-left p,
+.risks-banner-desc,
+.timeline-sub-summary,
+.panel-desc,
+.hero-subtitle {
+  font-size: 0.88rem !important;
+  color: #486581 !important;
+  margin: 0 !important;
+  max-width: 840px !important;
+  line-height: 1.45 !important;
+}
+
+.banner-eyebrow,
+.timeline-eyebrow,
+.panel-eyebrow,
+.section-eyebrow,
+.workflow-ribbon-tag,
+.workflow-ribbon-label {
+  font-size: 0.68rem !important;
+  font-family: var(--font-mono) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: #274C77 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+/* 4. Unified KPI Strips & Metric Chips */
+.signals-kpi-strip,
+.risks-kpi-strip,
+.risks-kpis-strip,
+.timeline-kpi-ribbon,
+.copilot-kpi-strip {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+
+.signals-kpi-chip,
+.risks-kpi-chip,
+.kpi-ribbon-item,
+.notif-metric-card,
+.copilot-context-summary-wrap .risks-kpi-chip {
+  background: #FFFFFF !important;
+  border: 1px solid #E3EAF2 !important;
+  border-radius: 6px !important;
+  padding: 8px 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  flex: 1 1 140px !important;
+  min-width: 120px !important;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.04) !important;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.signals-kpi-chip:hover,
+.risks-kpi-chip:hover,
+.kpi-ribbon-item:hover,
+.notif-metric-card:hover {
+  border-color: #BAC7D5 !important;
+  background: #F8FAFC !important;
+  box-shadow: 0 3px 8px rgba(16, 42, 67, 0.07) !important;
+}
+
+.kpi-label,
+.kpi-chip-label,
+.kpi-ribbon-label,
+.metric-title {
+  font-size: 0.68rem !important;
+  font-family: var(--font-mono) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #627D98 !important;
+  display: block !important;
+  margin-bottom: 2px !important;
+}
+
+.kpi-val,
+.kpi-chip-val,
+.kpi-ribbon-val,
+.metric-number {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  font-family: var(--font-mono) !important;
+  color: #102A43 !important;
+  line-height: 1.15 !important;
+  font-feature-settings: 'tnum' 1 !important;
+}
+
+.kpi-chip-sub,
+.metric-sub {
+  font-size: 0.70rem !important;
+  font-family: var(--font-mono) !important;
+  color: #627D98 !important;
+  display: block !important;
+  margin-top: 2px !important;
+}
+
+/* 5. Streamlined Workflow Ribbon & Breadcrumb Rail */
+.earlysight-workflow-ribbon,
+.risk-workflow-ribbon {
+  background: #FFFFFF !important;
+  border: 1px solid #D9E2EC !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+  margin-bottom: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 0.72rem !important;
+  box-shadow: 0 1px 2px rgba(16, 42, 67, 0.03) !important;
+}
+
+.workflow-step {
+  font-family: var(--font-mono) !important;
+  font-size: 0.72rem !important;
+  color: #486581 !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.workflow-step:hover {
+  color: #16324F !important;
+  background: rgba(114, 198, 165, 0.12) !important;
+}
+
+.workflow-step.active,
+.workflow-step.active-step {
+  color: #16324F !important;
+  font-weight: 700 !important;
+  background: #E8F6F0 !important;
+  border: 1px solid #72C6A5 !important;
+}
+
+.workflow-arrow {
+  color: #BAC7D5 !important;
+  font-size: 0.7rem !important;
+}
+
+/* 6. Semantic Badges Harmonization (Clean Pastel Backgrounds + High Contrast Text) */
+.badge-critical,
+.badge-p1,
+.badge-severity-critical,
+.badge-vermilion {
+  background: #FDE2E2 !important;
+  color: #B42318 !important;
+  border: 1px solid rgba(180, 35, 24, 0.22) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02em !important;
+}
+
+.badge-high,
+.badge-p2,
+.badge-severity-high {
+  background: #FCE8D5 !important;
+  color: #9A4D00 !important;
+  border: 1px solid rgba(154, 77, 0, 0.22) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02em !important;
+}
+
+.badge-medium,
+.badge-warning,
+.badge-attention,
+.badge-severity-medium,
+.status-attention,
+.badge-amber,
+.priority-p3 {
+  background: #FFF2CC !important;
+  color: #8A5A00 !important;
+  border: 1px solid rgba(138, 90, 0, 0.22) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02em !important;
+}
+
+.badge-low,
+.badge-healthy,
+.badge-resolved,
+.badge-operational,
+.badge-severity-low,
+.status-healthy,
+.status-operational,
+.badge-forest,
+.badge-emerald,
+.badge-assigned {
+  background: #DDF5EA !important;
+  color: #18794E !important;
+  border: 1px solid rgba(24, 121, 78, 0.22) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02em !important;
+}
+
+.badge-investigating {
+  background: #E1EEFF !important;
+  color: #245B9A !important;
+  border: 1px solid rgba(36, 91, 154, 0.22) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02em !important;
+}
+
+.badge-monitoring,
+.badge-teal,
+.badge-signals {
+  background: #E5F3F3 !important;
+  color: #176B6B !important;
+  border: 1px solid rgba(23, 107, 107, 0.22) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02em !important;
+}
+
+.badge-neutral,
+.badge-conf,
+.badge-status-pill {
+  background: #F1F5F9 !important;
+  color: #486581 !important;
+  border: 1px solid #D9E2EC !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+}
+
+/* 7. Subsystems Telemetry Metrics Layout */
+.comp-metrics-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 6px !important;
+  background: #F8FAFC !important;
+  border: 1px solid #E3EAF2 !important;
+  border-radius: 4px !important;
+  padding: 6px 8px !important;
+  margin-top: 8px !important;
+}
+
+.comp-metric-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 1px !important;
+  min-width: 0 !important;
+}
+
+.comp-metric-item .metric-label {
+  font-size: 0.64rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  color: #627D98 !important;
+  line-height: 1 !important;
+}
+
+.comp-metric-item .metric-val {
+  font-size: 0.76rem !important;
+  font-family: var(--font-mono) !important;
+  font-weight: 700 !important;
+  color: #172B4D !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+  line-height: 1.2 !important;
+}
+
+/* 8. Tables Polish (Clean Light Modern Operational Table) */
+.signals-table,
+.risks-table,
+.action-table,
+.notif-table,
+.evidence-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background: #FFFFFF !important;
+}
+
+.signals-table th,
+.risks-table th,
+.action-table th,
+.notif-table th,
+.evidence-table th {
+  font-size: 0.70rem !important;
+  font-family: var(--font-mono) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #486581 !important;
+  background: #F8FAFC !important;
+  border-bottom: 1px solid #D9E2EC !important;
+  padding: 10px 14px !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+.signals-table td,
+.risks-table td,
+.action-table td,
+.notif-table td,
+.evidence-table td {
+  font-size: 0.84rem !important;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid #E3EAF2 !important;
+  color: #243B53 !important;
+  vertical-align: middle !important;
+  background: #FFFFFF !important;
+}
+
+.signals-table tr:hover td,
+.risks-table tr:hover td,
+.action-table tr:hover td,
+.notif-table tr:hover td,
+.evidence-table tr:hover td {
+  background: #F8FAFC !important;
+}
+
+/* 9. Map Frame & Canvas */
+#signalMapContainer {
+  border-radius: 8px !important;
+  border: 1px solid #D9E2EC !important;
+  box-shadow: 0 4px 18px rgba(16, 42, 67, 0.06) !important;
+  background: #F8FAFC !important;
+  overflow: hidden !important;
+}
+
+/* 10. Drawers & Modals (Clean Light Theme) */
+.cluster-details-drawer,
+.signal-detail-drawer,
+.risk-detail-drawer,
+.copilot-inspector-drawer,
+.action-inspector-drawer,
+.evidence-inspector-drawer,
+.notif-detail-drawer {
+  box-shadow: -6px 0 28px rgba(16, 42, 67, 0.10) !important;
+  border-left: 1px solid #D9E2EC !important;
+  background: #FFFFFF !important;
+  color: #243B53 !important;
+}
+
+.drawer-header,
+.drawer-header-bar,
+.notif-drawer-header,
+.copilot-drawer-header,
+.drawer-header-row {
+  border-bottom: 1px solid #D9E2EC !important;
+  background: #F8FAFC !important;
+  padding: 14px 18px !important;
+  color: #102A43 !important;
+}
+
+.drawer-headline,
+.drawer-title {
+  color: #102A43 !important;
+  font-weight: 700 !important;
+}
+
+.drawer-close-btn {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #627D98 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+.drawer-close-btn:hover {
+  background: #E3EAF2 !important;
+  color: #102A43 !important;
+}
+
+.action-drawer-backdrop,
+.notif-drawer-backdrop,
+.drawer-backdrop {
+  background: rgba(16, 42, 67, 0.35) !important;
+}
+
+/* 11. Buttons & Tactile Controls */
+.btn-primary-explore,
+.btn-dispatch-action,
+.btn-header-cta,
+.btn-drawer-primary,
+.btn-copilot-send,
+.btn-copilot-submit {
+  background: #274C77 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #16324F !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.12) !important;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.btn-primary-explore:hover,
+.btn-dispatch-action:hover,
+.btn-header-cta:hover,
+.btn-drawer-primary:hover,
+.btn-copilot-send:hover,
+.btn-copilot-submit:hover {
+  background: #16324F !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 10px rgba(16, 42, 67, 0.18) !important;
+}
+
+.btn-secondary-replay,
+.btn-drawer-secondary,
+.btn-filter-pill,
+.view-switch-btn,
+.btn-drawer-deep-link {
+  background: #FFFFFF !important;
+  color: #172B4D !important;
+  border: 1px solid #D9E2EC !important;
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-secondary-replay:hover,
+.btn-drawer-secondary:hover,
+.btn-filter-pill:hover,
+.view-switch-btn:hover,
+.btn-drawer-deep-link:hover {
+  background: #F8FAFC !important;
+  border-color: #BAC7D5 !important;
+  transform: translateY(-1px) !important;
+}
+
+.view-switch-btn.active {
+  background: #E8F6F0 !important;
+  color: #16324F !important;
+  border-color: #72C6A5 !important;
+  font-weight: 700 !important;
+}
+
+/* 12. Inputs, Selects & Search Controls */
+input[type="text"],
+input[type="search"],
+select,
+.copilot-query-input,
+.notif-search-input,
+.filter-select {
+  background: #FFFFFF !important;
+  border: 1px solid #D9E2EC !important;
+  color: #172B4D !important;
+  border-radius: 6px !important;
+}
+
+input[type="text"]:focus,
+input[type="search"]:focus,
+select:focus,
+.copilot-query-input:focus,
+.notif-search-input:focus,
+.filter-select:focus {
+  border-color: #72C6A5 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(114, 198, 165, 0.25) !important;
+}
+
+input::placeholder {
+  color: #829AB1 !important;
+}
+
+/* 13. Copilot Specifics */
+.copilot-console-bar {
+  background: #F8FAFC !important;
+  border: 1px solid #D9E2EC !important;
+  border-radius: 8px !important;
+}
+
+.copilot-suggest-chip {
+  background: rgba(183, 167, 232, 0.12) !important;
+  border: 1px solid rgba(183, 167, 232, 0.35) !important;
+  color: #3E3264 !important;
+  font-weight: 500 !important;
+  transition: all 0.15s ease !important;
+}
+
+.copilot-suggest-chip:hover {
+  background: rgba(183, 167, 232, 0.22) !important;
+  border-color: #B7A7E8 !important;
+  color: #102A43 !important;
+}
+
+.reasoning-stage-item {
+  background: #F8FAFC !important;
+  border: 1px solid #E3EAF2 !important;
+}
+
+.reasoning-stage-badge {
+  background: rgba(183, 167, 232, 0.16) !important;
+  border: 1px solid rgba(183, 167, 232, 0.35) !important;
+  color: #5A45A0 !important;
+}
+
+/* 14. Hero Visual Stage Translucent Waves & Atmosphere */
+.hero-visual-stage {
+  background: #F4F8FC !important;
+  border: 1px solid #D9E2EC !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-visual-stage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 20% 40%, rgba(114, 198, 165, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 80% 30%, rgba(120, 199, 199, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 45% at 50% 85%, rgba(242, 166, 90, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 35% at 65% 70%, rgba(183, 167, 232, 0.10) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 15. High Contrast Typography & Readability Baseline */
+h1, h2, h3, h4, h5, h6 {
+  color: #102A43 !important;
+}
+
+p, span, div, td, li {
+  /* Guard against any transparent or pale text */
+  text-rendering: optimizeLegibility;
+}
+
+.text-muted,
+.text-secondary,
+.meta-label {
+  color: #627D98 !important;
+}
+
+.text-primary,
+.title-primary {
+  color: #172B4D !important;
+}
+
+
+
 

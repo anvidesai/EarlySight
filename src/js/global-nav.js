@@ -28,11 +28,11 @@ import './micro-interactions.js';
 
   // Available Organizations — Suitable for Colleges, Hospitals, Companies, Factories, Residential Communities & Public Utilities
   const ORGANIZATIONS = [
-    { id: 'org-abc-college', code: 'TENANT-EDU-01', name: 'ABC College', category: 'Higher Education Campus (Colleges)', color: '#1B4332', icon: 'M22 10v6M2 10l10-5 10 5-10 5z' },
-    { id: 'org-city-hospital', code: 'TENANT-MED-02', name: 'City Hospital', category: 'Tertiary Healthcare (Hospitals)', color: '#0D9488', icon: 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z' },
-    { id: 'org-apex-industrial', code: 'TENANT-IND-04', name: 'Apex Industrial', category: 'Companies & Factories (Semiconductor Fab)', color: '#C85A32', icon: 'M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' },
-    { id: 'org-green-residency', code: 'TENANT-RES-03', name: 'Green Residency', category: 'Residential Communities (Smart High-Rise)', color: '#5E7E6C', icon: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' },
-    { id: 'org-metro-public', code: 'TENANT-PUB-05', name: 'Metro Municipal', category: 'Public Facilities & Water Infrastructure', color: '#B87333', icon: 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z' }
+    { id: 'org-abc-college', code: 'TENANT-EDU-01', name: 'ABC College', category: 'Higher Education Campus (Colleges)', color: '#72C6A5', icon: 'M22 10v6M2 10l10-5 10 5-10 5z' },
+    { id: 'org-city-hospital', code: 'TENANT-MED-02', name: 'City Hospital', category: 'Tertiary Healthcare (Hospitals)', color: '#78C7C7', icon: 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z' },
+    { id: 'org-apex-industrial', code: 'TENANT-IND-04', name: 'Apex Industrial', category: 'Companies & Factories (Semiconductor Fab)', color: '#F2A65A', icon: 'M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' },
+    { id: 'org-green-residency', code: 'TENANT-RES-03', name: 'Green Residency', category: 'Residential Communities (Smart High-Rise)', color: '#B7A7E8', icon: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' },
+    { id: 'org-metro-public', code: 'TENANT-PUB-05', name: 'Metro Municipal', category: 'Public Facilities & Water Infrastructure', color: '#F4C96B', icon: 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z' }
   ];
 
   // Searchable Items Registry
@@ -141,7 +141,7 @@ import './micro-interactions.js';
       scrollContainer.id = 'earlysightMainScroll';
       scrollContainer.className = 'earlysight-main-scroll';
 
-      // Elements to exclude from moving inside scroll container
+      // Elements to exclude from moving inside scroll container (fixed overlays, modals, drawers, toasts)
       const excludeClasses = [
         'global-sidebar',
         'global-topbar',
@@ -152,16 +152,40 @@ import './micro-interactions.js';
         'signal-modal-backdrop',
         'floating-ai-launcher',
         'mobile-sidebar-backdrop',
-        'action-toast-container'
+        'action-toast-container',
+        'modal-backdrop',
+        'risk-detail-drawer',
+        'risk-drawer-overlay',
+        'copilot-inspector-drawer',
+        'copilot-drawer-backdrop',
+        'action-inspector-drawer',
+        'action-drawer-backdrop',
+        'evidence-inspector-drawer',
+        'drawer-backdrop',
+        'notif-detail-drawer',
+        'notif-drawer-backdrop',
+        'cluster-details-drawer',
+        'signals-detail-drawer',
+        'signal-drawer-backdrop'
       ];
+
+      const isExcludedNode = (node) => {
+        if (!node.classList) return false;
+        if (node.id === 'earlysightMainScroll') return true;
+        const cls = typeof node.className === 'string' ? node.className : '';
+        if (excludeClasses.some(c => node.classList.contains(c))) return true;
+        if (/modal|drawer|backdrop|overlay|toast|popover|flyout|floating|sidebar|topbar|story-banner/i.test(cls)) return true;
+        if (node.id && /modal|drawer|backdrop|overlay|toast|popover|flyout|floating|sidebar|topbar|story-banner/i.test(node.id)) return true;
+        if (node.getAttribute && node.getAttribute('role') === 'dialog') return true;
+        return false;
+      };
 
       const nodesToMove = [];
       Array.from(document.body.childNodes).forEach(node => {
         if (node.nodeType === Node.ELEMENT_NODE) {
           const tagName = node.tagName.toLowerCase();
           if (tagName === 'script' || tagName === 'style') return;
-          if (excludeClasses.some(cls => node.classList && node.classList.contains(cls))) return;
-          if (node.id === 'earlysightMainScroll') return;
+          if (isExcludedNode(node)) return;
         }
         nodesToMove.push(node);
       });
@@ -202,10 +226,10 @@ import './micro-interactions.js';
             <a href="index.html" class="sidebar-brand-link">
               <div class="sidebar-brand-icon" aria-hidden="true">
                 <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
-                  <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
-                  <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
-                  <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="16" cy="16" r="14" stroke="#72C6A5" stroke-width="2" stroke-dasharray="3 3"/>
+                  <circle cx="16" cy="16" r="8" stroke="#78C7C7" stroke-width="1.8"/>
+                  <circle cx="16" cy="16" r="3.5" fill="#F2A65A"/>
+                  <line x1="16" y1="16" x2="25" y2="9" stroke="#EF7B7B" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </div>
               <div class="sidebar-brand-text">
@@ -390,7 +414,7 @@ import './micro-interactions.js';
             </button>
 
             <!-- Global Search Trigger Bar -->
-            <button class="topbar-search-trigger" id="btnGlobalSearchTrigger">
+            <button class="topbar-search-trigger" id="btnGlobalSearchTrigger" aria-label="Search signals, alerts, assets, and work orders">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               <span class="search-placeholder">Search signals, alerts, assets, work orders...</span>
               <kbd class="search-kbd font-mono">&#8984;K</kbd>
@@ -399,7 +423,7 @@ import './micro-interactions.js';
 
           <div class="topbar-right">
             <!-- Organization Switcher Pill -->
-            <button class="topbar-org-pill" id="btnTopbarOrgPill" title="Switch Organization">
+            <button class="topbar-org-pill" id="btnTopbarOrgPill" title="Switch Organization" aria-label="Switch Organization">
               <span class="topbar-org-dot" style="background: ${activeOrg.color};"></span>
               <span class="topbar-org-name font-bold" id="topbarOrgName">${activeOrg.name}</span>
               <span class="topbar-org-caret">&#9662;</span>
@@ -419,7 +443,7 @@ import './micro-interactions.js';
             </button>
 
             <!-- User Avatar Chip -->
-            <button class="topbar-user-chip" id="btnTopbarUserChip">
+            <button class="topbar-user-chip" id="btnTopbarUserChip" aria-label="User Account Menu">
               <div class="user-chip-avatar">MV</div>
               <span class="user-chip-name font-bold">M. Vance</span>
             </button>
@@ -560,11 +584,11 @@ import './micro-interactions.js';
 
     renderSearchModal() {
       const modalHtml = `
-        <div class="global-modal-backdrop" id="searchModalBackdrop" style="display: none;">
+        <div class="global-modal-backdrop" id="searchModalBackdrop" style="display: none;" role="dialog" aria-modal="true" aria-label="Search EarlySight">
           <div class="global-search-dialog">
             <div class="search-dialog-header">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              <input type="text" id="globalCommandInput" class="search-command-input" placeholder="Type a command, page name, or search keyword..." autocomplete="off">
+              <input type="text" id="globalCommandInput" class="search-command-input" placeholder="Type a command, page name, or search keyword..." aria-label="Search command input" autocomplete="off">
               <kbd class="kbd-badge font-mono">ESC</kbd>
             </div>
 
@@ -636,14 +660,14 @@ import './micro-interactions.js';
 
     renderSettingsModal() {
       const settingsHtml = `
-        <div class="global-modal-backdrop" id="settingsModalBackdrop" style="display: none;">
+        <div class="global-modal-backdrop" id="settingsModalBackdrop" style="display: none;" role="dialog" aria-modal="true" aria-label="EarlySight System Settings">
           <div class="global-settings-dialog">
             <div class="settings-dialog-header">
               <div class="settings-title-group">
                 <span class="settings-eyebrow font-mono">EARLYSIGHT SYSTEM SETTINGS</span>
                 <h3 class="settings-title">Platform Preferences &amp; Alert Rules</h3>
               </div>
-              <button class="modal-close-btn" id="btnCloseSettings">&times;</button>
+              <button class="modal-close-btn" id="btnCloseSettings" aria-label="Close Settings Modal">&times;</button>
             </div>
 
             <div class="settings-dialog-body">

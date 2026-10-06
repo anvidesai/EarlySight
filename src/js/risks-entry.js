@@ -57,13 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function getStatusBadge(status) {
     const st = (status || '').toLowerCase();
     let cls = 'status-active';
-    let dotColor = '#C85A32';
+    let dotColor = '#EF7B7B';
     if (st === 'emerging') {
       cls = 'status-emerging';
-      dotColor = '#C27803';
+      dotColor = '#F2A65A';
     } else if (st === 'resolved') {
       cls = 'status-resolved';
-      dotColor = '#1B4332';
+      dotColor = '#72C6A5';
     }
     return `
       <span class="risk-status-pill ${cls}">
@@ -86,10 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Helper: Color based on Risk Score
   function getScoreColor(score) {
-    if (score >= 75) return { stroke: '#A43A2A', bg: 'rgba(164, 58, 42, 0.12)', label: 'Critical' };
-    if (score >= 50) return { stroke: '#C85A32', bg: 'rgba(200, 90, 50, 0.12)', label: 'High' };
-    if (score >= 25) return { stroke: '#C27803', bg: 'rgba(194, 120, 3, 0.12)', label: 'Moderate' };
-    return { stroke: '#1B4332', bg: 'rgba(27, 67, 50, 0.12)', label: 'Low' };
+    if (score >= 75) return { stroke: '#EF7B7B', bg: '#FDE2E2', label: 'Critical' };
+    if (score >= 50) return { stroke: '#F2A65A', bg: '#FCE8D5', label: 'High' };
+    if (score >= 25) return { stroke: '#F4C96B', bg: '#FFF2CC', label: 'Moderate' };
+    return { stroke: '#72C6A5', bg: '#DDF5EA', label: 'Low' };
   }
 
   // Helper: SVG Radial Gauge for Score (0-100)
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cy="${size / 2}" 
             r="${radius}" 
             fill="transparent" 
-            stroke="#E4E0D8" 
+            stroke="#E3EAF2" 
             stroke-width="${strokeWidth}"
           />
           <circle 
@@ -143,9 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const endX = endPoint.x * (width / 90);
     const endY = endPoint.y * (height / 36);
 
-    let strokeColor = '#C85A32';
-    if (trend === 'Decreasing') strokeColor = '#1B4332';
-    else if (trend === 'Stable') strokeColor = '#C27803';
+    let strokeColor = '#EF7B7B';
+    if (trend === 'Decreasing') strokeColor = '#72C6A5';
+    else if (trend === 'Stable') strokeColor = '#F4C96B';
 
     return `
       <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" class="risk-sparkline-svg">
@@ -830,7 +830,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="causal-node-card">
           <div class="causal-node-top">
             <span class="causal-node-step">Stage 1</span>
-            <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">Detected</span>
+            <span class="causal-node-badge" style="background:#E8F6F0; color:#18794E;">Detected</span>
           </div>
           <div class="causal-node-title">Scattered Signals</div>
           <div class="causal-node-desc">Weak multi-modal signals captured by sub-slab acoustic transducers, shift complaint logs & thermography.</div>
@@ -842,7 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="causal-node-card">
           <div class="causal-node-top">
             <span class="causal-node-step">Stage 2</span>
-            <span class="causal-node-badge" style="background:#FAF8F5; color:#C27803;">Correlated</span>
+            <span class="causal-node-badge" style="background:#FFF2CC; color:#8A5A00;">Correlated</span>
           </div>
           <div class="causal-node-title">Pattern Identified</div>
           <div class="causal-node-desc">Cross-silo graph matches acoustic frequency, maintenance recurrence, and spatial concentration.</div>
@@ -854,7 +854,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="causal-node-card" style="border-left:3px solid var(--color-rust);">
           <div class="causal-node-top">
             <span class="causal-node-step" style="color:var(--color-rust);">Stage 3</span>
-            <span class="causal-node-badge" style="background:#FDF1EE; color:#A43A2A;">Synthesized</span>
+            <span class="causal-node-badge" style="background:#FDE2E2; color:#B42318;">Synthesized</span>
           </div>
           <div class="causal-node-title">Emerging Risk Generated</div>
           <div class="causal-node-desc">Synthesized hazard ranked by 0–100 Risk Score, severity consequence, and model confidence certainty.</div>
@@ -866,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="causal-node-card" style="border-left:3px solid var(--color-forest);">
           <div class="causal-node-top">
             <span class="causal-node-step" style="color:var(--color-forest);">Stage 4</span>
-            <span class="causal-node-badge" style="background:#EDF3F0; color:#1B4332;">Remediation</span>
+            <span class="causal-node-badge" style="background:#E8F6F0; color:#18794E;">Remediation</span>
           </div>
           <div class="causal-node-title">Prescribed Action Initiated</div>
           <div class="causal-node-desc">Targeted work order dispatched to specialized engineering team before secondary damage occurs.</div>

@@ -506,7 +506,7 @@ class EarlySightAnimation {
       const px = p.x * this.width;
       const py = p.y * this.height;
 
-      ctx.fillStyle = `rgba(18, 22, 28, ${p.alpha * 0.4})`;
+      ctx.fillStyle = `rgba(111, 143, 181, ${p.alpha * 0.35})`;
       ctx.beginPath();
       ctx.arc(px, py, p.radius, 0, Math.PI * 2);
       ctx.fill();
@@ -550,16 +550,16 @@ class EarlySightAnimation {
 
       let lineAlpha = baseAlpha * conn.weight;
       let lineWidth = 1.1;
-      let strokeColor = `rgba(60, 75, 95, ${lineAlpha * 0.35})`;
+      let strokeColor = `rgba(59, 110, 168, ${lineAlpha * 0.45})`;
 
       if (this.hoveredSignalId) {
         if (isConnectedToHover) {
           lineAlpha = 0.95;
           lineWidth = 2.4;
-          strokeColor = 'rgba(217, 78, 52, 0.88)';
+          strokeColor = 'rgba(211, 154, 90, 0.90)';
         } else {
           lineAlpha *= 0.25; // dim non-connected lines
-          strokeColor = `rgba(60, 75, 95, ${lineAlpha * 0.2})`;
+          strokeColor = `rgba(40, 54, 77, ${lineAlpha * 0.25})`;
         }
       }
 
@@ -585,8 +585,8 @@ class EarlySightAnimation {
         ctx.beginPath();
         ctx.arc(packetX, packetY, isConnectedToHover ? 3.0 : 2.0, 0, Math.PI * 2);
         ctx.fillStyle = isConnectedToHover 
-          ? 'rgba(217, 78, 52, 1.0)' 
-          : `rgba(18, 22, 28, ${lineAlpha * 0.8})`;
+          ? 'rgba(211, 154, 90, 1.0)' 
+          : `rgba(111, 143, 181, ${lineAlpha * 0.75})`;
         ctx.fill();
       }
 
@@ -610,10 +610,10 @@ class EarlySightAnimation {
         ctx.lineTo(this.nodes[i].screen.x, this.nodes[i].screen.y);
       }
       ctx.closePath();
-      ctx.fillStyle = `rgba(217, 78, 52, ${meshAlpha})`;
+      ctx.fillStyle = `rgba(211, 154, 90, ${meshAlpha * 1.5})`;
       ctx.fill();
 
-      ctx.strokeStyle = `rgba(217, 78, 52, ${meshAlpha * 2.8})`;
+      ctx.strokeStyle = `rgba(211, 154, 90, ${meshAlpha * 3.2})`;
       ctx.lineWidth = 1.0;
       ctx.stroke();
       ctx.restore();
@@ -638,7 +638,7 @@ class EarlySightAnimation {
     rings.forEach((r, i) => {
       ctx.beginPath();
       ctx.arc(0, 0, r, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(217, 78, 52, ${0.12 * radarAlpha * (1 - i * 0.15)})`;
+      ctx.strokeStyle = `rgba(211, 154, 90, ${0.16 * radarAlpha * (1 - i * 0.15)})`;
       ctx.lineWidth = 1.0;
       ctx.setLineDash([4, 6]);
       ctx.stroke();
@@ -647,9 +647,9 @@ class EarlySightAnimation {
 
     const sweepRadius = 150;
     const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, sweepRadius);
-    grad.addColorStop(0, 'rgba(200, 90, 50, 0.22)');
-    grad.addColorStop(0.7, 'rgba(200, 90, 50, 0.08)');
-    grad.addColorStop(1, 'rgba(200, 90, 50, 0)');
+    grad.addColorStop(0, 'rgba(211, 154, 90, 0.22)');
+    grad.addColorStop(0.7, 'rgba(211, 154, 90, 0.08)');
+    grad.addColorStop(1, 'rgba(211, 154, 90, 0)');
 
     ctx.save();
     ctx.rotate(this.radarAngle);
@@ -663,7 +663,7 @@ class EarlySightAnimation {
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(sweepRadius * Math.cos(Math.PI * 0.35), sweepRadius * Math.sin(Math.PI * 0.35));
-    ctx.strokeStyle = `rgba(200, 90, 50, ${0.45 * radarAlpha})`;
+    ctx.strokeStyle = `rgba(211, 154, 90, ${0.45 * radarAlpha})`;
     ctx.lineWidth = 1.4;
     ctx.stroke();
     ctx.restore();
@@ -671,8 +671,8 @@ class EarlySightAnimation {
     const pulseScale = 1 + Math.sin(this.totalElapsed * 0.005) * 0.12;
     ctx.beginPath();
     ctx.arc(0, 0, 8 * pulseScale, 0, Math.PI * 2);
-    ctx.fillStyle = '#C85A32';
-    ctx.shadowColor = 'rgba(200, 90, 50, 0.4)';
+    ctx.fillStyle = '#D39A5A';
+    ctx.shadowColor = 'rgba(211, 154, 90, 0.4)';
     ctx.shadowBlur = 14;
     ctx.fill();
     ctx.shadowBlur = 0;
@@ -682,7 +682,7 @@ class EarlySightAnimation {
     const waveAlpha = Math.max(0, (1 - waveProgress / 1.5) * 0.5 * radarAlpha);
     ctx.beginPath();
     ctx.arc(0, 0, waveRadius, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(200, 90, 50, ${waveAlpha})`;
+    ctx.strokeStyle = `rgba(211, 154, 90, ${waveAlpha * 0.85})`;
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
@@ -701,10 +701,10 @@ class EarlySightAnimation {
 
     // 1. Concentric Causal Contribution Arcs
     const pillars = [
-      { name: "SCADA Sensors", weight: "+38%", r: 88, start: 0, end: Math.PI * 0.76, color: '#C85A32' },
-      { name: "CMMS Tickets", weight: "+28%", r: 108, start: Math.PI * 0.82, end: Math.PI * 1.38, color: '#B87333' },
-      { name: "Operator Logs", weight: "+21%", r: 128, start: Math.PI * 1.44, end: Math.PI * 1.86, color: '#5E7E6C' },
-      { name: "Acoustics", weight: "+13%", r: 148, start: Math.PI * 1.92, end: Math.PI * 2.18, color: '#1B4332' }
+      { name: "SCADA Sensors", weight: "+38%", r: 88, start: 0, end: Math.PI * 0.76, color: '#EF7B7B' },
+      { name: "CMMS Tickets", weight: "+28%", r: 108, start: Math.PI * 0.82, end: Math.PI * 1.38, color: '#F2A65A' },
+      { name: "Operator Logs", weight: "+21%", r: 128, start: Math.PI * 1.44, end: Math.PI * 1.86, color: '#F4C96B' },
+      { name: "Acoustics", weight: "+13%", r: 148, start: Math.PI * 1.92, end: Math.PI * 2.18, color: '#72C6A5' }
     ];
 
     pillars.forEach((p) => {
@@ -729,30 +729,32 @@ class EarlySightAnimation {
     // 2. Central Evidence Strength Badge
     ctx.beginPath();
     ctx.arc(0, 0, 38, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.96)';
-    ctx.strokeStyle = 'rgba(27, 67, 50, 0.35)';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#78C7C7';
     ctx.lineWidth = 1.5;
-    ctx.shadowColor = 'rgba(0,0,0,0.06)';
+    ctx.shadowColor = 'rgba(16, 42, 67, 0.08)';
     ctx.shadowBlur = 10;
     ctx.fill();
     ctx.stroke();
     ctx.shadowBlur = 0;
 
     ctx.font = '800 15px monospace';
-    ctx.fillStyle = '#1B4332';
+    ctx.fillStyle = '#102A43';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('87%', 0, -5);
 
     ctx.font = '700 8px sans-serif';
-    ctx.fillStyle = '#5E7E6C';
+    ctx.fillStyle = '#274C77';
     ctx.fillText('EVIDENCE', 0, 10);
 
     // 3. Lower Explanation Card
     const boxW = Math.min(360, this.width - 32);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-    ctx.strokeStyle = 'rgba(94, 126, 108, 0.35)';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#D9E2EC';
     ctx.lineWidth = 1.0;
+    ctx.shadowColor = 'rgba(16, 42, 67, 0.06)';
+    ctx.shadowBlur = 8;
     ctx.beginPath();
     if (ctx.roundRect) {
       ctx.roundRect(-boxW / 2, 65, boxW, 42, 6);
@@ -761,13 +763,14 @@ class EarlySightAnimation {
     }
     ctx.fill();
     ctx.stroke();
+    ctx.shadowBlur = 0;
 
     ctx.font = '700 11px sans-serif';
-    ctx.fillStyle = '#1C2024';
+    ctx.fillStyle = '#102A43';
     ctx.textAlign = 'center';
     ctx.fillText('STAGE 05: EVIDENCE — THE SYSTEM EXPLAINS WHY', 0, 80);
     ctx.font = '500 9.5px sans-serif';
-    ctx.fillStyle = '#5E7E6C';
+    ctx.fillStyle = '#486581';
     ctx.fillText('Causal graph verified across 5 independent operational streams', 0, 96);
 
     ctx.restore();
@@ -788,7 +791,7 @@ class EarlySightAnimation {
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(arrowLen, -arrowLen * 0.45);
-    ctx.strokeStyle = '#1B4332';
+    ctx.strokeStyle = '#F2A65A';
     ctx.lineWidth = 2.0;
     ctx.setLineDash([4, 4]);
     ctx.stroke();
@@ -796,10 +799,10 @@ class EarlySightAnimation {
 
     // Action Execution Box
     const boxW = Math.min(370, this.width - 32);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
-    ctx.strokeStyle = '#1B4332';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#D9E2EC';
     ctx.lineWidth = 1.4;
-    ctx.shadowColor = 'rgba(27, 67, 50, 0.10)';
+    ctx.shadowColor = 'rgba(16, 42, 67, 0.08)';
     ctx.shadowBlur = 12;
     ctx.beginPath();
     if (ctx.roundRect) {
@@ -812,16 +815,16 @@ class EarlySightAnimation {
     ctx.shadowBlur = 0;
 
     ctx.font = '700 11px sans-serif';
-    ctx.fillStyle = '#1B4332';
+    ctx.fillStyle = '#102A43';
     ctx.textAlign = 'center';
     ctx.fillText('STAGE 06: ACTION — RESPONSIBLE TEAM ACTS', 0, 74);
 
     ctx.font = '600 10px monospace';
-    ctx.fillStyle = '#1C2024';
+    ctx.fillStyle = '#486581';
     ctx.fillText('Assigned: Reliability & Mechanical Team (M. Vance)', 0, 89);
 
     ctx.font = '500 9.5px sans-serif';
-    ctx.fillStyle = '#C85A32';
+    ctx.fillStyle = '#9A4D00';
     ctx.fillText('Target: Joint 4B-12 Isolation & Seal • SLA Target < 4.2d', 0, 103);
 
     ctx.restore();
@@ -842,17 +845,17 @@ class EarlySightAnimation {
     rings.forEach((r, i) => {
       ctx.beginPath();
       ctx.arc(0, 0, r, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(27, 67, 50, ${0.14 * (1 - i * 0.25) * alpha})`;
+      ctx.strokeStyle = `rgba(114, 198, 165, ${0.28 * (1 - i * 0.25) * alpha})`;
       ctx.lineWidth = 1.2;
       ctx.stroke();
     });
 
     // Verification Success Card
     const boxW = Math.min(380, this.width - 32);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
-    ctx.strokeStyle = '#1B4332';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#72C6A5';
     ctx.lineWidth = 1.8;
-    ctx.shadowColor = 'rgba(27, 67, 50, 0.12)';
+    ctx.shadowColor = 'rgba(16, 42, 67, 0.08)';
     ctx.shadowBlur = 14;
     ctx.beginPath();
     if (ctx.roundRect) {
@@ -865,16 +868,16 @@ class EarlySightAnimation {
     ctx.shadowBlur = 0;
 
     ctx.font = '800 11px sans-serif';
-    ctx.fillStyle = '#1B4332';
+    ctx.fillStyle = '#102A43';
     ctx.textAlign = 'center';
     ctx.fillText('STAGE 07: VERIFICATION — CONFIRMING PROBLEM DECREASES', 0, 71);
 
     ctx.font = '700 10.5px monospace';
-    ctx.fillStyle = '#15803D';
+    ctx.fillStyle = '#18794E';
     ctx.fillText('Precursor Signal Decay: -95.2% (Nominal Baseline Restored)', 0, 87);
 
     ctx.font = '600 9.5px monospace';
-    ctx.fillStyle = '#1C2024';
+    ctx.fillStyle = '#486581';
     ctx.fillText('Averted Downtime Loss: $512,000 Verified • Post-Intervention Audit', 0, 102);
 
     ctx.restore();
@@ -914,7 +917,7 @@ class EarlySightAnimation {
       const y = node.screen.y;
       const isHovered = (this.hoveredSignalId === node.id);
       const isConnected = this.isNodeConnected(this.hoveredSignalId, node.id);
-      const effectiveColor = (pIdx === 7) ? '#1B4332' : node.color;
+      const effectiveColor = (pIdx === 7) ? '#5F9074' : node.color;
 
       ctx.save();
       ctx.translate(x, y);
@@ -923,7 +926,7 @@ class EarlySightAnimation {
       if (node.rippleAlpha > 0.01) {
         ctx.beginPath();
         ctx.arc(0, 0, node.rippleRadius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(217, 78, 52, ${node.rippleAlpha})`;
+        ctx.strokeStyle = `rgba(211, 154, 90, ${node.rippleAlpha})`;
         ctx.lineWidth = 1.2;
         ctx.stroke();
       }
@@ -933,13 +936,13 @@ class EarlySightAnimation {
         const hoverPulse = 1 + Math.sin(this.totalElapsed * 0.008) * 0.15;
         ctx.beginPath();
         ctx.arc(0, 0, 18 * hoverPulse, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(217, 78, 52, 0.45)';
+        ctx.strokeStyle = 'rgba(211, 154, 90, 0.5)';
         ctx.lineWidth = 1.5;
         ctx.stroke();
       } else if (isConnected) {
         ctx.beginPath();
         ctx.arc(0, 0, 12, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(217, 78, 52, 0.35)';
+        ctx.strokeStyle = 'rgba(211, 154, 90, 0.35)';
         ctx.lineWidth = 1.2;
         ctx.stroke();
       }
@@ -949,7 +952,7 @@ class EarlySightAnimation {
       ctx.arc(0, 0, (isHovered ? 14 : 9) * node.scale, 0, Math.PI * 2);
       ctx.strokeStyle = isHovered 
         ? effectiveColor 
-        : (isConnected ? 'rgba(217, 78, 52, 0.6)' : `rgba(18, 22, 28, ${0.15 * node.alpha})`);
+        : (isConnected ? 'rgba(211, 154, 90, 0.6)' : `rgba(40, 54, 77, ${0.45 * node.alpha})`);
       ctx.lineWidth = isHovered ? 2.0 : 1.0;
       ctx.stroke();
 

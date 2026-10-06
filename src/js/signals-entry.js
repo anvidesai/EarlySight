@@ -120,29 +120,29 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="sig-analytics-panel">
           <div class="sig-panel-header">
             <span class="sig-panel-title">Signal Ingress Velocity</span>
-            <span class="sig-panel-badge" style="background:#FDF1EE; color:#A43A2A;">+320% Surge</span>
+            <span class="sig-panel-badge" style="background:#FDE2E2; color:#B42318;">+320% Surge</span>
           </div>
 
           <div class="sig-frequency-sparkline">
             <svg viewBox="0 0 280 48" preserveAspectRatio="none" style="width:100%; height:100%;">
               <defs>
                 <linearGradient id="sigSparkGradM4" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#A43A2A" stop-opacity="0.28"/>
-                  <stop offset="100%" stop-color="#A43A2A" stop-opacity="0.02"/>
+                  <stop offset="0%" stop-color="#EF7B7B" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="#EF7B7B" stop-opacity="0.02"/>
                 </linearGradient>
               </defs>
               <path d="M 10,40 L 90,34 L 180,22 L 270,6 L 270,48 L 10,48 Z" fill="url(#sigSparkGradM4)"/>
-              <path d="M 10,40 L 90,34 L 180,22 L 270,6" fill="none" stroke="#A43A2A" stroke-width="2.4" stroke-linecap="round"/>
-              <circle cx="10" cy="40" r="3.2" fill="#FFFFFF" stroke="#A43A2A" stroke-width="1.8"/>
-              <circle cx="90" cy="34" r="3.2" fill="#FFFFFF" stroke="#A43A2A" stroke-width="1.8"/>
-              <circle cx="180" cy="22" r="3.2" fill="#FFFFFF" stroke="#A43A2A" stroke-width="1.8"/>
-              <circle cx="270" cy="6" r="4.2" fill="#A43A2A" stroke="#FFFFFF" stroke-width="1.8"/>
+              <path d="M 10,40 L 90,34 L 180,22 L 270,6" fill="none" stroke="#EF7B7B" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="10" cy="40" r="3.2" fill="#FFFFFF" stroke="#EF7B7B" stroke-width="1.8"/>
+              <circle cx="90" cy="34" r="3.2" fill="#FFFFFF" stroke="#EF7B7B" stroke-width="1.8"/>
+              <circle cx="180" cy="22" r="3.2" fill="#FFFFFF" stroke="#EF7B7B" stroke-width="1.8"/>
+              <circle cx="270" cy="6" r="4.2" fill="#EF7B7B" stroke="#FFFFFF" stroke-width="1.8"/>
             </svg>
           </div>
 
           <div class="sig-frequency-meta font-mono">
             <span>W1: 18 &rarr; W4: 128 Signals</span>
-            <span style="font-weight:700; color:#A43A2A;">Accelerating Surge</span>
+            <span style="font-weight:700; color:#B42318;">Accelerating Surge</span>
           </div>
         </div>
 
@@ -150,33 +150,33 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="sig-analytics-panel">
           <div class="sig-panel-header">
             <span class="sig-panel-title">Top Repeated Categories</span>
-            <span class="sig-panel-badge" style="background:#EDF3F0; color:#1B4332;">6 Modalities</span>
+            <span class="sig-panel-badge" style="background:#E8F6F0; color:#18794E;">6 Modalities</span>
           </div>
 
           <div class="sig-category-bar">
-            <div style="width:33%; background:#A43A2A;" title="Equipment failure: 42"></div>
-            <div style="width:19%; background:#C27803;" title="Electrical issue: 24"></div>
-            <div style="width:16%; background:#57606A;" title="Overcrowding: 20"></div>
-            <div style="width:14%; background:#1B4332;" title="Water leakage: 18"></div>
-            <div style="width:11%; background:#4D7C5D;" title="Safety concern: 14"></div>
-            <div style="width:7%; background:#8C959F;" title="Maintenance complaint: 10"></div>
+            <div style="width:33%; background:#EF7B7B;" title="Equipment failure: 42"></div>
+            <div style="width:19%; background:#F2A65A;" title="Electrical issue: 24"></div>
+            <div style="width:16%; background:#B7A7E8;" title="Overcrowding: 20"></div>
+            <div style="width:14%; background:#78C7C7;" title="Water leakage: 18"></div>
+            <div style="width:11%; background:#72C6A5;" title="Safety concern: 14"></div>
+            <div style="width:7%; background:#D9E2EC;" title="Maintenance complaint: 10"></div>
           </div>
 
           <div class="sig-cat-pills-grid font-mono">
             <div class="sig-cat-pill">
-              <span style="color:#A43A2A;">● Equipment</span>
+              <span style="color:#B42318;">● Equipment</span>
               <strong>42 (33%)</strong>
             </div>
             <div class="sig-cat-pill">
-              <span style="color:#C27803;">● Electrical</span>
+              <span style="color:#9A4D00;">● Electrical</span>
               <strong>24 (19%)</strong>
             </div>
             <div class="sig-cat-pill">
-              <span style="color:#57606A;">● Overcrowding</span>
+              <span style="color:#3E3264;">● Overcrowding</span>
               <strong>20 (16%)</strong>
             </div>
             <div class="sig-cat-pill">
-              <span style="color:#1B4332;">● Water Leak</span>
+              <span style="color:#176B6B;">● Water Leak</span>
               <strong>18 (14%)</strong>
             </div>
           </div>
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="sig-analytics-panel">
           <div class="sig-panel-header">
             <span class="sig-panel-title">Precursor Linkage</span>
-            <span class="sig-panel-badge" style="background:#EDF3F0; color:#1B4332;">48 Graph Links</span>
+            <span class="sig-panel-badge" style="background:#E8F6F0; color:#18794E;">48 Graph Links</span>
           </div>
 
           <div style="display:flex; justify-content:space-between; gap:6px; margin-bottom:10px;">
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <span class="sig-meta-chip">📍 ${c.location}</span>
               <span class="sig-meta-chip">🏷️ ${c.category}</span>
               <span class="sig-meta-chip" style="font-weight:700; color:var(--intel-primary);">🔗 ${c.signalCount} Related Signals</span>
-              <span class="sig-meta-chip" style="color:#A43A2A; font-weight:600;">📈 ${c.repetitionRate}</span>
+              <span class="sig-meta-chip" style="color:#B42318; font-weight:600;">📈 ${c.repetitionRate}</span>
             </div>
           </div>
 

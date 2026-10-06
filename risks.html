@@ -32,6 +32,10 @@
       gap: 12px;
       box-shadow: var(--shadow-sm);
       overflow-x: auto;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -46,6 +50,7 @@
       color: var(--intel-primary, #1B4332);
       letter-spacing: 0.5px;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .workflow-steps {
       display: flex;
@@ -54,6 +59,8 @@
       font-size: 0.74rem;
       font-family: var(--font-mono, monospace);
       white-space: nowrap;
+      flex-shrink: 0;
+      min-width: 0;
     }
     .workflow-step {
       display: inline-flex;
@@ -256,6 +263,10 @@
       padding: 16px 20px;
       margin-bottom: 18px;
       box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+      max-width: 100%;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
     }
     .matrix-card-header {
       display: flex;
@@ -287,15 +298,12 @@
       display: grid;
       grid-template-columns: 90px repeat(4, 1fr);
       gap: 6px;
+      min-width: 600px;
     }
     @media (max-width: 768px) {
       .risk-matrix-grid {
         grid-template-columns: 70px repeat(4, 1fr);
-        overflow-x: auto;
-        min-width: 540px;
-      }
-      .risk-matrix-wrapper {
-        overflow-x: auto;
+        min-width: 500px;
       }
     }
     .matrix-header-cell {
@@ -1531,7 +1539,7 @@
     /* Mobile Adaptations */
     @media (max-width: 640px) {
       .risks-page-container {
-        padding: 12px 10px 48px 10px;
+        padding: 12px 10px 48px 10px !important;
       }
       .risks-header-banner,
       .attention-needed-section,

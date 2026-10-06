@@ -97,7 +97,7 @@ class EarlySightTimelineController {
     container.innerHTML = track.map((step, idx) => {
       const isLast = idx === track.length - 1;
       return `
-        <div class="lifecycle-track-cell" style="background:var(--color-ivory-subtle,#F4F0E8); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:10px 12px; display:flex; flex-direction:column; gap:4px; border-top:3px solid ${isLast ? 'var(--color-forest,#1B4332)' : (idx >= 3 ? 'var(--color-rust,#C85A32)' : 'var(--color-amber,#C27803)')};">
+        <div class="lifecycle-track-cell" style="background:#FFFFFF; border:1px solid #E3EAF2; border-radius:6px; padding:10px 12px; display:flex; flex-direction:column; gap:4px; border-top:3px solid ${isLast ? 'var(--color-forest,#72C6A5)' : (idx >= 3 ? 'var(--color-rust,#EF7B7B)' : 'var(--color-amber,#F4C96B)')};">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <span class="font-mono" style="font-size:0.68rem; font-weight:800; color:var(--ink-primary); letter-spacing:0.4px;">
               0${idx + 1}. ${step.name}
@@ -125,10 +125,10 @@ class EarlySightTimelineController {
       const arrow = idx < traj.points.length - 1 ? '<span style="color:var(--ink-muted); font-size:0.8rem; font-weight:700;">→</span>' : '';
       
       const badgeStyle = isPeak 
-        ? 'background:rgba(200,90,50,0.15); color:var(--color-rust,#C85A32); border:1px solid var(--color-rust,#C85A32);'
+        ? 'background:#FDE2E2; color:#B42318; border:1px solid rgba(239,123,123,0.4);'
         : (isDeesc 
-          ? 'background:rgba(27,67,50,0.1); color:var(--color-forest,#1B4332); border:1px solid var(--color-forest,#1B4332);'
-          : 'background:var(--color-ivory-subtle,#F4F0E8); color:var(--ink-primary); border:1px solid var(--border-subtle,#E4E0D8);');
+          ? 'background:#E8F6F0; color:#18794E; border:1px solid rgba(114,198,165,0.4);'
+          : 'background:#FFFFFF; color:var(--ink-primary); border:1px solid #E3EAF2;');
 
       return `
         <div style="display:inline-flex; align-items:center; gap:8px;">
@@ -203,11 +203,11 @@ class EarlySightTimelineController {
                 Evidence: <strong style="color:var(--ink-primary);">${evt.evidenceType}</strong>
               </span>
               <span style="font-family:var(--font-mono); color:var(--ink-muted);">
-                Confidence: <strong style="color:var(--color-rust,#C85A32);">${evt.confidence}</strong>
+                Confidence: <strong style="color:#B42318;">${evt.confidence}</strong>
               </span>
-              ${evt.score ? `<span style="font-family:var(--font-mono); color:var(--color-rust,#C85A32); font-weight:700;">Score: ${evt.score}/100</span>` : ''}
+              ${evt.score ? `<span style="font-family:var(--font-mono); color:#B42318; font-weight:700;">Score: ${evt.score}/100</span>` : ''}
             </div>
-            <span class="font-mono" style="font-size:0.72rem; color:var(--color-rust,#C85A32); font-weight:700;">
+            <span class="font-mono" style="font-size:0.72rem; color:#B42318; font-weight:700;">
               Inspect Event Context &rarr;
             </span>
           </div>
@@ -231,10 +231,10 @@ class EarlySightTimelineController {
     cards.forEach(c => {
       if (c.getAttribute('data-event-id') === eventId) {
         c.classList.add('stage-card-active');
-        c.style.borderColor = 'var(--color-rust,#C85A32)';
+        c.style.borderColor = '#EF7B7B';
       } else {
         c.classList.remove('stage-card-active');
-        c.style.borderColor = 'var(--border-subtle,#E4E0D8)';
+        c.style.borderColor = '#E3EAF2';
       }
     });
 
@@ -247,7 +247,7 @@ class EarlySightTimelineController {
 
     inspector.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <span class="font-mono" style="font-size:0.7rem; font-weight:800; color:var(--color-rust,#C85A32); text-transform:uppercase; letter-spacing:0.5px;">
+        <span class="font-mono" style="font-size:0.7rem; font-weight:800; color:#B42318; text-transform:uppercase; letter-spacing:0.5px;">
           EVENT DETAIL INSPECTOR (SECTION 14)
         </span>
         <span class="risk-severity-pill ${evt.severity === 'Critical' ? 'badge-severity-critical' : 'badge-severity-high'}" style="font-size:0.65rem;">
@@ -258,32 +258,32 @@ class EarlySightTimelineController {
       <h3 style="font-size:1.15rem; font-weight:800; color:var(--ink-primary); margin:0 0 6px 0;">
         ${this.currentCase.shortTitle}
       </h3>
-      <div style="font-size:0.86rem; color:var(--color-rust,#C85A32); font-weight:600; margin-bottom:14px;">
+      <div style="font-size:0.86rem; color:#B42318; font-weight:600; margin-bottom:14px;">
         "${evt.headline}"
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.76rem;">
-        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+        <div style="background:#F8FAFC; padding:8px 10px; border-radius:4px; border:1px solid #E3EAF2;">
           <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">DETECTED</span>
           <strong>${evt.dateFormatted}</strong>
         </div>
-        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+        <div style="background:#F8FAFC; padding:8px 10px; border-radius:4px; border:1px solid #E3EAF2;">
           <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">LOCATION</span>
           <strong>${evt.location}</strong>
         </div>
-        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+        <div style="background:#F8FAFC; padding:8px 10px; border-radius:4px; border:1px solid #E3EAF2;">
           <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">EVIDENCE</span>
           <strong>${evt.evidenceType}</strong>
         </div>
-        <div style="background:var(--color-ivory-subtle,#F4F0E8); padding:8px 10px; border-radius:4px; border:1px solid var(--border-subtle);">
+        <div style="background:#F8FAFC; padding:8px 10px; border-radius:4px; border:1px solid #E3EAF2;">
           <span style="color:var(--ink-muted); display:block; font-size:0.65rem;">CONFIDENCE</span>
-          <strong style="color:var(--color-rust,#C85A32);">${evt.confidence}</strong>
+          <strong style="color:#B42318;">${evt.confidence}</strong>
         </div>
       </div>
 
       <!-- Why It Matters Block (Section 14) -->
-      <div style="background:var(--color-ivory-subtle,#F4F0E8); border-left:3px solid var(--color-rust,#C85A32); padding:10px 12px; border-radius:4px; margin-bottom:16px;">
-        <div class="font-mono" style="font-size:0.68rem; font-weight:700; color:var(--color-rust,#C85A32); text-transform:uppercase; margin-bottom:4px;">
+      <div style="background:#F8FAFC; border-left:3px solid #EF7B7B; padding:10px 12px; border-radius:4px; margin-bottom:16px;">
+        <div class="font-mono" style="font-size:0.68rem; font-weight:700; color:#B42318; text-transform:uppercase; margin-bottom:4px;">
           WHY IT MATTERS:
         </div>
         <p style="font-size:0.8rem; color:var(--ink-primary); line-height:1.45; margin:0; font-style:italic;">
@@ -297,7 +297,7 @@ class EarlySightTimelineController {
       </p>
 
       <!-- Section 14 Actions Navigation -->
-      <div style="display:flex; flex-direction:column; gap:8px; padding-top:14px; border-top:1px solid var(--border-subtle,#E4E0D8);">
+      <div style="display:flex; flex-direction:column; gap:8px; padding-top:14px; border-top:1px solid #E3EAF2;">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
           <a href="${evt.actions.viewSignals}" class="drawer-btn-secondary" style="text-decoration:none; text-align:center; font-size:0.78rem; padding:8px 10px; display:flex; align-items:center; justify-content:center; gap:5px;">
             <span>📋 View Related Signals</span>
@@ -306,7 +306,7 @@ class EarlySightTimelineController {
             <span>🛡️ View Risk</span>
           </a>
         </div>
-        <a href="${evt.actions.viewMap}" class="drawer-btn-primary" style="text-decoration:none; text-align:center; font-size:0.82rem; background:var(--color-rust,#C85A32); color:#FFFFFF; padding:9px 12px; border-radius:6px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px;">
+        <a href="${evt.actions.viewMap}" class="drawer-btn-primary" style="text-decoration:none; text-align:center; font-size:0.82rem; background:#EF7B7B; color:#FFFFFF; padding:9px 12px; border-radius:6px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px;">
           <span>📍 View on Facility Map ↗</span>
         </a>
       </div>
@@ -466,12 +466,12 @@ class EarlySightTimelineController {
       <svg class="trend-interactive-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="freqGradFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.35"/>
-            <stop offset="100%" stop-color="#C85A32" stop-opacity="0.02"/>
+            <stop offset="0%" stop-color="#EF7B7B" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#EF7B7B" stop-opacity="0.01"/>
           </linearGradient>
           <linearGradient id="confGradStroke" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#1B4332"/>
-            <stop offset="100%" stop-color="#5E7E6C"/>
+            <stop offset="0%" stop-color="#78C7C7"/>
+            <stop offset="100%" stop-color="#72C6A5"/>
           </linearGradient>
         </defs>
 
@@ -480,26 +480,26 @@ class EarlySightTimelineController {
           const y = padTop + chartH * (1 - pct);
           const val = (pct * maxFreq).toFixed(1);
           return `
-            <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="rgba(45,35,25,0.06)" stroke-dasharray="3 3"/>
-            <text x="${padLeft - 10}" y="${y + 3}" fill="#94A3B8" font-size="10" font-family="var(--font-mono)" text-anchor="end">${val} s/d</text>
+            <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="rgba(217, 226, 236, 0.8)" stroke-dasharray="3 3"/>
+            <text x="${padLeft - 10}" y="${y + 3}" fill="#627D98" font-size="10" font-family="var(--font-mono)" text-anchor="end">${val} s/d</text>
           `;
         }).join('')}
 
         <!-- Legacy SCADA Alarm Level Zone (Red dashed line) -->
-        <line x1="${padLeft}" y1="${legacyAlarmY}" x2="${width - padRight}" y2="${legacyAlarmY}" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.65"/>
-        <text x="${width - padRight - 6}" y="${legacyAlarmY - 6}" fill="#DC2626" font-size="10" font-weight="700" font-family="var(--font-mono)" text-anchor="end">
+        <line x1="${padLeft}" y1="${legacyAlarmY}" x2="${width - padRight}" y2="${legacyAlarmY}" stroke="#EF7B7B" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.75"/>
+        <text x="${width - padRight - 6}" y="${legacyAlarmY - 6}" fill="#B42318" font-size="10" font-weight="700" font-family="var(--font-mono)" text-anchor="end">
           LEGACY SCADA ALARM THRESHOLD (Catastrophic Breach Level)
         </text>
 
         <!-- EarlySight Early Detection Window Zone -->
-        <rect x="${getX(Math.floor(points.length * 0.45))}" y="${padTop}" width="${getX(Math.floor(points.length * 0.7)) - getX(Math.floor(points.length * 0.45))}" height="${chartH}" fill="rgba(217, 78, 52, 0.05)" rx="4"/>
-        <text x="${getX(Math.floor(points.length * 0.45)) + 8}" y="${padTop + 16}" fill="var(--accent-risk)" font-size="10" font-weight="800" font-family="var(--font-mono)">
+        <rect x="${getX(Math.floor(points.length * 0.45))}" y="${padTop}" width="${getX(Math.floor(points.length * 0.7)) - getX(Math.floor(points.length * 0.45))}" height="${chartH}" fill="rgba(242, 166, 90, 0.08)" rx="4"/>
+        <text x="${getX(Math.floor(points.length * 0.45)) + 8}" y="${padTop + 16}" fill="#9A4D00" font-size="10" font-weight="800" font-family="var(--font-mono)">
           EARLYSIGHT DETECTION HORIZON (+14.2d Lead Time Window)
         </text>
 
         <!-- Frequency Curve Area & Stroke -->
         <path d="${freqArea}" fill="url(#freqGradFill)"/>
-        <path d="${freqPath}" fill="none" stroke="#C85A32" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="${freqPath}" fill="none" stroke="#EF7B7B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
 
         <!-- Confidence Curve Stroke -->
         <path d="${confPath}" fill="none" stroke="url(#confGradStroke)" stroke-width="2.2" stroke-dasharray="4 3" stroke-linecap="round"/>
@@ -514,9 +514,9 @@ class EarlySightTimelineController {
                onmouseenter="window.timelineController.showChartTooltip(evt, ${idx})" 
                onmouseleave="window.timelineController.hideChartTooltip()">
               <circle cx="${x}" cy="${y}" r="${isSelected ? 5.5 : 3.5}" 
-                      fill="${isSelected ? '#C85A32' : '#FFFFFF'}" 
-                      stroke="#C85A32" stroke-width="${isSelected ? 2.5 : 1.8}"/>
-              ${isSelected ? `<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="#C85A32" stroke-width="1.2" opacity="0.4" class="sparkline-pulse-dot"/>` : ''}
+                      fill="${isSelected ? '#EF7B7B' : '#FFFFFF'}" 
+                      stroke="#EF7B7B" stroke-width="${isSelected ? 2.5 : 1.8}"/>
+              ${isSelected ? `<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="#EF7B7B" stroke-width="1.2" opacity="0.4" class="sparkline-pulse-dot"/>` : ''}
             </g>
           `;
         }).join('')}
@@ -667,7 +667,7 @@ class EarlySightTimelineController {
         <path d="${unmitPath}" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
 
         <!-- Mitigated Curve (2026 Event: Flattened by early intervention at T-7d) -->
-        <path d="${mitPath}" fill="none" stroke="#1B4332" stroke-width="3.0" stroke-linecap="round"/>
+        <path d="${mitPath}" fill="none" stroke="#72C6A5" stroke-width="3.0" stroke-linecap="round"/>
 
         <!-- Key Trajectory Markers -->
         ${traj.map((t, i) => {
@@ -677,24 +677,24 @@ class EarlySightTimelineController {
 
           if (t.earlySightAlertPoint) {
             return `
-              <circle cx="${x}" cy="${yMit}" r="5" fill="#C85A32" stroke="#FFF" stroke-width="2"/>
-              <text x="${x}" y="${yMit - 10}" fill="#C85A32" font-size="9" font-weight="700" text-anchor="middle" font-family="var(--font-mono)">
+              <circle cx="${x}" cy="${yMit}" r="5" fill="#F2A65A" stroke="#FFF" stroke-width="2"/>
+              <text x="${x}" y="${yMit - 10}" fill="#9A4D00" font-size="9" font-weight="700" text-anchor="middle" font-family="var(--font-mono)">
                 T-10d: Early Warning Generated
               </text>
             `;
           }
           if (t.actionTakenPoint) {
             return `
-              <circle cx="${x}" cy="${yMit}" r="5" fill="#1B4332" stroke="#FFF" stroke-width="2"/>
-              <text x="${x}" y="${yMit + 18}" fill="#1B4332" font-size="9" font-weight="700" text-anchor="middle" font-family="var(--font-mono)">
+              <circle cx="${x}" cy="${yMit}" r="5" fill="#72C6A5" stroke="#FFF" stroke-width="2"/>
+              <text x="${x}" y="${yMit + 18}" fill="#18794E" font-size="9" font-weight="700" text-anchor="middle" font-family="var(--font-mono)">
                 T-7d: Action Taken (Gasket Replaced)
               </text>
             `;
           }
           if (t.pastCatastrophicFailure) {
             return `
-              <circle cx="${x}" cy="${yUnmit}" r="6" fill="#DC2626" stroke="#FFF" stroke-width="2"/>
-              <text x="${x}" y="${yUnmit - 10}" fill="#DC2626" font-size="9" font-weight="800" text-anchor="middle" font-family="var(--font-mono)">
+              <circle cx="${x}" cy="${yUnmit}" r="6" fill="#EF7B7B" stroke="#FFF" stroke-width="2"/>
+              <text x="${x}" y="${yUnmit - 10}" fill="#B42318" font-size="9" font-weight="800" text-anchor="middle" font-family="var(--font-mono)">
                 2024: Flooding Stoppage ($1.4M)
               </text>
             `;

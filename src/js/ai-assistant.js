@@ -234,8 +234,8 @@ import { AI_ASSISTANT_KNOWLEDGE_BASE } from '../data/ai-assistant-data.js';
       asstRow.innerHTML = `
         <div class="ai-avatar asst-avatar">
           <svg viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="14" stroke="#FAF8F5" stroke-width="2" stroke-dasharray="2 2"/>
-            <circle cx="16" cy="16" r="8" fill="#1B4332"/>
+            <circle cx="16" cy="16" r="14" stroke="#D9E2EC" stroke-width="2" stroke-dasharray="2 2"/>
+            <circle cx="16" cy="16" r="8" fill="#B7A7E8"/>
           </svg>
         </div>
 
@@ -361,8 +361,8 @@ import { AI_ASSISTANT_KNOWLEDGE_BASE } from '../data/ai-assistant-data.js';
       welcomeRow.innerHTML = `
         <div class="ai-avatar asst-avatar">
           <svg viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="14" stroke="#FAF8F5" stroke-width="2" stroke-dasharray="2 2"/>
-            <circle cx="16" cy="16" r="8" fill="#1B4332"/>
+            <circle cx="16" cy="16" r="14" stroke="#D9E2EC" stroke-width="2" stroke-dasharray="2 2"/>
+            <circle cx="16" cy="16" r="8" fill="#B7A7E8"/>
           </svg>
         </div>
 
@@ -415,21 +415,21 @@ import { AI_ASSISTANT_KNOWLEDGE_BASE } from '../data/ai-assistant-data.js';
           const y = 95 - height;
           const x = 30 + i * 85;
           const isLatest = i === chartData.values.length - 1;
-          const fill = isLatest ? '#C85A32' : '#EFECE6';
-          const stroke = isLatest ? '#B24E28' : '#DED8CC';
+          const fill = isLatest ? '#F2A65A' : '#F1F5F9';
+          const stroke = isLatest ? '#D98838' : '#D9E2EC';
 
           return `
             <g class="bar-group">
               <rect x="${x}" y="${y}" width="48" height="${height}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="1.2" />
-              <text x="${x + 24}" y="${y - 6}" font-size="11" font-weight="700" font-family="monospace" text-anchor="middle" fill="${isLatest ? '#C85A32' : '#5F6A75'}">${v.toFixed(1)}</text>
-              <text x="${x + 24}" y="112" font-size="10" font-family="monospace" text-anchor="middle" fill="#5F6A75">${chartData.days[i]}</text>
+              <text x="${x + 24}" y="${y - 6}" font-size="11" font-weight="700" font-family="monospace" text-anchor="middle" fill="${isLatest ? '#9A4D00' : '#486581'}">${v.toFixed(1)}</text>
+              <text x="${x + 24}" y="112" font-size="10" font-family="monospace" text-anchor="middle" fill="#627D98">${chartData.days[i]}</text>
             </g>
           `;
         }).join('');
 
         return `
           <svg viewBox="0 0 660 130" class="inline-asst-svg">
-            <line x1="20" y1="95" x2="640" y2="95" stroke="#DED8CC" stroke-width="1" />
+            <line x1="20" y1="95" x2="640" y2="95" stroke="#D9E2EC" stroke-width="1" />
             ${bars}
           </svg>
         `;
@@ -482,9 +482,9 @@ import { AI_ASSISTANT_KNOWLEDGE_BASE } from '../data/ai-assistant-data.js';
             <g>
               <rect x="15" y="${y}" width="28" height="22" rx="4" fill="${item.color}" />
               <text x="29" y="${y + 15}" font-size="11" font-weight="800" font-family="monospace" text-anchor="middle" fill="#FFFFFF">${item.rank}</text>
-              <text x="54" y="${y + 15}" font-size="12" font-weight="700" font-family="sans-serif" fill="#1C2024">${item.asset}</text>
-              <text x="440" y="${y + 15}" font-size="11" font-weight="700" font-family="monospace" fill="#B87333">Lead: ${item.leadTime}</text>
-              <text x="560" y="${y + 15}" font-size="11" font-weight="800" font-family="monospace" fill="#C85A32">${item.loss}</text>
+              <text x="54" y="${y + 15}" font-size="12" font-weight="700" font-family="sans-serif" fill="#102A43">${item.asset}</text>
+              <text x="440" y="${y + 15}" font-size="11" font-weight="700" font-family="monospace" fill="#9A4D00">Lead: ${item.leadTime}</text>
+              <text x="560" y="${y + 15}" font-size="11" font-weight="800" font-family="monospace" fill="#B42318">${item.loss}</text>
             </g>
           `;
         }).join('');
@@ -501,11 +501,11 @@ import { AI_ASSISTANT_KNOWLEDGE_BASE } from '../data/ai-assistant-data.js';
           const x = 35 + i * 105;
           return `
             <g>
-              <circle cx="${x + 20}" cy="50" r="6" fill="#C85A32" />
-              <text x="${x + 20}" y="32" font-size="10" font-weight="800" font-family="monospace" text-anchor="middle" fill="#1C2024">${ev.date}</text>
-              <text x="${x + 20}" y="42" font-size="8.5" font-weight="700" font-family="monospace" text-anchor="middle" fill="#5F6A75">${ev.type}</text>
+              <circle cx="${x + 20}" cy="50" r="6" fill="#EF7B7B" />
+              <text x="${x + 20}" y="32" font-size="10" font-weight="800" font-family="monospace" text-anchor="middle" fill="#102A43">${ev.date}</text>
+              <text x="${x + 20}" y="42" font-size="8.5" font-weight="700" font-family="monospace" text-anchor="middle" fill="#486581">${ev.type}</text>
               <foreignObject x="${x - 20}" y="65" width="80" height="60">
-                <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:9px; color:#3D454D; line-height:1.2; text-align:center;">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:9px; color:#243B53; line-height:1.2; text-align:center;">
                   ${ev.desc}
                 </div>
               </foreignObject>
@@ -515,7 +515,7 @@ import { AI_ASSISTANT_KNOWLEDGE_BASE } from '../data/ai-assistant-data.js';
 
         return `
           <svg viewBox="0 0 660 130" class="inline-asst-svg">
-            <line x1="45" y1="50" x2="600" y2="50" stroke="#DED8CC" stroke-width="2" stroke-dasharray="4 4" />
+            <line x1="45" y1="50" x2="600" y2="50" stroke="#D9E2EC" stroke-width="2" stroke-dasharray="4 4" />
             ${events}
           </svg>
         `;

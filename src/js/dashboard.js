@@ -64,9 +64,9 @@ const SIGNATURE_SCENARIOS = {
     title: "Drive Feeder Cage Failure",
     asset: "Drive AX-402 (High-Throughput Feeder #4)",
     signals: [
-      { id: "SIG-B01", name: "Vibration Harmonic #01", type: "Accelerometer S-04", desc: "3,420 Hz envelope resonance harmonic detected", time: "8d ago", dot: "#A43A2A", location: "Feeder #4 Inboard" },
-      { id: "SIG-B02", name: "Audible Hiss #02", type: "Shift Operator Log", desc: "Operator note: High-pitched motor scraping at 1,400 RPM", time: "5d ago", dot: "#B87333", location: "Assembly Bay 4" },
-      { id: "SIG-B03", name: "Thermal Bloom #03", type: "FLIR Thermal Scan", desc: "+4.7°C flanged casing differential above baseline", time: "18h ago", dot: "#C27803", location: "Drive AX-402 Housing" }
+      { id: "SIG-B01", name: "Vibration Harmonic #01", type: "Accelerometer S-04", desc: "3,420 Hz envelope resonance harmonic detected", time: "8d ago", dot: "#EF7B7B", location: "Feeder #4 Inboard" },
+      { id: "SIG-B02", name: "Audible Hiss #02", type: "Shift Operator Log", desc: "Operator note: High-pitched motor scraping at 1,400 RPM", time: "5d ago", dot: "#F2A65A", location: "Assembly Bay 4" },
+      { id: "SIG-B03", name: "Thermal Bloom #03", type: "FLIR Thermal Scan", desc: "+4.7°C flanged casing differential above baseline", time: "18h ago", dot: "#F4C96B", location: "Drive AX-402 Housing" }
     ],
     pattern: {
       name: "Coherent Bearing Cage Spallation",
@@ -104,9 +104,9 @@ const SIGNATURE_SCENARIOS = {
     title: "Extrusion Press Valve Drift",
     asset: "Primary Extrusion Press #2 (Pump Station B)",
     signals: [
-      { id: "SIG-H01", name: "Cavitation Burst #01", type: "Acoustic Transducer", desc: "Ultrasonic cavitation micro-bursts on pump suction", time: "6d ago", dot: "#2563EB", location: "Pump Station B" },
-      { id: "SIG-H02", name: "Valve Lag #02", type: "SCADA Controller", desc: "Proportional spool valve response delay +140ms", time: "3d ago", dot: "#C27803", location: "Press #2 Manifold" },
-      { id: "SIG-H03", name: "Fluid Micro-wear #03", type: "Fluid Lab Sample", desc: "ISO 4406 particulate elevation in quarterly oil draw", time: "24h ago", dot: "#1B4332", location: "Hydraulic Loop B" }
+      { id: "SIG-H01", name: "Cavitation Burst #01", type: "Acoustic Transducer", desc: "Ultrasonic cavitation micro-bursts on pump suction", time: "6d ago", dot: "#78C7C7", location: "Pump Station B" },
+      { id: "SIG-H02", name: "Valve Lag #02", type: "SCADA Controller", desc: "Proportional spool valve response delay +140ms", time: "3d ago", dot: "#F4C96B", location: "Press #2 Manifold" },
+      { id: "SIG-H03", name: "Fluid Micro-wear #03", type: "Fluid Lab Sample", desc: "ISO 4406 particulate elevation in quarterly oil draw", time: "24h ago", dot: "#72C6A5", location: "Hydraulic Loop B" }
     ],
     pattern: {
       name: "Valve Response Lag & Cavitation",
@@ -153,13 +153,13 @@ const TREND_TRAJECTORIES = {
     riskPath: "M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38",
     riskArea: "M 50,165 L 135,160 L 220,148 L 305,110 L 390,72 L 475,46 L 560,38 L 560,170 L 50,170 Z",
     points: [
-      { x: 50, y: 158, title: "T-28d: 12 signals (sub-threshold normal)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 135, y: 152, title: "T-21d: 18 signals (isolated noise)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 220, y: 140, title: "T-14d: 26 signals (multi-modal correlation begins)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 305, y: 110, title: "T-10d: 42 signals (Breached MTGNN Threshold • 18d Lead)", stroke: "#C27803", fill: "#FFF" },
-      { x: 390, y: 72, title: "T-6d: 65 signals (Precursor surge accelerates)", stroke: "#A43A2A", fill: "#FFF" },
-      { x: 475, y: 46, title: "T-3d: 94 signals (Active Early Warning)", stroke: "#A43A2A", fill: "#FFF" },
-      { x: 560, y: 38, title: "Today: Risk Score 72/100 • 128 Signals • Action Dispatched", stroke: "#A43A2A", fill: "#A43A2A" }
+      { x: 50, y: 158, title: "T-28d: 12 signals (sub-threshold normal)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 135, y: 152, title: "T-21d: 18 signals (isolated noise)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 220, y: 140, title: "T-14d: 26 signals (multi-modal correlation begins)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 305, y: 110, title: "T-10d: 42 signals (Breached MTGNN Threshold • 18d Lead)", stroke: "#F2A65A", fill: "#FFF" },
+      { x: 390, y: 72, title: "T-6d: 65 signals (Precursor surge accelerates)", stroke: "#EF7B7B", fill: "#FFF" },
+      { x: 475, y: 46, title: "T-3d: 94 signals (Active Early Warning)", stroke: "#EF7B7B", fill: "#FFF" },
+      { x: 560, y: 38, title: "Today: Risk Score 72/100 • 128 Signals • Action Dispatched", stroke: "#EF7B7B", fill: "#EF7B7B" }
     ]
   },
   stable: {
@@ -172,13 +172,13 @@ const TREND_TRAJECTORIES = {
     riskPath: "M 50,152 L 135,150 L 220,153 L 305,150 L 390,151 L 475,149 L 560,150",
     riskArea: "M 50,152 L 135,150 L 220,153 L 305,150 L 390,151 L 475,149 L 560,150 L 560,170 L 50,170 Z",
     points: [
-      { x: 50, y: 152, title: "T-28d: Risk 22/100 (Safe)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 135, y: 150, title: "T-21d: Risk 24/100 (Safe)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 220, y: 153, title: "T-14d: Risk 21/100 (Safe)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 305, y: 150, title: "T-10d: Risk 24/100 (Sub-threshold)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 390, y: 151, title: "T-6d: Risk 23/100 (Sub-threshold)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 475, y: 149, title: "T-3d: Risk 25/100 (Normal)", stroke: "#1B4332", fill: "#FFF" },
-      { x: 560, y: 150, title: "Today: Risk Score 24/100 • Nominal baseline", stroke: "#1B4332", fill: "#1B4332" }
+      { x: 50, y: 152, title: "T-28d: Risk 22/100 (Safe)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 135, y: 150, title: "T-21d: Risk 24/100 (Safe)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 220, y: 153, title: "T-14d: Risk 21/100 (Safe)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 305, y: 150, title: "T-10d: Risk 24/100 (Sub-threshold)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 390, y: 151, title: "T-6d: Risk 23/100 (Sub-threshold)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 475, y: 149, title: "T-3d: Risk 25/100 (Normal)", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 560, y: 150, title: "Today: Risk Score 24/100 • Nominal baseline", stroke: "#72C6A5", fill: "#72C6A5" }
     ]
   },
   decreasing: {
@@ -191,13 +191,13 @@ const TREND_TRAJECTORIES = {
     riskPath: "M 50,48 L 135,62 L 220,88 L 305,120 L 390,146 L 475,158 L 560,164",
     riskArea: "M 50,48 L 135,62 L 220,88 L 305,120 L 390,146 L 475,158 L 560,164 L 560,170 L 50,170 Z",
     points: [
-      { x: 50, y: 48, title: "T-28d: Peak Precursor Alarm (Risk 82/100)", stroke: "#A43A2A", fill: "#FFF" },
-      { x: 135, y: 62, title: "T-21d: Work Order Dispatched", stroke: "#A43A2A", fill: "#FFF" },
-      { x: 220, y: 88, title: "T-14d: Maintenance Executed", stroke: "#C27803", fill: "#FFF" },
-      { x: 305, y: 120, title: "T-10d: Telemetry normalization begun", stroke: "#1B4332", fill: "#FFF" },
-      { x: 390, y: 146, title: "T-6d: Harmonics dropped below threshold", stroke: "#1B4332", fill: "#FFF" },
-      { x: 475, y: 158, title: "T-3d: Secondary moisture cleared", stroke: "#1B4332", fill: "#FFF" },
-      { x: 560, y: 164, title: "Today: Risk Score 18/100 • Full Resolution Verified", stroke: "#1B4332", fill: "#1B4332" }
+      { x: 50, y: 48, title: "T-28d: Peak Precursor Alarm (Risk 82/100)", stroke: "#EF7B7B", fill: "#FFF" },
+      { x: 135, y: 62, title: "T-21d: Work Order Dispatched", stroke: "#EF7B7B", fill: "#FFF" },
+      { x: 220, y: 88, title: "T-14d: Maintenance Executed", stroke: "#F2A65A", fill: "#FFF" },
+      { x: 305, y: 120, title: "T-10d: Telemetry normalization begun", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 390, y: 146, title: "T-6d: Harmonics dropped below threshold", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 475, y: 158, title: "T-3d: Secondary moisture cleared", stroke: "#72C6A5", fill: "#FFF" },
+      { x: 560, y: 164, title: "Today: Risk Score 18/100 • Full Resolution Verified", stroke: "#72C6A5", fill: "#72C6A5" }
     ]
   }
 };
@@ -421,12 +421,12 @@ class EarlySightDashboard {
       <svg viewBox="0 0 600 200" preserveAspectRatio="none">
         <defs>
           <linearGradient id="signalAreaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1B4332" stop-opacity="0.18"/>
-            <stop offset="100%" stop-color="#1B4332" stop-opacity="0.01"/>
+            <stop offset="0%" stop-color="#78C7C7" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#78C7C7" stop-opacity="0.01"/>
           </linearGradient>
           <linearGradient id="riskAreaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#A43A2A" stop-opacity="0.22"/>
-            <stop offset="100%" stop-color="#A43A2A" stop-opacity="0.01"/>
+            <stop offset="0%" stop-color="#EF7B7B" stop-opacity="0.20"/>
+            <stop offset="100%" stop-color="#EF7B7B" stop-opacity="0.01"/>
           </linearGradient>
         </defs>
 
@@ -446,10 +446,10 @@ class EarlySightDashboard {
         <!-- Baseline Axis Line -->
         <line x1="45" y1="170" x2="575" y2="170" class="chart-axis-line"/>
 
-        <!-- MTGNN Pre-Failure Detection Threshold (Dashed Amber) -->
+        <!-- MTGNN Pre-Failure Detection Threshold (Dashed Orange) -->
         <line x1="45" y1="110" x2="575" y2="110" class="chart-threshold-line"/>
-        <rect x="340" y="98" width="235" height="18" rx="3" fill="#FAF8F5" stroke="#E4E0D8" stroke-width="1"/>
-        <text x="457" y="110" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#C27803">
+        <rect x="340" y="98" width="235" height="18" rx="3" fill="#F8FAFC" stroke="#D9E2EC" stroke-width="1"/>
+        <text x="457" y="110" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#9A4D00">
           MTGNN DETECTION THRESHOLD (18d LEAD)
         </text>
 
@@ -457,10 +457,10 @@ class EarlySightDashboard {
         <path d="${traj.signalArea}" fill="url(#signalAreaGrad)"/>
         <path d="${traj.riskArea}" fill="url(#riskAreaGrad)"/>
 
-        <!-- Signal Precursor Velocity Line (Deep Forest Green) -->
+        <!-- Signal Precursor Velocity Line (Soft Teal) -->
         <path d="${traj.signalPath}" class="chart-line-signal"/>
 
-        <!-- Synthesized Risk Escalation Curve (Muted Rust) -->
+        <!-- Synthesized Risk Escalation Curve (Soft Red) -->
         <path d="${traj.riskPath}" class="chart-line-risk"/>
 
         <!-- Data Points on Curve -->
@@ -477,7 +477,7 @@ class EarlySightDashboard {
         <text x="305" y="186" text-anchor="middle" class="chart-text-axis">T-10d (Pattern)</text>
         <text x="390" y="186" text-anchor="middle" class="chart-text-axis">T-6d</text>
         <text x="475" y="186" text-anchor="middle" class="chart-text-axis">T-3d</text>
-        <text x="560" y="186" text-anchor="middle" class="chart-text-axis" font-weight="700" fill="#1C2024">Today</text>
+        <text x="560" y="186" text-anchor="middle" class="chart-text-axis" font-weight="700" fill="#102A43">Today</text>
       </svg>
     `;
 
@@ -485,18 +485,18 @@ class EarlySightDashboard {
     // Total 128: Low 64 (50%), Med 38 (29.7%), High 18 (14.1%), Crit 8 (6.2%)
     const donutSvg = `
       <svg viewBox="0 0 120 120">
-        <circle cx="60" cy="60" r="44" fill="none" stroke="#E4E0D8" stroke-width="14"/>
-        <!-- Low: 50% -->
-        <circle cx="60" cy="60" r="44" fill="none" stroke="#4D7C5D" stroke-width="14"
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#E3EAF2" stroke-width="14"/>
+        <!-- Low: 50% Soft Green -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#72C6A5" stroke-width="14"
           stroke-dasharray="138.2 276.5" stroke-dashoffset="0"/>
-        <!-- Medium: 29.7% -->
-        <circle cx="60" cy="60" r="44" fill="none" stroke="#C27803" stroke-width="14"
+        <!-- Medium: 29.7% Soft Yellow -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#F4C96B" stroke-width="14"
           stroke-dasharray="82.1 276.5" stroke-dashoffset="-138.2"/>
-        <!-- High: 14.1% -->
-        <circle cx="60" cy="60" r="44" fill="none" stroke="#A43A2A" stroke-width="14"
+        <!-- High: 14.1% Soft Orange -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#F2A65A" stroke-width="14"
           stroke-dasharray="38.9 276.5" stroke-dashoffset="-220.3"/>
-        <!-- Critical: 6.2% -->
-        <circle cx="60" cy="60" r="44" fill="none" stroke="#7A2417" stroke-width="14"
+        <!-- Critical: 6.2% Soft Red -->
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#EF7B7B" stroke-width="14"
           stroke-dasharray="17.3 276.5" stroke-dashoffset="-259.2"/>
       </svg>
     `;
@@ -506,14 +506,14 @@ class EarlySightDashboard {
     const bracketSvg = `
       <svg viewBox="0 0 60 230" class="convergence-bracket-svg" preserveAspectRatio="none">
         <!-- 3 Horizontal Branches from Signals at Y=35, 115, 195 -->
-        <line x1="0" y1="35" x2="24" y2="35" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
-        <line x1="0" y1="115" x2="24" y2="115" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
-        <line x1="0" y1="195" x2="24" y2="195" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="0" y1="35" x2="24" y2="35" stroke="#78C7C7" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="0" y1="115" x2="24" y2="115" stroke="#78C7C7" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="0" y1="195" x2="24" y2="195" stroke="#78C7C7" stroke-width="1.8" stroke-linecap="round"/>
         <!-- Vertical Trunk -->
-        <line x1="24" y1="35" x2="24" y2="195" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="24" y1="35" x2="24" y2="195" stroke="#78C7C7" stroke-width="1.8" stroke-linecap="round"/>
         <!-- Convergence Stem pointing Right into Pattern Card -->
-        <line x1="24" y1="115" x2="52" y2="115" stroke="#1B4332" stroke-width="2" stroke-linecap="round"/>
-        <polygon points="50,111 58,115 50,119" fill="#1B4332"/>
+        <line x1="24" y1="115" x2="52" y2="115" stroke="#78C7C7" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="50,111 58,115 50,119" fill="#78C7C7"/>
       </svg>
     `;
 
@@ -559,15 +559,15 @@ class EarlySightDashboard {
 
           <div class="chart-legend-row">
             <div class="chart-legend-indicator">
-              <span class="legend-swatch" style="background:#1B4332;"></span>
+              <span class="legend-swatch" style="background:#78C7C7;"></span>
               <span>Signal Volume (128 Ingested)</span>
             </div>
             <div class="chart-legend-indicator">
-              <span class="legend-swatch" style="background:#A43A2A;"></span>
+              <span class="legend-swatch" style="background:#EF7B7B;"></span>
               <span>Synthesized Risk Score (72/100)</span>
             </div>
             <div class="chart-legend-indicator">
-              <span class="legend-swatch" style="background:#C27803; border-top:1px dashed #C27803;"></span>
+              <span class="legend-swatch" style="background:#F2A65A; border-top:1px dashed #F2A65A;"></span>
               <span>Pre-Failure Threshold (T-18d)</span>
             </div>
           </div>
@@ -598,43 +598,43 @@ class EarlySightDashboard {
             <div class="severity-dist-list">
               <div class="severity-dist-item">
                 <div class="severity-dist-item-left">
-                  <span class="severity-dist-pill" style="background:#7A2417;"></span>
+                  <span class="severity-dist-pill" style="background:#EF7B7B;"></span>
                   <span>Critical Severity</span>
                 </div>
-                <span class="severity-dist-count" style="color:#7A2417;">08 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(6.2%)</span></span>
+                <span class="severity-dist-count" style="color:#B42318;">08 <span style="font-size:0.7rem; font-weight:normal; color:#627D98;">(6.2%)</span></span>
               </div>
 
               <div class="severity-dist-item">
                 <div class="severity-dist-item-left">
-                  <span class="severity-dist-pill" style="background:#A43A2A;"></span>
+                  <span class="severity-dist-pill" style="background:#F2A65A;"></span>
                   <span>High Severity</span>
                 </div>
-                <span class="severity-dist-count" style="color:#A43A2A;">18 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(14.1%)</span></span>
+                <span class="severity-dist-count" style="color:#9A4D00;">18 <span style="font-size:0.7rem; font-weight:normal; color:#627D98;">(14.1%)</span></span>
               </div>
 
               <div class="severity-dist-item">
                 <div class="severity-dist-item-left">
-                  <span class="severity-dist-pill" style="background:#C27803;"></span>
+                  <span class="severity-dist-pill" style="background:#F4C96B;"></span>
                   <span>Medium Severity</span>
                 </div>
-                <span class="severity-dist-count" style="color:#C27803;">38 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(29.7%)</span></span>
+                <span class="severity-dist-count" style="color:#8A5A00;">38 <span style="font-size:0.7rem; font-weight:normal; color:#627D98;">(29.7%)</span></span>
               </div>
 
               <div class="severity-dist-item">
                 <div class="severity-dist-item-left">
-                  <span class="severity-dist-pill" style="background:#4D7C5D;"></span>
+                  <span class="severity-dist-pill" style="background:#72C6A5;"></span>
                   <span>Low Severity</span>
                 </div>
-                <span class="severity-dist-count" style="color:#4D7C5D;">64 <span style="font-size:0.7rem; font-weight:normal; color:#57606A;">(50.0%)</span></span>
+                <span class="severity-dist-count" style="color:#18794E;">64 <span style="font-size:0.7rem; font-weight:normal; color:#627D98;">(50.0%)</span></span>
               </div>
             </div>
           </div>
 
           <div class="severity-bar-multi" title="Proportional Severity Strip: Critical (6.2%), High (14.1%), Medium (29.7%), Low (50.0%)">
-            <div class="severity-bar-seg" style="width:6.2%; background:#7A2417;" title="Critical: 8"></div>
-            <div class="severity-bar-seg" style="width:14.1%; background:#A43A2A;" title="High: 18"></div>
-            <div class="severity-bar-seg" style="width:29.7%; background:#C27803;" title="Medium: 38"></div>
-            <div class="severity-bar-seg" style="width:50.0%; background:#4D7C5D;" title="Low: 64"></div>
+            <div class="severity-bar-seg" style="width:6.2%; background:#EF7B7B;" title="Critical: 8"></div>
+            <div class="severity-bar-seg" style="width:14.1%; background:#F2A65A;" title="High: 18"></div>
+            <div class="severity-bar-seg" style="width:29.7%; background:#F4C96B;" title="Medium: 38"></div>
+            <div class="severity-bar-seg" style="width:50.0%; background:#72C6A5;" title="Low: 64"></div>
           </div>
         </div>
 
@@ -645,7 +645,7 @@ class EarlySightDashboard {
         <div class="dash-viz-card-header">
           <div>
             <div class="dash-viz-title-group">
-              <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+              <span class="indicator-dot dot-forest" style="background:#72C6A5;"></span>
               <h3 class="dash-viz-title">Signal Convergence & Emerging Risk Synthesis</h3>
             </div>
             <span class="dash-viz-sub-q">Answers: "How did EarlySight identify this emerging risk?" (Signals → Pattern → Risk)</span>
@@ -700,15 +700,15 @@ class EarlySightDashboard {
           <div class="pattern-centroid-col">
             <div class="signal-col-header">
               <span>02. Correlated Pattern</span>
-              <span class="font-mono" style="color:var(--color-amber);">${scen.pattern.coherence}</span>
+              <span class="font-mono" style="color:#9A4D00;">${scen.pattern.coherence}</span>
             </div>
 
             <div class="pattern-centroid-card">
               <div class="pattern-card-header">
-                <span class="pattern-badge-pill" style="background:rgba(194,120,3,0.12); color:#C27803;">
+                <span class="pattern-badge-pill" style="background:#FFF2CC; color:#8A5A00;">
                   ${scen.pattern.signalCount}
                 </span>
-                <span class="pattern-badge-pill" style="background:rgba(27,67,50,0.1); color:#1B4332;">
+                <span class="pattern-badge-pill" style="background:#E8F6F0; color:#18794E;">
                   ${scen.pattern.velocity}
                 </span>
               </div>
@@ -822,8 +822,8 @@ class EarlySightDashboard {
         <div class="cockpit-metric-block">
           <div class="cockpit-score-ring">
             <svg viewBox="0 0 44 44" style="width:100%; height:100%; transform:rotate(-90deg);">
-              <circle cx="22" cy="22" r="18" fill="none" stroke="#E4E0D8" stroke-width="4"/>
-              <circle cx="22" cy="22" r="18" fill="none" stroke="#A43A2A" stroke-width="4"
+              <circle cx="22" cy="22" r="18" fill="none" stroke="#E3EAF2" stroke-width="4"/>
+              <circle cx="22" cy="22" r="18" fill="none" stroke="#EF7B7B" stroke-width="4"
                 stroke-dasharray="113.1" stroke-dashoffset="24.8"/>
             </svg>
             <span class="cockpit-score-val" style="position:absolute;">72</span>
@@ -938,10 +938,10 @@ class EarlySightDashboard {
           <span class="risk-signals-count-label">${r.signalsLabel || (r.signalsCount + ' signals')}</span>
           <span class="text-muted font-mono" style="font-size:0.75rem;">Freq: <strong>${r.frequency || 'Increasing'}</strong></span>
           <div class="risk-signals-dots-preview">
-            <span class="mini-signal-dot" style="background:#C85A32;"></span>
-            <span class="mini-signal-dot" style="background:#B87333;"></span>
-            <span class="mini-signal-dot" style="background:#5E7E6C;"></span>
-            <span class="mini-signal-dot" style="background:#1B4332;"></span>
+            <span class="mini-signal-dot" style="background:#EF7B7B;"></span>
+            <span class="mini-signal-dot" style="background:#F2A65A;"></span>
+            <span class="mini-signal-dot" style="background:#F4C96B;"></span>
+            <span class="mini-signal-dot" style="background:#72C6A5;"></span>
           </div>
         </div>
 
@@ -958,20 +958,20 @@ class EarlySightDashboard {
             <svg class="sparkline-svg" viewBox="0 0 160 48" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="grad-${r.id}" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="${r.severity==='Critical'?'#C85A32':(r.severity==='High'?'#C85A32':'#B87333')}" stop-opacity="0.28"/>
-                  <stop offset="100%" stop-color="${r.severity==='Critical'?'#C85A32':(r.severity==='High'?'#C85A32':'#B87333')}" stop-opacity="0.0"/>
+                  <stop offset="0%" stop-color="${r.severity==='Critical'?'#EF7B7B':(r.severity==='High'?'#F2A65A':'#F4C96B')}" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="${r.severity==='Critical'?'#EF7B7B':(r.severity==='High'?'#F2A65A':'#F4C96B')}" stop-opacity="0.0"/>
                 </linearGradient>
               </defs>
               <path d="${r.sparklineFill}" fill="url(#grad-${r.id})"/>
-              <path class="sparkline-path" d="${r.sparklineD}" fill="none" stroke="${r.severity==='Critical'?'#C85A32':(r.severity==='High'?'#C85A32':'#B87333')}" stroke-width="2.2" stroke-linecap="round"/>
-              <circle class="sparkline-pulse-dot" cx="150" cy="${r.endPointY}" r="3.5" fill="${r.severity==='Critical'?'#C85A32':(r.severity==='High'?'#C85A32':'#B87333')}"/>
+              <path class="sparkline-path" d="${r.sparklineD}" fill="none" stroke="${r.severity==='Critical'?'#EF7B7B':(r.severity==='High'?'#F2A65A':'#F4C96B')}" stroke-width="2.2" stroke-linecap="round"/>
+              <circle class="sparkline-pulse-dot" cx="150" cy="${r.endPointY}" r="3.5" fill="${r.severity==='Critical'?'#EF7B7B':(r.severity==='High'?'#F2A65A':'#F4C96B')}"/>
             </svg>
           </div>
         </div>
 
         <!-- Recommended Action Box -->
         ${r.recommendedAction ? `
-          <div style="background:var(--color-ivory-subtle, #F4F0E8); border-left:3px solid var(--intel-primary, #1B4332); padding:8px 12px; border-radius:4px; margin:10px 0; font-size:0.78rem; line-height:1.35; color:var(--ink-secondary);">
+          <div style="background:#F8FAFC; border-left:3px solid #72C6A5; padding:8px 12px; border-radius:4px; margin:10px 0; font-size:0.78rem; line-height:1.35; color:var(--ink-secondary);">
             <strong style="color:var(--ink-primary); display:block; margin-bottom:2px; font-family:var(--font-mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px;">Recommended Action:</strong>
             ${r.recommendedAction}
           </div>
