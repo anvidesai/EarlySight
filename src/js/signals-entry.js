@@ -1,14 +1,15 @@
 /**
- * EarlySight — Signals Page Entry (Milestone 4: Signal Intelligence)
+ * EarlySight — Signals Page Entry (Milestone 4: Frontend <-> Backend Integration)
  *
  * Implements:
  * Part 1: Signal Overview Metrics
- * Part 2: Main Operational Signals Table / List
+ * Part 2: Main Operational Signals Table / List (Connected to GET /api/signals)
  * Part 3: Search, Multi-Variable Filter & Reset
  * Part 4: Related Precursor Clusters & Pattern Convergence
  * Part 5: Signal Detail Explainability Drawer
  * Part 6: Signal -> Pattern -> Risk Connection
  * Part 7: Signal Frequency & Repetition Analytics
+ * Backend Integration: EarlySightApi (loading, error, degraded 503, and empty states)
  */
 import '../styles/styles.css';
 import {
@@ -16,6 +17,7 @@ import {
   RELATED_SIGNAL_CLUSTERS,
   SIGNAL_FREQUENCY_METRICS
 } from '../data/signals-data.js';
+import { EarlySightApi } from './api.js';
 import './global-nav.js';
 import './micro-interactions.js';
 
@@ -38,9 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const drawerCloseFooterBtn = document.getElementById('drawerCloseFooterBtn');
 
   // Datasets
-  const signals = (typeof OPERATIONAL_SIGNALS_REGISTRY !== 'undefined'
+  const referenceSignals = (typeof OPERATIONAL_SIGNALS_REGISTRY !== 'undefined'
     ? OPERATIONAL_SIGNALS_REGISTRY
     : window.OPERATIONAL_SIGNALS_REGISTRY) || [];
+
+  let signals = [];
 
   const clusters = (typeof RELATED_SIGNAL_CLUSTERS !== 'undefined'
     ? RELATED_SIGNAL_CLUSTERS
@@ -51,6 +55,18 @@ document.addEventListener('DOMContentLoaded', () => {
     : window.SIGNAL_FREQUENCY_METRICS) || null;
 
   let activeClusterId = 'all';
+
+  // --- SOURCE FORMATTER ---
+  function formatSourceType(source) {
+    if (!source) return 'Sensor';
+    const s = String(source).toLowerCase();
+    if (s.includes('complaint')) return 'Complaint';
+    if (s.includes('maintenance')) return 'Maintenance Report';
+    if (s.includes('image')) return 'Image';
+    if (s.includes('doc')) return 'Document';
+    if (s.includes('incident')) return 'Incident Report';
+    return 'Sensor';
+  }
 
   // --- BADGE HELPERS ---
   function getSeverityBadge(sev) {
@@ -64,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function getStatusBadge(st) {
     const s = (st || '').toLowerCase();
     let badgeClass = 'badge-status-investigation';
-    if (s === 'active') badgeClass = 'badge-status-active';
-    if (s === 'action queued') badgeClass = 'badge-status-queued';
+    if (s === 'active' || s === 'open') badgeClass = 'badge-status-active';
+    if (s === 'action queued' || s === 'investigating') badgeClass = 'badge-status-queued';
     if (s === 'resolved') badgeClass = 'badge-status-resolved';
     return `<span class="risk-status-pill ${badgeClass}">${st}</span>`;
   }
@@ -203,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       </div>
 
-      <!-- Recurring Pattern Alert Hotspots Strip ("Which signals are repeating?") -->
+      <!-- Recurring Pattern Alert Hotspots Strip -->
       <div class="sig-recurring-banner">
         <span style="font-family:var(--font-mono); font-weight:700; color:var(--intel-primary); text-transform:uppercase; font-size:0.72rem;">
           Repeating Precursor Hotspots:
@@ -242,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : clusters.filter(c => c.id === activeClusterId);
 
     cardsContainer.innerHTML = visibleClusters.map(c => {
-      const leadSignal = signals.find(s => s.clusterId === c.id) || signals[0];
+      const leadSignal = signals.find(s => s.clusterId === c.id) || referenceSignals.find(s => s.clusterId === c.id) || referenceSignals[0];
       const previewSignals = c.signals || [];
 
       return `
@@ -267,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <strong>Why This Cluster Matters:</strong> "${c.whyItMatters}"
           </div>
 
-          <!-- Horizontal Convergence Flow: RAW SIGNALS -> REPEATED PATTERN -> EMERGING RISK -->
+          <!-- Horizontal Convergence Flow -->
           <div class="sig-convergence-pipeline">
             
             <!-- Step 1: Raw Signals -->
@@ -398,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>
           <div style="font-family:var(--font-mono); font-size:0.74rem;">
             <div style="color:var(--ink-primary); font-weight:600;">${item.detected}</div>
-            <div style="color:var(--ink-muted); font-size:0.68rem;">${item.createdDate.split('•')[0] || ''}</div>
+            <div style="color:var(--ink-muted); font-size:0.68rem;">${(item.createdDate || '').split('•')[0] || ''}</div>
           </div>
         </td>
         <td>
@@ -424,6 +440,142 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
+  // --- LOADING & ERROR STATES ---
+  function renderLoadingState() {
+    if (!tableBody) return;
+    if (resultsCountEl) {
+      resultsCountEl.innerHTML = `Connecting to EarlySight API (<code>GET /api/signals</code>)...`;
+    }
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align:center; padding:48px 16px; color:var(--ink-secondary);">
+          <div style="display:inline-flex; flex-direction:column; align-items:center; gap:12px;">
+            <span class="status-dot-pulse"></span>
+            <div style="font-size:0.95rem; font-weight:600; color:var(--ink-primary);">Connecting to EarlySight Signal API...</div>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-muted);">GET ${EarlySightApi.baseUrl}/api/signals</div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
+  function renderEmptyState() {
+    if (!tableBody) return;
+    if (resultsCountEl) {
+      resultsCountEl.innerHTML = `Showing <strong>0</strong> operational signals (Database connected, table empty)`;
+    }
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align:center; padding:48px 16px; color:var(--ink-muted);">
+          <div style="font-size:1.1rem; font-weight:600; color:var(--ink-primary); margin-bottom:6px;">No operational signals recorded yet</div>
+          <p style="font-size:0.84rem; margin:0 0 16px 0;">FastAPI backend is connected, but the signals database table is currently empty.</p>
+          <button class="filter-reset-btn" onclick="window.retryLoadSignals()" style="margin:0 auto;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Refresh
+          </button>
+        </td>
+      </tr>
+    `;
+  }
+
+  function renderApiUnavailableState(status, error) {
+    if (!tableBody) return;
+    const isDegraded = status === 503;
+    const badgeColor = isDegraded ? '#A43A2A' : '#C27803';
+    const dotClass = isDegraded ? 'dot-vermilion' : 'dot-amber';
+    const heading = isDegraded
+      ? 'Backend Connected • PostgreSQL Database Offline (HTTP 503)'
+      : 'FastAPI Backend Offline / Unreachable';
+    const desc = isDegraded
+      ? 'FastAPI server is operational, but the PostgreSQL database is currently offline. Database queries to <code>/api/signals</code> return 503 Service Unavailable.'
+      : `Unable to connect to EarlySight backend at <code>${EarlySightApi.baseUrl}</code>. Make sure the FastAPI server is running with <code>uvicorn app.main:app --reload</code>.`;
+
+    if (resultsCountEl) {
+      resultsCountEl.innerHTML = `<span style="color:${badgeColor}; font-weight:600;">● ${isDegraded ? 'API Degraded (PostgreSQL Offline)' : 'Backend Offline'}</span>`;
+    }
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align:center; padding:36px 16px;">
+          <div style="display:inline-flex; flex-direction:column; align-items:center; gap:10px; max-width:580px; margin:0 auto; background:var(--color-ivory-subtle, #F4F0E8); border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:22px 24px; box-shadow:var(--shadow-sm);">
+            <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:${badgeColor}; font-size:0.95rem;">
+              <span class="indicator-dot ${dotClass}"></span>
+              <span>${heading}</span>
+            </div>
+            <p style="font-size:0.83rem; color:var(--ink-secondary); margin:0; line-height:1.5;">
+              ${desc}
+            </p>
+            ${error ? `<div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-muted); background:rgba(0,0,0,0.04); padding:4px 8px; border-radius:4px; max-width:100%; word-break:break-word;">Detail: ${error}</div>` : ''}
+            <div style="display:flex; gap:10px; align-items:center; margin-top:6px; flex-wrap:wrap; justify-content:center;">
+              <button class="filter-reset-btn" onclick="window.retryLoadSignals()" style="margin:0;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Retry API Request
+              </button>
+              <button class="signal-action-btn" onclick="window.loadReferenceSignals()" style="margin:0; font-size:0.78rem;">
+                View Reference Dataset &rarr;
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
+  // --- API DATA LOADER ---
+  async function loadSignals() {
+    renderLoadingState();
+
+    try {
+      const res = await EarlySightApi.getSignals({ skip: 0, limit: 100 });
+
+      if (res.ok && Array.isArray(res.data)) {
+        if (res.data.length === 0) {
+          signals = [];
+          renderEmptyState();
+        } else {
+          signals = res.data.map(item => ({
+            id: `SIG-${item.id}`,
+            rawId: item.id,
+            title: item.title,
+            description: item.description || '',
+            category: item.category || 'other',
+            location: item.location || 'General',
+            bayAsset: item.location ? `Zone: ${item.location}` : '',
+            severity: item.severity ? item.severity.charAt(0).toUpperCase() + item.severity.slice(1) : 'Medium',
+            status: item.status ? item.status.charAt(0).toUpperCase() + item.status.slice(1) : 'Open',
+            sourceType: formatSourceType(item.source),
+            source: item.source || 'manual',
+            createdDate: item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Today',
+            detected: item.created_at ? new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recent',
+            relatedPattern: 'Operational Ingress',
+            associatedRisk: 'Under Correlation',
+            clusterId: 'all',
+            aiAnalysis: `Signal ingested through EarlySight API from source: ${item.source}. Operational classification: ${item.category}.`,
+            recommendedAction: `Inspect ${item.title} at ${item.location || 'designated zone'}.`,
+          }));
+          renderTable(signals);
+        }
+      } else {
+        // Degraded (503) or Offline
+        renderApiUnavailableState(res.status, res.error);
+      }
+    } catch (err) {
+      renderApiUnavailableState(0, err.message);
+    }
+  }
+
+  window.retryLoadSignals = function() {
+    loadSignals();
+  };
+
+  window.loadReferenceSignals = function() {
+    signals = [...referenceSignals];
+    if (resultsCountEl) {
+      resultsCountEl.innerHTML = `Showing <strong>${signals.length}</strong> operational signals (Reference Mode)`;
+    }
+    renderTable(signals);
+  };
+
   // --- PART 3: SEARCH, FILTER & RESET ---
   function applyFilters() {
     const q = (searchInput && searchInput.value || '').toLowerCase().trim();
@@ -437,10 +589,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const filtered = signals.filter(s => {
       // Keyword search matches ID, Title, Description, Location, BayAsset, Source
       const matchQ = !q ||
-        s.title.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q) ||
-        s.id.toLowerCase().includes(q) ||
-        s.location.toLowerCase().includes(q) ||
+        (s.title && s.title.toLowerCase().includes(q)) ||
+        (s.description && s.description.toLowerCase().includes(q)) ||
+        (s.id && String(s.id).toLowerCase().includes(q)) ||
+        (s.location && s.location.toLowerCase().includes(q)) ||
         (s.bayAsset && s.bayAsset.toLowerCase().includes(q)) ||
         (s.source && s.source.toLowerCase().includes(q));
 
@@ -491,7 +643,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- PART 5 & 6: SIGNAL DETAIL DRAWER ---
   window.inspectSignal = function(id) {
-    const item = signals.find(s => s.id === id) || signals[0];
+    const item = signals.find(s => s.id === id || s.rawId === id || String(s.rawId) === String(id)) ||
+                 referenceSignals.find(s => s.id === id) ||
+                 signals[0] ||
+                 referenceSignals[0];
     if (!item) return;
 
     // Header Title & Severity Dot
@@ -508,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stepId) stepId.textContent = item.id;
 
     const stepClu = document.getElementById('stepperClusterName');
-    if (stepClu) stepClu.textContent = `${item.relatedCount || 12} Linked Signals`;
+    if (stepClu) stepClu.textContent = `${item.relatedCount || 1} Linked Signals`;
 
     const stepPat = document.getElementById('stepperPatternName');
     if (stepPat) stepPat.textContent = item.relatedPattern || 'Repeated Pattern';
@@ -522,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const elMeta = document.getElementById('drawerSourceMeta');
     if (elMeta) {
-      elMeta.textContent = `Origin: ${item.source} • Ingested: ${item.createdDate} • Modality: ${item.sourceType}`;
+      elMeta.textContent = `Origin: ${item.source} • Ingested: ${item.createdDate || 'Today'} • Modality: ${item.sourceType}`;
     }
 
     // 4-Stat Grid
@@ -533,14 +688,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elSev) elSev.textContent = `${item.severity} Severity • ${item.status}`;
 
     const elRel = document.getElementById('drawerRelatedVal');
-    if (elRel) elRel.textContent = `${item.relatedCount} Signals (${item.relatedClusterName || 'Active Cluster'})`;
+    if (elRel) elRel.textContent = `${item.relatedCount || 1} Signals (${item.relatedClusterName || 'Active Cluster'})`;
 
     const elFreq = document.getElementById('drawerFrequencyVal');
     if (elFreq) elFreq.textContent = item.frequencyTrend || 'Accelerating frequency';
 
     // AI Explainability: "Why does this signal matter?"
     const elAi = document.getElementById('drawerAiAnalysis');
-    if (elAi) elAi.textContent = item.aiAnalysis;
+    if (elAi) elAi.textContent = item.aiAnalysis || `Operational signal observed from ${item.source}.`;
 
     // Connected Risk Target Card
     const elRiskTitle = document.getElementById('drawerRiskTitle');
@@ -571,7 +726,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         relContainer.innerHTML = `
           <div style="font-size:0.78rem; color:var(--ink-secondary); padding:8px 0;">
-            ${item.relatedCount} correlated signals actively contributing to ${item.relatedPattern}.
+            ${item.relatedCount || 1} correlated signal(s) actively contributing to ${item.relatedPattern}.
           </div>
         `;
       }
@@ -602,7 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Recommended Action
     const elRec = document.getElementById('drawerRecommendedAction');
-    if (elRec) elRec.textContent = item.recommendedAction;
+    if (elRec) elRec.textContent = item.recommendedAction || `Review signal details and assign maintenance inspection ticket.`;
 
     // Open Modal
     if (modal) modal.classList.add('open');
@@ -635,8 +790,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Attach CRUD helpers to window
+  window.updateSignalStatus = async function(id, newStatus) {
+    const signal = signals.find(s => s.id === id || s.rawId === id);
+    if (!signal) return { ok: false, error: 'Signal not found' };
+    const targetId = signal.rawId || id;
+    const res = await EarlySightApi.updateSignal(targetId, { status: newStatus.toLowerCase() });
+    if (res.ok) {
+      signal.status = newStatus;
+      renderTable(signals);
+    }
+    return res;
+  };
+
+  window.deleteSignal = async function(id) {
+    const signal = signals.find(s => s.id === id || s.rawId === id);
+    if (!signal) return { ok: false, error: 'Signal not found' };
+    const targetId = signal.rawId || id;
+    const res = await EarlySightApi.deleteSignal(targetId);
+    if (res.ok) {
+      signals = signals.filter(s => s.id !== id && s.rawId !== id);
+      renderTable(signals);
+    }
+    return res;
+  };
+
   // Initial renders
   renderAnalyticsStrip();
   renderClusterSection();
-  renderTable(signals);
+  loadSignals();
 });
