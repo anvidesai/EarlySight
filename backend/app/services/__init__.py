@@ -2,6 +2,14 @@
 Services package for EarlySight business logic and external integrations.
 """
 
+from app.services.action_service import (
+    ActionNotFoundError,
+    ActionService,
+    ActionServiceError,
+    InvalidActionTransitionError,
+    SignalNotFoundError,
+    action_service,
+)
 from app.services.ai_service import (
     AIService,
     AIServiceError,
@@ -16,6 +24,15 @@ from app.services.embedding_service import (
     embedding_service,
     signal_to_embedding_text,
 )
+from app.services.evidence_service import (
+    EvidenceService,
+    evidence_service,
+)
+from app.services.risk_service import (
+    RiskScoringConfig,
+    RiskScoringService,
+    risk_service,
+)
 
 __all__ = [
     "AIService",
@@ -28,4 +45,15 @@ __all__ = [
     "embedding_service",
     "cosine_similarity",
     "signal_to_embedding_text",
+    "RiskScoringConfig",
+    "RiskScoringService",
+    "risk_service",
+    "EvidenceService",
+    "evidence_service",
+    "ActionService",
+    "action_service",
+    "ActionServiceError",
+    "ActionNotFoundError",
+    "SignalNotFoundError",
+    "InvalidActionTransitionError",
 ]

@@ -73,6 +73,7 @@ def create_tables() -> Tuple[bool, str]:
     """
     try:
         # Import models to ensure they are registered with Base.metadata
+        from app.models.action import Action  # noqa: F401
         from app.models.signal import Signal  # noqa: F401
 
         Base.metadata.create_all(bind=engine)

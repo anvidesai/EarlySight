@@ -285,7 +285,10 @@ def find_related_signals_endpoint(
         return RelatedSignalsResponse(
             status="ok",
             signal_id=signal_id,
-            related_signals=[RelatedSignalItem(**item) for item in related_data],
+            related_signals=[
+                item if isinstance(item, RelatedSignalItem) else RelatedSignalItem(**item)
+                for item in related_data
+            ],
             model_used=embedding_service.model,
         )
     except EmbeddingServiceNotConfiguredError as exc:

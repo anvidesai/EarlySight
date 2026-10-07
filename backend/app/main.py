@@ -8,7 +8,10 @@ from typing import AsyncGenerator, Dict
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.actions import router as actions_router
 from app.api.ai import router as ai_router
+from app.api.evidence import router as evidence_router
+from app.api.risks import router as risks_router
 from app.api.signals import router as signals_router
 from app.config import settings
 from app.database import check_database_connection, create_tables
@@ -49,6 +52,9 @@ app.add_middleware(
 # Register API Routers
 app.include_router(signals_router, prefix="/api/signals", tags=["Signals"])
 app.include_router(ai_router, prefix="/api/ai", tags=["AI"])
+app.include_router(risks_router, prefix="/api/risks", tags=["Risks"])
+app.include_router(evidence_router, prefix="/api/evidence", tags=["Evidence"])
+app.include_router(actions_router, prefix="/api/actions", tags=["Actions"])
 
 
 @app.get("/", tags=["Root"])

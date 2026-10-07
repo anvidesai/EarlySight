@@ -49,6 +49,40 @@ class Settings:
     )
     candidate_signal_limit: int = int(os.getenv("CANDIDATE_SIGNAL_LIMIT", "50"))
 
+    # Risk Scoring Model & Prioritization Weights (Milestone 7)
+    # Sum of default factor weights = 25 + 20 + 20 + 20 + 15 = 100
+    risk_weight_severity: int = int(os.getenv("RISK_WEIGHT_SEVERITY", "25"))
+    risk_weight_frequency: int = int(os.getenv("RISK_WEIGHT_FREQUENCY", "20"))
+    risk_weight_recurrence: int = int(os.getenv("RISK_WEIGHT_RECURRENCE", "20"))
+    risk_weight_related_signals: int = int(
+        os.getenv("RISK_WEIGHT_RELATED_SIGNALS", "20")
+    )
+    risk_weight_trend: int = int(os.getenv("RISK_WEIGHT_TREND", "15"))
+
+    # Categorical Risk Level Thresholds:
+    # 0–24: LOW, 25–49: MODERATE, 50–74: HIGH, 75–100: CRITICAL
+    risk_threshold_low: int = int(os.getenv("RISK_THRESHOLD_LOW", "24"))
+    risk_threshold_moderate: int = int(os.getenv("RISK_THRESHOLD_MODERATE", "49"))
+    risk_threshold_high: int = int(os.getenv("RISK_THRESHOLD_HIGH", "74"))
+    risk_threshold_critical: int = int(os.getenv("RISK_THRESHOLD_CRITICAL", "75"))
+
+    # Priority Ranking Thresholds:
+    # >=80: CRITICAL, 60–79: HIGH, 30–59: MEDIUM, <30: LOW
+    risk_priority_critical_min: int = int(
+        os.getenv("RISK_PRIORITY_CRITICAL_MIN", "80")
+    )
+    risk_priority_high_min: int = int(os.getenv("RISK_PRIORITY_HIGH_MIN", "60"))
+    risk_priority_medium_min: int = int(os.getenv("RISK_PRIORITY_MEDIUM_MIN", "30"))
+
+    # Evidence Strength Thresholds (Milestone 8)
+    # >=7 pts: HIGH, 4–6 pts: MODERATE, <4 pts: LOW
+    evidence_strength_high_min: int = int(
+        os.getenv("EVIDENCE_STRENGTH_HIGH_MIN", "7")
+    )
+    evidence_strength_moderate_min: int = int(
+        os.getenv("EVIDENCE_STRENGTH_MODERATE_MIN", "4")
+    )
+
     @property
     def is_ai_configured(self) -> bool:
         """Returns True if an OpenAI API key is populated in the environment."""
