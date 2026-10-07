@@ -8,23 +8,30 @@ The **EarlySight Backend** is an operational intelligence API service built with
 
 ```text
 backend/
-â”œâ”€â”€ app/
-â”‚   â”œâ”€â”€ __init__.py        # App package marker & version definition
-â”‚   â”œâ”€â”€ main.py            # FastAPI entry point, lifespan initialization & routers
-â”‚   â”œâ”€â”€ config.py          # Application configuration & DATABASE_URL settings
-â”‚   â”œâ”€â”€ database.py        # SQLAlchemy engine, SessionLocal, Base model & DB check
-â”‚   â”œâ”€â”€ models/            # SQLAlchemy database models
-â”‚   â”‚   â”œâ”€â”€ __init__.py    # Models package marker (exports Signal)
-â”‚   â”‚   â””â”€â”€ signal.py      # Signal domain model
-â”‚   â”œâ”€â”€ schemas/           # Pydantic request & response validation schemas
-â”‚   â”‚   â”œâ”€â”€ __init__.py    # Schemas package marker (exports Signal schemas)
-â”‚   â”‚   â””â”€â”€ signal.py      # SignalCreate, SignalUpdate, SignalResponse schemas
-â”‚   â””â”€â”€ api/               # REST API route handlers
-â”‚       â”œâ”€â”€ __init__.py    # API package marker (exports signals_router)
-â”‚       â””â”€â”€ signals.py     # Signal CRUD endpoints & pagination
-â”œâ”€â”€ .env.example           # Template for environment variables (copy to .env)
-â”œâ”€â”€ requirements.txt       # Dependencies (FastAPI, Uvicorn, SQLAlchemy, psycopg)
-â””â”€â”€ README.md              # Documentation & beginner-friendly setup guide
+├── app/
+│   ├── __init__.py        # App package marker & version definition
+│   ├── main.py            # FastAPI entry point, lifespan initialization & routers
+│   ├── config.py          # Configuration: DATABASE_URL, CORS, & OPENAI settings
+│   ├── database.py        # SQLAlchemy engine, SessionLocal, Base model & DB check
+│   ├── models/            # SQLAlchemy database models
+│   │   ├── __init__.py    # Models package marker (exports Signal)
+│   │   └── signal.py      # Signal domain model
+│   ├── schemas/           # Pydantic validation schemas
+│   │   ├── __init__.py    # Schemas package marker (exports Signal, AI, & Embedding schemas)
+│   │   ├── signal.py      # SignalCreate, SignalUpdate, SignalResponse schemas
+│   │   ├── ai.py          # SignalAnalysisOutput, SignalAnalysisResponse schemas
+│   │   └── embedding.py   # RelatedSignalItem, RelatedSignalsResponse schemas
+│   ├── services/          # Business logic & external AI integrations
+│   │   ├── __init__.py    # Services package marker (exports AIService, EmbeddingService)
+│   │   ├── ai_service.py  # Reusable OpenAI service & structured signal analysis
+│   │   └── embedding_service.py # Vector embedding generation & cosine similarity engine
+│   └── api/               # REST API route handlers
+│       ├── __init__.py    # API package marker (exports signals_router, ai_router)
+│       ├── signals.py     # Signal CRUD endpoints, pagination & related signals
+│       └── ai.py          # AI analysis endpoint (POST /api/ai/analyze-signal)
+├── .env.example           # Template for environment variables (copy to .env)
+├── requirements.txt       # Dependencies (FastAPI, Uvicorn, SQLAlchemy, psycopg, OpenAI)
+└── README.md              # Documentation & beginner-friendly setup guide
 ```
 
 ---
@@ -348,7 +355,7 @@ Returns `204 No Content`.
 
 ---
 
-## 9. Frontend â†” Backend Integration (Milestone 4)
+## 9. Frontend ↔ Backend Integration (Milestone 4)
 
 The EarlySight frontend communicates with the FastAPI backend through a unified client service located at `src/js/api.js`.
 
@@ -356,9 +363,9 @@ The EarlySight frontend communicates with the FastAPI backend through a unified 
 
 ```text
 EarlySight Frontend (Vite @ http://localhost:5173)
-           â†“  fetch() HTTP requests
+           ↓  fetch() HTTP requests
 FastAPI Backend (Uvicorn @ http://127.0.0.1:8000)
-           â†“  SQLAlchemy 2.x / psycopg
+           ↓  SQLAlchemy 2.x / psycopg
 PostgreSQL Database (port 5432)
 ```
 
@@ -389,6 +396,262 @@ FastAPI is configured with `CORSMiddleware` in `backend/app/main.py` allowing lo
 ### Current PostgreSQL Limitation & Degraded State Handling
 
 * Because PostgreSQL is currently not installed on the local machine, the backend safely returns `503 Service Unavailable` for database-backed signal queries.
-* The frontend (`signals.html`) cleanly catches this status and presents a clear, professional degraded state banner (`Backend Connected â€¢ PostgreSQL Database Offline (HTTP 503)`).
+* The frontend (`signals.html`) cleanly catches this status and presents a clear, professional degraded state banner (`Backend Connected • PostgreSQL Database Offline (HTTP 503)`).
 * The user can click **Retry API Request** or **View Reference Dataset** to inspect table filtering and explainability drawers without application disruption.
 * When PostgreSQL is started locally, the next API request automatically connects and loads live signals from the database.
+
+---
+
+## 10. AI / LLM Integration Foundation (Milestone 5)
+
+EarlySight includes an AI/LLM integration foundation powered by the official **OpenAI Python SDK** (`openai>=1.50.0`). The AI service is designed as a modular foundation for operational signal understanding, structured classification, and emerging-risk reasoning.
+
+### Architecture & Service Structure
+
+```text
+backend/app/
+├── services/
+│   ├── __init__.py        # Exports AIService and singleton ai_service
+│   └── ai_service.py      # OpenAI client, timeout management, prompt engineering & validation
+├── schemas/
+│   └── ai.py              # Pydantic schemas: SignalAnalysisOutput & SignalAnalysisResponse
+└── api/
+    └── ai.py              # REST endpoint: POST /api/ai/analyze-signal/{signal_id}
+```
+
+### Configuration & Environment Variables
+
+Configure the AI service in your local `backend/.env` file:
+
+```env
+# Optional: Set your OpenAI API key to enable operational signal analysis
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o-mini
+```
+
+* **Default Model**: `gpt-4o-mini` (or any compatible OpenAI chat model).
+* **Safe Development Default**: `OPENAI_API_KEY` defaults to empty. The backend will **never** fail to start if the key is missing.
+
+### AI Analysis API Endpoint
+
+#### `POST /api/ai/analyze-signal/{signal_id}`
+
+Loads a signal from the database and performs structured operational analysis using the configured OpenAI model.
+
+**Example Request:**
+```bash
+curl -X POST http://127.0.0.1:8000/api/ai/analyze-signal/1
+```
+
+**Example Successful Response (200 OK):**
+```json
+{
+  "signal_id": 1,
+  "signal_title": "Water leakage detected near Server Room 3B",
+  "status": "analyzed",
+  "analysis": {
+    "summary": "Water dripping directly above network equipment creates high fire and power-outage risk.",
+    "category": "infrastructure",
+    "severity": "high",
+    "key_evidence": [
+      "Slow dripping observed from ceiling tile above network rack 4",
+      "Proximity to high-density server equipment"
+    ],
+    "recommended_attention": "Dispatch facilities plumbing team immediately to isolate overhead supply valve.",
+    "reasoning": "Uncontained fluid ingress into electrical and telecommunications infrastructure can cause uncontained circuit arc trips and facility-wide outage."
+  },
+  "model_used": "gpt-4o-mini"
+}
+```
+
+### Handling Missing API Keys & Offline Mode
+
+When `OPENAI_API_KEY` is not provided in the environment:
+* The FastAPI server starts normally and remains completely functional.
+* Health check (`GET /api/health`) reports `"ai": "unavailable"`.
+* The AI endpoint returns a clean, degraded status without crashing or throwing internal exceptions:
+
+```json
+HTTP 503 Service Unavailable
+{
+  "status": "unavailable",
+  "message": "AI service is not configured. Please configure OPENAI_API_KEY."
+}
+```
+
+* **No Faked Responses**: When the key is missing, no artificial AI responses are generated.
+
+### Extended Health Check (`GET /api/health`)
+
+The health endpoint reports application readiness, database connectivity, and AI configuration status independently:
+
+```json
+{
+  "status": "degraded",
+  "service": "EarlySight Backend",
+  "database": "unavailable",
+  "ai": "unavailable"
+}
+```
+
+### Security Principles
+
+1. **No Hardcoded Keys**: API keys are loaded strictly from the environment via `app.config.settings`.
+2. **Never Exposed**: API keys are never returned in HTTP responses, logs, console traces, or documentation.
+3. **Version Control Safety**: Actual `.env` files are ignored in `.gitignore`. Only `.env.example` with empty placeholders is committed.
+4. **Sanitized Error Handling**: Network or authentication errors from OpenAI are intercepted and mapped to clean, sanitized messages without leaking credentials.
+
+---
+
+## 11. Embeddings & Related Signal Detection (Milestone 6)
+
+EarlySight includes a semantic intelligence and related-signal detection engine powered by OpenAI vector embeddings (`text-embedding-3-small`) and pure-Python cosine similarity comparison.
+
+This capability allows facility operators and intelligence analysts to detect precursor patterns across physical, maintenance, and safety events—identifying clusters of related incidents even when phrased in completely different language.
+
+### Architecture & Service Structure
+
+```text
+backend/app/
+├── services/
+│   ├── __init__.py           # Exports EmbeddingService, cosine_similarity, signal_to_embedding_text
+│   └── embedding_service.py # Vector embedding generation, in-memory cache & cosine similarity engine
+├── schemas/
+│   └── embedding.py         # Pydantic schemas: RelatedSignalItem, RelatedSignalsResponse
+└── api/
+    └── signals.py           # REST endpoint: POST /api/signals/{signal_id}/related
+```
+
+### Configuration & Environment Variables
+
+Configure the embedding engine in `backend/.env`:
+
+```env
+# OpenAI Embedding & Related Signal Detection Configuration
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+RELATED_SIGNAL_LIMIT=5
+RELATED_SIGNAL_THRESHOLD=0.70
+CANDIDATE_SIGNAL_LIMIT=50
+```
+
+| Setting | Default | Description |
+| :--- | :--- | :--- |
+| `OPENAI_EMBEDDING_MODEL` | `text-embedding-3-small` | OpenAI embedding model for semantic vector representation |
+| `RELATED_SIGNAL_THRESHOLD` | `0.70` | Cosine similarity cutoff score between 0.0 and 1.0 (development threshold) |
+| `RELATED_SIGNAL_LIMIT` | `5` | Maximum number of related signals to return in ranking |
+| `CANDIDATE_SIGNAL_LIMIT` | `50` | Maximum candidate signals to fetch from database for vector comparison |
+
+*Note: The similarity threshold `0.70` is a configurable development cutoff for operational relevance, not a scientifically rigid threshold.*
+
+### Deterministic Signal Text Preparation
+
+Signals are deterministically translated into semantic text representation via `signal_to_embedding_text()` before vectorization:
+
+```text
+Title: Water leakage near Block A
+Description: Repeated moisture observed near ceiling.
+Category: infrastructure
+Location: Block A
+Severity: medium
+Source: complaint
+```
+
+This ensures reproducible, normalized embeddings across repeated queries and background processing jobs.
+
+### Semantic Similarity Algorithm
+
+Cosine similarity is computed in pure Python between unit embedding vectors:
+
+$$\text{similarity} = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\| \|\mathbf{v}\|}$$
+
+* Strictly normalized and clamped to $[0.0, 1.0]$.
+* Includes guards against zero vectors, empty inputs, and dimensional mismatches.
+* Deterministic mathematical tests verify exact similarity between identical vectors ($1.0$), highly related vectors ($0.9939$), and orthogonal/dissimilar vectors ($0.0$).
+
+### Related Signals API Endpoint
+
+#### `POST /api/signals/{signal_id}/related`
+
+Queries candidate signals from PostgreSQL, generates vector embeddings, computes semantic similarity against the target signal, and returns related signals ranked from highest to lowest similarity.
+
+**Query Parameters (Optional overrides):**
+* `limit` (int, 1-50): Override maximum results count.
+* `threshold` (float, 0.0-1.0): Override minimum cosine similarity cutoff.
+
+**Example Request:**
+```bash
+curl -X POST http://127.0.0.1:8000/api/signals/1/related
+```
+
+**Example Successful Response (200 OK):**
+```json
+{
+  "status": "ok",
+  "signal_id": 1,
+  "related_signals": [
+    {
+      "signal_id": 14,
+      "similarity": 0.8924,
+      "title": "Moisture accumulation near electrical panel",
+      "category": "infrastructure",
+      "location": "Building 2, Basement",
+      "severity": "high"
+    },
+    {
+      "signal_id": 8,
+      "similarity": 0.7412,
+      "title": "Ceiling tile sagging from condensation",
+      "category": "maintenance",
+      "location": "Building 2, 2nd Floor",
+      "severity": "medium"
+    }
+  ],
+  "model_used": "text-embedding-3-small"
+}
+```
+
+*Note: Raw embedding vectors are internal numerical representations and are **never** exposed in the public API response.*
+
+### Handling Missing API Keys & Offline Mode
+
+When `OPENAI_API_KEY` is not provided:
+* The backend boots normally without disruption.
+* Health check (`GET /api/health`) reports `"embeddings": "unavailable"`.
+* The related signals endpoint returns a clean, degraded response:
+
+```json
+HTTP 503 Service Unavailable
+{
+  "status": "unavailable",
+  "message": "Embedding service is not configured. Please configure OPENAI_API_KEY."
+}
+```
+
+* **No Faked Scores**: When credentials or database are offline, no artificial similarity scores or synthetic embeddings are generated.
+
+### Extended Health Check (`GET /api/health`)
+
+The health endpoint reports status independently for database, general AI, and embeddings:
+
+```json
+{
+  "status": "degraded",
+  "service": "EarlySight Backend",
+  "database": "unavailable",
+  "ai": "unavailable",
+  "embeddings": "unavailable"
+}
+```
+
+### Vector Storage Architecture: Current vs. Future
+
+| Layer | Current Development Architecture (M6) | Future Production Architecture (Planned) |
+| :--- | :--- | :--- |
+| **Vector Storage** | On-demand OpenAI vector generation with in-memory SHA-256 caching | Persistent PostgreSQL `vector` columns using `pgvector` extension |
+| **Similarity Search** | Dynamic in-memory cosine similarity over fetched candidate signals | Native SQL vector indexing (`HNSW` / `IVFFlat`) with `<=>` cosine distance |
+| **Startup Requirements** | Runs anywhere without requiring `pgvector` or database installation | Automated Alembic migration applying `CREATE EXTENSION IF NOT EXISTS vector` |
+| **Scalability** | Ideal for development, prototypes, and targeted operational signal inspection | Enterprise-scale across hundreds of thousands of historical incidents |
+
+* **Zero Hard Startup Dependencies**: The EarlySight backend is intentionally designed to start reliably even when PostgreSQL, `pgvector`, or OpenAI API keys are not installed.
+
+

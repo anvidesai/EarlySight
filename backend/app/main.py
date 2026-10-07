@@ -1,6 +1,6 @@
 """
 Main FastAPI entry point for EarlySight Backend API.
-Includes health check with PostgreSQL connectivity verification and Signals API router.
+Includes health check, PostgreSQL connectivity, Signals API router, and AI service router.
 """
 
 from contextlib import asynccontextmanager
@@ -8,6 +8,7 @@ from typing import AsyncGenerator, Dict
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.ai import router as ai_router
 from app.api.signals import router as signals_router
 from app.config import settings
 from app.database import check_database_connection, create_tables
@@ -47,6 +48,7 @@ app.add_middleware(
 
 # Register API Routers
 app.include_router(signals_router, prefix="/api/signals", tags=["Signals"])
+app.include_router(ai_router, prefix="/api/ai", tags=["AI"])
 
 
 @app.get("/", tags=["Root"])
@@ -60,23 +62,24 @@ def read_root() -> Dict[str, str]:
 @app.get("/api/health", tags=["Health"])
 def health_check() -> Dict[str, str]:
     """
-    Health check endpoint to verify backend operational readiness
-    and PostgreSQL database connectivity.
+    Health check endpoint to verify backend operational readiness,
+    PostgreSQL database connectivity, AI service configuration,
+    and Embedding service status.
     """
     db_connected, _ = check_database_connection()
+    ai_status = "configured" if settings.is_ai_configured else "unavailable"
+    embeddings_status = (
+        "configured" if settings.is_embeddings_configured else "unavailable"
+    )
+    overall_status = "healthy" if db_connected else "degraded"
 
-    if db_connected:
-        return {
-            "status": "healthy",
-            "service": "EarlySight Backend",
-            "database": "connected",
-        }
-    else:
-        return {
-            "status": "degraded",
-            "service": "EarlySight Backend",
-            "database": "unavailable",
-        }
+    return {
+        "status": overall_status,
+        "service": "EarlySight Backend",
+        "database": "connected" if db_connected else "unavailable",
+        "ai": ai_status,
+        "embeddings": embeddings_status,
+    }
 
 
 if __name__ == "__main__":

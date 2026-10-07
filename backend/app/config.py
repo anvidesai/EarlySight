@@ -34,5 +34,30 @@ class Settings:
         ).split(",")
     )
 
+    # OpenAI AI / LLM Configuration
+    # Safe development defaults: API key empty by default; never hardcode credentials
+    openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
+    openai_model: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
+    # OpenAI Embedding & Related Signal Detection Configuration (Milestone 6)
+    openai_embedding_model: str = os.getenv(
+        "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
+    )
+    related_signal_limit: int = int(os.getenv("RELATED_SIGNAL_LIMIT", "5"))
+    related_signal_threshold: float = float(
+        os.getenv("RELATED_SIGNAL_THRESHOLD", "0.70")
+    )
+    candidate_signal_limit: int = int(os.getenv("CANDIDATE_SIGNAL_LIMIT", "50"))
+
+    @property
+    def is_ai_configured(self) -> bool:
+        """Returns True if an OpenAI API key is populated in the environment."""
+        return bool(self.openai_api_key.strip())
+
+    @property
+    def is_embeddings_configured(self) -> bool:
+        """Returns True if an OpenAI API key is populated for the embedding service."""
+        return bool(self.openai_api_key.strip())
+
 
 settings = Settings()
