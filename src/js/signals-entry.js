@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <span class="sig-cluster-id-tag">${c.id}</span>
               <h3 class="sig-cluster-title">${c.title}</h3>
             </div>
-            <div class="sig-cluster-meta-chips">
+            <div class="sig-cluster-meta-chips font-mono">
               <span class="sig-meta-chip">📍 ${c.location}</span>
               <span class="sig-meta-chip">🏷️ ${c.category}</span>
               <span class="sig-meta-chip" style="font-weight:700; color:var(--intel-primary);">🔗 ${c.signalCount} Related Signals</span>
@@ -262,27 +262,33 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <!-- Why It Matters Quote Box -->
-          <div class="sig-cluster-why">
-            <strong>Why This Cluster Matters:</strong> "${c.whyItMatters}"
-          </div>
+          <!-- Why It Matters (Collapsible narrative, hidden by default) -->
+          <details class="sig-cluster-why-details">
+            <summary class="sig-cluster-why-summary">
+              <span>Why This Matters &amp; Operational Context</span>
+              <span class="font-mono text-muted" style="font-size:0.7rem;">Click to expand ▾</span>
+            </summary>
+            <div class="sig-cluster-why-body">
+              "${c.whyItMatters}"
+            </div>
+          </details>
 
           <!-- Horizontal Convergence Flow: RAW SIGNALS -> REPEATED PATTERN -> EMERGING RISK -->
           <div class="sig-convergence-pipeline">
             
             <!-- Step 1: Raw Signals -->
             <div class="sig-flow-node">
-              <span class="sig-flow-node-label">1. Raw Precursors (${c.signalCount} Ingress)</span>
+              <span class="sig-flow-node-label font-mono">1. Raw Precursors (${c.signalCount} Ingress)</span>
               <div class="sig-flow-signal-items">
-                ${previewSignals.slice(0, 3).map(ps => `
+                ${previewSignals.slice(0, 2).map(ps => `
                   <div class="sig-flow-signal-pill" title="${ps.title} • ${ps.date}">
                     ${getSourceBadge(ps.sourceType)}
-                    <span style="font-weight:600; font-size:0.75rem;">${ps.title}</span>
+                    <span style="font-weight:600; font-size:0.75rem; max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${ps.title}</span>
                   </div>
                 `).join('')}
-                ${c.signalCount > 3 ? `
-                  <span style="font-size:0.72rem; color:var(--ink-muted); font-family:var(--font-mono); margin-left:4px;">
-                    +${c.signalCount - 3} additional correlated precursors
+                ${c.signalCount > 2 ? `
+                  <span class="sig-more-chip font-mono">
+                    +${c.signalCount - 2} more signals
                   </span>
                 ` : ''}
               </div>
@@ -293,10 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <!-- Step 2: Detected Pattern -->
             <div class="sig-flow-node">
-              <span class="sig-flow-node-label">2. Detected Pattern</span>
+              <span class="sig-flow-node-label font-mono">2. Detected Pattern</span>
               <div class="sig-pattern-node-box">
                 <div class="sig-pattern-name">${c.detectedPattern}</div>
-                <div class="sig-pattern-coherence">✓ ${c.patternCoherence}</div>
+                <div class="sig-pattern-coherence font-mono">✓ ${c.patternCoherence}</div>
               </div>
             </div>
 
@@ -305,11 +311,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <!-- Step 3: Emerging Risk Target -->
             <div class="sig-flow-node">
-              <span class="sig-flow-node-label">3. Emerging Risk Target</span>
+              <span class="sig-flow-node-label font-mono">3. Emerging Risk Target</span>
               <div class="sig-risk-node-box">
                 <div class="sig-risk-node-name">${c.associatedRisk}</div>
-                <div class="sig-risk-node-meta">
-                  <span>${c.riskId}</span> • <span>${c.leadTime}</span> • <strong>${c.potentialImpact || '$340,000 Outage'}</strong>
+                <div class="sig-risk-node-meta font-mono">
+                  <span>${c.riskId}</span> • <span>${c.leadTime}</span> • <strong style="color:var(--color-rust);">${c.potentialImpact || '$340,000 Outage'}</strong>
                 </div>
               </div>
             </div>
@@ -318,12 +324,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <!-- Bottom Action Buttons -->
           <div class="sig-cluster-footer-actions">
-            <button class="sig-cluster-btn-filter" onclick="window.isolateClusterInTable('${c.id}')">
+            <button class="sig-cluster-btn-filter font-mono" onclick="window.isolateClusterInTable('${c.id}')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
               Filter Table to this Cluster (${c.signalCount})
             </button>
 
-            <button class="sig-cluster-btn-inspect" onclick="inspectSignal('${leadSignal.id}')">
+            <button class="sig-cluster-btn-inspect font-mono" onclick="inspectSignal('${leadSignal.id}')">
               Inspect Cluster Dossier &rarr;
             </button>
           </div>

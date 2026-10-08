@@ -530,47 +530,61 @@ class EvidenceController {
       return;
     }
 
-    grid.innerHTML = filtered.map(item => `
-      <div class="source-evidence-card" data-evidence-id="${item.id}">
-        <div class="evidence-card-header font-mono">
-          <div class="evidence-id-group">
-            <span class="evidence-id-pill font-mono">${item.id}</span>
-            <span class="evidence-type-badge type-${item.sourceCategory}">${item.sourceType}</span>
+    grid.innerHTML = filtered.map(item => {
+      const primarySignal = item.linkedSignals && item.linkedSignals[0] ? item.linkedSignals[0] : 'SIG-01';
+      const supportingCount = (item.linkedSignalsCount || (item.linkedSignals ? item.linkedSignals.length : 1)) - 1;
+      const supportingText = supportingCount > 0 ? `+${supportingCount} supporting` : 'Primary only';
+      const riskText = item.linkedRiskId ? `${item.linkedRiskId} (${item.linkedRiskName || 'Hazard'})` : 'Operational Risk';
+
+      return `
+        <div class="source-evidence-card" data-evidence-id="${item.id}">
+          <div class="evidence-card-header font-mono">
+            <div class="evidence-id-group">
+              <span class="evidence-id-pill font-mono">${item.id}</span>
+              <span class="evidence-type-badge type-${item.sourceCategory}">${item.sourceType}</span>
+            </div>
+            <span class="evidence-relevance-tag font-mono relevance-${item.relevance.toLowerCase()}">
+              ${item.relevance} Relevance
+            </span>
           </div>
-          <span class="evidence-relevance-tag font-mono relevance-${item.relevance.toLowerCase()}">
-            ${item.relevance} Relevance
-          </span>
-        </div>
 
-        <h4 class="evidence-card-title">${item.title}</h4>
-        
-        <div class="evidence-card-meta font-mono">
-          <span class="meta-loc">📍 ${item.location}</span>
-          <span class="meta-time">⏱ ${item.timestamp}</span>
-        </div>
+          <h4 class="evidence-card-title">${item.title}</h4>
+          
+          <div class="evidence-card-meta font-mono">
+            <span class="meta-loc">📍 ${item.location}</span>
+            <span class="meta-time">⏱ ${item.timestamp}</span>
+          </div>
 
-        <p class="evidence-card-desc">${item.description}</p>
+          <!-- Structured Intelligence Matrix -->
+          <div class="evidence-structured-matrix font-mono">
+            <div class="evidence-matrix-item">
+              <span class="evidence-matrix-lbl">Primary Signal:</span>
+              <span class="evidence-matrix-val font-bold">${primarySignal}</span>
+            </div>
+            <div class="evidence-matrix-item">
+              <span class="evidence-matrix-lbl">Precursors:</span>
+              <span class="evidence-matrix-val font-bold">${supportingText}</span>
+            </div>
+            <div class="evidence-matrix-item" style="grid-column: span 2;">
+              <span class="evidence-matrix-lbl">Risk Factor:</span>
+              <span class="evidence-matrix-val font-bold" style="color:var(--color-rust);">${riskText}</span>
+            </div>
+          </div>
 
-        <div class="evidence-signals-row font-mono">
-          <span class="signals-count font-mono">
-            <strong>${item.linkedSignalsCount}</strong> Linked Signals:
-          </span>
-          <div class="signal-chips-strip">
-            ${item.linkedSignals.map(s => `<span class="signal-micro-chip">${s}</span>`).join('')}
+          <p class="evidence-card-desc font-sans">${item.description}</p>
+
+          <div class="evidence-card-footer font-mono">
+            <div class="evidence-conf-pill font-mono">
+              <span class="conf-dot" style="color:var(--intel-primary);">●</span>
+              <span>Strength: <strong>${item.confidence}</strong></span>
+            </div>
+            <button class="btn-view-evidence font-mono" data-inspect-id="${item.id}">
+              Inspect Dossier &rarr;
+            </button>
           </div>
         </div>
-
-        <div class="evidence-card-footer">
-          <div class="evidence-conf-pill font-mono">
-            <span class="conf-dot">●</span>
-            <span>Confidence: ${item.confidence}</span>
-          </div>
-          <button class="btn-view-evidence font-mono" data-inspect-id="${item.id}">
-            View Evidence ➔
-          </button>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     // Bind "View Evidence" buttons
     grid.querySelectorAll('.btn-view-evidence').forEach(btn => {

@@ -232,6 +232,9 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = items.map(r => {
       const scoreColor = getScoreColor(r.score);
       const isUrgent = r.priority === 'P1';
+      const actionText = (r.recommendedAction && typeof r.recommendedAction === 'object') ? r.recommendedAction.action : (r.recommendedAction || 'Inspect and isolate affected components.');
+      const teamText = (r.recommendedAction && typeof r.recommendedAction === 'object') ? r.recommendedAction.team : 'Facilities Engineering';
+      const explanationText = r.explanation || r.description || `Operational risk assessment for ${r.title}`;
 
       return `
         <article class="risk-card ${isUrgent ? 'risk-card-urgent' : ''}" data-risk-id="${r.id}" tabindex="0" role="button" aria-label="Inspect ${r.title}">
@@ -239,103 +242,64 @@ document.addEventListener('DOMContentLoaded', () => {
           <!-- Card Header Strip -->
           <div class="risk-card-top-row">
             <div class="risk-id-group">
-              <span class="risk-id-badge">${r.id}</span>
+              <span class="risk-id-badge font-mono">${r.id}</span>
               ${getStatusBadge(r.status)}
+              <span class="risk-subsystem-pill font-mono">${r.category || 'Operations'}</span>
             </div>
             <div class="risk-priority-group">
               ${getPriorityBadge(r.priority, r.priorityLabel)}
             </div>
           </div>
 
-          <!-- Title & Subsystem -->
-          <div class="risk-title-section">
-            <h3 class="risk-card-title">${r.title}</h3>
-            <div class="risk-location-subsystem">
-              <span class="location-dot"></span>
-              <span class="risk-loc-text"><strong>${r.location}</strong></span>
-              <span class="risk-loc-sep">•</span>
-              <span class="risk-subsystem-text">${r.subsystem}</span>
-            </div>
-            <p class="risk-short-desc">${r.description}</p>
-          </div>
-
-          <!-- Dual Intelligence Core: Score Dial + Distinct Severity & Confidence -->
-          <div class="risk-intel-core-panel">
-            
-            <!-- Visual Score Dial -->
-            <div class="score-column">
-              ${renderScoreGauge(r.score, 64)}
+          <!-- Hero Metrics & Title Grid -->
+          <div class="risk-hero-summary-row">
+            <div class="risk-score-dial-col">
+              ${renderScoreGauge(r.score, 54)}
               <div class="score-column-caption">
-                <span class="score-tier-tag" style="color:${scoreColor.stroke};">${r.scoreTier} Risk</span>
+                <span class="score-tier-tag" style="color:${scoreColor.stroke};">${r.scoreTier}</span>
               </div>
             </div>
 
-            <!-- Distinct Severity + Confidence Blocks -->
-            <div class="metrics-distinction-col">
-              
-              <!-- Severity Block -->
-              <div class="metric-distinction-item severity-item">
-                <div class="metric-distinction-head">
-                  <span class="metric-distinction-label">Severity (Impact)</span>
-                  ${getSeverityBadge(r.severity)}
-                </div>
-                <div class="metric-distinction-desc">${r.severityReason}</div>
+            <div class="risk-hero-content-col">
+              <h3 class="risk-card-title">${r.title}</h3>
+              <div class="risk-location-subsystem">
+                <span class="location-dot"></span>
+                <span class="risk-loc-text"><strong>${r.location}</strong></span>
+                <span class="risk-loc-sep">•</span>
+                <span class="risk-subsystem-text">${r.subsystem}</span>
               </div>
-
-              <!-- Confidence Block -->
-              <div class="metric-distinction-item confidence-item">
-                <div class="metric-distinction-head">
-                  <span class="metric-distinction-label">Confidence (Certainty)</span>
-                  <span class="confidence-val-badge">${r.confidence}</span>
-                </div>
-                <div class="metric-distinction-desc">${r.confidenceReason}</div>
-              </div>
-
+              <p class="risk-short-desc">${explanationText}</p>
             </div>
-
           </div>
 
-          <!-- Trend Trajectory & Supporting Evidence Strip -->
-          <div class="risk-trajectory-evidence-strip">
-            <div class="trajectory-col">
-              <span class="traj-label">Trajectory:</span>
-              <span class="traj-badge ${r.trend === 'Increasing' ? 'traj-up' : (r.trend === 'Stable' ? 'traj-stable' : 'traj-down')}">
+          <!-- Trajectory & Action Strip -->
+          <div class="risk-compact-action-strip">
+            <div class="action-strip-content">
+              <span class="action-strip-icon">⚡</span>
+              <span class="action-strip-team">${teamText}:</span>
+              <span class="action-strip-directive" title="${actionText}">${actionText}</span>
+            </div>
+            <div class="action-strip-traj">
+              <span class="traj-badge ${r.trend === 'Increasing' ? 'traj-up' : (r.trend === 'Stable' ? 'traj-stable' : 'traj-down')} font-mono">
                 ${r.trendSymbol} ${r.trend}
               </span>
-              <span class="traj-history font-mono text-muted">${r.trendTrajectory ? r.trendTrajectory.join(' → ') : ''}</span>
-            </div>
-            <div class="sparkline-col">
               ${renderSparkline(r.sparklinePoints, r.trend)}
             </div>
           </div>
 
-          <!-- Recommended Action Preview Box -->
-          <div class="risk-card-action-box">
-            <div class="action-box-header">
-              <span class="action-box-tag">Recommended Action:</span>
-              <span class="action-urgency-pill">${r.recommendedAction.urgency}</span>
-            </div>
-            <p class="action-box-text">${r.recommendedAction.action}</p>
-            <div class="action-box-team">
-              <span class="team-label">Assigned Team:</span>
-              <span class="team-name">${r.recommendedAction.team}</span>
-            </div>
-          </div>
-
           <!-- Card Footer Strip -->
-          <div class="risk-card-footer">
+          <div class="risk-card-footer font-mono">
             <div class="footer-meta-item">
               <span class="footer-meta-label">Evidence:</span>
-              <span class="footer-meta-val font-mono">${r.evidenceCount} Signals</span>
+              <span class="footer-meta-val font-bold">${r.evidenceCount || 1} Precursors</span>
             </div>
             <div class="footer-meta-item">
               <span class="footer-meta-label">Lead Window:</span>
-              <span class="footer-meta-val font-mono ${r.leadTime.includes('Remaining') ? 'text-vermilion' : 'text-forest'}">${r.leadTime}</span>
+              <span class="footer-meta-val ${r.leadTime && r.leadTime.includes('Remaining') ? 'text-vermilion' : 'text-forest'}">${r.leadTime || 'Active'}</span>
             </div>
-            <button type="button" class="btn-inspect-risk" aria-label="Open detail view for ${r.title}">
-              <span>Inspect Flow</span>
-              <span class="btn-arrow">&rarr;</span>
-            </button>
+            <div class="btn-inspect-risk font-mono">
+              <span>Inspect Flow &rarr;</span>
+            </div>
           </div>
 
         </article>
