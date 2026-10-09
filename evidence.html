@@ -62,76 +62,52 @@
   <!-- Main Evidence & Explainability Container -->
   <main class="risks-page-container">
 
-    <!-- Unified Story Workflow Ribbon -->
-    <div class="risk-workflow-ribbon earlysight-workflow-ribbon">
-      <span class="workflow-ribbon-tag">INTELLIGENCE FLOW:</span>
-      <div class="workflow-steps">
-        <span class="workflow-step">RAW SIGNALS</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">RELATED SIGNALS</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">PATTERN</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">EMERGING RISK</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step active-step" style="color:var(--color-rust, #C85A32); font-weight:700;">EVIDENCE</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">CONFIDENCE</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">EXPLANATION</span>
-      </div>
-    </div>
-
-    <!-- SECTION 1: Evidence Overview Header Banner with KPIs -->
-    <section class="risks-header-banner" style="margin-bottom: 20px;">
-      <div class="risks-banner-top">
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header">
+      <div class="es-page-header-top">
         <div>
-          <div class="banner-eyebrow font-mono">
-            <span>OPERATIONAL FORENSIC DOSSIER</span>
-          </div>
-          <h1 class="risks-banner-title">
-            Evidence & Explainability
-          </h1>
-          <p class="risks-banner-desc">
-            Trace every emerging risk back to the signals, patterns, and evidence that caused it to be flagged.
-          </p>
+          <div class="es-badge font-mono" style="margin-bottom:6px;">OPERATIONAL FORENSIC DOSSIER</div>
+          <h1 class="es-page-title">Evidence & Explainability</h1>
+          <p class="es-page-desc">Trace every emerging risk back to the signals, precursor clusters, recurring patterns, and multi-modal source evidence that caused it to be flagged.</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button id="btnToggleEvidenceDetails" class="es-btn es-btn-secondary font-mono" style="font-size:0.75rem;">
+            Deep Forensic Graph & Timeline
+          </button>
         </div>
       </div>
 
       <!-- KPI Strip -->
-      <div class="risks-kpis-strip">
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label font-mono">EVIDENCE ITEMS</span>
-          <span class="kpi-chip-val font-mono">28 Records</span>
+      <div class="es-kpi-strip">
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">EVIDENCE ITEMS</span>
+          <span class="es-kpi-val">28 Records</span>
         </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label font-mono">LINKED SIGNALS</span>
-          <span class="kpi-chip-val font-mono">42 Signals</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">LINKED SIGNALS</span>
+          <span class="es-kpi-val">42 Signals</span>
         </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label font-mono">EVIDENCE CHAINS</span>
-          <span class="kpi-chip-val font-mono">6 Chains</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">EVIDENCE CHAINS</span>
+          <span class="es-kpi-val">6 Chains</span>
         </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label font-mono">HIGH CONFIDENCE</span>
-          <span class="kpi-chip-val font-mono text-rust">87% Peak</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">HIGH CONFIDENCE</span>
+          <span class="es-kpi-val" style="color:var(--color-rust, #C85A32);">87% Peak</span>
         </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label font-mono">ACTIVE INVESTIGATIONS</span>
-          <span class="kpi-chip-val font-mono">4 Hotspots</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">ACTIVE INVESTIGATIONS</span>
+          <span class="es-kpi-val">4 Hotspots</span>
         </div>
       </div>
-      <div style="margin-top: 10px; font-size: 0.72rem; color: var(--ink-muted); font-family: var(--font-mono);">
-        * Unified forensic telemetry and multi-modal precursor explainability index.
-      </div>
-    </section>
+    </header>
 
-    <!-- Case Study / Alert Selector Bar -->
-    <div class="evidence-alert-selector-bar" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:12px 18px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-      <div class="selector-label font-mono" style="font-size:0.75rem; font-weight:700; color:var(--intel-primary, #1B4332);">
-        SELECT ACTIVE INVESTIGATION DOSSIER:
+    <!-- Case Study / Alert Selector Toolbar -->
+    <div class="es-toolbar font-mono" style="margin-bottom:20px; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+      <div style="font-size:0.75rem; font-weight:700; color:var(--intel-primary, #1B4332); display:flex; align-items:center; gap:6px;">
+        <span>INVESTIGATION DOSSIER:</span>
       </div>
-      <div class="alert-pills-row" style="display:flex; gap:10px; flex-wrap:wrap;">
+      <div class="alert-pills-row" style="display:flex; gap:8px; flex-wrap:wrap;">
         <button class="evidence-alert-pill active" data-alert-id="EW-2026-088">
           <span class="pill-dot dot-vermilion"></span>
           <span class="pill-id font-mono">RSK-001</span>
@@ -153,19 +129,19 @@
       </div>
     </div>
 
-    <!-- SECTION 2: WHY WAS THIS RISK FLAGGED? -->
-    <section class="causal-explainability-section" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:24px; margin-bottom:24px; box-shadow:var(--shadow-sm);">
+    <!-- PRIMARY CAUSAL EXPLAINABILITY CARD -->
+    <section class="causal-explainability-section es-card" style="margin-bottom:24px;">
       <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
         <span class="badge-icon">🔍</span>
         <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
-          PRIMARY CAUSAL EXPLAINABILITY QUESTION
+          PRIMARY CAUSAL EXPLAINABILITY CONCLUSION
         </span>
       </div>
 
       <!-- Prominent Risk Banner -->
-      <div class="featured-risk-header-row" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; border-bottom:1px solid var(--border-subtle, #E4E0D8); padding-bottom:16px; margin-bottom:16px;">
+      <div class="featured-risk-header-row" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; border-bottom:1px solid var(--border-subtle, #E4E0D8); padding-bottom:14px; margin-bottom:16px;">
         <div>
-          <h2 class="why-question-title" style="font-size:1.45rem; font-weight:800; color:var(--ink-primary, #1A1C1A); margin:0 0 6px 0;">
+          <h2 class="why-question-title" style="font-size:1.35rem; font-weight:800; color:var(--ink-primary, #1A1C1A); margin:0 0 6px 0;">
             WHY WAS THIS RISK FLAGGED?
           </h2>
           <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -175,188 +151,76 @@
           </div>
         </div>
 
-        <div style="display:flex; align-items:center; gap:16px;">
-          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 14px; text-align:center;">
-            <div class="font-mono" style="font-size:0.68rem; color:var(--ink-muted);">RISK SCORE</div>
-            <div class="font-mono" style="font-size:1.6rem; font-weight:800; color:var(--color-rust, #C85A32);" id="featuredRiskScore">86</div>
-            <div class="font-mono" style="font-size:0.68rem; color:var(--color-rust);" id="featuredRiskTrend">↑ Increasing</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:6px 14px; text-align:center;">
+            <div class="font-mono" style="font-size:0.65rem; color:var(--ink-muted);">RISK SCORE</div>
+            <div class="font-mono" style="font-size:1.45rem; font-weight:800; color:var(--color-rust, #C85A32);" id="featuredRiskScore">86</div>
+            <div class="font-mono" style="font-size:0.65rem; color:var(--color-rust);" id="featuredRiskTrend">↑ Increasing</div>
           </div>
-          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 14px; text-align:center;">
-            <div class="font-mono" style="font-size:0.68rem; color:var(--ink-muted);">ACTIONABLE LEAD TIME</div>
-            <div class="font-mono" style="font-size:1.15rem; font-weight:700; color:var(--intel-primary);" id="featuredRiskLeadTime">14.2 Days Lead</div>
-            <div class="font-mono" style="font-size:0.68rem; color:var(--ink-muted);" id="featuredRiskAverted">$512,000 Averted</div>
+          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:6px 14px; text-align:center;">
+            <div class="font-mono" style="font-size:0.65rem; color:var(--ink-muted);">ACTIONABLE LEAD TIME</div>
+            <div class="font-mono" style="font-size:1.1rem; font-weight:700; color:var(--intel-primary);" id="featuredRiskLeadTime">14.2 Days Lead</div>
+            <div class="font-mono" style="font-size:0.65rem; color:var(--ink-muted);" id="featuredRiskAverted">$512,000 Averted</div>
           </div>
         </div>
       </div>
 
       <!-- Investigation Summary Callout -->
-      <div class="causal-summary-callout" style="background:var(--bg-canvas, #FAF8F5); border-left:4px solid var(--color-rust, #C85A32); padding:14px 18px; border-radius:4px; font-size:0.92rem; line-height:1.55; color:var(--ink-primary); margin-bottom:20px;">
-        <p style="margin:0 0 6px 0;" id="whyFlaggedSummary">
+      <div class="causal-summary-callout" style="background:var(--bg-canvas, #FAF8F5); border-left:4px solid var(--color-rust, #C85A32); padding:14px 18px; border-radius:4px; font-size:0.9rem; line-height:1.55; color:var(--ink-primary); margin-bottom:18px;">
+        <p style="margin:0 0 6px 0; font-weight:600;" id="whyFlaggedSummary">
           This warning was generated because 5 independent, historically disconnected operational indicators converged in the exact same 8.5-meter sub-slab utility corridor in Block A with an exponential acceleration (+340% frequency surge over 72 hours).
         </p>
-        <p style="margin:0; font-size:0.84rem; color:var(--ink-secondary);" id="whyFlaggedNarrative">
-          Standard SCADA alarms remained silent because no individual sensor exceeded legacy single-point trip limits. However, EarlySight cross-correlated 8 operator complaint logs (acoustic hiss, localized floor dampness) with 3 separate maintenance inspection tickets (gasket wear, condensation notes), pinpointing an active micro-leak on flange 4B-12. The temporal velocity and spatial co-location match past unmitigated trench flooding signatures with 94.2% similarity.
+        <p style="margin:0; font-size:0.82rem; color:var(--ink-secondary);" id="whyFlaggedNarrative">
+          Standard SCADA alarms remained silent because no individual sensor exceeded legacy single-point trip limits. However, EarlySight cross-correlated 8 operator complaint logs with 3 separate maintenance inspection tickets, pinpointing an active micro-leak on flange 4B-12.
         </p>
       </div>
 
-      <!-- 5 Evidence Pillars (Section 2) -->
-      <div style="margin-bottom:20px;">
-        <div class="font-mono" style="font-size:0.75rem; font-weight:700; color:var(--ink-muted); margin-bottom:10px; text-transform:uppercase;">
+      <!-- 5 Evidence Pillars -->
+      <div style="margin-bottom:18px;">
+        <div class="font-mono" style="font-size:0.72rem; font-weight:700; color:var(--ink-muted); margin-bottom:10px; text-transform:uppercase;">
           5 COMPACT EVIDENCE PILLARS OF RISK DETECTION:
         </div>
-        <div class="evidence-pillars-grid" id="evidencePillarsContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+        <div class="evidence-pillars-grid" id="evidencePillarsContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px;">
           <!-- Dynamically populated by evidence.js -->
         </div>
       </div>
 
       <!-- Strict Separation: OBSERVED EVIDENCE vs AI INTERPRETATION -->
-      <div class="evidence-distinction-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
-        <div class="observed-evidence-card" style="background:#FFFFFF; border:1px solid #C4D3C9; border-radius:6px; padding:16px;">
+      <div class="evidence-distinction-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; margin-bottom:14px;">
+        <div class="observed-evidence-card" style="background:#FFFFFF; border:1px solid #C4D3C9; border-radius:6px; padding:14px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-            <span style="font-size:1.1rem; color:var(--intel-primary);">📋</span>
-            <span class="font-mono" style="font-size:0.78rem; font-weight:700; color:var(--intel-primary, #1B4332);">OBSERVED EVIDENCE (VERIFIED FACTS)</span>
+            <span style="font-size:1rem; color:var(--intel-primary);">📋</span>
+            <span class="font-mono" style="font-size:0.75rem; font-weight:700; color:var(--intel-primary, #1B4332);">OBSERVED EVIDENCE (VERIFIED FACTS)</span>
           </div>
-          <ul class="facts-list" id="observedEvidenceList" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; font-size:0.82rem; color:var(--ink-secondary);">
+          <ul class="facts-list" id="observedEvidenceList" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; font-size:0.8rem; color:var(--ink-secondary);">
             <!-- Populated dynamically -->
           </ul>
         </div>
 
-        <div class="ai-interpretation-card" style="background:#FFFFFF; border:1px solid #E8CFC6; border-radius:6px; padding:16px;">
+        <div class="ai-interpretation-card" style="background:#FFFFFF; border:1px solid #E8CFC6; border-radius:6px; padding:14px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-            <span style="font-size:1.1rem; color:var(--color-rust);">⚡</span>
-            <span class="font-mono" style="font-size:0.78rem; font-weight:700; color:var(--color-rust, #C85A32);">AI INTERPRETATION (PROBABILISTIC HYPOTHESIS)</span>
+            <span style="font-size:1rem; color:var(--color-rust);">⚡</span>
+            <span class="font-mono" style="font-size:0.75rem; font-weight:700; color:var(--color-rust, #C85A32);">AI INTERPRETATION (PROBABILISTIC HYPOTHESIS)</span>
           </div>
-          <ul class="hypothesis-list" id="aiInterpretationList" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; font-size:0.82rem; color:var(--ink-secondary);">
+          <ul class="hypothesis-list" id="aiInterpretationList" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; font-size:0.8rem; color:var(--ink-secondary);">
             <!-- Populated dynamically -->
           </ul>
         </div>
       </div>
 
-      <!-- Critical Disclaimer Callout -->
-      <div class="evidence-disclaimer-callout" style="background:#FFF9F5; border:1px solid #F0D5C9; border-radius:6px; padding:10px 14px; display:flex; align-items:flex-start; gap:10px;">
-        <span style="font-size:1.1rem;">⚠️</span>
-        <div style="font-size:0.76rem; color:var(--ink-secondary); line-height:1.45;">
-          <strong style="color:var(--ink-primary);">CRITICAL DISTINCTION:</strong>
-          Observed evidence comprises verified physical logs and sensor telemetry. AI interpretations represent probabilistic pattern correlations derived from multi-signal clustering, <em>NOT confirmed physical facts or operational certainties</em>.
+      <!-- Critical Distinction Callout -->
+      <div class="evidence-disclaimer-callout" style="background:#FFF9F5; border:1px solid #F0D5C9; border-radius:6px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
+        <span style="font-size:1rem;">ℹ️</span>
+        <div style="font-size:0.74rem; color:var(--ink-secondary); line-height:1.4;">
+          <strong style="color:var(--ink-primary);">Attribution Boundary:</strong>
+          Observed evidence contains verified physical logs and sensor telemetry. AI interpretations represent probabilistic hypothesis correlations derived from multi-signal clustering.
         </div>
       </div>
     </section>
 
-    <!-- SECTION 3: VISUAL EVIDENCE CHAIN -->
-    <section class="evidence-chain-section" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:22px; margin-bottom:24px; box-shadow:var(--shadow-sm);">
-      <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
-        <span class="badge-icon">⛓️</span>
-        <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
-          DIRECTIONAL EVIDENCE CHAIN (CAUSAL FORMATION PROGRESSION)
-        </span>
-      </div>
-
-      <div class="evidence-chain-flow" id="evidenceChainContainer" style="display:flex; align-items:stretch; justify-content:space-between; gap:10px; overflow-x:auto;">
-        <!-- Dynamically rendered by evidence.js -->
-      </div>
-    </section>
-
-    <!-- SECTION 5: INTERACTIVE VISUAL RELATIONSHIP GRAPH -->
-    <section class="evidence-graph-section" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:22px; margin-bottom:24px; box-shadow:var(--shadow-sm);">
+    <!-- SOURCE EVIDENCE REGISTRY & RECORDS (PRIMARY WORKSPACE) -->
+    <section class="source-evidence-section es-card" style="margin-bottom:24px;">
       <div class="section-badge-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span class="badge-icon">🕸️</span>
-          <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
-            INTERACTIVE EVIDENCE RELATIONSHIP GRAPH
-          </span>
-        </div>
-        <div class="font-mono text-muted" style="font-size:0.72rem;">
-          Click any node to highlight connections and inspect supporting records
-        </div>
-      </div>
-
-      <!-- Graph Viewport with relative SVG overlay -->
-      <div class="graph-viewport-relative" style="position:relative; width:100%; min-height:280px; background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:16px; box-sizing:border-box;">
-        <svg id="evidenceGraphSvg" class="evidence-graph-svg-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></svg>
-        <div id="evidenceGraphContainer" class="evidence-graph-nodes-container" style="position:relative; z-index:2; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
-          <!-- Dynamically populated by evidence.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- TWO-COLUMN: SECTION 6 (CONFIDENCE & COHERENCE) + SECTION 7 (CAUSAL PILLARS) -->
-    <div class="evidence-metrics-split-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px;">
-      
-      <!-- SECTION 6: Confidence & Coherence Explainability Panel -->
-      <section class="explainability-panel-card" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:22px; box-shadow:var(--shadow-sm);">
-        <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
-          <span class="badge-icon">🎯</span>
-          <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
-            CONFIDENCE & PATTERN COHERENCE PANEL
-          </span>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:16px;">
-          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:12px;">
-            <div class="font-mono text-muted" style="font-size:0.68rem;">EVIDENCE CONFIDENCE</div>
-            <div class="font-mono" style="font-size:1.6rem; font-weight:800; color:var(--color-rust, #C85A32);" id="confidenceMetricVal">84%</div>
-            <div style="font-size:0.72rem; color:var(--ink-secondary); margin-top:2px;">Multi-stream signal correlation</div>
-          </div>
-          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:12px;">
-            <div class="font-mono text-muted" style="font-size:0.68rem;">PATTERN COHERENCE</div>
-            <div class="font-mono" style="font-size:1.6rem; font-weight:800; color:var(--intel-primary, #1B4332);" id="patternCoherenceVal">91%</div>
-            <div style="font-size:0.72rem; color:var(--ink-secondary); margin-top:2px;">Cross-silo physical alignment</div>
-          </div>
-          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:12px;">
-            <div class="font-mono text-muted" style="font-size:0.68rem;">SIGNAL AGREEMENT</div>
-            <div class="font-mono" style="font-size:1.6rem; font-weight:800; color:var(--intel-primary, #1B4332);" id="signalAgreementVal">87%</div>
-            <div style="font-size:0.72rem; color:var(--ink-secondary); margin-top:2px;">Consensus across sensors & logs</div>
-          </div>
-          <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:12px;">
-            <div class="font-mono text-muted" style="font-size:0.68rem;">TEMPORAL CONSISTENCY</div>
-            <div class="font-mono" style="font-size:1.6rem; font-weight:800; color:var(--intel-primary, #1B4332);" id="temporalConsistencyVal">89%</div>
-            <div style="font-size:0.72rem; color:var(--ink-secondary); margin-top:2px;">Stability across observation window</div>
-          </div>
-        </div>
-
-        <div style="background:var(--bg-canvas, #FAF8F5); border-left:3px solid var(--intel-primary); padding:10px 12px; border-radius:4px; font-size:0.78rem; color:var(--ink-secondary); line-height:1.45;" id="confidenceExplanationText">
-          "Confidence increases when independent signals converge on the same location, pattern, and time window."
-        </div>
-        <div style="margin-top:8px; font-size:0.68rem; color:var(--ink-muted); font-family:var(--font-mono);">
-          * Continuous multi-modal evidence attribution model.
-        </div>
-      </section>
-
-      <!-- SECTION 7: Causal Pillars (Why this matters) -->
-      <section class="causal-pillars-card" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:22px; box-shadow:var(--shadow-sm);">
-        <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
-          <span class="badge-icon">⚖️</span>
-          <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
-            CAUSAL PILLARS — WHY THIS MATTERS
-          </span>
-        </div>
-        <p style="font-size:0.82rem; color:var(--ink-secondary); margin:0 0 14px 0;">
-          EarlySight maps multi-signal observations across four physical and operational dimensions directly into the risk score:
-        </p>
-
-        <div id="causalPillarsGrid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
-          <!-- Dynamically populated by evidence.js -->
-        </div>
-      </section>
-    </div>
-
-    <!-- SECTION 9: EVIDENCE TIMELINE PROGRESSION -->
-    <section class="evidence-timeline-section" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:22px; margin-bottom:24px; box-shadow:var(--shadow-sm);">
-      <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
-        <span class="badge-icon">⏱️</span>
-        <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
-          CHRONOLOGICAL EVIDENCE PROGRESSION (DAY 1 ➔ DAY 10)
-        </span>
-      </div>
-
-      <div class="evidence-timeline-scroll-strip" id="evidenceTimelineTrack" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
-        <!-- Dynamically rendered by evidence.js -->
-      </div>
-    </section>
-
-    <!-- SECTION 4 & 10: SOURCE EVIDENCE CARDS & FILTER CONTROLS -->
-    <section class="source-evidence-section" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:22px; margin-bottom:24px; box-shadow:var(--shadow-sm);">
-      <div class="section-badge-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
         <div style="display:flex; align-items:center; gap:8px;">
           <span class="badge-icon">🗂️</span>
           <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
@@ -368,8 +232,8 @@
         </div>
       </div>
 
-      <!-- Filters Bar (Section 10) -->
-      <div class="evidence-filters-bar" style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:12px 16px; margin-bottom:18px; display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+      <!-- Filters Toolbar -->
+      <div class="es-toolbar font-mono" style="margin-bottom:16px; flex-wrap:wrap; gap:10px; align-items:center;">
         
         <!-- Search Input -->
         <div style="flex:1; min-width:200px;">
@@ -378,7 +242,7 @@
 
         <!-- Evidence Type Filter -->
         <div>
-          <select id="evidenceTypeFilter" class="filter-select font-mono" style="padding:6px 10px; border:1px solid var(--border-subtle); border-radius:4px; font-size:0.75rem; background:#FFFFFF;">
+          <select id="evidenceTypeFilter" class="es-select font-mono" style="font-size:0.75rem;">
             <option value="all">Type: All Evidence</option>
             <option value="complaint">Complaint</option>
             <option value="maintenance">Maintenance Report</option>
@@ -391,7 +255,7 @@
 
         <!-- Location Filter -->
         <div>
-          <select id="evidenceLocationFilter" class="filter-select font-mono" style="padding:6px 10px; border:1px solid var(--border-subtle); border-radius:4px; font-size:0.75rem; background:#FFFFFF;">
+          <select id="evidenceLocationFilter" class="es-select font-mono" style="font-size:0.75rem;">
             <option value="all">Zone: All Locations</option>
             <option value="block-a">Block A / Trench 4B</option>
             <option value="block-c">Block C / Press Station 2</option>
@@ -401,7 +265,7 @@
 
         <!-- Severity Filter -->
         <div>
-          <select id="evidenceSeverityFilter" class="filter-select font-mono" style="padding:6px 10px; border:1px solid var(--border-subtle); border-radius:4px; font-size:0.75rem; background:#FFFFFF;">
+          <select id="evidenceSeverityFilter" class="es-select font-mono" style="font-size:0.75rem;">
             <option value="all">Severity: All</option>
             <option value="critical">Critical</option>
             <option value="high">High</option>
@@ -412,7 +276,7 @@
 
         <!-- Relevance Filter -->
         <div>
-          <select id="evidenceRelevanceFilter" class="filter-select font-mono" style="padding:6px 10px; border:1px solid var(--border-subtle); border-radius:4px; font-size:0.75rem; background:#FFFFFF;">
+          <select id="evidenceRelevanceFilter" class="es-select font-mono" style="font-size:0.75rem;">
             <option value="all">Relevance: All</option>
             <option value="high">High</option>
             <option value="medium">Medium</option>
@@ -422,7 +286,7 @@
 
         <!-- Linked Risk Filter -->
         <div>
-          <select id="evidenceRiskFilter" class="filter-select font-mono" style="padding:6px 10px; border:1px solid var(--border-subtle); border-radius:4px; font-size:0.75rem; background:#FFFFFF;">
+          <select id="evidenceRiskFilter" class="es-select font-mono" style="font-size:0.75rem;">
             <option value="all">Risk: All Linked Risks</option>
             <option value="RSK-001">RSK-001 (Water Infra)</option>
             <option value="RSK-002">RSK-002 (Valve Cavitation)</option>
@@ -432,31 +296,150 @@
 
         <!-- Reset Button -->
         <div>
-          <button id="btnResetEvidenceFilters" class="btn-filter-reset font-mono" style="background:#FFFFFF; border:1px solid var(--border-subtle); border-radius:4px; padding:6px 12px; font-size:0.75rem; font-weight:600; cursor:pointer;">
+          <button id="btnResetEvidenceFilters" class="es-btn es-btn-secondary font-mono" style="padding:6px 12px; font-size:0.75rem;">
             Reset Filters
           </button>
         </div>
       </div>
 
       <!-- Source Evidence Cards Grid -->
-      <div id="sourceEvidenceCardsGrid" class="source-evidence-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px;">
+      <div id="sourceEvidenceCardsGrid" class="source-evidence-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:14px;">
         <!-- Dynamically rendered by evidence.js -->
       </div>
     </section>
 
+    <!-- COLLAPSIBLE SECONDARY DETAILS: Deep Forensic Graph, Chain, Coherence & Progression -->
+    <div id="evidenceSecondaryDetails" style="display:none;">
+
+      <!-- SECTION 3: VISUAL EVIDENCE CHAIN -->
+      <section class="evidence-chain-section es-card" style="margin-bottom:24px;">
+        <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+          <span class="badge-icon">⛓️</span>
+          <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
+            DIRECTIONAL EVIDENCE CHAIN (CAUSAL FORMATION PROGRESSION)
+          </span>
+        </div>
+
+        <div class="evidence-chain-flow" id="evidenceChainContainer" style="display:flex; align-items:stretch; justify-content:space-between; gap:10px; overflow-x:auto;">
+          <!-- Dynamically rendered by evidence.js -->
+        </div>
+      </section>
+
+      <!-- SECTION 5: INTERACTIVE VISUAL RELATIONSHIP GRAPH -->
+      <section class="evidence-graph-section es-card" style="margin-bottom:24px;">
+        <div class="section-badge-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="badge-icon">🕸️</span>
+            <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
+              INTERACTIVE EVIDENCE RELATIONSHIP GRAPH
+            </span>
+          </div>
+          <div class="font-mono text-muted" style="font-size:0.72rem;">
+            Click any node to highlight connections and inspect supporting records
+          </div>
+        </div>
+
+        <!-- Investigation Map Radial Relationship Graph -->
+        <div id="forensicInvestigationGraphContainer" style="margin-bottom: 16px;"></div>
+
+        <!-- Graph Viewport with relative SVG overlay -->
+        <div class="graph-viewport-relative" style="position:relative; width:100%; min-height:280px; background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:16px; box-sizing:border-box;">
+          <svg id="evidenceGraphSvg" class="evidence-graph-svg-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></svg>
+          <div id="evidenceGraphContainer" class="evidence-graph-nodes-container" style="position:relative; z-index:2; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+            <!-- Dynamically populated by evidence.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TWO-COLUMN: CONFIDENCE & COHERENCE + CAUSAL PILLARS -->
+      <div class="evidence-metrics-split-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px; margin-bottom:24px;">
+        
+        <!-- Confidence & Coherence Explainability Panel -->
+        <section class="explainability-panel-card es-card">
+          <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+            <span class="badge-icon">🎯</span>
+            <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
+              CONFIDENCE & PATTERN COHERENCE PANEL
+            </span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:14px;">
+            <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:10px;">
+              <div class="font-mono text-muted" style="font-size:0.65rem;">EVIDENCE CONFIDENCE</div>
+              <div class="font-mono" style="font-size:1.45rem; font-weight:800; color:var(--color-rust, #C85A32);" id="confidenceMetricVal">84%</div>
+              <div style="font-size:0.7rem; color:var(--ink-secondary); margin-top:2px;">Multi-stream signal correlation</div>
+            </div>
+            <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:10px;">
+              <div class="font-mono text-muted" style="font-size:0.65rem;">PATTERN COHERENCE</div>
+              <div class="font-mono" style="font-size:1.45rem; font-weight:800; color:var(--intel-primary, #1B4332);" id="patternCoherenceVal">91%</div>
+              <div style="font-size:0.7rem; color:var(--ink-secondary); margin-top:2px;">Cross-silo physical alignment</div>
+            </div>
+            <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:10px;">
+              <div class="font-mono text-muted" style="font-size:0.65rem;">SIGNAL AGREEMENT</div>
+              <div class="font-mono" style="font-size:1.45rem; font-weight:800; color:var(--intel-primary, #1B4332);" id="signalAgreementVal">87%</div>
+              <div style="font-size:0.7rem; color:var(--ink-secondary); margin-top:2px;">Consensus across sensors & logs</div>
+            </div>
+            <div style="background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle); border-radius:6px; padding:10px;">
+              <div class="font-mono text-muted" style="font-size:0.65rem;">TEMPORAL CONSISTENCY</div>
+              <div class="font-mono" style="font-size:1.45rem; font-weight:800; color:var(--intel-primary, #1B4332);" id="temporalConsistencyVal">89%</div>
+              <div style="font-size:0.7rem; color:var(--ink-secondary); margin-top:2px;">Stability across observation window</div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-canvas, #FAF8F5); border-left:3px solid var(--intel-primary); padding:8px 12px; border-radius:4px; font-size:0.75rem; color:var(--ink-secondary); line-height:1.45;" id="confidenceExplanationText">
+            "Confidence increases when independent signals converge on the same location, pattern, and time window."
+          </div>
+        </section>
+
+        <!-- Causal Pillars (Why this matters) -->
+        <section class="causal-pillars-card es-card">
+          <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+            <span class="badge-icon">⚖️</span>
+            <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
+              CAUSAL PILLARS — WHY THIS MATTERS
+            </span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--ink-secondary); margin:0 0 12px 0;">
+            Multi-signal observations mapped directly into the risk severity model:
+          </p>
+
+          <div id="causalPillarsGrid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
+            <!-- Dynamically populated by evidence.js -->
+          </div>
+        </section>
+      </div>
+
+      <!-- SECTION 9: EVIDENCE TIMELINE PROGRESSION -->
+      <section class="evidence-timeline-section es-card" style="margin-bottom:24px;">
+        <div class="section-badge-header" style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+          <span class="badge-icon">⏱️</span>
+          <span class="badge-title font-mono" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; color:var(--intel-primary, #1B4332);">
+            CHRONOLOGICAL EVIDENCE PROGRESSION (DAY 1 ➔ DAY 10)
+          </span>
+        </div>
+
+        <div class="evidence-timeline-scroll-strip" id="evidenceTimelineTrack" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
+          <!-- Dynamically rendered by evidence.js -->
+        </div>
+      </section>
+
+    </div>
+
     <!-- Bottom Navigation Callout Bar -->
-    <nav class="evidence-bottom-nav" style="background:#FFFFFF; border:1px solid var(--border-subtle, #E4E0D8); border-radius:8px; padding:16px 22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+    <nav class="evidence-bottom-nav es-toolbar" style="margin-top:20px; justify-content:space-between; flex-wrap:wrap; gap:12px;">
       <div class="bottom-nav-left">
         <span class="font-mono text-muted" style="font-size:0.75rem;">EARLYSIGHT OPERATIONAL WORKFLOW:</span>
         <span class="font-mono text-rust" style="font-weight:700; margin-left:8px;">STAGE 05 COMPLETE (EVIDENCE AUDIT VERIFIED)</span>
       </div>
-      <div class="bottom-nav-links" style="display:flex; gap:10px;">
-        <a href="signals.html" class="btn-nav-outline font-mono">Signals Registry ↗</a>
-        <a href="risks.html" class="btn-nav-outline font-mono">Emerging Risks ↗</a>
-        <a href="map.html" class="btn-nav-outline font-mono">Operational Map ↗</a>
-        <a href="timeline.html" class="btn-nav-outline font-mono">Trends & Timeline ↗</a>
+      <div class="bottom-nav-links" style="display:flex; gap:8px;">
+        <a href="signals.html" class="es-btn es-btn-secondary font-mono" style="font-size:0.75rem;">Signals Registry ↗</a>
+        <a href="risks.html" class="es-btn es-btn-secondary font-mono" style="font-size:0.75rem;">Emerging Risks ↗</a>
+        <a href="map.html" class="es-btn es-btn-secondary font-mono" style="font-size:0.75rem;">Operational Map ↗</a>
+        <a href="timeline.html" class="es-btn es-btn-secondary font-mono" style="font-size:0.75rem;">Trends & Timeline ↗</a>
       </div>
     </nav>
+
+  </main>
 
   </main>
 

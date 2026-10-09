@@ -1699,90 +1699,43 @@
   <!-- Main Container -->
   <main class="risks-page-container">
 
-    <!-- EarlySight Core Story Workflow Ribbon -->
-    <div class="risk-workflow-ribbon" aria-label="EarlySight Intelligence Pipeline">
-      <span class="workflow-ribbon-tag">EarlySight Workflow:</span>
-      <div class="workflow-steps">
-        <span class="workflow-step">01. Scattered Signals</span>
-        <span class="workflow-arrow">&rarr;</span>
-        <span class="workflow-step">02. Detected Pattern</span>
-        <span class="workflow-arrow">&rarr;</span>
-        <span class="workflow-step active">03. Emerging Risk</span>
-        <span class="workflow-arrow">&rarr;</span>
-        <span class="workflow-step active">04. Risk Score (0–100)</span>
-        <span class="workflow-arrow">&rarr;</span>
-        <span class="workflow-step active">05. Priority (P1–P4)</span>
-        <span class="workflow-arrow">&rarr;</span>
-        <span class="workflow-step">06. Recommended Action</span>
+    <!-- Standardized Header -->
+    <div class="es-page-header">
+      <div class="es-header-info">
+        <h1 class="es-page-title">Operational Risk Management & Prioritization</h1>
+        <p class="es-page-desc">Continuous synthesis of weak multi-modal precursors into prioritized operational hazards with quantified trajectories and prescriptive directives.</p>
+      </div>
+      <div class="es-header-actions">
+        <button class="es-btn es-btn-secondary" id="btnToggleRiskMatrix" title="Toggle Severity Matrix and Lifecycle Progression">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+          <span id="toggleMatrixBtnText">Severity Matrix & Lifecycle</span>
+        </button>
+        <div class="es-kpi-strip">
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Active Risks</span>
+            <span class="kpi-val text-vermilion">07</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Emerging</span>
+            <span class="kpi-val text-amber">04</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Critical/High</span>
+            <span class="kpi-val text-rust">05</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Avg Score</span>
+            <span class="kpi-val">71</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Rising</span>
+            <span class="kpi-val text-rust">04</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Part 1: Risk Overview Banner -->
-    <section class="risks-header-banner" aria-labelledby="risksPageHeading">
-      <div class="risks-header-left">
-        <div style="font-family:var(--font-mono); font-size:0.72rem; text-transform:uppercase; color:var(--intel-primary); font-weight:700; letter-spacing:0.5px;">
-          Operational Surveillance // Pre-Failure Synthesis & Prioritization
-        </div>
-        <h1 id="risksPageHeading">Operational Risk Management & Prioritization</h1>
-        <p>
-          Continuous synthesis of weak multi-modal precursors into prioritized operational hazards. Evaluates severity potential against model evidence confidence, tracks trajectory velocity, and delivers prescriptive remediation directives.
-        </p>
-      </div>
-
-      <!-- KPI Summary Strip -->
-      <div class="risks-kpi-strip">
-        <div class="risks-kpi-chip">
-          <span class="kpi-label">Active Risks</span>
-          <span class="kpi-val text-vermilion">07 Active</span>
-        </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-label">Emerging Risks</span>
-          <span class="kpi-val text-amber">04 Emerging</span>
-        </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-label">Critical / High</span>
-          <span class="kpi-val text-rust">05 Hazards</span>
-        </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-label">Avg Risk Score</span>
-          <span class="kpi-val">71 / 100</span>
-        </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-label">Increasing Trend</span>
-          <span class="kpi-val text-rust">04 Rising</span>
-        </div>
-        <div class="risks-kpi-chip">
-          <span class="kpi-label">Resolved</span>
-          <span class="kpi-val text-forest">02 Mitigated</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Part 11: Attention Needed (Operational Prioritization Section) -->
-    <section class="attention-needed-section" aria-labelledby="attentionHeading">
-      <div class="attention-header-row">
-        <div class="attention-title-group">
-          <span class="indicator-dot dot-vermilion"></span>
-          <h2 id="attentionHeading">Attention Needed // What Should I Look At First?</h2>
-        </div>
-        <span class="attention-badge">Top Operational Priorities (P1 / P2)</span>
-      </div>
-      <div class="attention-grid" id="riskAttentionList">
-        <!-- Rendered dynamically -->
-      </div>
-    </section>
-
-    <!-- Operational Risk Severity Matrix (Likelihood vs Severity) -->
-    <section class="risk-matrix-wrapper" id="riskSeverityMatrix" aria-label="Risk Severity Matrix">
-      <!-- Rendered dynamically -->
-    </section>
-
-    <!-- Risk Progression Lifecycle -->
-    <section class="causal-pipeline-container" id="riskProgressionTimeline" style="margin-bottom:20px;" aria-label="Risk Progression Lifecycle">
-      <!-- Rendered dynamically -->
-    </section>
-
-    <!-- Part 10: Multi-Variable Risk Filter Bar -->
+    <!-- Part 10: Multi-Variable Risk Filter Bar (Organized Toolbar) -->
     <section class="risks-filter-card" aria-label="Operational Risk Filters">
       <div class="filter-grid">
         <input 
@@ -1856,10 +1809,40 @@
       </div>
     </section>
 
-    <!-- Part 2: Risk Cards Grid -->
+    <!-- Living Risk Trajectory Visualization Container -->
+    <div id="livingRiskTrajectoryContainer"></div>
+
+    <!-- Part 2: Primary Content — Two-Column Risk Cards Grid -->
     <section class="risks-cards-grid" id="risksGridContainer" aria-label="Operational Risk Cards">
       <!-- Rendered dynamically by risks-entry.js -->
     </section>
+
+    <!-- Secondary Details: Collapsible Severity Matrix & Lifecycle Progression -->
+    <div id="risksSecondaryDetails" style="display: none; margin-top: 24px;">
+      <!-- Part 11: Attention Needed (Operational Prioritization Section) -->
+      <section class="attention-needed-section" aria-labelledby="attentionHeading">
+        <div class="attention-header-row">
+          <div class="attention-title-group">
+            <span class="indicator-dot dot-vermilion"></span>
+            <h2 id="attentionHeading">Attention Needed // High-Priority Triage</h2>
+          </div>
+          <span class="attention-badge">Top Operational Priorities (P1 / P2)</span>
+        </div>
+        <div class="attention-grid" id="riskAttentionList">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- Operational Risk Severity Matrix (Likelihood vs Severity) -->
+      <section class="risk-matrix-wrapper" id="riskSeverityMatrix" aria-label="Risk Severity Matrix">
+        <!-- Rendered dynamically -->
+      </section>
+
+      <!-- Risk Progression Lifecycle -->
+      <section class="causal-pipeline-container" id="riskProgressionTimeline" style="margin-bottom:20px;" aria-label="Risk Progression Lifecycle">
+        <!-- Rendered dynamically -->
+      </section>
+    </div>
 
   </main>
 

@@ -3,966 +3,806 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EarlySight — AI-Powered Early Warning System for Emerging Problems</title>
-  <meta name="description" content="From scattered signals to actionable early warnings. EarlySight transforms multi-modal operational noise into prioritized, auditable risk alerts.">
+  <title>EarlySight — See Problems Early. Take Action Sooner.</title>
+  <meta name="description" content="EarlySight helps organizations detect emerging problems before they become serious — using AI to connect signals, find patterns and guide the right actions.">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="earlysight-homepage" data-page="homepage">
 
-  <!-- Top Enterprise Navigation Header -->
-  <header class="site-header">
-    <a href="#" class="brand-container">
-      <div class="brand-logo-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
-          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
-          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
-          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <span class="brand-title">EarlySight</span>
-        <span class="brand-subtitle-badge">Operational Intelligence</span>
-      </div>
-    </a>
+  <!-- Header and Navigation -->
+  <header class="home-header" id="homeHeader">
+    <div class="home-header-inner">
+      <a href="index.html" class="home-brand-link" aria-label="EarlySight Home">
+        <div class="home-brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" stroke="#087E8B" stroke-width="2" stroke-dasharray="3 3"/>
+            <circle cx="16" cy="16" r="8" stroke="#087E8B" stroke-width="1.8"/>
+            <circle cx="16" cy="16" r="3.5" fill="#087E8B"/>
+            <line x1="16" y1="16" x2="25" y2="9" stroke="#087E8B" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="home-brand-name">EarlySight</span>
+        <span class="home-brand-tag">EARLY WARNING AI</span>
+      </a>
 
-    <div class="view-switcher-pill">
-      <button class="view-switch-btn active" id="viewSwitchHero">Startup Narrative</button>
-      <button class="view-switch-btn" id="viewSwitchDash">Main Dashboard</button>
-      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>Multi-Org Workspaces &rarr;</span>
-      </a>
-      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-vermilion"></span>
-        <span>Action Center &rarr;</span>
-      </a>
-      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-emerald"></span>
-        <span>Impact Monitoring &rarr;</span>
-      </a>
-      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>AI Copilot</span>
-      </a>
-      <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-amber"></span>
-        <span>Signal Map &rarr;</span>
-      </a>
-      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-vermilion"></span>
-        <span>Trends & Timeline &rarr;</span>
-      </a>
-      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>Evidence & Explainability &rarr;</span>
-      </a>
+      <!-- Desktop Navigation Links -->
+      <nav class="home-nav-links" aria-label="Main Navigation">
+        <a href="#hero" class="home-nav-item active">Home</a>
+        <a href="#features" class="home-nav-item">Features</a>
+        <a href="#use-cases" class="home-nav-item">Use Cases</a>
+        <a href="#how-it-works" class="home-nav-item">About</a>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="home-header-actions">
+        <a href="workspace.html" class="home-signin-link">Sign In</a>
+        <a href="dashboard.html" class="home-btn-pill-teal" id="headerGetStartedBtn">Get Started</a>
+        <button type="button" class="home-mobile-toggle" id="homeMobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
     </div>
 
-    <nav class="header-nav">
-      <a href="#mainDashboardSection" class="nav-link" id="navLinkDashboard">Main Dashboard</a>
-      <a href="workspace.html" class="nav-link" style="color:var(--tenant-primary, #1D4ED8); font-weight:700;">Workspaces 🏢</a>
-      <a href="actions.html" class="nav-link" style="color:var(--accent-risk); font-weight:700;">Action Center 🎯</a>
-      <a href="impact.html" class="nav-link" style="color:#059669; font-weight:700;">Impact Audit 📊</a>
-      <a href="#aiAssistantBlock" class="nav-link" style="color:var(--accent-teal); font-weight:700;">AI Copilot</a>
-      <a href="map.html" class="nav-link">Signal Map</a>
-      <a href="timeline.html" class="nav-link">Timeline</a>
-      <a href="evidence.html" class="nav-link">Evidence</a>
-      <a href="#pipelineSection" class="nav-link">Architecture</a>
-      <a href="#sandboxSection" class="nav-link">Signal Sandbox</a>
-    </nav>
-
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <div class="header-status-pill">
-        <span class="status-dot-pulse"></span>
-        <span>TELEMETRY ACTIVE</span>
-      </div>
-      <a href="#mainDashboardSection" class="btn-header-cta" id="headerCtaBtn">Enter Dashboard</a>
+    <!-- Mobile Slide-Down Menu -->
+    <div class="home-mobile-menu" id="homeMobileMenu">
+      <a href="#hero" class="home-nav-item">Home</a>
+      <a href="#features" class="home-nav-item">Features</a>
+      <a href="#use-cases" class="home-nav-item">Use Cases</a>
+      <a href="#how-it-works" class="home-nav-item">About</a>
+      <a href="workspace.html" class="home-signin-link" style="padding: 8px 0;">Sign In</a>
+      <a href="dashboard.html" class="home-btn-pill-teal" style="text-align: center;">Get Started</a>
     </div>
   </header>
 
-  <main class="dashboard-page-main" id="mainDashboardPage">
-  <!-- STAGE 1 — Hero Section: Clean Presentation-Ready Landing -->
-  <section class="hero-stage-section" id="heroStage">
-    <div class="hero-container">
-      
-      <!-- 1. Hero Main Text & Actions Header -->
-      <div class="hero-text-block">
-        
-        <!-- Live Early Warning Beacon Focal Pill -->
-        <div class="early-warning-beacon-card revealed" id="heroBeacon">
-          <div class="radar-beacon-icon" aria-hidden="true">
-            <div class="beacon-core"></div>
-            <div class="beacon-wave"></div>
+  <!-- Main Homepage Content -->
+  <main>
+
+    <!-- ==========================================================================
+         HERO SECTION: TWO-COLUMN EDITORIAL SAAS LAYOUT
+         ========================================================================== -->
+    <section class="home-hero-section" id="hero">
+      <div class="home-hero-container">
+
+        <!-- Left Column: Hero Copy & CTA -->
+        <div class="home-hero-left">
+          <div class="home-eyebrow-pill">
+            <span class="home-eyebrow-dot"></span>
+            <span>AI-POWERED EARLY WARNING SYSTEM</span>
           </div>
-          <span class="beacon-text">Early Warning Indicator Active</span>
-          <span class="beacon-leadtime-tag">18d Lead Time</span>
-        </div>
 
-        <!-- System Title & Subtitle Hierarchy -->
-        <div class="hero-title-group revealed" id="heroTitleGroup">
-          <h1 class="hero-brand-name">Detect emerging problems before they escalate<span class="brand-dot">.</span></h1>
-          <p class="hero-system-desc">EARLYSIGHT &bull; AI-Powered Early Warning System for Emerging Problems</p>
-        </div>
+          <h1 class="home-hero-heading">
+            See Problems <span class="home-hl-teal">Early</span>.<br>Take Action <span class="home-hl-lavender">Sooner</span>.
+          </h1>
 
-        <!-- Clean Supporting Statement -->
-        <div class="hero-tagline-container revealed" id="heroTagline">
-          <p class="hero-supporting-text">
-            EarlySight connects scattered operational signals, identifies hidden patterns, and provides evidence-based early warnings for timely action.
+          <p class="home-hero-desc">
+            EarlySight helps organizations detect emerging problems before they become serious — using AI to connect signals, find patterns and guide the right actions.
           </p>
-        </div>
 
-        <!-- Primary Actions Row -->
-        <div class="hero-actions-container revealed" id="heroActions">
-          <div class="button-row">
-            <button class="btn-primary-explore" id="btnExplore">
-              <span>Explore EarlySight</span>
-              <svg class="btn-arrow-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="home-hero-cta-group">
+            <a href="dashboard.html" class="home-btn-primary-explore" id="heroStartExploringBtn">
+              <span>Start Exploring</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
+            </a>
+
+            <button type="button" class="home-btn-secondary-demo" id="btnWatchDemo">
+              <span class="home-play-icon">&#9654;</span>
+              <span>Watch Demo</span>
             </button>
-            
-            <button class="btn-secondary-replay" id="btnReplay" title="Replay Startup Animation Sequence">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                <path d="M3 3v5h5"/>
-              </svg>
-              <span>Replay Sequence</span>
-            </button>
+          </div>
+
+          <!-- Five Compact Audience Labels -->
+          <div class="home-audience-container">
+            <span class="home-audience-title">Trusted across operational environments:</span>
+            <div class="home-audience-pills">
+              <!-- Colleges -->
+              <a href="workspace.html?org=org-abc-college" class="home-audience-pill" title="Higher Education Campuses">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+                <span>Colleges</span>
+              </a>
+
+              <!-- Hospitals -->
+              <a href="workspace.html?org=org-city-hospital" class="home-audience-pill" title="Tertiary Healthcare Facilities">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
+                  <path d="M9 10h6M12 7v6"></path>
+                </svg>
+                <span>Hospitals</span>
+              </a>
+
+              <!-- Companies -->
+              <a href="workspace.html?org=org-apex-industrial" class="home-audience-pill" title="Corporate Enterprises">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                  <path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"></path>
+                </svg>
+                <span>Companies</span>
+              </a>
+
+              <!-- Factories -->
+              <a href="workspace.html?org=org-apex-industrial" class="home-audience-pill" title="Manufacturing & Industrial Plants">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 20h20M5 20V8l6 4V8l6 4v8"></path>
+                  <path d="M18 4h2v4h-2z"></path>
+                </svg>
+                <span>Factories</span>
+              </a>
+
+              <!-- Communities -->
+              <a href="workspace.html?org=org-green-residency" class="home-audience-pill" title="Residential & Municipal Communities">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Communities</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Product Dashboard Preview -->
+        <div class="home-hero-right">
+          <!-- Translucent Organic Background Shapes -->
+          <div class="home-shape-blob home-blob-aqua" aria-hidden="true"></div>
+          <div class="home-shape-blob home-blob-lavender" aria-hidden="true"></div>
+          <div class="home-shape-blob home-blob-blue" aria-hidden="true"></div>
+
+          <!-- Realistic Dashboard Card -->
+          <div class="home-dashboard-preview-card" id="dashboardPreviewCard">
+            <!-- Window Chrome -->
+            <div class="home-preview-chrome">
+              <div class="home-chrome-dots" aria-hidden="true">
+                <span class="home-chrome-dot red"></span>
+                <span class="home-chrome-dot yellow"></span>
+                <span class="home-chrome-dot green"></span>
+              </div>
+              <div class="home-chrome-title-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>earlysight.app / overview</span>
+              </div>
+              <div class="home-chrome-status">
+                <span class="home-pulse-indicator"></span>
+                <span>LIVE TELEMETRY ACTIVE</span>
+              </div>
+            </div>
+
+            <!-- Preview Interior Layout -->
+            <div class="home-preview-body">
+              <!-- Compact Left Sidebar -->
+              <aside class="home-preview-sidebar">
+                <div class="home-mini-logo" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" fill="none">
+                    <circle cx="16" cy="16" r="14" stroke="#087E8B" stroke-width="2" stroke-dasharray="3 3"/>
+                    <circle cx="16" cy="16" r="8" stroke="#087E8B" stroke-width="1.8"/>
+                    <circle cx="16" cy="16" r="3.5" fill="#087E8B"/>
+                  </svg>
+                </div>
+                <div class="home-mini-nav">
+                  <div class="home-mini-nav-icon active" title="Overview">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  </div>
+                  <div class="home-mini-nav-icon" title="Signals">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"></path></svg>
+                  </div>
+                  <div class="home-mini-nav-icon" title="Risks">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                  </div>
+                  <div class="home-mini-nav-icon" title="Map">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon></svg>
+                  </div>
+                  <div class="home-mini-nav-icon" title="Actions">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  </div>
+                </div>
+                <div class="home-mini-tenant-badge" title="Tenant: ABC College">ABC</div>
+              </aside>
+
+              <!-- Main Dashboard Canvas Area -->
+              <div class="home-preview-main">
+                <!-- Overview Header -->
+                <div class="home-preview-header">
+                  <div>
+                    <h2 class="home-preview-heading">Operational Intelligence Overview</h2>
+                    <p class="home-preview-subheading">Continuous multi-modal precursor detection & risk synthesis</p>
+                  </div>
+                  <span class="home-preview-confidence-badge">94.8% AI CONFIDENCE</span>
+                </div>
+
+                <!-- 3 KPI Cards Row -->
+                <div class="home-preview-kpi-row">
+                  <!-- Active Signals -->
+                  <div class="home-preview-kpi-card">
+                    <div class="home-kpi-top">
+                      <span>Active Signals</span>
+                      <span class="home-kpi-dot teal"></span>
+                    </div>
+                    <span class="home-kpi-value" style="color:var(--home-primary-teal);">128</span>
+                    <span class="home-kpi-meta">+14% in 24h &bull; 6 Modalities</span>
+                  </div>
+
+                  <!-- Open Risks -->
+                  <div class="home-preview-kpi-card">
+                    <div class="home-kpi-top">
+                      <span>Open Risks</span>
+                      <span class="home-kpi-dot amber"></span>
+                    </div>
+                    <span class="home-kpi-value" style="color:var(--home-peach-dark);">4</span>
+                    <span class="home-kpi-meta">1 Critical &bull; 14d Lead Time</span>
+                  </div>
+
+                  <!-- Actions Pending -->
+                  <div class="home-preview-kpi-card">
+                    <div class="home-kpi-top">
+                      <span>Actions Pending</span>
+                      <span class="home-kpi-dot lavender"></span>
+                    </div>
+                    <span class="home-kpi-value" style="color:var(--home-lavender-dark);">6</span>
+                    <span class="home-kpi-meta">2 In Progress &bull; 1 Verified</span>
+                  </div>
+                </div>
+
+                <!-- Emerging Risk Trajectory Chart Card -->
+                <div class="home-preview-chart-card">
+                  <div class="home-chart-header">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span class="home-kpi-dot amber"></span>
+                      <span class="home-chart-title">Emerging Risk Trajectory: RSK-001 (Cavitation Risk)</span>
+                    </div>
+                    <span class="home-chart-leadtime">+14 Days Lead Time</span>
+                  </div>
+                  
+                  <!-- SVG Risk Trajectory Curve -->
+                  <svg class="home-chart-svg" viewBox="0 0 460 85" fill="none">
+                    <defs>
+                      <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#FFBF91" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Severity horizontal bands -->
+                    <rect x="0" y="65" width="460" height="20" fill="#E4F7F5" opacity="0.35"/>
+                    <rect x="0" y="45" width="460" height="20" fill="#EAF5FC" opacity="0.35"/>
+                    <rect x="0" y="25" width="460" height="20" fill="#FFF1E7" opacity="0.35"/>
+                    <rect x="0" y="0" width="460" height="25" fill="#FDE2E2" opacity="0.35"/>
+                    
+                    <!-- Reference Grid Lines -->
+                    <line x1="0" y1="25" x2="460" y2="25" stroke="#DCE8F0" stroke-dasharray="2 3"/>
+                    <line x1="0" y1="45" x2="460" y2="45" stroke="#DCE8F0" stroke-dasharray="2 3"/>
+                    <line x1="0" y1="65" x2="460" y2="65" stroke="#DCE8F0" stroke-dasharray="2 3"/>
+                    
+                    <!-- Shaded Area Under Curve -->
+                    <path d="M 10 75 Q 120 72 200 58 T 320 30 T 420 18 L 420 85 L 10 85 Z" fill="url(#chartGrad)"/>
+                    
+                    <!-- Trajectory Line -->
+                    <path d="M 10 75 Q 120 72 200 58 T 320 30 T 420 18" stroke="#D97736" stroke-width="2.5" stroke-linecap="round"/>
+                    
+                    <!-- Milestone Precursor Points -->
+                    <circle cx="90" cy="74" r="3.5" fill="#087E8B"/>
+                    <circle cx="200" cy="58" r="3.5" fill="#A992EE"/>
+                    <circle cx="320" cy="30" r="4" fill="#D97736"/>
+                    <circle cx="420" cy="18" r="5" fill="#EF7B7B" stroke="#FFFFFF" stroke-width="2"/>
+                    
+                    <!-- Text Labels -->
+                    <text x="90" y="83" font-size="7" fill="#66839B" text-anchor="middle">P1: Leak</text>
+                    <text x="200" y="52" font-size="7" fill="#66839B" text-anchor="middle">P2: Heat</text>
+                    <text x="320" y="24" font-size="7" fill="#D97736" text-anchor="middle">P3: Vibration</text>
+                    <text x="420" y="12" font-size="8" font-weight="bold" fill="#EF7B7B" text-anchor="middle">Score 86</text>
+                  </svg>
+                </div>
+
+                <!-- Recent Signals List -->
+                <div class="home-preview-signals-card">
+                  <div class="home-signals-header">
+                    <span>Recent Ingested Precursor Signals</span>
+                    <span style="font-size:0.68rem; color:var(--home-text-muted);">Real-time stream</span>
+                  </div>
+                  
+                  <div class="home-signal-row">
+                    <div class="home-signal-left">
+                      <span class="home-signal-code">SIG-W01</span>
+                      <span class="home-signal-desc">Sub-Slab Flange 4B Micro-Weep</span>
+                    </div>
+                    <span class="home-signal-badge home-badge-teal">Acoustic • 1.4 kHz</span>
+                  </div>
+
+                  <div class="home-signal-row">
+                    <div class="home-signal-left">
+                      <span class="home-signal-code">SIG-V04</span>
+                      <span class="home-signal-desc">Secondary Impeller Flutter</span>
+                    </div>
+                    <span class="home-signal-badge home-badge-amber">Vibration • +2.8 mm/s</span>
+                  </div>
+
+                  <div class="home-signal-row">
+                    <div class="home-signal-left">
+                      <span class="home-signal-code">SIG-T02</span>
+                      <span class="home-signal-desc">Heat Exchanger Delta-T Creep</span>
+                    </div>
+                    <span class="home-signal-badge home-badge-lavender">Thermal • +6.2°C</span>
+                  </div>
+                </div>
+
+                <!-- Click Through Deep Link Banner -->
+                <a href="dashboard.html" class="home-preview-footer-action">
+                  <span>Enter Live Operational Dashboard &rarr;</span>
+                </a>
+
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
+    </section>
 
-      <!-- 2. Contained Signal Visualization Stage (Dedicated container below text) -->
-      <div class="hero-visual-stage" id="heroVisualStage">
+    <!-- ==========================================================================
+         KEY FEATURES SECTION: 4-COLUMN BALANCED CARDS WITH SOFT CIRCULAR ICONS
+         ========================================================================== -->
+    <section class="home-features-section" id="features">
+      <div class="home-section-container">
         
-        <!-- Stage Status & Phase Monitor Header -->
-        <div class="visual-stage-header">
-          <div class="phase-monitor-pill" id="phaseMonitorPill">
-            <span class="phase-step-number" id="phaseStepNumber">STAGE 01</span>
-            <span class="phase-step-divider"></span>
-            <span class="phase-step-title" id="phaseStepTitle">SCATTERED SIGNALS</span>
-            <span class="phase-step-divider"></span>
-            <span class="phase-step-desc" id="phaseStepDesc">Fragmented operational indicators emerge</span>
-          </div>
-          
-          <div class="visual-stage-badge">
-            <span class="status-dot-pulse"></span>
-            <span>LIVE TELEMETRY SYNTHESIS</span>
-          </div>
+        <div class="home-section-header">
+          <span class="home-section-eyebrow">KEY FEATURES</span>
+          <h2 class="home-section-heading">From Signals to Smart Decisions</h2>
+          <p class="home-section-subheading">
+            EarlySight turns complex multi-source telemetry into prioritized early warnings and clear preventive actions.
+          </p>
         </div>
 
-        <!-- Canvas & Floating Labels Stage Box (Nodes stay strictly inside) -->
-        <div class="canvas-stage-wrapper">
-          <div class="canvas-container">
-            <canvas id="signalsCanvas"></canvas>
+        <div class="home-features-grid">
+          <!-- 1. Real-Time Monitoring -->
+          <div class="home-feature-card home-feat-teal">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="home-feature-title">Real-Time Monitoring</h3>
+            <p class="home-feature-desc">
+              Track data from multiple sources across your organization — all in one place.
+            </p>
           </div>
-          <div class="signal-labels-overlay" id="signalLabelsOverlay"></div>
-        </div>
 
-        <!-- Animation Timeline Scrubber Bar -->
-        <div class="animation-scrubber-bar" id="heroScrubberBar">
-          <button class="scrubber-control-btn" id="scrubberPlayPause" title="Pause / Resume Animation" aria-label="Pause or Resume Animation">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <rect x="6" y="4" width="4" height="16"/>
-              <rect x="14" y="4" width="4" height="16"/>
-            </svg>
-          </button>
+          <!-- 2. AI-Powered Analysis -->
+          <div class="home-feature-card home-feat-lavender">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </div>
+            <h3 class="home-feature-title">AI-Powered Analysis</h3>
+            <p class="home-feature-desc">
+              Detect patterns, find correlations and spot emerging risks early.
+            </p>
+          </div>
 
-          <div class="scrubber-steps-track">
-            <button class="scrubber-step-pip active" data-step="1" title="01. Scattered Signals: Individual complaints, reports and data">
-              <span class="pip-indicator"></span>
-              <span class="pip-text">1. Scattered Signals</span>
-            </button>
-            <button class="scrubber-step-pip" data-step="2" title="02. Connection: Related information gets connected">
-              <span class="pip-indicator"></span>
-              <span class="pip-text">2. Connection</span>
-            </button>
-            <button class="scrubber-step-pip" data-step="3" title="03. Pattern: A recurring pattern becomes visible">
-              <span class="pip-indicator"></span>
-              <span class="pip-text">3. Pattern</span>
-            </button>
-            <button class="scrubber-step-pip" data-step="4" title="04. Early Warning: An emerging problem is identified">
-              <span class="pip-indicator"></span>
-              <span class="pip-text">4. Early Warning</span>
-            </button>
-            <button class="scrubber-step-pip" data-step="5" title="05. Evidence: The system explains why">
-              <span class="pip-indicator"></span>
-              <span class="pip-text">5. Evidence</span>
-            </button>
-            <button class="scrubber-step-pip" data-step="6" title="06. Action: A responsible team investigates and acts">
-              <span class="pip-indicator"></span>
-              <span class="pip-text">6. Action</span>
-            </button>
-            <button class="scrubber-step-pip" data-step="7" title="07. Verification: The system checks whether the problem actually decreases">
-              <span class="pip-indicator"></span>
-              <span class="pip-text">7. Verification</span>
-            </button>
+          <!-- 3. Risk Prioritization -->
+          <div class="home-feature-card home-feat-peach">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="home-feature-title">Risk Prioritization</h3>
+            <p class="home-feature-desc">
+              Focus on what matters most with intelligent severity and impact assessment.
+            </p>
+          </div>
+
+          <!-- 4. Actionable Insights -->
+          <div class="home-feature-card home-feat-blue">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+            </div>
+            <h3 class="home-feature-title">Actionable Insights</h3>
+            <p class="home-feature-desc">
+              Get clear recommendations and stay ahead with preventive actions.
+            </p>
           </div>
         </div>
 
       </div>
+    </section>
 
-    </div>
-  </section>
+    <!-- ==========================================================================
+         HOW EARLYSIGHT WORKS SECTION: 4 CONNECTED STEPS
+         ========================================================================== -->
+    <section class="home-works-section" id="how-it-works">
+      <div class="home-section-container">
+        
+        <div class="home-section-header">
+          <span class="home-section-eyebrow">PROCESS ARCHITECTURE</span>
+          <h2 class="home-section-heading">How EarlySight Works</h2>
+          <p class="home-section-subheading">
+            A continuous four-stage pipeline that bridges weak indicators to verified operational resolution.
+          </p>
+        </div>
 
-  <!-- STAGE 2 — CROSS-SILO SIGNAL SYNTHESIS (Clean, independent, clearly below hero) -->
-  <section class="synthesis-section" id="synthesisSection">
-    <div class="synthesis-container">
-      
-      <div class="section-header-block">
-        <div class="section-eyebrow">Correlative Intelligence</div>
-        <h2 class="section-title">Cross-Silo Signal Synthesis</h2>
-        <p class="section-subtitle">
-          How EarlySight connects fragmented operational signals across maintenance logs, telemetry sensors, and shift reports to uncover hidden failure patterns weeks before downtime.
-        </p>
+        <div class="home-works-steps-grid">
+          <!-- Step 1 -->
+          <div class="home-step-card">
+            <div class="home-step-top">
+              <span class="home-step-num s1">01</span>
+              <div class="home-step-icon s1">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </div>
+            </div>
+            <h3 class="home-step-title">Collect Signals</h3>
+            <p class="home-step-desc">
+              Ingests raw telemetry, acoustic sensors, SCADA pressure feeds, maintenance tickets, and inspection notes.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="home-step-card">
+            <div class="home-step-top">
+              <span class="home-step-num s2">02</span>
+              <div class="home-step-icon s2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M3 12h3m12 0h3M12 3v3m0 12v3"></path></svg>
+              </div>
+            </div>
+            <h3 class="home-step-title">Connect Patterns</h3>
+            <p class="home-step-desc">
+              Cross-correlates disparate anomalies that appear minor in isolation into coherent causal pattern clusters.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="home-step-card">
+            <div class="home-step-top">
+              <span class="home-step-num s3">03</span>
+              <div class="home-step-icon s3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </div>
+            </div>
+            <h3 class="home-step-title">Detect Risks</h3>
+            <p class="home-step-desc">
+              Calculates composite severity scores, estimates actionable lead times, and flags emerging failure trajectories.
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="home-step-card">
+            <div class="home-step-top">
+              <span class="home-step-num s4">04</span>
+              <div class="home-step-icon s4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+            </div>
+            <h3 class="home-step-title">Take Action</h3>
+            <p class="home-step-desc">
+              Dispatches prescriptive work orders, provides explainable evidence graphs, and verifies post-intervention decay.
+            </p>
+          </div>
+        </div>
+
       </div>
+    </section>
 
-      <!-- Interactive Signal Progression Flow:
-           Signal → Signal → Signal ↓ Pattern Detected ↓ Emerging Risk -->
-      <div class="hero-synthesis-progression" id="heroSynthesisProgression">
-        <div class="progression-eyebrow">
-          <div class="progression-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>Multi-Modal Precursor Flow</span>
-          </div>
-          <span class="progression-sub-note">Click or hover any signal chip to trace evidence correlation</span>
+    <!-- ==========================================================================
+         USE CASES SECTION: 5 COMPACT CARDS
+         ========================================================================== -->
+    <section class="home-usecases-section" id="use-cases">
+      <div class="home-section-container">
+        
+        <div class="home-section-header">
+          <span class="home-section-eyebrow">SECTORS &amp; ENVIRONMENTS</span>
+          <h2 class="home-section-heading">Built for High-Stakes Operations</h2>
+          <p class="home-section-subheading">
+            Pre-configured operational templates with dedicated, air-gapped workspaces for each industry.
+          </p>
         </div>
 
-        <!-- Clean Horizontal Flow on Desktop / Stacks on Mobile -->
-        <div class="progression-signals-row">
-          <div class="progression-signal-chip" id="chip-SIG-02" data-sig-id="SIG-02">
-            <div class="chip-type-tag" style="color:#B87333;">
-              <span class="chip-dot" style="background:#B87333;"></span>
-              <span>Maintenance Report</span>
-            </div>
-            <div class="chip-name">Location: Block A</div>
-            <div class="chip-meta">Freq: Increasing • Related</div>
-          </div>
-
-          <div class="progression-arrow-h" aria-hidden="true">&rarr;</div>
-
-          <div class="progression-signal-chip" id="chip-SIG-06" data-sig-id="SIG-06">
-            <div class="chip-type-tag" style="color:#059669;">
-              <span class="chip-dot" style="background:#059669;"></span>
-              <span>Vibration Sensor</span>
-            </div>
-            <div class="chip-name">Location: Shaft 4 (Block A)</div>
-            <div class="chip-meta">Freq: +2.84&sigma; • Related</div>
-          </div>
-
-          <div class="progression-arrow-h" aria-hidden="true">&rarr;</div>
-
-          <div class="progression-signal-chip" id="chip-SIG-01" data-sig-id="SIG-01">
-            <div class="chip-type-tag" style="color:#C85A32;">
-              <span class="chip-dot" style="background:#C85A32;"></span>
-              <span>Shift Complaint</span>
-            </div>
-            <div class="chip-name">Location: Bay 4 / Cell C</div>
-            <div class="chip-meta">Operator Hum • Related</div>
-          </div>
-        </div>
-
-        <!-- Vertical connector down -->
-        <div class="progression-down-connector" aria-hidden="true">
-          <div class="connector-line"></div>
-          <div class="connector-arrow">&darr;</div>
-        </div>
-
-        <!-- Pattern Detected Card -->
-        <div class="progression-pattern-node" id="patternNodeProgression">
-          <div class="pattern-node-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-            <span>Emerging Pattern: Cross-Departmental Resonant Degradation</span>
-          </div>
-          <span class="pattern-node-desc">91.4% Coherence Match • Frequency Accelerating</span>
-        </div>
-
-        <!-- Vertical connector down -->
-        <div class="progression-down-connector" aria-hidden="true">
-          <div class="connector-line"></div>
-          <div class="connector-arrow">&darr;</div>
-        </div>
-
-        <!-- Emerging Risk / Early Warning Card -->
-        <div class="progression-risk-node" id="riskNodeProgression">
-          <div class="risk-node-title">
-            <span class="status-dot-pulse"></span>
-            <span>Early Warning: High-Urgency Failure Precursor Identified</span>
-          </div>
-          <span class="risk-node-badge">18d Lead Time Prior to Outage Threshold</span>
-        </div>
-
-        <!-- Vertical connector down -->
-        <div class="progression-down-connector" aria-hidden="true">
-          <div class="connector-line"></div>
-          <div class="connector-arrow">&darr;</div>
-        </div>
-
-        <!-- Action & Verification Card -->
-        <div class="progression-action-node" id="actionNodeProgression" style="background:#FFFFFF; border:1px solid var(--border-subtle); border-left:4px solid var(--intel-primary); border-radius:8px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; gap:16px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--intel-primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        <div class="home-usecases-grid">
+          <!-- 1. Colleges -->
+          <div class="home-usecase-card">
             <div>
-              <strong style="color:var(--ink-primary); font-size:0.9rem; display:block;">Closed-Loop Action & Verification</strong>
-              <span style="font-size:0.78rem; color:var(--ink-secondary);">Work order assigned • Field remediation executed • Post-fix telemetry verified</span>
+              <div class="home-usecase-icon-box" style="background:var(--home-pale-aqua); color:var(--home-primary-teal);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              </div>
+              <h3 class="home-usecase-title">Colleges &amp; Universities</h3>
+              <p class="home-usecase-desc">
+                Central chiller plants, chemistry fume scrubbers, science lab exhaust, and dormitory water risers.
+              </p>
             </div>
+            <a href="workspace.html?org=org-abc-college" class="home-usecase-link">
+              <span>Explore Workspace</span> &rarr;
+            </a>
           </div>
-          <a href="actions.html" class="btn-primary-explore" style="padding:6px 14px; font-size:0.78rem; text-decoration:none;">View Actions &rarr;</a>
+
+          <!-- 2. Hospitals -->
+          <div class="home-usecase-card">
+            <div>
+              <div class="home-usecase-icon-box" style="background:var(--home-pale-blue); color:var(--home-primary-teal);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path><path d="M9 10h6M12 7v6"></path></svg>
+              </div>
+              <h3 class="home-usecase-title">Hospitals &amp; Healthcare</h3>
+              <p class="home-usecase-desc">
+                Clean-core OR suite differential pressure, medical gases, sterile processing, and emergency switchgear.
+              </p>
+            </div>
+            <a href="workspace.html?org=org-city-hospital" class="home-usecase-link">
+              <span>Explore Workspace</span> &rarr;
+            </a>
+          </div>
+
+          <!-- 3. Companies & Factories -->
+          <div class="home-usecase-card">
+            <div>
+              <div class="home-usecase-icon-box" style="background:var(--home-pale-peach); color:var(--home-peach-dark);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M5 20V8l6 4V8l6 4v8"></path><path d="M18 4h2v4h-2z"></path></svg>
+              </div>
+              <h3 class="home-usecase-title">Companies &amp; Factories</h3>
+              <p class="home-usecase-desc">
+                Semiconductor clean rooms, hydraulic press lines, motor bearing vibration, and manufacturing cooling.
+              </p>
+            </div>
+            <a href="workspace.html?org=org-apex-industrial" class="home-usecase-link">
+              <span>Explore Workspace</span> &rarr;
+            </a>
+          </div>
+
+          <!-- 4. Residential Communities -->
+          <div class="home-usecase-card">
+            <div>
+              <div class="home-usecase-icon-box" style="background:var(--home-pale-lavender); color:var(--home-lavender-dark);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              </div>
+              <h3 class="home-usecase-title">Residential Communities</h3>
+              <p class="home-usecase-desc">
+                High-rise elevator traction motors, domestic pressure boosters, fire safety lines, and central HVAC.
+              </p>
+            </div>
+            <a href="workspace.html?org=org-green-residency" class="home-usecase-link">
+              <span>Explore Workspace</span> &rarr;
+            </a>
+          </div>
+
+          <!-- 5. Public Facilities -->
+          <div class="home-usecase-card">
+            <div>
+              <div class="home-usecase-icon-box" style="background:var(--home-pale-blue); color:#2563EB;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path></svg>
+              </div>
+              <h3 class="home-usecase-title">Public Facilities</h3>
+              <p class="home-usecase-desc">
+                Municipal water treatment, aqueduct conduits, flood defense valves, and transit ventilation fans.
+              </p>
+            </div>
+            <a href="workspace.html?org=org-metro-public" class="home-usecase-link">
+              <span>Explore Workspace</span> &rarr;
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         EXPLORATION HUB: DIRECT ACCESS TO LIVE APPLICATION MODULES
+         ========================================================================== -->
+    <section class="home-works-section" id="explore-hub" style="background:var(--home-bg-secondary);">
+      <div class="home-section-container">
+        
+        <div class="home-section-header">
+          <span class="home-section-eyebrow">LIVE OPERATIONAL MODULES</span>
+          <h2 class="home-section-heading">Explore the EarlySight Platform</h2>
+          <p class="home-section-subheading">
+            Dive directly into each specialized intelligence workstation.
+          </p>
+        </div>
+
+        <div class="home-features-grid">
+          <!-- 1. Signals -->
+          <a href="signals.html" class="home-feature-card home-feat-teal" style="cursor:pointer;">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"></path></svg>
+            </div>
+            <h3 class="home-feature-title">Signals Constellation</h3>
+            <p class="home-feature-desc">128 active multi-modal precursor streams across acoustic, thermal, and vibration channels.</p>
+            <span class="home-usecase-link" style="margin-top:16px;">Open Signals &rarr;</span>
+          </a>
+
+          <!-- 2. Risks -->
+          <a href="risks.html" class="home-feature-card home-feat-peach" style="cursor:pointer;">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path></svg>
+            </div>
+            <h3 class="home-feature-title">Living Risk Trajectories</h3>
+            <p class="home-feature-desc">Predictive multi-horizon curves quantifying failure velocity and 14-day lead-time windows.</p>
+            <span class="home-usecase-link" style="margin-top:16px;">Open Risks &rarr;</span>
+          </a>
+
+          <!-- 3. Facility Map -->
+          <a href="map.html" class="home-feature-card home-feat-blue" style="cursor:pointer;">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon></svg>
+            </div>
+            <h3 class="home-feature-title">Spatial Signal Map</h3>
+            <p class="home-feature-desc">Geospatial facility blueprint with animated telemetry conduits and localized bay alerts.</p>
+            <span class="home-usecase-link" style="margin-top:16px;">Open Map &rarr;</span>
+          </a>
+
+          <!-- 4. Actions -->
+          <a href="actions.html" class="home-feature-card home-feat-lavender" style="cursor:pointer;">
+            <div class="home-feature-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h3 class="home-feature-title">Action Resolution Center</h3>
+            <p class="home-feature-desc">Closed-loop 6-stage prescriptive resolution pipeline with verified audit trails.</p>
+            <span class="home-usecase-link" style="margin-top:16px;">Open Actions &rarr;</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         CLOSING CTA SECTION
+         ========================================================================== -->
+    <section class="home-cta-section">
+      <div class="home-section-container">
+        <div class="home-cta-card">
+          <h2 class="home-cta-heading">Ready to Spot Problems Early?</h2>
+          <p class="home-cta-desc">
+            Experience how EarlySight transforms scattered operational noise into actionable, prioritized early warnings.
+          </p>
+          <div class="home-cta-buttons">
+            <a href="dashboard.html" class="home-btn-pill-teal" style="font-size:1.05rem; padding:14px 32px;">
+              <span>Start Exploring EarlySight</span> &rarr;
+            </a>
+            <a href="workspace.html" class="home-btn-secondary-demo" style="font-size:1.05rem; padding:13px 28px;">
+              <span>View Multi-Org Workspaces</span>
+            </a>
+          </div>
         </div>
       </div>
+    </section>
 
-    </div>
-  </section>
-
-  <!-- STAGE-WISE ARCHITECTURAL PIPELINE SECTION
-       Visually Communicating: Scattered Signals -> Connected Data -> Pattern -> Emerging Risk -> Evidence -> Action -> Verification -->
-  <section class="pipeline-section" id="pipelineSection">
-    
-    <div class="section-header-block">
-      <div class="section-eyebrow">Enterprise Detection Pipeline</div>
-      <h2 class="section-title">The Seven Stages of Pre-Failure Synthesis</h2>
-      <p class="section-subtitle">
-        Catastrophic operational failures don't happen overnight. They send weak, scattered precursors weeks in advance across disconnected systems. EarlySight bridges the silos.
-      </p>
-    </div>
-
-    <!-- 7-Stage Visual Progression Ribbon -->
-    <div class="pipeline-ribbon-container" id="pipelineRibbon"></div>
-
-    <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px 20px; font-size: 0.88rem; color: var(--ink-secondary); margin-bottom: 40px; box-shadow: var(--shadow-sm);" id="pipelineFeatureDesc">
-      <strong>Stage 01 — Scattered Signals:</strong> Click any step above or inspect the live operational indicators below to trace the causal chain.
-    </div>
-
-    <!-- Interactive Live Signal Sandbox & Synthesized Risk Card -->
-    <div id="signalsSection"></div>
-    <div class="sandbox-grid-container" id="sandboxSection">
-      
-      <!-- Left Column: Ingested Operational Signals -->
-      <div class="sandbox-card-panel">
-        <div class="panel-header-row">
-          <div>
-            <h3 class="panel-title-text">Unified Operational Signal Ingestion</h3>
-            <span style="font-size:0.75rem; color:var(--ink-muted);">Click any signal to inspect raw forensic evidence</span>
-          </div>
-          <span class="panel-badge">6 Active Modalities</span>
-        </div>
-
-        <div class="signals-interactive-list" id="signalsListContainer">
-          <!-- Populated dynamically by app.js -->
-        </div>
-      </div>
-
-      <!-- Right Column: Synthesized Emerging Risk Forecast -->
-      <div class="sandbox-card-panel" style="border-top: 3px solid var(--accent-risk);">
-        <div class="panel-header-row">
-          <div>
-            <h3 class="panel-title-text">Synthesized Early Warning</h3>
-            <span style="font-size:0.75rem; color:var(--ink-muted);">Algorithmic causal pattern resolution</span>
-          </div>
-          <span class="panel-badge" style="color:var(--accent-risk); background:var(--accent-risk-light); font-weight:700;">PROACTIVE ALERT</span>
-        </div>
-
-        <div id="riskSynthesisContainer">
-          <!-- Populated dynamically by app.js -->
-        </div>
-      </div>
-
-    </div>
-
-  </section>
+  </main>
 
   <!-- ==========================================================================
-       STAGE 3 — MAIN DASHBOARD SECTION
-       Sections: Overview, Active Early Warnings, Emerging Issues, Verified Alerts,
-                 Issues Under Investigation, Resolved Issues, Impact Monitoring
-       ========================================================================== -->
-  <section class="main-dashboard-section" id="mainDashboardSection">
-    
-    <div class="dash-header-block">
-      <div class="dash-title-group">
-        <div class="section-eyebrow">Good morning</div>
-        <h2>Operational Intelligence Overview</h2>
-        <p class="dash-subtitle-text">Multi-modal pre-failure monitoring, cross-silo clustering, and actionable early warnings.</p>
-      </div>
-
-      <div class="header-status-pill">
-        <span class="status-dot-pulse"></span>
-        <span>342 ASSETS MONITORED • CONFIDENCE 93.8%</span>
-      </div>
-    </div>
-
-    <!-- Sticky Section Filter Bar -->
-    <div class="dashboard-nav-bar">
-      <div class="dash-nav-tabs-group">
-        <button class="dash-nav-tab active" data-section="all">
-          <span>All Sections</span>
-        </button>
-        <button class="dash-nav-tab" data-section="overview">
-          <span class="indicator-dot dot-slate"></span>
-          <span>Overview</span>
-        </button>
-        <button class="dash-nav-tab" data-section="ai-assistant" id="tabAiAssistant">
-          <span class="indicator-dot dot-teal"></span>
-          <span>AI Assistant</span>
-          <span class="tab-count-pill" style="color:var(--accent-teal);">Copilot</span>
-        </button>
-        <button class="dash-nav-tab" data-section="emerging-risks">
-          <span class="indicator-dot dot-vermilion"></span>
-          <span>Emerging Risks</span>
-          <span class="tab-count-pill" style="color:var(--accent-risk);">6</span>
-        </button>
-        <button class="dash-nav-tab" data-section="signal-map">
-          <span class="indicator-dot dot-amber"></span>
-          <span>Signal Map</span>
-          <span class="tab-count-pill" style="color:var(--accent-amber);">54</span>
-        </button>
-        <button class="dash-nav-tab" data-section="active-warnings">
-          <span class="indicator-dot dot-vermilion"></span>
-          <span>Active Early Warnings</span>
-          <span class="tab-count-pill" style="color:var(--accent-risk);">4</span>
-        </button>
-        <button class="dash-nav-tab" data-section="emerging-issues">
-          <span class="indicator-dot dot-amber"></span>
-          <span>Emerging Issues</span>
-          <span class="tab-count-pill" style="color:var(--accent-amber);">7</span>
-        </button>
-        <button class="dash-nav-tab" data-section="verified-alerts">
-          <span class="indicator-dot dot-blue"></span>
-          <span>Verified Alerts</span>
-          <span class="tab-count-pill" style="color:#2563EB;">3</span>
-        </button>
-        <button class="dash-nav-tab" data-section="investigation">
-          <span class="indicator-dot dot-slate"></span>
-          <span>Under Investigation</span>
-          <span class="tab-count-pill">5</span>
-        </button>
-        <button class="dash-nav-tab" data-section="resolved">
-          <span class="indicator-dot dot-emerald"></span>
-          <span>Resolved Issues</span>
-          <span class="tab-count-pill" style="color:#059669;">18</span>
-        </button>
-        <button class="dash-nav-tab" data-section="impact">
-          <span>Impact Monitoring</span>
-        </button>
-      </div>
-
-      <div class="dash-search-box">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="dash-search-input" id="dashSearchInput" placeholder="Filter by asset or keyword...">
-      </div>
-    </div>
-
-    <!-- Section 1: Overview (Metrics Grid & Operational Visualizations) -->
-    <div class="dashboard-content-block" data-block-type="overview">
-      <div class="dash-metrics-grid" id="dashMetricsRow"></div>
-      <div class="dash-operational-viz-container" id="dashOperationalViz"></div>
-    </div>
-
-    <!-- STAGE 4 — PROMINENT EMERGING RISKS PANEL -->
-    <div class="dashboard-content-block" data-block-type="emerging-risks" id="emergingRisksSection">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-vermilion"></span>
-          <span>Emerging Risks Panel</span>
-        </h3>
-        <span class="section-block-badge">Pre-Failure Projections • Multimodal Synthesis • Quantified Trajectories</span>
-      </div>
-      <div class="emerging-risks-grid" id="emergingRisksGridContainer"></div>
-    </div>
-
-    <!-- STAGE 9 — EARLYSIGHT AI ASSISTANT (INTEGRATED INDUSTRIAL COPILOT) -->
-    <div class="dashboard-content-block" data-block-type="ai-assistant" id="aiAssistantBlock">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-teal"></span>
-          <span>EarlySight AI Assistant Copilot</span>
-        </h3>
-        <span class="section-block-badge">Cross-Silo Operations Copilot &bull; Multi-Modal Reasoning &bull; Evidence Dossiers</span>
-      </div>
-
-      <!-- Industrial Cockpit Container (Not a generic chat clone) -->
-      <div class="ai-cockpit-container" id="earlySightAiAssistantContainer">
-        
-        <!-- Left Panel: Intelligence Hub & History (320px) -->
-        <aside class="ai-cockpit-sidebar">
-          
-          <!-- Facility Context Status Strip -->
-          <div class="ai-facility-status-card">
-            <div class="ai-status-row">
-              <span class="ai-status-pulse"></span>
-              <span class="ai-status-title font-mono">PLANT COPILOT ONLINE</span>
-            </div>
-            <div class="ai-status-metrics-grid font-mono">
-              <div class="ai-status-metric">
-                <span class="metric-key">FACILITY:</span>
-                <span class="metric-val">Facility 04</span>
-              </div>
-              <div class="ai-status-metric">
-                <span class="metric-key">SIGNALS:</span>
-                <span class="metric-val text-teal">54 Live</span>
-              </div>
-              <div class="ai-status-metric">
-                <span class="metric-key">ACTIVE HAZARDS:</span>
-                <span class="metric-val text-vermilion">2 Critical</span>
-              </div>
-              <div class="ai-status-metric">
-                <span class="metric-key">AVERTED ROI:</span>
-                <span class="metric-val text-emerald">$2.84M</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Suggested Operational Questions -->
-          <div class="ai-sidebar-section">
-            <div class="ai-sidebar-header font-mono">
-              <span>SUGGESTED OPERATIONAL INQUIRIES</span>
-            </div>
-            <div class="ai-suggested-questions-list" id="aiSuggestedQuestionsList">
-              <!-- Rendered dynamically by ai-assistant.js -->
-            </div>
-          </div>
-
-          <!-- Search & Query History -->
-          <div class="ai-sidebar-section">
-            <div class="ai-sidebar-header font-mono">
-              <span>INVESTIGATION SEARCH & HISTORY</span>
-            </div>
-            
-            <div class="ai-history-search-box">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" id="aiHistorySearchInput" class="ai-history-search-input" placeholder="Search investigation history...">
-            </div>
-
-            <div class="ai-history-list" id="aiHistoryList">
-              <!-- Rendered dynamically by ai-assistant.js -->
-            </div>
-          </div>
-
-        </aside>
-
-        <!-- Right Panel: Conversation Canvas & Visual Reasoning Feed -->
-        <section class="ai-cockpit-main">
-          
-          <!-- Top Console Action Bar -->
-          <div class="ai-console-top-bar">
-            <div class="ai-console-scope-info">
-              <span class="ai-scope-pill font-mono">
-                <span class="indicator-dot dot-teal"></span>
-                <span>Active Scope: Facility 04 (All Zones)</span>
-              </span>
-              <span class="ai-connected-pill font-mono">Connected: SCADA + CMMS + Shift Logs + IoT</span>
-            </div>
-            <div class="ai-console-actions">
-              <button type="button" class="btn-ai-action font-mono" id="aiExportBriefingBtn" title="Export investigation briefing">
-                <span>Export Briefing</span>
-              </button>
-              <button type="button" class="btn-ai-action font-mono" id="aiClearThreadBtn" title="Clear active thread">
-                <span>Reset</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Messages Feed -->
-          <div class="ai-chat-feed" id="aiChatFeed">
-            <!-- Messages rendered dynamically with charts, evidence chips & alerts -->
-          </div>
-
-          <!-- Interactive Query Input Bar -->
-          <div class="ai-query-input-bar">
-            <div class="ai-input-silos-row font-mono">
-              <span class="silo-label">SYNTHESIZING DATA SILOS:</span>
-              <span class="silo-badge active">&bull; SCADA Telemetry</span>
-              <span class="silo-badge active">&bull; CMMS Work Orders</span>
-              <span class="silo-badge active">&bull; Shift Handovers</span>
-              <span class="silo-badge active">&bull; Subsurface Probes</span>
-            </div>
-
-            <form id="aiQueryForm" class="ai-query-form">
-              <input type="text" id="aiQueryInput" class="ai-query-input" placeholder="Ask EarlySight Copilot (e.g. 'What problems are increasing this week?', 'Show emerging issues in Block A')..." autocomplete="off">
-              <button type="submit" class="ai-query-send-btn" id="aiQuerySendBtn" title="Execute Query">
-                <span>Analyze</span>
-                <span class="send-arrow">&rarr;</span>
-              </button>
-            </form>
-          </div>
-
-        </section>
-
-      </div>
-    </div>
-
-    <!-- STAGE 5 — INTERACTIVE SIGNAL MAP & GEOSPATIAL CLUSTERING -->
-    <div class="dashboard-content-block" data-block-type="signal-map">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-amber"></span>
-          <span>Interactive Signal Map</span>
-        </h3>
-        <span class="section-block-badge">Spatial Correlation • Multi-Bay Precursor Merging • Muted Architectural Topography</span>
-      </div>
-
-      <div class="signal-map-section-wrapper" id="signalMapWrapper">
-        
-        <!-- Controls Panel: Search, Location, Date, Modality & Risk Filtering -->
-        <div class="map-controls-panel">
-          
-          <!-- Row 1: Live Search, Location & Date Horizon Filters -->
-          <div class="map-controls-row">
-            
-            <!-- Live Search -->
-            <div class="map-search-container">
-              <svg class="map-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" class="map-search-input" id="mapSearchInput" placeholder="Search signals, assets, bays, or failure risks...">
-              <span class="map-search-matches-pill" id="mapSearchMatchesBadge">0 matches</span>
-            </div>
-
-            <!-- Location Filters -->
-            <div class="map-filter-group">
-              <span class="map-filter-label">Facility Zone:</span>
-              <div class="map-pill-buttons">
-                <button class="map-loc-btn active" data-zone="all">
-                  <span>All Zones</span>
-                  <span class="map-count-badge">54</span>
-                </button>
-                <button class="map-loc-btn" data-zone="block-a">
-                  <span>Block A</span>
-                  <span class="map-count-badge">17</span>
-                </button>
-                <button class="map-loc-btn" data-zone="block-b">
-                  <span>Block B</span>
-                  <span class="map-count-badge">9</span>
-                </button>
-                <button class="map-loc-btn" data-zone="block-c">
-                  <span>Block C</span>
-                  <span class="map-count-badge">12</span>
-                </button>
-                <button class="map-loc-btn" data-zone="power-island">
-                  <span>Power Island</span>
-                  <span class="map-count-badge">15</span>
-                </button>
-                <button class="map-loc-btn" data-zone="logistics-yard">
-                  <span>Logistics</span>
-                  <span class="map-count-badge">8</span>
-                </button>
-                <button class="map-loc-btn" data-zone="chemical-env">
-                  <span>Chemical & Env</span>
-                  <span class="map-count-badge">10</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Time Horizon Quick Filters -->
-            <div class="map-filter-group">
-              <span class="map-filter-label">Horizon:</span>
-              <div class="map-pill-buttons">
-                <button class="map-time-btn" data-horizon="24h"><span>Last 24h</span></button>
-                <button class="map-time-btn" data-horizon="7d"><span>Last 7d</span></button>
-                <button class="map-time-btn" data-horizon="14d"><span>Last 14d</span></button>
-                <button class="map-time-btn active" data-horizon="30d"><span>Last 30d</span></button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Row 2: Date Range Pickers, Modality Toggles & Risk Filters -->
-          <div class="map-controls-row">
-            
-            <!-- Date Range Pickers & Scrubber Slider -->
-            <div class="map-date-range-bar">
-              <span class="map-filter-label">Date Range:</span>
-              <input type="date" class="map-date-input" id="mapDateStart" value="2026-08-25">
-              <span style="color:var(--ink-muted); font-size:0.75rem;">to</span>
-              <input type="date" class="map-date-input" id="mapDateEnd" value="2026-09-24">
-              
-              <div class="map-date-scrubber-box">
-                <span style="font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-muted);" id="mapDateScrubberLabel">Scrub:</span>
-                <input type="range" class="map-date-scrubber-slider" id="mapDateScrubber" min="0" max="30" value="30" title="Scrub past 30 days">
-              </div>
-            </div>
-
-            <!-- Signal Modality Toggles -->
-            <div class="map-filter-group">
-              <span class="map-filter-label">Signals:</span>
-              <div class="map-modality-filters-row">
-                <button class="map-modality-pill active" data-modality="all"><span>All Types</span></button>
-                <button class="map-modality-pill active" data-modality="Sensor"><span>⚡ Sensors</span></button>
-                <button class="map-modality-pill active" data-modality="Maintenance"><span>🔧 Maintenance</span></button>
-                <button class="map-modality-pill active" data-modality="Complaint"><span>📋 Complaints</span></button>
-                <button class="map-modality-pill active" data-modality="Image"><span>📷 FLIR</span></button>
-                <button class="map-modality-pill active" data-modality="Historical"><span>📊 Historical</span></button>
-                <button class="map-modality-pill active" data-modality="Incident"><span>⚠️ Incident</span></button>
-              </div>
-            </div>
-
-            <!-- Risk Severity Filter -->
-            <div class="map-filter-group">
-              <span class="map-filter-label">Severity:</span>
-              <select class="map-styled-select" id="mapSeveritySelect">
-                <option value="all">All Severities</option>
-                <option value="critical">Critical Severity</option>
-                <option value="high">High Severity</option>
-                <option value="moderate">Moderate Severity</option>
-                <option value="low">Low / Baseline</option>
-              </select>
-            </div>
-
-            <!-- Emerging Risk Issue Filter -->
-            <div class="map-filter-group">
-              <span class="map-filter-label">Risk Issue:</span>
-              <select class="map-styled-select" id="mapIssueSelect">
-                <option value="all">All Emerging Issues</option>
-                <option value="Water Infrastructure">Water Infrastructure Issue (Block A)</option>
-                <option value="Bearing Cage Fatigue">Bearing Cage Fatigue (Block A)</option>
-                <option value="Cavitation Drift">Hydraulic Valve Cavitation (Block C)</option>
-                <option value="Chilled Water Loop">Chilled Water Loop Drift (Block B)</option>
-                <option value="Thermal Degradation">Stator Thermal Degradation (Power Island)</option>
-                <option value="Tooth Micro-Pitting">Conveyor Tooth Micro-Pitting (Logistics)</option>
-                <option value="Seal Face Micro-Chipping">Reactor Seal Face Chipping (Chemical)</option>
-              </select>
-            </div>
-
-          </div>
-
-          <!-- Row 3: Merging & Synthesis Animation Controls -->
-          <div class="map-controls-row">
-            
-            <div class="map-synthesis-controls" style="flex:1;">
-              
-              <span class="map-filter-label" style="color:var(--accent-risk);">Cluster Synthesis:</span>
-              
-              <div class="map-pill-buttons">
-                <button class="map-mode-btn" id="mapModeScattered" title="View individual operational signals at specific machine bays">
-                  <span>Nodes (Scattered)</span>
-                </button>
-                <button class="map-mode-btn active" id="mapModeMerged" title="View merged geospatial risk clusters at zone centroids">
-                  <span>Clusters (Merged)</span>
-                </button>
-              </div>
-
-              <!-- Replay Merge Button -->
-              <button class="map-merge-replay-btn" id="mapReplayMerge" title="Re-run gradual merge animation of signals into clusters">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                <span>Animate Merge into Cluster</span>
-              </button>
-
-              <!-- Merge Scrub Slider -->
-              <div class="map-slider-container">
-                <span class="map-slider-label" id="mapMergeSliderLabel">Synthesized Risk Clusters (Merged)</span>
-                <input type="range" class="map-range-slider" id="mapMergeSlider" min="0" max="100" value="100" title="Scrub gradual merge between scattered signals and zone clusters">
-              </div>
-
-              <div style="font-size:0.7rem; color:var(--ink-muted); margin-left:auto; font-family:var(--font-mono);">
-                Click any cluster or node to inspect
-              </div>
-
-            </div>
-
-          </div>
-
+         MINIMALIST ENTERPRISE FOOTER
+         ========================================================================== -->
+  <footer class="home-footer">
+    <div class="home-footer-inner">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="home-brand-logo" style="width:28px; height:28px;" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="#087E8B" stroke-width="2" stroke-dasharray="3 3"/>
+            <circle cx="16" cy="16" r="8" stroke="#087E8B" stroke-width="1.8"/>
+            <circle cx="16" cy="16" r="3.5" fill="#087E8B"/>
+          </svg>
         </div>
-
-        <!-- Canvas Stage with Pan/Zoom & Cluster Revelation Drawer -->
-        <div class="map-canvas-wrapper-relative">
-          
-          <canvas id="facilityMapCanvas" class="facility-map-canvas"></canvas>
-
-          <!-- Floating Zoom Controls Overlay -->
-          <div class="map-zoom-controls-overlay">
-            <button class="zoom-ctrl-btn" id="mapZoomIn" title="Zoom In">+</button>
-            <button class="zoom-ctrl-btn" id="mapZoomOut" title="Zoom Out">&minus;</button>
-            <span class="zoom-level-badge" id="mapZoomLevelBadge">100%</span>
-            <button class="zoom-ctrl-btn" id="mapZoomReset" title="Reset View" style="font-size:0.75rem; width:auto; padding:0 6px;">Reset</button>
-          </div>
-
-          <!-- STAGE 6: Cluster Revelation Drawer (Location, Related Signals, Emerging Issue, Confidence, Trend) -->
-          <div id="clusterDetailsDrawer" class="cluster-details-drawer"></div>
-
-        </div>
-
-        <!-- Interactive Floating Tooltip Card -->
-        <div id="mapTooltip" class="map-hover-tooltip"></div>
-
-        <!-- Map Bottom Status Ribbon -->
-        <div class="map-status-ribbon">
-          <div class="map-status-metrics">
-            <div class="map-metric-item">
-              <span class="map-metric-title">Active Filtered Signals:</span>
-              <span class="map-metric-val" id="mapActiveSignalsCount" style="color:var(--accent-risk);">54 Signals</span>
-            </div>
-            <div class="map-metric-item">
-              <span class="map-metric-title">Current Time Window:</span>
-              <span class="map-metric-val" id="mapCurrentHorizonLabel">Last 30 Days</span>
-            </div>
-            <div class="map-metric-item">
-              <span class="map-metric-title">Primary Epicenter:</span>
-              <span class="map-metric-val" id="mapHotspotLabel" style="color:var(--accent-risk);">Block A (17 Precursors • 87% Confidence)</span>
-            </div>
-          </div>
-
-          <!-- Muted Palette Severity Legend -->
-          <div class="map-legend-strip">
-            <div class="legend-item">
-              <span class="legend-dot" style="background:#C85A32;"></span>
-              <span>Critical Severity</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-dot" style="background:#C85A32;"></span>
-              <span>High Severity</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-dot" style="background:#B87333;"></span>
-              <span>Moderate Severity</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-dot" style="background:#475569;"></span>
-              <span>Baseline Signal</span>
-            </div>
-          </div>
-        </div>
-
+        <span style="font-size:1.1rem; font-weight:800; color:var(--home-text-heading);">EarlySight</span>
+        <span style="font-size:0.8rem; color:var(--home-text-muted);">&copy; 2026 EarlySight Operational Intelligence. All rights reserved.</span>
       </div>
 
-    </div>
-
-    <!-- Section 2: Active Early Warnings -->
-    <div class="dashboard-content-block" data-block-type="active-warnings">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-vermilion"></span>
-          <span>Active Early Warnings</span>
-        </h3>
-        <span class="section-block-badge">Action Required • Quantified Lead Times</span>
+      <div class="home-footer-links">
+        <a href="dashboard.html" class="home-footer-link">Dashboard</a>
+        <a href="signals.html" class="home-footer-link">Signals</a>
+        <a href="risks.html" class="home-footer-link">Emerging Risks</a>
+        <a href="map.html" class="home-footer-link">Signal Map</a>
+        <a href="timeline.html" class="home-footer-link">Timeline</a>
+        <a href="actions.html" class="home-footer-link">Action Center</a>
+        <a href="evidence.html" class="home-footer-link">Evidence</a>
+        <a href="workspace.html" class="home-footer-link">Workspaces</a>
       </div>
-      <div class="compact-cards-grid" id="activeWarningsContainer"></div>
-    </div>
 
-    <!-- Section 3: Emerging Issues -->
-    <div class="dashboard-content-block" data-block-type="emerging-issues">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-amber"></span>
-          <span>Emerging Issues</span>
-        </h3>
-        <span class="section-block-badge">Weak Signal Clusters Crossing Threshold</span>
-      </div>
-      <div class="compact-cards-grid" id="emergingIssuesContainer"></div>
-    </div>
-
-    <!-- Section 4: Verified Alerts -->
-    <div class="dashboard-content-block" data-block-type="verified-alerts">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-blue"></span>
-          <span>Verified Alerts</span>
-        </h3>
-        <span class="section-block-badge">Engineering Validated • Work Order Dispatched</span>
-      </div>
-      <div class="compact-cards-grid" id="verifiedAlertsContainer"></div>
-    </div>
-
-    <!-- Section 5: Issues Under Investigation -->
-    <div class="dashboard-content-block" data-block-type="investigation">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-slate"></span>
-          <span>Issues Under Investigation</span>
-        </h3>
-        <span class="section-block-badge">Cross-Functional Review</span>
-      </div>
-      <div class="compact-cards-grid" id="investigationContainer"></div>
-    </div>
-
-    <!-- Section 6: Resolved Issues -->
-    <div class="dashboard-content-block" data-block-type="resolved">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span class="indicator-dot dot-emerald"></span>
-          <span>Resolved Issues</span>
-        </h3>
-        <span class="section-block-badge">Averted Outages • Closed-Loop Proof</span>
-      </div>
-      <div class="compact-cards-grid" id="resolvedIssuesContainer"></div>
-    </div>
-
-    <!-- Section 7: Impact Monitoring -->
-    <div class="dashboard-content-block" data-block-type="impact">
-      <div class="section-block-header">
-        <h3 class="section-block-title">
-          <span>Impact Monitoring & Lead-Time Analytics</span>
-        </h3>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <a href="impact.html" class="status-chip chip-verified" style="text-decoration:none; font-size:0.75rem;">
-            STAGE 11: Impact Monitoring Console &rarr;
-          </a>
-          <span class="section-block-badge">Proven Operational ROI</span>
-        </div>
-      </div>
-      <div id="impactMonitoringContainer"></div>
-    </div>
-
-  </section>
-
-  <!-- Signal Details Modal / Inspector -->
-  <div class="modal-backdrop" id="signalModal">
-    <div class="modal-dialog">
-      <div class="modal-header-row">
-        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">Signal Record Inspector</span>
-        <button class="modal-close-btn" id="modalClose" aria-label="Close dialog">&times;</button>
-      </div>
-      <div id="modalContent"></div>
-    </div>
-  </div>
-
-  <!-- Enterprise Footer -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div>
-        <strong style="color: var(--ink-primary); font-size: 0.95rem;">EarlySight</strong>
-        <p style="margin-top: 4px;">AI-Powered Early Warning System for Emerging Problems</p>
-      </div>
-      <div class="footer-nav">
-        <a href="#heroStage">Startup Animation</a>
-        <a href="#mainDashboardSection">Main Dashboard</a>
-        <a href="#pipelineSection">Architecture Pipeline</a>
-        <a href="#sandboxSection">Signals Sandbox</a>
-      </div>
-      <div>
-        <span>Enterprise Stage 3 — Main Dashboard</span>
+      <div class="home-footer-badge">
+        <span class="home-pulse-indicator"></span>
+        <span>All Systems Operational • SOC2 Type II</span>
       </div>
     </div>
   </footer>
-  </main>
 
-  <!-- AI Assistant Evidence Record Inspector Modal -->
-  <div class="ai-evidence-modal" id="aiEvidenceModal" role="dialog" aria-hidden="true">
-    <div class="ai-evidence-dialog">
-      <div class="ai-evidence-dialog-header">
-        <div>
-          <span class="evidence-modal-badge font-mono">ORGANIZATIONAL EVIDENCE CITATION</span>
-          <h4 class="evidence-modal-title" id="aiEvidenceModalTitle">Evidence Record</h4>
-          <span class="evidence-modal-source font-mono" id="aiEvidenceModalSource">Source</span>
-        </div>
-        <button type="button" class="ai-modal-close" id="aiEvidenceModalClose" aria-label="Close dialog">&times;</button>
+  <!-- ==========================================================================
+       INTERACTIVE DEMO MODAL (WATCH DEMO)
+       ========================================================================== -->
+  <div class="home-demo-modal" id="homeDemoModal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">
+    <div class="home-demo-dialog">
+      <button type="button" class="home-demo-close-btn" id="homeDemoClose" aria-label="Close dialog">&times;</button>
+      
+      <div style="margin-bottom:24px;">
+        <span class="home-eyebrow-pill" style="margin-bottom:12px;">INTERACTIVE PLATFORM TOUR</span>
+        <h3 id="demoModalTitle" style="font-size:1.75rem; font-weight:800; color:var(--home-text-heading); margin:0 0 8px 0;">
+          How EarlySight Connects Weak Signals
+        </h3>
+        <p style="color:var(--home-text-body); margin:0;">
+          Explore how multi-modal anomalies evolve through the Early Warning Intelligence pipeline.
+        </p>
       </div>
-      <div class="ai-evidence-dialog-body" id="aiEvidenceModalBody"></div>
+
+      <!-- Stage Selector Tabs -->
+      <div style="display:flex; gap:8px; border-bottom:1px solid var(--home-border); padding-bottom:12px; margin-bottom:20px; overflow-x:auto;">
+        <button type="button" class="demo-stage-tab active" data-stage="1" style="background:var(--home-pale-aqua); border:1px solid rgba(8,126,139,0.2); color:var(--home-primary-teal); padding:8px 16px; border-radius:9999px; font-weight:700; cursor:pointer; font-size:0.85rem;">01. Ingestion</button>
+        <button type="button" class="demo-stage-tab" data-stage="2" style="background:#FFFFFF; border:1px solid var(--home-border); color:var(--home-text-body); padding:8px 16px; border-radius:9999px; font-weight:700; cursor:pointer; font-size:0.85rem;">02. Pattern Detection</button>
+        <button type="button" class="demo-stage-tab" data-stage="3" style="background:#FFFFFF; border:1px solid var(--home-border); color:var(--home-text-body); padding:8px 16px; border-radius:9999px; font-weight:700; cursor:pointer; font-size:0.85rem;">03. Risk Forecasting</button>
+        <button type="button" class="demo-stage-tab" data-stage="4" style="background:#FFFFFF; border:1px solid var(--home-border); color:var(--home-text-body); padding:8px 16px; border-radius:9999px; font-weight:700; cursor:pointer; font-size:0.85rem;">04. Prescriptive Action</button>
+      </div>
+
+      <!-- Panel 1: Ingestion -->
+      <div class="demo-stage-panel active" id="demoPanel_1" style="display:block;">
+        <div style="background:var(--home-bg); border:1px solid var(--home-border); border-radius:12px; padding:20px; margin-bottom:20px;">
+          <h4 style="color:var(--home-text-heading); margin:0 0 8px 0; font-size:1.1rem;">Multi-Modal Ingestion Engine</h4>
+          <p style="color:var(--home-text-body); font-size:0.92rem; margin:0 0 16px 0;">
+            EarlySight captures disparate acoustic telemetry, thermal thermography, differential pressure drops, and shift maintenance logs across 128 registered signal channels.
+          </p>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;">
+            <div style="background:#FFFFFF; border:1px solid var(--home-border); padding:10px; border-radius:8px;">
+              <span style="font-size:0.7rem; font-weight:700; color:var(--home-primary-teal);">ACOUSTIC (1.4 kHz)</span>
+              <div style="font-weight:700; color:var(--home-text-heading); font-size:0.9rem;">Flange 4B Weep</div>
+            </div>
+            <div style="background:#FFFFFF; border:1px solid var(--home-border); padding:10px; border-radius:8px;">
+              <span style="font-size:0.7rem; font-weight:700; color:var(--home-lavender-dark);">THERMAL (+6.2°C)</span>
+              <div style="font-weight:700; color:var(--home-text-heading); font-size:0.9rem;">Chiller Delta-T</div>
+            </div>
+            <div style="background:#FFFFFF; border:1px solid var(--home-border); padding:10px; border-radius:8px;">
+              <span style="font-size:0.7rem; font-weight:700; color:var(--home-peach-dark);">VIBRATION (2.8 mm/s)</span>
+              <div style="font-weight:700; color:var(--home-text-heading); font-size:0.9rem;">Impeller Cavitation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Pattern Detection -->
+      <div class="demo-stage-panel" id="demoPanel_2" style="display:none;">
+        <div style="background:var(--home-bg); border:1px solid var(--home-border); border-radius:12px; padding:20px; margin-bottom:20px;">
+          <h4 style="color:var(--home-text-heading); margin:0 0 8px 0; font-size:1.1rem;">Cross-Modal Correlation Core (PAT-006)</h4>
+          <p style="color:var(--home-text-body); font-size:0.92rem; margin:0;">
+            The correlation core links these 3 independent signals. While no single anomaly triggered a local SCADA trip, their spatial-temporal co-occurrence indicates a 91% probability of gasket degradation and impending suction cavitation.
+          </p>
+        </div>
+      </div>
+
+      <!-- Panel 3: Risk Forecasting -->
+      <div class="demo-stage-panel" id="demoPanel_3" style="display:none;">
+        <div style="background:var(--home-bg); border:1px solid var(--home-border); border-radius:12px; padding:20px; margin-bottom:20px;">
+          <h4 style="color:var(--home-text-heading); margin:0 0 8px 0; font-size:1.1rem;">Quantified Lead-Time Window (+14 Days)</h4>
+          <p style="color:var(--home-text-body); font-size:0.92rem; margin:0;">
+            EarlySight synthesizes Risk Score 86 (High Hazard) with a projected failure date 14 days out. This gives facility teams time to order replacement gaskets and plan a planned shutdown rather than facing catastrophic emergency downtime.
+          </p>
+        </div>
+      </div>
+
+      <!-- Panel 4: Action -->
+      <div class="demo-stage-panel" id="demoPanel_4" style="display:none;">
+        <div style="background:var(--home-bg); border:1px solid var(--home-border); border-radius:12px; padding:20px; margin-bottom:20px;">
+          <h4 style="color:var(--home-text-heading); margin:0 0 8px 0; font-size:1.1rem;">Closed-Loop Resolution (ACT-001)</h4>
+          <p style="color:var(--home-text-body); font-size:0.92rem; margin:0;">
+            Prescriptive action ACT-001 is automatically routed to Lead Reliability Engineer Marcus Vance with an exact step-by-step backflushing checklist and digital sign-off verification.
+          </p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <a href="dashboard.html" class="home-btn-pill-teal">
+          <span>Launch Live Operational Cockpit</span> &rarr;
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Floating Quick-Launcher Button -->
-  <button type="button" class="floating-ai-launcher" id="floatingAiLauncher" title="Jump to EarlySight AI Assistant" onclick="const el=document.getElementById('aiAssistantBlock'); if(el){ el.scrollIntoView({behavior:'smooth'}); const inp=document.getElementById('aiQueryInput'); if(inp) setTimeout(()=>inp.focus(),400); }">
-    <span class="launcher-pulse-dot"></span>
-    <span class="launcher-text">AI Copilot</span>
-    <span class="launcher-icon">&uarr;</span>
-  </button>
-
-  <!-- Script Includes -->
+  <!-- Entry Script -->
   <script type="module" src="/src/js/index-entry.js"></script>
 
 </body>

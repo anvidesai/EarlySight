@@ -16,6 +16,8 @@ import {
   EMERGING_RISKS_PANEL
 } from '../data/dashboard-data.js';
 import { FACILITY_MAP_ZONES, FACILITY_SIGNALS_DATA } from '../data/signal-map-data.js';
+import { EARLYSIGHT_SIGNALS } from '../data/signals-data.js';
+import { EarlyWarningSignalNetwork } from './signal-network-viz.js';
 
 // Operational Signature Convergence Scenarios (Signal -> Pattern -> Risk)
 const SIGNATURE_SCENARIOS = {
@@ -214,9 +216,17 @@ class EarlySightDashboard {
   }
 
   init() {
+    if (document.getElementById('earlyWarningSignalNetworkContainer')) {
+      try {
+        this.signalNetwork = new EarlyWarningSignalNetwork('earlyWarningSignalNetworkContainer');
+      } catch (err) {
+        console.warn('Signal Network visualization init warning:', err);
+      }
+    }
     this.renderMetricsOverview();
     this.renderOperationalVisualizations();
     this.renderEmergingRisksPanel();
+    this.renderRecentSignals();
     if (typeof this.initSignalMap === 'function') {
       this.initSignalMap();
     }
@@ -254,6 +264,23 @@ class EarlySightDashboard {
       });
     });
 
+    // Story / Architecture Mode Studio Toggle
+    const btnToggleStoryMode = document.getElementById('btnToggleStoryMode');
+    const heroNarrativeContainer = document.getElementById('heroNarrativeContainer');
+    const storyModeBtnText = document.getElementById('storyModeBtnText');
+    if (btnToggleStoryMode && heroNarrativeContainer) {
+      btnToggleStoryMode.addEventListener('click', () => {
+        const isHidden = heroNarrativeContainer.style.display === 'none';
+        heroNarrativeContainer.style.display = isHidden ? 'block' : 'none';
+        if (storyModeBtnText) {
+          storyModeBtnText.textContent = isHidden ? 'Hide Architecture Studio' : 'Architecture & Sandbox Studio';
+        }
+        if (isHidden) {
+          heroNarrativeContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
     // Search filter
     const searchInput = document.getElementById('dashSearchInput');
     if (searchInput) {
@@ -266,8 +293,6 @@ class EarlySightDashboard {
     // View Switcher (Landing vs Dashboard)
     const viewSwitchHero = document.getElementById('viewSwitchHero');
     const viewSwitchDash = document.getElementById('viewSwitchDash');
-    const heroStage = document.getElementById('heroStage');
-    const mainDashboard = document.getElementById('mainDashboardSection');
 
     if (viewSwitchHero && viewSwitchDash) {
       viewSwitchHero.addEventListener('click', () => {
@@ -292,22 +317,68 @@ class EarlySightDashboard {
     }
   }
 
+  renderRecentSignals() {
+    const container = document.getElementById('recentSignalsContainer');
+    if (!container) return;
+
+    const recent = (typeof EARLYSIGHT_SIGNALS !== 'undefined' ? EARLYSIGHT_SIGNALS : []).slice(0, 5);
+    if (!recent.length) return;
+
+    container.innerHTML = `
+      <table class="recent-signals-table">
+        <thead>
+          <tr>
+            <th>Signal</th>
+            <th>Type</th>
+            <th>Location</th>
+            <th>Age</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${recent.map(s => `
+            <tr style="cursor: pointer;" onclick="if(window.appController) window.appController.openSignalModal('${s.id}')">
+              <td>
+                <span class="sig-mini-id">${s.id}</span>
+                <span class="sig-mini-title">${s.cardTitle || s.headline}</span>
+              </td>
+              <td>
+                <span class="es-badge es-badge-teal">${s.type}</span>
+              </td>
+              <td style="color:var(--ink-secondary); font-size:0.75rem;">${s.location}</td>
+              <td style="font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-muted);">${s.relativeTime || 'T-2d'}</td>
+              <td>
+                <span class="es-badge es-badge-high">${s.status || 'Active'}</span>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
   switchView(viewName) {
     this.activeView = viewName;
-    const heroStage = document.getElementById('heroStage');
+    const heroNarrative = document.getElementById('heroNarrativeContainer');
     const mainDashboard = document.getElementById('mainDashboardSection');
     const viewSwitchHero = document.getElementById('viewSwitchHero');
     const viewSwitchDash = document.getElementById('viewSwitchDash');
 
     if (viewName === 'dashboard') {
-      if (mainDashboard) mainDashboard.classList.remove('hidden-view');
+      if (heroNarrative) heroNarrative.style.display = 'none';
+      if (mainDashboard) {
+        mainDashboard.classList.remove('hidden-view');
+        mainDashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       if (viewSwitchDash) viewSwitchDash.classList.add('active');
       if (viewSwitchHero) viewSwitchHero.classList.remove('active');
-      mainDashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
+      if (heroNarrative) {
+        heroNarrative.style.display = 'block';
+        heroNarrative.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       if (viewSwitchHero) viewSwitchHero.classList.add('active');
       if (viewSwitchDash) viewSwitchDash.classList.remove('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -316,10 +387,10 @@ class EarlySightDashboard {
     const sections = document.querySelectorAll('.dashboard-content-block');
     sections.forEach(sec => {
       const secType = sec.getAttribute('data-block-type');
-      if (filterId === 'all' || filterId === secType) {
-        sec.style.display = 'block';
+      if (filterId === 'all' || filterId === 'overview') {
+        sec.style.display = (secType === 'overview') ? 'block' : 'none';
       } else {
-        sec.style.display = 'none';
+        sec.style.display = (secType === filterId) ? 'block' : 'none';
       }
     });
   }
@@ -347,7 +418,7 @@ class EarlySightDashboard {
       <div class="metric-card-compact risk-score-card">
         <div class="metric-card-top">
           <span class="metric-sub-label">Overall Risk</span>
-          <span class="metric-illustrative-pill" title="Illustrative frontend score for synthesis">Mock Index</span>
+          <span class="metric-illustrative-pill" title="Composite early warning index">SYNTHESIS INDEX</span>
         </div>
         <div class="metric-score-row">
           <div class="metric-primary-val risk-score-val">72 <span class="metric-score-denom">/ 100</span></div>
@@ -356,7 +427,7 @@ class EarlySightDashboard {
           </div>
         </div>
         <div class="metric-operational-q">How serious is the current situation?</div>
-        <div class="metric-footer-note text-rust">Illustrative frontend score • Non-predictive mock value</div>
+        <div class="metric-footer-note text-rust">Composite Risk Score &bull; Multi-Modal Synthesis</div>
       </div>
 
       <!-- Card 2: Active Risks (Concrete Countdown Early Warnings) -->

@@ -53,115 +53,67 @@
   <!-- Main System Health Container -->
   <main class="risks-page-container notif-page-container">
 
-    <!-- Unified Story Workflow Ribbon -->
-    <div class="risk-workflow-ribbon earlysight-workflow-ribbon">
-      <span class="workflow-ribbon-tag">OPERATIONAL LIFECYCLE:</span>
-      <div class="workflow-steps">
-        <span class="workflow-step">SIGNALS</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">PATTERN</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">RISK</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">EVIDENCE</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">ACTION</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">COPILOT</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step active-step" style="color:var(--color-teal, #0D9488); font-weight:700;">SYSTEM HEALTH (M10)</span>
-      </div>
-    </div>
-
-    <!-- SECTION 1: OPERATIONAL HEADER -->
-    <section class="risks-header-banner notif-hero-banner" style="margin-bottom: 20px;">
-      <div class="risks-banner-top">
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header">
+      <div class="es-page-header-top">
         <div>
-          <div class="banner-eyebrow font-mono">
-            <span class="badge-status-pill badge-healthy" id="headerStatusBadge">SYSTEM STATUS // OPERATIONAL</span>
-            <span class="eyebrow-divider">•</span>
-            <span>TELEMETRY &amp; ALERT MONITORING CENTER // MILESTONE 10</span>
+          <div class="es-badge font-mono" style="margin-bottom:6px; background:rgba(120,199,199,0.18); color:#005B66; border-color:rgba(120,199,199,0.4);">
+            <span id="headerStatusBadge">SYSTEM STATUS // OPERATIONAL</span>
           </div>
-          <h1 class="risks-banner-title">
-            SYSTEM HEALTH
-          </h1>
-          <p class="risks-banner-desc">
-            Monitor alerts, data freshness, intelligence pipelines, and operational readiness across early warning sensors and models.
-          </p>
-          <div class="copilot-disclaimer-tag font-mono text-muted text-xs" style="margin-top: 6px;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            <span>Frontend demonstration using simulated system telemetry.</span>
-          </div>
+          <h1 class="es-page-title">Notifications &amp; System Health</h1>
+          <p class="es-page-desc">Monitor operational alerts, data freshness, intelligence pipelines, and component readiness across industrial facilities.</p>
         </div>
 
-        <!-- SECTION 13: DEMO SYSTEM STATE SWITCHER -->
-        <div class="notif-demo-state-box">
-          <div class="demo-state-header font-mono">
-            <span class="demo-state-label font-bold">DEMO SYSTEM STATE:</span>
-            <span class="demo-state-badge">Simulated Mode</span>
+        <!-- Simulated State Switcher -->
+        <div class="notif-demo-state-box" style="margin:0; padding:6px 12px; border-radius:6px; background:var(--bg-canvas, #FAF8F5); border:1px solid var(--border-subtle);">
+          <div class="demo-state-header font-mono" style="font-size:0.68rem; margin-bottom:4px;">
+            <span class="demo-state-label font-bold">SIMULATION MODE:</span>
           </div>
           <div class="demo-state-btn-group" role="group" aria-label="Simulated system state options">
-            <button type="button" class="demo-state-btn active" data-state="operational" title="Simulate nominal operations">
+            <button type="button" class="demo-state-btn active" data-state="operational" title="Simulate nominal operations" style="padding:4px 8px; font-size:0.7rem;">
               <span class="demo-state-dot dot-operational"></span>
-              <span>OPERATIONAL</span>
+              <span>NOMINAL</span>
             </button>
-            <button type="button" class="demo-state-btn" data-state="attention" title="Simulate elevated latency / warning state">
+            <button type="button" class="demo-state-btn" data-state="attention" title="Simulate elevated latency" style="padding:4px 8px; font-size:0.7rem;">
               <span class="demo-state-dot dot-attention"></span>
-              <span>ATTENTION REQUIRED</span>
+              <span>ATTENTION</span>
             </button>
-            <button type="button" class="demo-state-btn" data-state="degraded" title="Simulate pipeline degradation / stale sources">
+            <button type="button" class="demo-state-btn" data-state="degraded" title="Simulate degradation" style="padding:4px 8px; font-size:0.7rem;">
               <span class="demo-state-dot dot-degraded"></span>
               <span>DEGRADED</span>
             </button>
           </div>
-          <span class="demo-state-hint font-mono text-muted text-xs">Interactive demonstration only. Does not alter real infrastructure.</span>
         </div>
       </div>
-    </section>
 
-    <!-- SECTION 2: SYSTEM HEALTH SUMMARY (KPI STRIP) -->
-    <section class="notif-summary-strip" aria-label="System Health Summary">
-      <div class="notif-summary-label font-mono">
-        <span>CURRENT OPERATIONAL TELEMETRY:</span>
-      </div>
-      <div class="notif-metrics-grid">
-        <div class="notif-metric-card" id="cardOverallHealth">
-          <span class="metric-title font-mono">Overall Health</span>
-          <span class="metric-number font-bold text-teal" id="metricOverallHealthVal">98.4%</span>
-          <span class="metric-sub font-mono text-muted" id="metricOverallHealthSub">Operational</span>
+      <!-- System Health KPI Strip -->
+      <div class="es-kpi-strip">
+        <div class="es-kpi-chip" id="cardOverallHealth">
+          <span class="es-kpi-label">Overall Health</span>
+          <span class="es-kpi-val" style="color:var(--color-leaf, #72C6A5);" id="metricOverallHealthVal">98.4%</span>
         </div>
-
-        <div class="notif-metric-card" id="cardDataSources">
-          <span class="metric-title font-mono">Data Sources</span>
-          <span class="metric-number font-bold" id="metricDataSourcesVal">12 / 12</span>
-          <span class="metric-sub font-mono text-muted" id="metricDataSourcesSub">Connected</span>
+        <div class="es-kpi-chip" id="cardDataSources">
+          <span class="es-kpi-label">Data Sources</span>
+          <span class="es-kpi-val" id="metricDataSourcesVal">12 / 12</span>
         </div>
-
-        <div class="notif-metric-card" id="cardPipeline">
-          <span class="metric-title font-mono">Pipeline Health</span>
-          <span class="metric-number font-bold text-emerald" id="metricPipelineVal">6 / 6</span>
-          <span class="metric-sub font-mono text-muted" id="metricPipelineSub">Healthy</span>
+        <div class="es-kpi-chip" id="cardPipeline">
+          <span class="es-kpi-label">Pipeline Health</span>
+          <span class="es-kpi-val" style="color:var(--intel-secondary, #78C7C7);" id="metricPipelineVal">6 / 6</span>
         </div>
-
-        <div class="notif-metric-card" id="cardFreshness">
-          <span class="metric-title font-mono">Data Freshness</span>
-          <span class="metric-number font-bold" id="metricFreshnessVal">98%</span>
-          <span class="metric-sub font-mono text-muted" id="metricFreshnessSub">Within SLA</span>
+        <div class="es-kpi-chip" id="cardFreshness">
+          <span class="es-kpi-label">Data Freshness</span>
+          <span class="es-kpi-val" id="metricFreshnessVal">98% SLA</span>
         </div>
-
-        <div class="notif-metric-card" id="cardAlerts">
-          <span class="metric-title font-mono">Active Alerts</span>
-          <span class="metric-number font-bold text-vermilion" id="metricAlertsVal">04</span>
-          <span class="metric-sub font-mono text-muted" id="metricAlertsSub">Attention</span>
+        <div class="es-kpi-chip" id="cardAlerts">
+          <span class="es-kpi-label">Active Alerts</span>
+          <span class="es-kpi-val text-vermilion" id="metricAlertsVal">04</span>
         </div>
-
-        <div class="notif-metric-card" id="cardLastSync">
-          <span class="metric-title font-mono">Last Sync</span>
-          <span class="metric-number font-bold font-mono" id="metricSyncVal">2 min ago</span>
-          <span class="metric-sub font-mono text-muted" id="metricSyncSub">Healthy</span>
+        <div class="es-kpi-chip" id="cardLastSync">
+          <span class="es-kpi-label">Last Sync</span>
+          <span class="es-kpi-val font-mono" id="metricSyncVal">2m ago</span>
         </div>
       </div>
-    </section>
+    </header>
 
     <!-- MAIN TWO-COLUMN MONITORING WORKSPACE -->
     <div class="notif-workspace-grid">

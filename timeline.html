@@ -70,80 +70,59 @@
   <!-- Main Timeline Container -->
   <main class="timeline-page-container">
 
-    <!-- Milestone 6: EarlySight Workflow Ribbon -->
-    <nav class="earlysight-workflow-ribbon" aria-label="Operational Intelligence Progression" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:6px; padding:8px 14px; margin-bottom:14px; display:flex; align-items:center; gap:8px; font-size:0.75rem; overflow-x:auto;">
-      <span class="workflow-ribbon-label" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap;">INTELLIGENCE FLOW:</span>
-      <span class="workflow-step active" style="font-weight:700; color:var(--color-rust,#C85A32); background:rgba(200,90,50,0.08); padding:2px 7px; border-radius:4px; white-space:nowrap;">WHEN &amp; TIMELINE (M6)</span>
-      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
-      <a href="signals.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">SIGNAL (M4)</a>
-      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
-      <span class="workflow-step" style="color:var(--ink-secondary); font-weight:600; white-space:nowrap;">REPETITION</span>
-      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
-      <span class="workflow-step" style="color:var(--ink-secondary); font-weight:600; white-space:nowrap;">PATTERN</span>
-      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
-      <a href="risks.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">RISK (M5)</a>
-      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
-      <a href="actions.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">ACTION</a>
-      <span class="workflow-arrow" style="color:var(--ink-muted);">→</span>
-      <a href="impact.html" class="workflow-step" style="text-decoration:none; color:var(--ink-secondary); font-weight:600; white-space:nowrap;">RESOLUTION</a>
-    </nav>
+    <!-- Standardized Header -->
+    <div class="es-page-header">
+      <div class="es-header-info">
+        <h1 class="es-page-title" id="caseStudyTitle">Block A — Sub-Slab Water Infrastructure Micro-Leakage</h1>
+        <p class="es-page-desc" id="caseStudySummary">
+          Tracking the chronological lifecycle from the first sub-threshold pressure transient to cross-silo pattern detection, early warning issuance, and documented downtime avoidance.
+        </p>
+      </div>
 
-    <!-- Executive Problem Overview Header Card -->
-    <section class="timeline-hero-card">
-      <div class="timeline-hero-top">
-        <div class="hero-case-selector-group">
-          <span class="timeline-eyebrow font-mono">STAGE 7 // PROBLEM DEVELOPMENT OVER TIME</span>
-          <h1 class="timeline-main-title" id="caseStudyTitle">Block A — Sub-Slab Water Infrastructure Micro-Leakage</h1>
-          <p class="timeline-sub-summary" id="caseStudySummary">
-            Tracking the chronological lifecycle from the first sub-threshold pressure transient to cross-silo pattern detection, early warning issuance, and documented downtime avoidance.
-          </p>
-        </div>
-
-        <div class="case-switcher-box">
-          <label for="timelineCaseSelect" class="font-mono text-muted" style="font-size:0.7rem; text-transform:uppercase;">Select Problem Case Study:</label>
-          <select id="timelineCaseSelect" class="map-styled-select" style="min-width:200px; max-width:100%;">
-            <option value="0">Block A — Water Infrastructure Issue (High Severity)</option>
-            <option value="1">Block C — Hydraulic Valve Cavitation (High Severity)</option>
-            <option value="2">Power Island — Switchgear Busbar 3B Thermal Overload (Critical)</option>
+      <div class="es-header-actions">
+        <div class="case-switcher-box" style="margin-right:12px;">
+          <select id="timelineCaseSelect" class="es-select" style="min-width:260px;">
+            <option value="0">Block A — Water Infrastructure Issue (High)</option>
+            <option value="1">Block C — Hydraulic Valve Cavitation (High)</option>
+            <option value="2">Power Island — Busbar 3B Thermal Overload (Critical)</option>
           </select>
         </div>
-      </div>
 
-      <!-- Quick KPI Strip -->
-      <div class="timeline-kpi-ribbon">
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Severity Status</span>
-          <span class="risk-severity-pill badge-severity-high" id="caseStudySeverityBadge">HIGH SEVERITY</span>
-        </div>
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Actionable Lead Time</span>
-          <span class="kpi-ribbon-val text-vermilion" id="caseStudyLeadTime">14.2 Days Lead</span>
-        </div>
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Peak Confidence</span>
-          <span class="kpi-ribbon-val" id="caseStudyConfidence">87.0%</span>
-        </div>
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Downtime Loss Averted</span>
-          <span class="kpi-ribbon-val text-emerald" id="caseStudyCostAverted">$512,000</span>
+        <div class="es-kpi-strip">
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Status</span>
+            <span class="kpi-val text-vermilion" id="caseStudySeverityBadge" style="font-size:0.85rem;">HIGH</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Lead Time</span>
+            <span class="kpi-val text-vermilion" id="caseStudyLeadTime">14.2d</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Confidence</span>
+            <span class="kpi-val" id="caseStudyConfidence">87.0%</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Averted Cost</span>
+            <span class="kpi-val text-forest" id="caseStudyCostAverted">$512k</span>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Section 13 & 16: Risk Lifecycle Track & Compact Risk Score Trajectory -->
+    <!-- Risk Lifecycle Track & Compact Risk Score Trajectory -->
     <section class="timeline-trajectory-lifecycle-card" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:8px; padding:16px 20px; margin-bottom:18px; box-shadow:var(--shadow-sm);">
       
-      <!-- Top Row: Risk Lifecycle Track (Section 16: DETECTED → FORMING → EMERGING → ACTIVE → DE-ESCALATING → RESOLVED) -->
+      <!-- Top Row: Risk Lifecycle Track -->
       <div style="margin-bottom:14px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:8px;">
             <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
             <span class="font-mono text-muted" style="font-size:0.72rem; text-transform:uppercase; font-weight:700; letter-spacing:0.5px;">
-              RISK LIFECYCLE PROGRESSION (SECTION 16)
+              LIFECYCLE PROGRESSION STATUS
             </span>
           </div>
           <span style="font-size:0.75rem; color:var(--ink-muted); font-family:var(--font-mono);">
-            DETECTED → FORMING → EMERGING → ACTIVE → DE-ESCALATING → RESOLVED
+            Detected &rarr; Forming &rarr; Emerging &rarr; Active &rarr; De-escalating &rarr; Resolved
           </span>
         </div>
 
@@ -152,14 +131,14 @@
         </div>
       </div>
 
-      <!-- Bottom Row: Compact Risk Score Trajectory Strip (Section 13) & Time Filters (Section 15) -->
+      <!-- Bottom Row: Compact Risk Score Trajectory Strip & Time Filters -->
       <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding-top:14px; border-top:1px solid var(--border-subtle,#E4E0D8);">
         
-        <!-- Compact Score Trajectory Strip (Section 13: 68 → 74 → 80 → 86 → 41 → 18) -->
+        <!-- Compact Score Trajectory Strip -->
         <div style="flex:1; min-width:320px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
             <span class="font-mono" style="font-size:0.7rem; font-weight:700; color:var(--color-rust,#C85A32); text-transform:uppercase;">
-              RISK SCORE TRAJECTORY OVER TIME (SECTION 13):
+              RISK SCORE TRAJECTORY:
             </span>
             <span style="font-size:0.75rem; color:var(--ink-secondary);">
               <span style="color:var(--color-rust,#C85A32); font-weight:700;">↑ Escalation</span> &nbsp;then&nbsp; <span style="color:var(--color-forest,#1B4332); font-weight:700;">↓ De-escalation</span>
@@ -185,6 +164,9 @@
       </div>
 
     </section>
+
+    <!-- Animated Problem Storyline Visualizer Container -->
+    <div id="timelineStoryVisualizerContainer"></div>
 
     <!-- Sticky Interactive Lifecycle Stepper (The Core 7-Step Progression) -->
     <nav class="sticky-stepper-panel" aria-label="Problem Development Lifecycle">

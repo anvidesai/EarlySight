@@ -5,6 +5,7 @@
  */
 
 import '../data/timeline-data.js';
+import { TimelineStoryVisualizer } from './timeline-story-viz.js';
 
 class EarlySightTimelineController {
   constructor() {
@@ -27,6 +28,13 @@ class EarlySightTimelineController {
   init() {
     this.parseUrlParameters();
     this.renderCaseStudyHeader();
+    if (document.getElementById('timelineStoryVisualizerContainer')) {
+      try {
+        this.storyVisualizer = new TimelineStoryVisualizer('timelineStoryVisualizerContainer');
+      } catch (err) {
+        console.warn('Timeline story visualizer warning:', err);
+      }
+    }
     this.renderRiskLifecycleTrack();
     this.renderRiskTrajectoryStrip();
     this.renderLifecycleStepper();

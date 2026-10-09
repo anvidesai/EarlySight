@@ -18,6 +18,7 @@ import {
 } from '../data/signals-data.js';
 import './global-nav.js';
 import './micro-interactions.js';
+import { SignalConstellation } from './signal-constellation.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
@@ -51,6 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
     : window.SIGNAL_FREQUENCY_METRICS) || null;
 
   let activeClusterId = 'all';
+
+  // Mount Interactive Signal Constellation Visualization
+  if (document.getElementById('signalConstellationContainer')) {
+    try {
+      window.signalConstellation = new SignalConstellation('signalConstellationContainer', {
+        onSelectSignal: (sig) => {
+          if (typeof window.inspectSignal === 'function') {
+            window.inspectSignal(sig.rawId || sig.id);
+          }
+        }
+      });
+    } catch (err) {
+      console.warn('Constellation init error:', err);
+    }
+  }
 
   // --- BADGE HELPERS ---
   function getSeverityBadge(sev) {
@@ -487,6 +503,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dateFilter) dateFilter.value = 'all';
 
     activeClusterId = 'all';
+    if (window.signalConstellation) {
+      window.signalConstellation.clearSelection();
+    }
     renderClusterSection();
     renderTable(signals);
   };
@@ -640,6 +659,23 @@ document.addEventListener('DOMContentLoaded', () => {
       el.addEventListener('change', applyFilters);
     }
   });
+
+  // Toggle secondary clusters and analytics container
+  const btnToggleClustersView = document.getElementById('btnToggleClustersView');
+  const secondaryContainer = document.getElementById('signalsSecondaryContainer');
+  const toggleClustersBtnText = document.getElementById('toggleClustersBtnText');
+  if (btnToggleClustersView && secondaryContainer) {
+    btnToggleClustersView.addEventListener('click', () => {
+      const isHidden = secondaryContainer.style.display === 'none';
+      secondaryContainer.style.display = isHidden ? 'block' : 'none';
+      if (toggleClustersBtnText) {
+        toggleClustersBtnText.textContent = isHidden ? 'Hide Clusters & Analytics' : 'Precursor Clusters & Analytics';
+      }
+      if (isHidden) {
+        secondaryContainer.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
 
   // Initial renders
   renderAnalyticsStrip();

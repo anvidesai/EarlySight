@@ -25,6 +25,7 @@ import {
   getEvidenceItemById,
   filterEvidenceRegistry
 } from '../data/evidence-data.js';
+import { EvidenceRelationshipGraph } from './evidence-graph-viz.js';
 
 class EvidenceController {
   constructor() {
@@ -51,6 +52,20 @@ class EvidenceController {
     this.parseUrlParameters();
     this.bindGlobalEvents();
     this.renderAlertCase(this.activeAlert);
+    if (document.getElementById('forensicInvestigationGraphContainer')) {
+      try {
+        this.radialGraph = new EvidenceRelationshipGraph('forensicInvestigationGraphContainer', {
+          onSelectNode: (node) => {
+            const evItem = this.allEvidence.find(e => e.id === node.id || e.id.toLowerCase().includes(node.id.toLowerCase()));
+            if (evItem) {
+              this.openEvidenceInspector(evItem);
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('Evidence radial graph warning:', err);
+      }
+    }
     this.renderSourceEvidenceCards();
     this.renderEvidenceGraph();
 
@@ -170,6 +185,22 @@ class EvidenceController {
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
         this.resetFilters();
+      });
+    }
+
+    // Toggle Deep Forensic Graph & Timeline Details
+    const btnToggleDetails = document.getElementById('btnToggleEvidenceDetails');
+    const secondaryDetails = document.getElementById('evidenceSecondaryDetails');
+    if (btnToggleDetails && secondaryDetails) {
+      btnToggleDetails.addEventListener('click', () => {
+        const isHidden = secondaryDetails.style.display === 'none';
+        secondaryDetails.style.display = isHidden ? 'block' : 'none';
+        btnToggleDetails.textContent = isHidden ? 'Hide Deep Forensic Graph & Timeline' : 'Deep Forensic Graph & Timeline';
+        if (isHidden) {
+          setTimeout(() => {
+            this.renderEvidenceGraph();
+          }, 80);
+        }
       });
     }
 

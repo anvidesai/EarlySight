@@ -37,7 +37,7 @@ import './micro-interactions.js';
 
   // Searchable Items Registry
   const SEARCH_REGISTRY = [
-    { title: 'Overview', category: 'Navigation', url: 'index.html#mainDashboardSection', desc: 'Main executive dashboard and telemetry ingress overview' },
+    { title: 'Overview', category: 'Navigation', url: 'dashboard.html', desc: 'Main executive dashboard and telemetry ingress overview' },
     { title: 'Signals', category: 'Navigation', url: 'signals.html', desc: 'Multi-modal weak signals registry, multi-variable filters and precursor telemetry' },
     { title: 'Emerging Risks', category: 'Navigation', url: 'risks.html', desc: 'High-coherence synthesized hazards, risk levels (Low/Med/High/Critical) and alerts' },
     { title: 'Interactive Signal Map', category: 'Navigation', url: 'map.html', desc: 'Geospatial facility map with gradual cluster merging' },
@@ -83,6 +83,7 @@ import './micro-interactions.js';
       if (path.includes('impact.html')) return 'resolution';
       if (path.includes('workspace.html') || path.includes('organizations.html')) return 'workspace';
       if (path.includes('notifications.html')) return 'systemHealth';
+      if (path.includes('dashboard.html')) return 'overview';
       
       // Hash-based check on index.html
       const hash = window.location.hash.toLowerCase();
@@ -96,6 +97,11 @@ import './micro-interactions.js';
     }
 
     mount() {
+      // Do not mount internal app sidebar/shell on the public marketing homepage
+      if (document.body.classList.contains('earlysight-homepage') || document.body.dataset.page === 'homepage') {
+        return;
+      }
+
       // Hide old static site-header if present to prevent visual duplication
       const legacyHeader = document.querySelector('.site-header');
       if (legacyHeader) {
@@ -268,7 +274,7 @@ import './micro-interactions.js';
             <div class="nav-group-label font-mono">CORE INTELLIGENCE</div>
             <ul class="sidebar-nav-list">
               <li>
-                <a href="index.html#mainDashboardSection" class="sidebar-nav-item ${activeKey === 'overview' ? 'active' : ''}" data-nav="overview">
+                <a href="dashboard.html" class="sidebar-nav-item ${activeKey === 'overview' ? 'active' : ''}" data-nav="overview">
                   <span class="nav-item-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                   </span>
@@ -403,8 +409,27 @@ import './micro-interactions.js';
       document.body.insertAdjacentHTML('afterbegin', sidebarHtml);
     }
 
+    getPageMeta() {
+      const key = this.getCurrentPageKey();
+      const metaMap = {
+        overview: { title: 'Operational Overview', breadcrumb: 'Overview' },
+        signals: { title: 'Signals Registry', breadcrumb: 'Signals' },
+        emergingRisks: { title: 'Emerging Risks', breadcrumb: 'Risks' },
+        map: { title: 'Signal Map', breadcrumb: 'Map' },
+        trends: { title: 'Problem Lifecycle', breadcrumb: 'Trends' },
+        evidence: { title: 'Evidence & Forensics', breadcrumb: 'Evidence' },
+        aiAssistant: { title: 'AI Copilot', breadcrumb: 'AI Assistant' },
+        actions: { title: 'Action Center', breadcrumb: 'Actions' },
+        resolution: { title: 'Impact Monitoring', breadcrumb: 'Resolution' },
+        workspace: { title: 'Multi-Org Workspaces', breadcrumb: 'Workspaces' },
+        systemHealth: { title: 'System Health', breadcrumb: 'System Health' }
+      };
+      return metaMap[key] || metaMap.overview;
+    }
+
     renderTopbar() {
       const activeOrg = this.getActiveOrg();
+      const pageMeta = this.getPageMeta();
 
       const topbarHtml = `
         <header class="global-topbar" id="globalTopbar">
@@ -413,10 +438,17 @@ import './micro-interactions.js';
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
 
+            <!-- Breadcrumb Navigation -->
+            <div class="topbar-breadcrumb" id="topbarBreadcrumb">
+              <a href="index.html" class="topbar-crumb-root font-mono">EarlySight</a>
+              <span class="topbar-crumb-sep">/</span>
+              <span class="topbar-crumb-current font-bold">${pageMeta.breadcrumb}</span>
+            </div>
+
             <!-- Global Search Trigger Bar -->
             <button class="topbar-search-trigger" id="btnGlobalSearchTrigger" aria-label="Search signals, alerts, assets, and work orders">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              <span class="search-placeholder">Search signals, alerts, assets, work orders...</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <span class="search-placeholder">Search signals, risks, assets...</span>
               <kbd class="search-kbd font-mono">&#8984;K</kbd>
             </button>
           </div>
@@ -432,14 +464,14 @@ import './micro-interactions.js';
             <!-- Notifications Button with Pulse -->
             <div class="topbar-notif-wrap">
               <button class="topbar-icon-btn" id="btnNotifications" title="Operational Alerts & Notifications" aria-label="Notifications">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                 <span class="notif-badge-count" id="notifBadgeCount">${this.unreadNotificationsCount}</span>
               </button>
             </div>
 
             <!-- Quick Settings Button -->
             <button class="topbar-icon-btn" id="btnTopbarSettings" title="Global System Settings" aria-label="Settings">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             </button>
 
             <!-- User Avatar Chip -->
@@ -458,116 +490,90 @@ import './micro-interactions.js';
       const activeKey = this.getCurrentPageKey();
       const activeOrg = this.getActiveOrg();
 
-      // Determine active story stage (1-7) matching FINAL DESIGN PRINCIPLE
       let activeStage = 1;
       let stageBadgeText = "STAGE 01 • SCATTERED SIGNALS";
 
       if (activeKey === 'overview' || activeKey === 'signals') {
         activeStage = 1;
-        stageBadgeText = "STAGE 01 • SCATTERED SIGNALS";
+        stageBadgeText = "STAGE 01 • SIGNALS";
       } else if (activeKey === 'map') {
         activeStage = 2;
-        stageBadgeText = "STAGE 02 • SPATIAL CONNECTION";
+        stageBadgeText = "STAGE 02 • SPATIAL";
       } else if (activeKey === 'trends') {
         activeStage = 3;
-        stageBadgeText = "STAGE 03 • RECURRING PATTERN";
+        stageBadgeText = "STAGE 03 • PATTERN";
       } else if (activeKey === 'emergingRisks') {
         activeStage = 4;
-        stageBadgeText = "STAGE 04 • EARLY WARNING";
+        stageBadgeText = "STAGE 04 • WARNING";
       } else if (activeKey === 'evidence') {
         activeStage = 5;
-        stageBadgeText = "STAGE 05 • EVIDENCE & EXPLAINABILITY";
+        stageBadgeText = "STAGE 05 • EVIDENCE";
       } else if (activeKey === 'actions') {
         activeStage = 6;
-        stageBadgeText = "STAGE 06 • ACTION PIPELINE";
+        stageBadgeText = "STAGE 06 • ACTION";
       } else if (activeKey === 'resolution') {
         activeStage = 7;
-        stageBadgeText = "STAGE 07 • VERIFIED IMPACT";
+        stageBadgeText = "STAGE 07 • IMPACT";
       } else if (activeKey === 'aiAssistant') {
         activeStage = 5;
-        stageBadgeText = "CROSS-LIFECYCLE COPILOT";
+        stageBadgeText = "COPILOT";
       } else if (activeKey === 'workspace') {
         activeStage = 4;
-        stageBadgeText = "MULTI-FACILITY INTELLIGENCE";
+        stageBadgeText = "WORKSPACES";
       } else if (activeKey === 'systemHealth') {
         activeStage = 7;
-        stageBadgeText = "SYSTEM HEALTH & TELEMETRY";
+        stageBadgeText = "HEALTH";
       }
 
       const ribbonHtml = `
         <nav class="global-story-banner" id="globalStoryBanner" aria-label="EarlySight Operational Intelligence Lifecycle">
           <div class="story-banner-inner">
+            <div class="story-steps-track" role="list">
+              <a href="signals.html" class="story-step-item ${activeStage === 1 ? 'active' : ''}" data-step="1" title="01. Scattered Signals: Individual complaints, reports and telemetry">
+                <span class="story-step-num font-mono">01</span>
+                <span class="story-step-name">Signals</span>
+              </a>
+              <span class="story-arrow" aria-hidden="true">&rsaquo;</span>
+
+              <a href="index.html#synthesisSection" class="story-step-item ${activeStage === 2 ? 'active' : ''}" data-step="2" title="02. Connection: Correlated precursors across silos">
+                <span class="story-step-num font-mono">02</span>
+                <span class="story-step-name">Connection</span>
+              </a>
+              <span class="story-arrow" aria-hidden="true">&rsaquo;</span>
+
+              <a href="timeline.html" class="story-step-item ${activeStage === 3 ? 'active' : ''}" data-step="3" title="03. Pattern: Recurring failure pattern emerges">
+                <span class="story-step-num font-mono">03</span>
+                <span class="story-step-name">Pattern</span>
+              </a>
+              <span class="story-arrow" aria-hidden="true">&rsaquo;</span>
+
+              <a href="risks.html" class="story-step-item ${activeStage === 4 ? 'active' : ''}" data-step="4" title="04. Early Warning: Prioritized hazard identified">
+                <span class="story-step-num font-mono">04</span>
+                <span class="story-step-name">Early Warning</span>
+              </a>
+              <span class="story-arrow" aria-hidden="true">&rsaquo;</span>
+
+              <a href="evidence.html" class="story-step-item ${activeStage === 5 ? 'active' : ''}" data-step="5" title="05. Evidence: Causal explanation and confidence attribution">
+                <span class="story-step-num font-mono">05</span>
+                <span class="story-step-name">Evidence</span>
+              </a>
+              <span class="story-arrow" aria-hidden="true">&rsaquo;</span>
+
+              <a href="actions.html" class="story-step-item ${activeStage === 6 ? 'active' : ''}" data-step="6" title="06. Action: Prescriptive dispatch and investigation">
+                <span class="story-step-num font-mono">06</span>
+                <span class="story-step-name">Action</span>
+              </a>
+              <span class="story-arrow" aria-hidden="true">&rsaquo;</span>
+
+              <a href="impact.html" class="story-step-item ${activeStage === 7 ? 'active' : ''}" data-step="7" title="07. Verification: Post-intervention signal decay and ROI">
+                <span class="story-step-num font-mono">07</span>
+                <span class="story-step-name">Verification</span>
+              </a>
+            </div>
+
             <div class="story-banner-context">
               <span class="story-context-dot"></span>
-              <span class="story-context-title">OPERATIONAL STORY</span>
-              <span class="story-context-facility" id="storyFacilityTag">${activeOrg.name}</span>
-            </div>
-            
-            <div class="story-steps-track" role="list">
-              <a href="signals.html" class="story-step-item ${activeStage === 1 ? 'active' : ''}" data-step="1" title="01. Scattered Signals: Individual complaints, reports and data">
-                <span class="story-step-num">01</span>
-                <span class="story-step-name">Signals</span>
-                <span class="story-step-sub">Complaints &amp; telemetry</span>
-              </a>
-              <span class="story-arrow" aria-hidden="true">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </span>
-
-              <a href="index.html#heroSynthesisProgression" class="story-step-item ${activeStage === 2 ? 'active' : ''}" data-step="2" title="02. Connection: Related information gets connected">
-                <span class="story-step-num">02</span>
-                <span class="story-step-name">Connection</span>
-                <span class="story-step-sub">Correlated data</span>
-              </a>
-              <span class="story-arrow" aria-hidden="true">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </span>
-
-              <a href="timeline.html" class="story-step-item ${activeStage === 3 ? 'active' : ''}" data-step="3" title="03. Pattern: A recurring pattern becomes visible">
-                <span class="story-step-num">03</span>
-                <span class="story-step-name">Pattern</span>
-                <span class="story-step-sub">Recurring pattern</span>
-              </a>
-              <span class="story-arrow" aria-hidden="true">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </span>
-
-              <a href="risks.html" class="story-step-item ${activeStage === 4 ? 'active' : ''}" data-step="4" title="04. Early Warning: An emerging problem is identified">
-                <span class="story-step-num">04</span>
-                <span class="story-step-name">Early Warning</span>
-                <span class="story-step-sub">Emerging risk</span>
-              </a>
-              <span class="story-arrow" aria-hidden="true">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </span>
-
-              <a href="evidence.html" class="story-step-item ${activeStage === 5 ? 'active' : ''}" data-step="5" title="05. Evidence: The system explains why">
-                <span class="story-step-num">05</span>
-                <span class="story-step-name">Evidence</span>
-                <span class="story-step-sub">Causal explainability</span>
-              </a>
-              <span class="story-arrow" aria-hidden="true">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </span>
-
-              <a href="actions.html" class="story-step-item ${activeStage === 6 ? 'active' : ''}" data-step="6" title="06. Action: A responsible team investigates and acts">
-                <span class="story-step-num">06</span>
-                <span class="story-step-name">Action</span>
-                <span class="story-step-sub">Responsible team</span>
-              </a>
-              <span class="story-arrow" aria-hidden="true">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </span>
-
-              <a href="impact.html" class="story-step-item ${activeStage === 7 ? 'active' : ''}" data-step="7" title="07. Verification: The system checks whether the problem actually decreases">
-                <span class="story-step-num">07</span>
-                <span class="story-step-name">Verification</span>
-                <span class="story-step-sub">Decay &amp; ROI</span>
-              </a>
-            </div>
-
-            <!-- Active Stage Callout / Indicator Pill -->
-            <div class="story-stage-indicator">
-              <span class="indicator-badge ${activeStage === 4 ? 'badge-attention' : ''}">${stageBadgeText}</span>
+              <span class="story-context-facility font-mono" id="storyFacilityTag">${activeOrg.name}</span>
             </div>
           </div>
         </nav>

@@ -1071,8 +1071,8 @@ class EarlySightSignalMap {
     // 1. Architectural Floorplan Grid
     this.drawFloorplanGrid(ctx, w, h);
 
-    // 2. Inter-Bay Conduits
-    this.drawConduitNetwork(ctx);
+    // 2. Inter-Bay Conduits with animated telemetry flow
+    this.drawConduitNetwork(ctx, time);
 
     // 2.5 Risk-Density Heat Visualization
     this.drawRiskDensityAuras(ctx, time);
@@ -1123,13 +1123,14 @@ class EarlySightSignalMap {
     ctx.fillText('PAN & ZOOM ACTIVE • REAL-TIME OPERATIONAL SENSING TOPOLOGY', w - 440, 30);
   }
 
-  drawConduitNetwork(ctx) {
+  drawConduitNetwork(ctx, time = 0) {
     ctx.save();
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4, 6]);
+    ctx.lineWidth = 1.6;
+    ctx.setLineDash([5, 6]);
+    ctx.lineDashOffset = -time * 0.018;
 
     // Water Supply Line: Block B -> Block A
-    ctx.strokeStyle = 'rgba(120, 199, 199, 0.50)';
+    ctx.strokeStyle = 'rgba(120, 199, 199, 0.65)';
     ctx.beginPath();
     ctx.moveTo(575, 155);
     ctx.lineTo(370, 155);
@@ -1215,6 +1216,15 @@ class EarlySightSignalMap {
       this.drawRoundedRect(ctx, b.x, b.y, b.width, b.height, 8);
       ctx.fill();
       ctx.stroke();
+
+      // Subtle restrained pulsing outline for emerging/selected zones
+      if ((isEmerging || isDrawerSelected) && isSelected) {
+        const pulse = (Math.sin(time * 0.003 + b.x) + 1) * 2;
+        ctx.strokeStyle = isEmerging ? 'rgba(239, 123, 123, 0.40)' : 'rgba(120, 199, 199, 0.40)';
+        ctx.lineWidth = 1.5;
+        this.drawRoundedRect(ctx, b.x - 2 - pulse, b.y - 2 - pulse, b.width + 4 + pulse * 2, b.height + 4 + pulse * 2, 10);
+        ctx.stroke();
+      }
 
       ctx.fillStyle = (isSelected && this.activeLocationFilter === zone.id) ? 'rgba(114, 198, 165, 0.12)' : '#F1F5F9';
       this.drawRoundedRect(ctx, b.x, b.y, b.width, 28, { tl: 8, tr: 8, bl: 0, br: 0 });

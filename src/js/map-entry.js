@@ -13,6 +13,23 @@ import './micro-interactions.js';
 document.addEventListener('DOMContentLoaded', () => {
   window.signalMapEngine = new EarlySightSignalMap('facilityMapCanvas', 'signalMapWrapper');
   
+  // Toggle hotspots
+  const btnToggleHotspots = document.getElementById('btnToggleHotspots');
+  const mapHotspotsCollapsible = document.getElementById('mapHotspotsCollapsible');
+  const toggleHotspotsBtnText = document.getElementById('toggleHotspotsBtnText');
+  if (btnToggleHotspots && mapHotspotsCollapsible) {
+    btnToggleHotspots.addEventListener('click', () => {
+      const isHidden = mapHotspotsCollapsible.style.display === 'none';
+      mapHotspotsCollapsible.style.display = isHidden ? 'block' : 'none';
+      if (toggleHotspotsBtnText) {
+        toggleHotspotsBtnText.textContent = isHidden ? 'Hide Hotspots' : 'Zone Hotspots';
+      }
+      if (isHidden) {
+        mapHotspotsCollapsible.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
   // Modal close listener
   const modal = document.getElementById('signalModal');
   const closeBtn = document.getElementById('modalClose');

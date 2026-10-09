@@ -8,6 +8,7 @@
 class EarlySightAnimation {
   constructor(canvasId, overlayId, options = {}) {
     this.canvas = document.getElementById(canvasId);
+    if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
     this.overlay = document.getElementById(overlayId);
     this.signals = options.signals || [];

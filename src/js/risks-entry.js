@@ -16,6 +16,7 @@ import '../styles/styles.css';
 import './global-nav.js';
 import './micro-interactions.js';
 import { OPERATIONAL_RISKS, RISKS_KPI_OVERVIEW } from '../data/risks-data.js';
+import { LivingRiskTrajectory } from './risk-trajectory-viz.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
@@ -851,6 +852,23 @@ document.addEventListener('DOMContentLoaded', () => {
   if (scoreFilter) scoreFilter.addEventListener('change', applyFilters);
   if (resetBtn) resetBtn.addEventListener('click', resetFilters);
 
+  // Toggle secondary severity matrix & lifecycle details
+  const btnToggleRiskMatrix = document.getElementById('btnToggleRiskMatrix');
+  const risksSecondaryDetails = document.getElementById('risksSecondaryDetails');
+  const toggleMatrixBtnText = document.getElementById('toggleMatrixBtnText');
+  if (btnToggleRiskMatrix && risksSecondaryDetails) {
+    btnToggleRiskMatrix.addEventListener('click', () => {
+      const isHidden = risksSecondaryDetails.style.display === 'none';
+      risksSecondaryDetails.style.display = isHidden ? 'block' : 'none';
+      if (toggleMatrixBtnText) {
+        toggleMatrixBtnText.textContent = isHidden ? 'Hide Matrix & Lifecycle' : 'Severity Matrix & Lifecycle';
+      }
+      if (isHidden) {
+        risksSecondaryDetails.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
   // Drawer Close Listeners
   if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeRiskDetail);
   if (drawerOverlay) drawerOverlay.addEventListener('click', closeRiskDetail);
@@ -872,6 +890,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Initial renders
+  if (document.getElementById('livingRiskTrajectoryContainer')) {
+    try {
+      window.riskTrajectoryViz = new LivingRiskTrajectory('livingRiskTrajectoryContainer');
+    } catch (err) {
+      console.warn('Risk trajectory viz warning:', err);
+    }
+  }
+
   renderAttentionSection();
   renderRiskMatrix();
   renderProgressionTimeline();

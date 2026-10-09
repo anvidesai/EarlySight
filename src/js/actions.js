@@ -12,6 +12,7 @@ import {
   getActionById,
   filterActionsRegistry
 } from '../data/actions-data.js';
+import { ActionResolutionWorkflow } from './action-resolution-viz.js';
 
 class ActionsController {
   constructor() {
@@ -35,6 +36,31 @@ class ActionsController {
   init() {
     this.parseUrlParameters();
     this.bindEvents();
+    if (document.getElementById('actionResolutionVizMount')) {
+      try {
+        this.resolutionWorkflow = new ActionResolutionWorkflow('actionResolutionVizMount', {
+          onFilterStage: (stageId) => {
+            const statusMap = {
+              'detected': 'RECOMMENDED',
+              'assigned': 'ASSIGNED',
+              'in-progress': 'IN PROGRESS',
+              'completed': 'COMPLETED',
+              'verified': 'VERIFIED',
+              'resolved': 'RESOLVED'
+            };
+            const mappedStatus = statusMap[stageId];
+            if (mappedStatus) {
+              this.filters.status = mappedStatus;
+              const statusSelect = document.getElementById('filterStatusSelect');
+              if (statusSelect) statusSelect.value = mappedStatus;
+              this.renderActionsViews();
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('Resolution workflow viz error:', err);
+      }
+    }
     this.renderWorkflowStrip();
     this.renderPriorityActions();
     this.renderActionsViews();
@@ -140,6 +166,17 @@ class ActionsController {
       });
     }
 
+    // Toggle 6-Stage Workflow Strip
+    const btnToggleWorkflow = document.getElementById('btnToggleWorkflow');
+    const workflowContainer = document.getElementById('closedLoopWorkflowContainer');
+    if (btnToggleWorkflow && workflowContainer) {
+      btnToggleWorkflow.addEventListener('click', () => {
+        const isHidden = workflowContainer.style.display === 'none';
+        workflowContainer.style.display = isHidden ? 'block' : 'none';
+        btnToggleWorkflow.textContent = isHidden ? 'Hide 6-Stage Workflow' : '6-Stage Workflow & Progression';
+      });
+    }
+
     // View Switcher (Board vs Table)
     const btnViewBoard = document.getElementById('btnViewBoard');
     const btnViewTable = document.getElementById('btnViewTable');
@@ -229,6 +266,19 @@ class ActionsController {
     this.populateDrawer(this.activeAction);
     this.renderPriorityActions();
     this.renderActionsViews();
+
+    if (this.resolutionWorkflow) {
+      const counts = {
+        'detected': this.actions.filter(a => a.status === 'RECOMMENDED').length,
+        'assigned': this.actions.filter(a => a.status === 'ASSIGNED').length,
+        'in-progress': this.actions.filter(a => a.status === 'IN PROGRESS').length,
+        'completed': this.actions.filter(a => a.status === 'COMPLETED').length,
+        'verified': this.actions.filter(a => a.status === 'VERIFIED').length,
+        'resolved': this.actions.filter(a => a.status === 'RESOLVED').length
+      };
+      Object.entries(counts).forEach(([k, v]) => this.resolutionWorkflow.updateStageCount(k, v));
+    }
+
     this.showToast(`Action ${this.activeAction.id} status updated to: ${newStatus}`);
   }
 

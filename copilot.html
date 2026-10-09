@@ -70,99 +70,48 @@
   <!-- Main AI Copilot Container -->
   <main class="risks-page-container copilot-page-container">
 
-    <!-- Unified Story Workflow Ribbon -->
-    <div class="risk-workflow-ribbon earlysight-workflow-ribbon">
-      <span class="workflow-ribbon-tag">INTELLIGENCE LAYER:</span>
-      <div class="workflow-steps">
-        <span class="workflow-step">SIGNALS</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">PATTERN</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">RISK</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">EVIDENCE</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">ACTION</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step active-step" style="color:var(--color-forest, #1B4332); font-weight:700;">AI COPILOT (M9)</span>
-      </div>
-    </div>
-
-    <!-- SECTION 1 & 2: COPILOT HEADER & INTELLIGENCE SUMMARY -->
-    <section class="risks-header-banner copilot-hero-banner" style="margin-bottom: 20px;">
-      <div class="risks-banner-top">
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header">
+      <div class="es-page-header-top">
         <div>
-          <div class="banner-eyebrow font-mono">
-            <span class="badge-status-pill">INTELLIGENCE MODE // MOCK AI</span>
-            <span class="eyebrow-divider">•</span>
-            <span>CROSS-SILO OPERATIONAL COPILOT // MILESTONE 9</span>
+          <div class="es-badge font-mono" style="margin-bottom:6px; background:rgba(183,167,232,0.2); color:#4B3F72; border-color:rgba(183,167,232,0.4);">
+            OPERATIONAL INTELLIGENCE COPILOT
           </div>
-          <h1 class="risks-banner-title">
-            AI COPILOT
-          </h1>
-          <p class="risks-banner-desc">
-            Ask EarlySight about signals, patterns, risks, evidence, and recommended actions.
-          </p>
+          <h1 class="es-page-title">AI Copilot</h1>
+          <p class="es-page-desc">Inquire about weak signals, spatial patterns, emerging risks, causal evidence, and prescriptive actions across industrial systems.</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span class="font-mono text-muted" style="font-size:0.75rem;">Simulated Intelligence Horizon</span>
         </div>
       </div>
 
-      <!-- Section 2: Compact Intelligence Summary Strip -->
-      <div class="copilot-context-summary-wrap">
-        <div class="summary-context-header font-mono">
-          <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
-          <span class="summary-context-label">CURRENT OPERATIONAL CONTEXT:</span>
+      <!-- KPI Strip -->
+      <div class="es-kpi-strip">
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Signals Analyzed</span>
+          <span class="es-kpi-val" id="kpiCopilotSignals">128</span>
         </div>
-        
-        <div class="risks-kpi-strip copilot-kpi-strip">
-          <div class="risks-kpi-chip">
-            <span class="kpi-chip-label">Signals Analyzed</span>
-            <span class="kpi-chip-val" id="kpiCopilotSignals">128</span>
-            <span class="kpi-chip-sub">Across 6 Facility Quads</span>
-          </div>
-
-          <div class="risks-kpi-chip">
-            <span class="kpi-chip-label">Related Groups</span>
-            <span class="kpi-chip-val text-teal" id="kpiCopilotGroups">06</span>
-            <span class="kpi-chip-sub">Precursor Clusters</span>
-          </div>
-
-          <div class="risks-kpi-chip">
-            <span class="kpi-chip-label">Emerging Risks</span>
-            <span class="kpi-chip-val text-vermilion" id="kpiCopilotRisks">04</span>
-            <span class="kpi-chip-sub">Active Hazards Flagged</span>
-          </div>
-
-          <div class="risks-kpi-chip">
-            <span class="kpi-chip-label">Evidence Chains</span>
-            <span class="kpi-chip-val text-blue" id="kpiCopilotChains">06</span>
-            <span class="kpi-chip-sub">Causal Deductions</span>
-          </div>
-
-          <div class="risks-kpi-chip">
-            <span class="kpi-chip-label">Open Actions</span>
-            <span class="kpi-chip-val text-amber" id="kpiCopilotActions">19</span>
-            <span class="kpi-chip-sub">Closed-Loop Tracking</span>
-          </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Precursor Groups</span>
+          <span class="es-kpi-val" style="color:var(--intel-secondary, #78C7C7);" id="kpiCopilotGroups">06</span>
+        </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Emerging Risks</span>
+          <span class="es-kpi-val text-vermilion" id="kpiCopilotRisks">04</span>
+        </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Evidence Chains</span>
+          <span class="es-kpi-val" style="color:var(--color-rust, #C85A32);" id="kpiCopilotChains">06</span>
+        </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Open Actions</span>
+          <span class="es-kpi-val text-amber" id="kpiCopilotActions">19</span>
         </div>
       </div>
+    </header>
 
-      <div class="copilot-disclaimer-note font-mono">
-        Frontend demonstration using mock AI responses. No live model is connected.
-      </div>
-    </section>
-
-    <!-- SECTION 3 & 4: COPILOT QUERY AREA & CONTEXT SELECTOR -->
+    <!-- Console Section -->
     <section class="copilot-console-section" style="margin-bottom: 24px;">
-      
-      <!-- Query Flow Header -->
-      <div class="console-flow-ribbon font-mono">
-        <span class="flow-pill">USER QUERY</span>
-        <span class="flow-arrow">➔</span>
-        <span class="flow-pill pill-analyzing">EARLYSIGHT ANALYSIS</span>
-        <span class="flow-arrow">➔</span>
-        <span class="flow-pill pill-evidence">EVIDENCE + INSIGHT + RECOMMENDATION</span>
-      </div>
-
       <!-- Console Interactive Bar -->
       <div class="copilot-console-bar">
         <form id="copilotQueryForm" class="copilot-query-form">

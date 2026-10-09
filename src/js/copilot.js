@@ -286,6 +286,21 @@ class CopilotController {
           <span class="status-dot-pulse"></span>
           <span class="analyzing-title">EARLYSIGHT OPERATIONAL REASONING IN PROGRESS...</span>
         </div>
+
+        <!-- Signal-Processing Animation Motif -->
+        <div class="copilot-motif-wrap">
+          <svg class="copilot-processing-motif" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#78C7C7" stroke-width="2.5" stroke-dasharray="10 6" class="spin-clockwise"/>
+            <circle cx="24" cy="24" r="14" fill="none" stroke="#72C6A5" stroke-width="2" stroke-dasharray="8 4" class="spin-counter"/>
+            <circle cx="24" cy="24" r="6" fill="#102A43"/>
+            <circle cx="24" cy="24" r="3" fill="#78C7C7"/>
+          </svg>
+          <div>
+            <strong style="color:var(--ink-primary); font-size:0.85rem; display:block;">Synthesizing Operational Signal Topology...</strong>
+            <span style="color:var(--ink-secondary); font-size:0.75rem;">Cross-referencing multi-modal streams against failure precursors</span>
+          </div>
+        </div>
+
         <div class="analyzing-query-echo font-sans">
           Query: <strong>"${queryText}"</strong> &bull; Scope: <strong>${this.selectedContext}</strong>
         </div>
@@ -322,6 +337,29 @@ class CopilotController {
         <div class="response-query-banner font-sans">
           <span class="query-label font-mono">ANALYZED INQUIRY:</span>
           <span class="query-content font-bold">"${queryDisplay}"</span>
+        </div>
+
+        <!-- Causal Mini-Chain Graphic: Signals -> Pattern -> Risk -> Action -->
+        <div class="copilot-mini-chain-graphic">
+          <a href="signals.html" class="mini-chain-node" title="Inspect Ingested Operational Signals">
+            <span style="font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-muted); text-transform:uppercase;">1. Signals</span>
+            <strong style="color:var(--ink-primary); font-size:0.75rem;">3 Ingested Streams</strong>
+          </a>
+          <span class="mini-chain-arrow">&rarr;</span>
+          <a href="signals.html#signalsClustersSection" class="mini-chain-node" title="Inspect Convergent Pattern">
+            <span style="font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-muted); text-transform:uppercase;">2. Pattern</span>
+            <strong style="color:var(--accent-amber); font-size:0.75rem;">91.4% Coherence Match</strong>
+          </a>
+          <span class="mini-chain-arrow">&rarr;</span>
+          <a href="risks.html" class="mini-chain-node" title="Inspect Emerging Risk Profile">
+            <span style="font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-muted); text-transform:uppercase;">3. Risk</span>
+            <strong style="color:var(--accent-risk); font-size:0.75rem;">Score 86 (P1 Urgent)</strong>
+          </a>
+          <span class="mini-chain-arrow">&rarr;</span>
+          <a href="actions.html" class="mini-chain-node" title="Inspect Prescriptive Action">
+            <span style="font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-muted); text-transform:uppercase;">4. Action</span>
+            <strong style="color:var(--intel-primary); font-size:0.75rem;">WO #89104 Dispatched</strong>
+          </a>
         </div>
 
         <!-- Section 1: AI Interpretation -->

@@ -66,100 +66,67 @@
   <!-- Main Action & Resolution Container -->
   <main class="risks-page-container actions-page-container">
 
-    <!-- Unified Story Workflow Ribbon -->
-    <div class="risk-workflow-ribbon earlysight-workflow-ribbon">
-      <span class="workflow-ribbon-tag">OPERATIONAL LOOP:</span>
-      <div class="workflow-steps">
-        <span class="workflow-step">SIGNALS</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">PATTERN</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">RISK</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">EVIDENCE</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step active-step" style="color:var(--color-rust, #C85A32); font-weight:700;">ACTION</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">RESOLUTION</span>
-        <span class="workflow-arrow">→</span>
-        <span class="workflow-step">VERIFICATION</span>
-      </div>
-    </div>
-
-    <!-- 1. ACTION CENTER OVERVIEW: Banner with KPIs -->
-    <section class="risks-header-banner" style="margin-bottom: 20px;">
-      <div class="risks-banner-top">
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header">
+      <div class="es-page-header-top">
         <div>
-          <div class="banner-eyebrow font-mono">
-            <span>OPERATIONAL RESOLUTION WORKSPACE</span>
-          </div>
-          <h1 class="risks-banner-title">
-            ACTION &amp; RESOLUTION
-          </h1>
-          <p class="risks-banner-desc">
-            Turn emerging risks into assigned actions, verified resolutions, and closed-loop operational learning.
-          </p>
+          <div class="es-badge font-mono" style="margin-bottom:6px;">OPERATIONAL RESOLUTION WORKSPACE</div>
+          <h1 class="es-page-title">Action &amp; Resolution</h1>
+          <p class="es-page-desc">Turn emerging risks into assigned actions, verified resolutions, and closed-loop operational learning.</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button id="btnToggleWorkflow" class="es-btn es-btn-secondary font-mono" style="font-size:0.75rem;">
+            6-Stage Workflow & Progression
+          </button>
         </div>
       </div>
 
       <!-- KPI Cards Strip -->
-      <div class="risks-kpi-strip">
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label">Open Actions</span>
-          <span class="kpi-chip-val" id="kpiOpenActions">19</span>
-          <span class="kpi-chip-sub">Across All Facility Quads</span>
+      <div class="es-kpi-strip">
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Open Actions</span>
+          <span class="es-kpi-val" id="kpiOpenActions">19</span>
         </div>
-
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label">P1 / P2 Actions</span>
-          <span class="kpi-chip-val text-vermilion" id="kpiP1P2Actions">8</span>
-          <span class="kpi-chip-sub">Critical Urgency Interventions</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">P1 / P2 Actions</span>
+          <span class="es-kpi-val text-vermilion" id="kpiP1P2Actions">8</span>
         </div>
-
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label">In Progress</span>
-          <span class="kpi-chip-val text-amber" id="kpiInProgress">6</span>
-          <span class="kpi-chip-sub">Active Field Work Orders</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">In Progress</span>
+          <span class="es-kpi-val text-amber" id="kpiInProgress">6</span>
         </div>
-
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label">Awaiting Verification</span>
-          <span class="kpi-chip-val text-blue" id="kpiAwaitingVerification">3</span>
-          <span class="kpi-chip-sub">Post-Fix Telemetry Streams</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Awaiting Verification</span>
+          <span class="es-kpi-val" style="color:var(--intel-secondary, #78C7C7);" id="kpiAwaitingVerification">3</span>
         </div>
-
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label">Resolved</span>
-          <span class="kpi-chip-val text-forest" id="kpiResolved">12</span>
-          <span class="kpi-chip-sub">Physical Work Completed</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Resolved</span>
+          <span class="es-kpi-val" style="color:var(--color-leaf, #72C6A5);" id="kpiResolved">12</span>
         </div>
-
-        <div class="risks-kpi-chip">
-          <span class="kpi-chip-label">Verification Rate</span>
-          <span class="kpi-chip-val text-forest" id="kpiVerificationRate">94.2%</span>
-          <span class="kpi-chip-sub">Closed-Loop Validated</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Verification Rate</span>
+          <span class="es-kpi-val" style="color:var(--color-leaf, #72C6A5);" id="kpiVerificationRate">94.2%</span>
         </div>
       </div>
+    </header>
 
-      <div class="action-banner-disclaimer font-mono">
-        * Operational Intelligence Closed-Loop Resolution Tracking & Telemetry Verification
-      </div>
-    </section>
-
-    <!-- 2. CLOSED-LOOP WORKFLOW: 6-Stage Visual Progression Strip -->
-    <section class="closed-loop-section" style="margin-bottom: 24px;">
-      <div class="section-header-compact">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
-          <h2 class="dash-viz-title" style="margin:0; font-size:1.05rem;">Closed-Loop Operational Workflow</h2>
+    <!-- 6-Stage Operational Resolution Workflow Strip -->
+    <div id="closedLoopWorkflowContainer" style="margin-bottom:20px;">
+      <div id="actionResolutionVizMount"></div>
+      <section class="closed-loop-section es-card" style="display:none;">
+        <div class="section-header-compact" style="margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+            <h2 class="dash-viz-title" style="margin:0; font-size:0.95rem;">Closed-Loop Operational Workflow</h2>
+          </div>
+          <span class="dash-viz-badge badge-forest-subtle font-mono" style="font-size:0.68rem;">EMERGING RISK → ACTION → ASSIGNED → IN PROGRESS → RESOLVED → VERIFIED</span>
         </div>
-        <span class="dash-viz-badge badge-forest-subtle font-mono">EMERGING RISK → RECOMMENDED ACTION → ASSIGNED → IN PROGRESS → RESOLVED → VERIFIED</span>
-      </div>
 
-      <div class="closed-loop-workflow-strip" id="closedLoopWorkflowStrip" aria-label="Closed-Loop Operational Workflow Stages">
-        <!-- Rendered dynamically by actions.js -->
-      </div>
-    </section>
+        <div class="closed-loop-workflow-strip" id="closedLoopWorkflowStrip" aria-label="Closed-Loop Operational Workflow Stages">
+          <!-- Rendered dynamically by actions.js -->
+        </div>
+      </section>
+    </div>
 
     <!-- 3. PRIORITY ACTIONS: ATTENTION NEEDED SECTION -->
     <section class="priority-actions-section" style="margin-bottom: 28px;">
