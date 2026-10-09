@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Multi-Organization Workspace (Stage 12)</title>
   <meta name="description" content="Multi-tenant operational intelligence platform with strict workspace separation. Dedicated dashboards, signals, alerts, teams, reports, analytics, and scoped AI Copilot for ABC College, City Hospital, Green Residency, and Apex Industrial.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -93,48 +94,34 @@
   <!-- Main Multi-Organization Workspace Container -->
   <main class="workspace-page-container">
 
-    <!-- Workspace Hero & Strict Security Isolation Banner -->
-    <section class="workspace-security-banner" id="workspaceSecurityBanner">
-      <div class="security-banner-top">
-        <div class="security-banner-left">
-          <div class="security-badge-group">
-            <span class="security-pill font-mono">
-              <span class="security-dot"></span>
-              <span id="bannerSecurityTier">SOC2 Type II • Academic FERPA Air-Gapped</span>
-            </span>
-            <span class="tenant-code-pill font-mono" id="bannerTenantCode">TENANT-EDU-01</span>
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header" id="workspaceSecurityBanner">
+      <div class="es-page-header-top">
+        <div>
+          <div class="es-badge font-mono" style="margin-bottom:6px; background:rgba(114,198,165,0.18); color:#102A43; border-color:rgba(114,198,165,0.4); display:inline-flex; align-items:center; gap:6px;">
+            <span class="security-dot" style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#72C6A5;"></span>
+            <span id="bannerSecurityTier">AIR-GAPPED TENANT ISOLATION</span>
+            <span>•</span>
+            <span id="bannerTenantCode">TENANT-EDU-01</span>
           </div>
-
-          <div class="workspace-brand-row">
-            <div class="workspace-brand-icon" id="bannerOrgIcon">
-              <!-- Rendered via JS -->
-            </div>
-            <div>
-              <h1 class="workspace-org-title" id="bannerOrgTitle">ABC College</h1>
-              <p class="workspace-org-subtitle" id="bannerOrgSubtitle">
-                Main Academic Quad, Science Laboratories &amp; Residence Halls
-              </p>
-            </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div id="bannerOrgIcon" style="display:inline-flex; align-items:center;"></div>
+            <h1 class="es-page-title" id="bannerOrgTitle" style="margin:0;">ABC College</h1>
           </div>
-
-          <div class="workspace-meta-line font-mono" id="bannerLocationMeta">
+          <p class="es-page-desc" id="bannerOrgSubtitle" style="margin:4px 0 2px 0;">Main Academic Quad, Science Laboratories &amp; Residence Halls</p>
+          <div class="font-mono text-muted" style="font-size:0.75rem;" id="bannerLocationMeta">
             North Campus, Gate 4 &bull; 14 Buildings &bull; 18,500 Students
           </div>
         </div>
 
-        <div class="security-banner-right">
-          <div class="workspace-switch-card">
-            <span class="switch-card-title font-mono">SELECT ORGANIZATION WORKSPACE:</span>
-            <div class="quick-org-pills-row" id="quickOrgPillsContainer">
-              <!-- Quick Switch Pills Rendered via JS -->
-            </div>
-            <div class="switch-card-note">
-              <span class="note-lock-icon">&#128274;</span>
-              <span>All signals, alerts, teams, and AI memory are isolated per workspace.</span>
-            </div>
+        <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-end;">
+          <span class="font-mono text-muted" style="font-size:0.7rem; font-weight:700;">WORKSPACE SELECTOR:</span>
+          <div class="quick-org-pills-row" id="quickOrgPillsContainer" style="display:flex; gap:6px; flex-wrap:wrap;">
+            <!-- Rendered via JS -->
           </div>
         </div>
       </div>
+    </header>
 
       <!-- 7 Mandatory Organization Navigation Tabs -->
       <nav class="workspace-module-tabs" role="tablist" aria-label="Organization Modules">
@@ -406,9 +393,6 @@
   <div class="action-toast-container" id="workspaceToastContainer" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="organizations-data.js"></script>
-  <script src="workspace.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/workspace-entry.js"></script>
 </body>
 </html>

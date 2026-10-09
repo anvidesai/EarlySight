@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EarlySight — Action Center & Resolution Tracking (Stage 10)</title>
-  <meta name="description" content="Industrial operational resolution tracking workflow: Detected to Verified to Assigned to Action Taken to Resolved to Impact Verified. Assignee management, deadlines, prescriptive actions, and smooth status animations.">
-  <link rel="stylesheet" href="styles.css">
+  <title>EarlySight — Action & Resolution Workspace</title>
+  <meta name="description" content="Turn emerging risks into assigned actions, verified resolutions, and closed-loop operational learning. Closed-loop 6-stage operational action tracking from risk identification to audited verification.">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="map-page-body action-center-body">
+<body class="map-page-body actions-page-body">
 
-  <!-- Top Enterprise Navigation Header -->
+  <!-- Top Enterprise Header -->
   <header class="site-header">
     <a href="index.html" class="brand-container">
       <div class="brand-logo-mark" aria-hidden="true">
@@ -25,327 +26,487 @@
       </div>
       <div class="brand-text">
         <span class="brand-title">EarlySight</span>
-        <span class="brand-subtitle-badge">Action Center</span>
+        <span class="brand-subtitle-badge">Action & Resolution</span>
       </div>
     </a>
 
     <div class="view-switcher-pill">
-      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Dashboard</a>
-      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+      <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Back to Dashboard</a>
+      <a href="signals.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-teal"></span>
-        <span>Workspaces 🏢</span>
+        <span>Signals (M4)</span>
       </a>
-      <button class="view-switch-btn active">Action Center</button>
-      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-emerald"></span>
-        <span>Impact Monitoring &rarr;</span>
-      </a>
-      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>AI Copilot</span>
+      <a href="risks.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-vermilion"></span>
+        <span>Risks (M5)</span>
       </a>
       <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-amber"></span>
-        <span>Signal Map &rarr;</span>
+        <span>Map (M6)</span>
       </a>
       <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-vermilion"></span>
-        <span>Timeline &rarr;</span>
+        <span>Timeline (M6)</span>
       </a>
       <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-blue"></span>
-        <span>Evidence &rarr;</span>
+        <span>Evidence</span>
       </a>
+      <button class="view-switch-btn active">Actions</button>
     </div>
 
     <div style="display: flex; align-items: center; gap: 16px;">
       <div class="header-status-pill">
         <span class="status-dot-pulse"></span>
-        <span>STAGE 10 ACTIVE &bull; RESOLUTION PIPELINE ONLINE</span>
+        <span>STAGE 06 • ACTION &amp; RESOLUTION ACTIVE</span>
       </div>
-      <button class="btn-header-cta" id="btnNewActionTicket">
-        + New Action Ticket
-      </button>
     </div>
   </header>
 
-  <!-- Main Action Center Content Container -->
-  <main class="action-center-container">
+  <!-- Main Action & Resolution Container -->
+  <main class="risks-page-container actions-page-container">
 
-    <!-- Hero / Workflow Progression Banner -->
-    <section class="action-hero-banner">
-      <div class="action-hero-left">
-        <div class="action-hero-badge">
-          <span class="badge-dot"></span>
-          <span>OPERATIONAL RESOLUTION TRACKING // FACILITY 04</span>
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header">
+      <div class="es-page-header-top">
+        <div>
+          <div class="es-badge font-mono" style="margin-bottom:6px;">OPERATIONAL RESOLUTION WORKSPACE</div>
+          <h1 class="es-page-title">Action &amp; Resolution</h1>
+          <p class="es-page-desc">Turn emerging risks into assigned actions, verified resolutions, and closed-loop operational learning.</p>
         </div>
-        <h1 class="action-hero-title">EarlySight Action Center</h1>
-        <p class="action-hero-subtitle">
-          Ensure early warnings never stall in alert queues. Track emerging issues through the closed-loop 6-stage engineering workflow from weak signal detection to audited ROI verification.
-        </p>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button id="btnToggleWorkflow" class="es-btn es-btn-secondary font-mono" style="font-size:0.75rem;">
+            6-Stage Workflow & Progression
+          </button>
+        </div>
       </div>
 
-      <!-- 6-Stage Process Flow Strip -->
-      <div class="action-workflow-strip" aria-label="Resolution Workflow">
-        <div class="workflow-strip-step">
-          <span class="step-num">01</span>
-          <span class="step-name">Detected</span>
-          <span class="step-sub">Signal synthesis</span>
+      <!-- KPI Cards Strip -->
+      <div class="es-kpi-strip">
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Open Actions</span>
+          <span class="es-kpi-val" id="kpiOpenActions">19</span>
         </div>
-        <span class="workflow-strip-arrow">&rarr;</span>
-        <div class="workflow-strip-step">
-          <span class="step-num">02</span>
-          <span class="step-name">Verified</span>
-          <span class="step-sub">Engineering review</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">P1 / P2 Actions</span>
+          <span class="es-kpi-val text-vermilion" id="kpiP1P2Actions">8</span>
         </div>
-        <span class="workflow-strip-arrow">&rarr;</span>
-        <div class="workflow-strip-step">
-          <span class="step-num">03</span>
-          <span class="step-name">Assigned</span>
-          <span class="step-sub">Tech & slot allocated</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">In Progress</span>
+          <span class="es-kpi-val text-amber" id="kpiInProgress">6</span>
         </div>
-        <span class="workflow-strip-arrow">&rarr;</span>
-        <div class="workflow-strip-step">
-          <span class="step-num">04</span>
-          <span class="step-name">Action Taken</span>
-          <span class="step-sub">Physical maintenance</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Awaiting Verification</span>
+          <span class="es-kpi-val" style="color:var(--intel-secondary, #78C7C7);" id="kpiAwaitingVerification">3</span>
         </div>
-        <span class="workflow-strip-arrow">&rarr;</span>
-        <div class="workflow-strip-step">
-          <span class="step-num">05</span>
-          <span class="step-name">Resolved</span>
-          <span class="step-sub">Baseline restored</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Resolved</span>
+          <span class="es-kpi-val" style="color:var(--color-leaf, #72C6A5);" id="kpiResolved">12</span>
         </div>
-        <span class="workflow-strip-arrow">&rarr;</span>
-        <div class="workflow-strip-step active">
-          <span class="step-num">06</span>
-          <span class="step-name">Impact Verified</span>
-          <span class="step-sub">Quantified ROI audit</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Verification Rate</span>
+          <span class="es-kpi-val" style="color:var(--color-leaf, #72C6A5);" id="kpiVerificationRate">94.2%</span>
         </div>
+      </div>
+    </header>
+
+    <!-- 6-Stage Operational Resolution Workflow Strip -->
+    <div id="closedLoopWorkflowContainer" style="margin-bottom:20px;">
+      <div id="actionResolutionVizMount"></div>
+      <section class="closed-loop-section es-card" style="display:none;">
+        <div class="section-header-compact" style="margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+            <h2 class="dash-viz-title" style="margin:0; font-size:0.95rem;">Closed-Loop Operational Workflow</h2>
+          </div>
+          <span class="dash-viz-badge badge-forest-subtle font-mono" style="font-size:0.68rem;">EMERGING RISK → ACTION → ASSIGNED → IN PROGRESS → RESOLVED → VERIFIED</span>
+        </div>
+
+        <div class="closed-loop-workflow-strip" id="closedLoopWorkflowStrip" aria-label="Closed-Loop Operational Workflow Stages">
+          <!-- Rendered dynamically by actions.js -->
+        </div>
+      </section>
+    </div>
+
+    <!-- 3. PRIORITY ACTIONS: ATTENTION NEEDED SECTION -->
+    <section class="priority-actions-section" style="margin-bottom: 28px;">
+      <div class="section-header-compact">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="indicator-dot dot-vermilion"></span>
+          <h2 class="dash-viz-title" style="margin:0; font-size:1.05rem;">ATTENTION NEEDED — High-Priority Actions</h2>
+        </div>
+        <span class="dash-viz-badge badge-trend-alert font-mono">Immediate Turnaround Windows Required</span>
+      </div>
+
+      <div class="priority-actions-grid" id="priorityActionsGrid">
+        <!-- Rendered dynamically by actions.js (ACT-001, ACT-002, ACT-003, ACT-004) -->
       </div>
     </section>
 
-    <!-- KPI Summary Metrics Grid -->
-    <section class="action-kpi-grid">
-      <div class="action-kpi-card">
-        <span class="action-kpi-label">Total Active Issues</span>
-        <span class="action-kpi-val" id="kpiTotalIssues">12</span>
-        <span class="action-kpi-sub">Across 6 Facility Quads</span>
-      </div>
-      <div class="action-kpi-card">
-        <span class="action-kpi-label">In-Progress Interventions</span>
-        <span class="action-kpi-val text-amber" id="kpiInProgress">4</span>
-        <span class="action-kpi-sub">Assigned & Maintenance Active</span>
-      </div>
-      <div class="action-kpi-card">
-        <span class="action-kpi-label">Resolved & Verified</span>
-        <span class="action-kpi-val text-teal" id="kpiResolved">4</span>
-        <span class="action-kpi-sub">100% True Positive Rate</span>
-      </div>
-      <div class="action-kpi-card">
-        <span class="action-kpi-label">Verified Downtime Averted</span>
-        <span class="action-kpi-val text-green" id="kpiAvertedHours">180 hrs</span>
-        <span class="action-kpi-sub">Continuous Run Preserved</span>
-      </div>
-      <div class="action-kpi-card">
-        <span class="action-kpi-label">Averted Downtime Loss</span>
-        <span class="action-kpi-val text-green" id="kpiSavings">$1,922,000</span>
-        <span class="action-kpi-sub">Audited Reliability ROI</span>
-      </div>
-      <div class="action-kpi-card">
-        <span class="action-kpi-label">SLA On-Time Compliance</span>
-        <span class="action-kpi-val" id="kpiSla">98.4%</span>
-        <span class="action-kpi-sub">Target: &lt; 4.2d Mean Lead</span>
-      </div>
-    </section>
+    <!-- 4, 5, 11. ACTION REGISTRY & CLOSED-LOOP BOARD -->
+    <section class="actions-registry-section">
+      <!-- Toolbar & Filters -->
+      <div class="action-registry-toolbar">
+        <div class="toolbar-search-group">
+          <span class="search-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input type="text" id="actionSearchInput" class="action-search-input" placeholder="Search action ID, risk, owner, location, recommendation..." aria-label="Search operational actions">
+        </div>
 
-    <!-- Interactive Filters & Controls Toolbar -->
-    <section class="action-toolbar">
-      <!-- Search Box -->
-      <div class="action-search-wrap">
-        <span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-        <input type="text" id="actionSearchInput" class="action-search-input" placeholder="Search issues, equipment, assigned engineers, actions, notes...">
-      </div>
+        <div class="toolbar-filters-row">
+          <div class="filter-select-wrap">
+            <label for="filterPrioritySelect" class="filter-select-label font-mono">Priority:</label>
+            <select id="filterPrioritySelect" class="action-filter-select">
+              <option value="all">All Priorities</option>
+              <option value="P1">Critical (P1)</option>
+              <option value="P2">High (P2)</option>
+              <option value="P3">Medium (P3)</option>
+            </select>
+          </div>
 
-      <!-- Team Filter Pills -->
-      <div class="action-filter-group">
-        <span class="filter-label">Domain Team:</span>
-        <div class="filter-pills-wrap">
-          <button class="filter-pill active" data-filter-team="all">All Teams</button>
-          <button class="filter-pill" data-filter-team="Civil">Civil & Piping</button>
-          <button class="filter-pill" data-filter-team="Hydraulics">Hydraulics</button>
-          <button class="filter-pill" data-filter-team="Mechanical">Mechanical</button>
-          <button class="filter-pill" data-filter-team="Electrical">Electrical</button>
-          <button class="filter-pill" data-filter-team="Automation">Automation</button>
-          <button class="filter-pill" data-filter-team="HVAC">HVAC & Utilities</button>
+          <div class="filter-select-wrap">
+            <label for="filterStatusSelect" class="filter-select-label font-mono">Status:</label>
+            <select id="filterStatusSelect" class="action-filter-select">
+              <option value="all">All Statuses</option>
+              <option value="RECOMMENDED">RECOMMENDED</option>
+              <option value="ASSIGNED">ASSIGNED</option>
+              <option value="IN PROGRESS">IN PROGRESS</option>
+              <option value="BLOCKED">BLOCKED</option>
+              <option value="RESOLVED">RESOLVED</option>
+              <option value="AWAITING VERIFICATION">AWAITING VERIFICATION</option>
+              <option value="VERIFIED">VERIFIED</option>
+            </select>
+          </div>
+
+          <div class="filter-select-wrap">
+            <label for="filterOwnerSelect" class="filter-select-label font-mono">Owner:</label>
+            <select id="filterOwnerSelect" class="action-filter-select">
+              <option value="all">All Owners</option>
+              <option value="Facilities Engineering">Facilities Engineering</option>
+              <option value="Electrical Maintenance">Electrical Maintenance</option>
+              <option value="Reliability Engineering">Reliability Engineering</option>
+              <option value="Process Engineering">Process Engineering</option>
+              <option value="Mechanical Reliability">Mechanical Reliability</option>
+              <option value="Hydraulics">Hydraulics &amp; Fluid Power</option>
+            </select>
+          </div>
+
+          <div class="filter-select-wrap">
+            <label for="filterLocationSelect" class="filter-select-label font-mono">Location:</label>
+            <select id="filterLocationSelect" class="action-filter-select">
+              <option value="all">All Locations</option>
+              <option value="block-a">Block A / Trench 4B</option>
+              <option value="power-island">Power Island / Bus 3B</option>
+              <option value="assembly-bay-4">Assembly Bay 4</option>
+              <option value="block-c">Block C / Press #2</option>
+              <option value="utility-zone">Utility Zone / Roof Quad</option>
+            </select>
+          </div>
+
+          <div class="filter-select-wrap">
+            <label for="filterRiskSelect" class="filter-select-label font-mono">Risk:</label>
+            <select id="filterRiskSelect" class="action-filter-select">
+              <option value="all">All Risks</option>
+              <option value="RSK-001">RSK-001: Water Infrastructure</option>
+              <option value="RSK-002">RSK-002: Press Cavitation</option>
+              <option value="RSK-003">RSK-003: Switchgear Thermal</option>
+              <option value="RSK-004">RSK-004: Drive Feeder</option>
+              <option value="RSK-005">RSK-005: Baghouse Unbalance</option>
+              <option value="RSK-006">RSK-006: Cleanroom Humidity</option>
+            </select>
+          </div>
+
+          <div class="filter-select-wrap">
+            <label for="filterVerificationSelect" class="filter-select-label font-mono">Verification:</label>
+            <select id="filterVerificationSelect" class="action-filter-select">
+              <option value="all">All Verification</option>
+              <option value="verified">Verified (Audited)</option>
+              <option value="awaiting">Awaiting Verification</option>
+            </select>
+          </div>
+
+          <button id="btnResetActionFilters" class="btn-reset-filters font-mono" title="Clear active filters">
+            ↺ Reset Filters
+          </button>
+        </div>
+
+        <div class="toolbar-footer-row">
+          <div class="action-results-count font-mono" id="actionResultsCount">
+            Showing 7 of 7 Operational Actions
+          </div>
+
+          <!-- View Switcher (Board vs Table) -->
+          <div class="action-view-toggle">
+            <button id="btnViewBoard" class="view-toggle-btn active" title="Show Closed-Loop Resolution Board">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>
+              <span>Resolution Board</span>
+            </button>
+            <button id="btnViewTable" class="view-toggle-btn" title="Show Detailed Action Registry Table">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              <span>Action Registry</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Priority Filter Pills -->
-      <div class="action-filter-group">
-        <span class="filter-label">Priority:</span>
-        <div class="filter-pills-wrap">
-          <button class="filter-pill active" data-filter-priority="all">All</button>
-          <button class="filter-pill priority-pill-critical" data-filter-priority="Critical P1">Critical P1</button>
-          <button class="filter-pill priority-pill-high" data-filter-priority="High P2">High P2</button>
-          <button class="filter-pill priority-pill-medium" data-filter-priority="Medium P3">Medium P3</button>
+      <!-- 11. Closed-Loop Resolution Board View (Default) -->
+      <section class="action-board-container" id="actionBoardSection">
+        <div class="action-board-columns-grid" id="actionBoardColumnsGrid">
+          <!-- Rendered dynamically by actions.js (RECOMMENDED, ASSIGNED, IN PROGRESS, AWAITING VERIFICATION, VERIFIED) -->
         </div>
-      </div>
+      </section>
 
-      <!-- View Switcher -->
-      <div class="action-view-switcher">
-        <button class="action-view-btn active" data-action-view="kanban" title="6-Stage Kanban Board">
-          <span>Kanban Pipeline</span>
-        </button>
-        <button class="action-view-btn" data-action-view="table" title="Tabular Matrix View">
-          <span>Table Matrix</span>
-        </button>
-        <button class="action-view-btn" data-action-view="urgency" title="Sort by Urgent Deadline">
-          <span>Urgency Sort</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- 6-Stage Kanban Board View -->
-    <section class="action-kanban-board" id="actionKanbanBoard">
-      <!-- Generated dynamically by actions.js -->
-    </section>
-
-    <!-- Tabular Matrix View (hidden by default) -->
-    <section class="action-table-view" id="actionTableView" style="display:none;">
-      <table class="action-table">
-        <thead>
-          <tr>
-            <th>Issue ID & Priority</th>
-            <th>Title & Location</th>
-            <th>Responsible Team</th>
-            <th>Assigned Lead</th>
-            <th>Current Status</th>
-            <th>Deadline & Lead Time</th>
-            <th>Prescriptive Action</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody id="actionTableBody">
-          <!-- Populated by actions.js -->
-        </tbody>
-      </table>
+      <!-- 4. Action Table / Registry View (Hidden by default, switched via button) -->
+      <section class="action-table-container" id="actionTableSection" style="display:none;">
+        <div class="table-scroll-wrapper">
+          <table class="action-registry-table">
+            <thead>
+              <tr>
+                <th style="width:90px;">Action ID</th>
+                <th style="width:200px;">Risk &amp; Score</th>
+                <th style="width:140px;">Location</th>
+                <th>Recommended Action</th>
+                <th style="width:140px;">Owner</th>
+                <th style="width:75px;">Priority</th>
+                <th style="width:140px;">Status</th>
+                <th style="width:95px;">Created</th>
+                <th style="width:95px;">Due</th>
+                <th style="width:150px;">Verification</th>
+                <th style="width:85px;">Details</th>
+              </tr>
+            </thead>
+            <tbody id="actionTableBody">
+              <!-- Rendered dynamically by actions.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
   </main>
 
-  <!-- Deep Issue Inspector & Resolution Notes Modal Overlay -->
-  <div class="action-modal-overlay" id="actionModalOverlay">
-    <div class="action-inspector-modal" id="actionInspectorModal" role="dialog" aria-modal="true" aria-labelledby="modalIssueTitle">
+  <!-- 6. ACTION DETAIL INSPECTOR DRAWER (Right-side slide drawer on desktop, full-width on mobile) -->
+  <aside class="action-inspector-drawer" id="actionInspectorDrawer" aria-label="Action Detail Inspector" role="dialog" aria-modal="true">
+    <div class="drawer-header-row">
+      <div class="drawer-title-group">
+        <div class="drawer-top-badges font-mono">
+          <span class="action-id-tag font-bold" id="drawerActionId">ACT-001</span>
+          <span class="stat-badge font-mono" id="drawerActionPriority">P1 Urgent</span>
+          <span class="action-status-badge font-mono" id="drawerActionStatus">IN PROGRESS</span>
+        </div>
+        <h3 class="drawer-headline font-sans" id="drawerActionTitle">
+          Sub-Slab Pressurized Flange 4B-12 Targeted Gasket Swap
+        </h3>
+      </div>
+      <button class="drawer-close-btn" id="closeActionDrawerBtn" aria-label="Close Action Inspector">&times;</button>
+    </div>
+
+    <!-- Drawer Scrollable Content -->
+    <div class="drawer-body-scroll">
       
-      <!-- Modal Header -->
-      <div class="action-modal-header">
-        <div class="modal-header-titles">
-          <div class="modal-top-tags">
-            <span class="modal-issue-id" id="modalIssueId">ACT-2026-088</span>
-            <span class="modal-lead-time" id="modalLeadTime">14.2 Days Lead</span>
-            <span class="modal-potential-loss" id="modalPotentialLoss">Potential Loss: $512,000</span>
-            <span class="modal-work-order" id="modalWorkOrder">Work Order: WO-2026-7812</span>
-          </div>
-          <h2 class="modal-issue-title" id="modalIssueTitle">Sub-Slab Pressurized Water Seepage on Flange 4B-12</h2>
-          <div class="modal-asset-loc" id="modalAssetLocation">DI Water Main Trench Feed • Block A — Assembly Bay 4</div>
-        </div>
-        <button class="modal-close-btn" id="actionModalClose" aria-label="Close Inspector">&times;</button>
-      </div>
-
-      <!-- Large Interactive 6-Stage Stepper -->
-      <div class="modal-stepper-container">
-        <div class="modal-stepper-label">
-          <span>WORKFLOW STAGE PROGRESSION (CLICK ANY STEP TO ADVANCE / ROLLBACK):</span>
-        </div>
-        <div class="modal-stepper-track" id="modalStepperTrack">
-          <!-- Populated by actions.js -->
-        </div>
-      </div>
-
-      <!-- Modal Body (Two-Column Layout) -->
-      <div class="modal-body-grid">
-        
-        <!-- Left Column: Form Fields & Resolution Notes -->
-        <div class="modal-col-form">
-          <div class="form-row-dual">
-            <div class="form-field-group">
-              <label class="form-label" for="editResponsibleTeam">Responsible Team</label>
-              <select id="editResponsibleTeam" class="form-select">
-                <!-- Populated dynamically -->
-              </select>
-            </div>
-            <div class="form-field-group">
-              <label class="form-label" for="editAssignedPerson">Assigned Person</label>
-              <input type="text" id="editAssignedPerson" class="form-input" placeholder="Technician name">
-            </div>
-          </div>
-
-          <div class="form-row-dual">
-            <div class="form-field-group">
-              <label class="form-label" for="editPriority">Priority Urgency</label>
-              <select id="editPriority" class="form-select">
-                <option value="Critical P1">Critical P1 (&lt; 48 Hours)</option>
-                <option value="High P2">High P2 (3 - 7 Days)</option>
-                <option value="Medium P3">Medium P3 (7 - 14 Days)</option>
-                <option value="Low P4">Low P4 (&gt; 14 Days)</option>
-              </select>
-            </div>
-            <div class="form-field-group">
-              <label class="form-label" for="editDeadline">Target Completion Deadline</label>
-              <input type="text" id="editDeadline" class="form-input" placeholder="e.g. Sep 30, 2026 • 16:00">
-            </div>
-          </div>
-
-          <div class="form-field-group">
-            <label class="form-label" for="editAction">Prescriptive Action</label>
-            <textarea id="editAction" class="form-textarea" rows="3" placeholder="Specific technical steps required..."></textarea>
-          </div>
-
-          <div class="form-field-group">
-            <label class="form-label" for="editResolutionNotes">Resolution Notes & Technician Findings</label>
-            <textarea id="editResolutionNotes" class="form-textarea" rows="4" placeholder="Enter post-maintenance observations, parts used, ultrasonic readings..."></textarea>
-          </div>
-
-          <!-- Impact Box (if resolved/impact verified) -->
-          <div id="modalImpactBox" style="display:none;"></div>
-        </div>
-
-        <!-- Right Column: Audit History Timeline -->
-        <div class="modal-col-history">
-          <h3 class="history-column-title">Closed-Loop Audit History</h3>
-          <div class="history-list-feed" id="modalHistoryList">
-            <!-- Populated dynamically by actions.js -->
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="action-modal-footer">
-        <div class="modal-footer-left">
-          <span class="footer-hint">💡 Tip: Advance or rollback status to trigger animated pipeline transitions.</span>
-        </div>
-        <div class="modal-footer-right">
-          <button class="btn-modal-advance" id="actionModalAdvance">
-            Advance to Next Stage &rarr;
+      <!-- Action Controls -->
+      <section class="drawer-section drawer-controls-section">
+        <span class="drawer-section-label font-mono">OPERATIONAL ACTION CONTROLS:</span>
+        <div class="drawer-action-btn-row">
+          <button class="btn-action-control" id="drawerBtnAssign" title="Allocate lead and slot">
+            Assign
           </button>
-          <button class="btn-modal-save" id="actionModalSave">
-            Save Changes
+          <button class="btn-action-control" id="drawerBtnStart" title="Start field intervention">
+            Start Action
+          </button>
+          <button class="btn-action-control" id="drawerBtnResolve" title="Mark physical work completed">
+            Mark Resolved
+          </button>
+          <button class="btn-action-control" id="drawerBtnVerifyReq" title="Request telemetry audit">
+            Request Verification
+          </button>
+          <button class="btn-action-control btn-control-highlight" id="drawerBtnVerifyConfirm" title="Confirm telemetry normal baseline">
+            Verify Resolution ✓
           </button>
         </div>
-      </div>
+      </section>
+
+      <!-- Key Metadata Grid -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">ACTION ATTRIBUTES:</span>
+        <div class="drawer-meta-grid font-mono">
+          <div class="drawer-meta-card">
+            <span class="meta-label">Linked Risk</span>
+            <span class="meta-val font-bold text-vermilion" id="drawerActionRiskTitle">Water Infrastructure Degradation</span>
+            <span class="meta-sub" id="drawerActionRiskScore">Score: 86 / 100</span>
+          </div>
+          <div class="drawer-meta-card">
+            <span class="meta-label">Location / Zone</span>
+            <span class="meta-val font-bold" id="drawerActionLocation">Block A / Trench 4B</span>
+            <span class="meta-sub">Cleanroom Sub-Floor Gallery</span>
+          </div>
+          <div class="drawer-meta-card">
+            <span class="meta-label">Responsible Owner</span>
+            <span class="meta-val font-bold" id="drawerActionOwner">Facilities Engineering</span>
+            <span class="meta-sub" id="drawerActionLeadTech">Lead: G. Ramirez</span>
+          </div>
+          <div class="drawer-meta-card">
+            <span class="meta-label">Target Completion Due Date</span>
+            <span class="meta-val font-bold text-amber" id="drawerActionDueDate">20 Sep 2026</span>
+            <span class="meta-sub">Standard Turnaround Window</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Prescriptive Recommended Action -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">PRESCRIPTIVE RECOMMENDED ACTION:</span>
+        <div class="action-prescription-box">
+          <p class="prescription-text font-sans" id="drawerActionRecommendedText">
+            Targeted sub-slab inspection & Viton gasket replacement during scheduled shift turnaround.
+          </p>
+        </div>
+      </section>
+
+      <!-- 7. WHY THIS ACTION? EXPLAINABILITY SECTION -->
+      <section class="drawer-section drawer-why-section">
+        <div class="why-header-row">
+          <span class="drawer-section-label font-mono">WHY WAS THIS ACTION RECOMMENDED?</span>
+          <span class="dash-viz-badge badge-forest-subtle font-mono" style="font-size:0.65rem;">AUDIT & COMPLIANCE VERIFICATION</span>
+        </div>
+
+        <div class="why-explain-card">
+          <div class="why-meta-line font-mono">
+            <strong>Target Risk:</strong> <span id="drawerWhyRiskName">Water Infrastructure Degradation</span>
+          </div>
+
+          <div class="why-evidence-group">
+            <span class="why-evidence-title font-mono">Convergent Evidence Summary:</span>
+            <ul class="why-evidence-list font-sans" id="drawerWhyEvidenceList">
+              <!-- Rendered dynamically by actions.js -->
+            </ul>
+          </div>
+
+          <div class="why-meta-line font-mono" style="margin-top:10px;">
+            <strong>Detected Pattern:</strong> <span id="drawerWhyPatternName" class="text-amber">PAT-006 (Recurring Water Infrastructure Anomaly)</span>
+          </div>
+
+          <div class="why-reason-box font-sans">
+            <strong>Recommendation Rationale:</strong>
+            <p id="drawerWhyReasonText" style="margin:4px 0 0 0; font-size:0.82rem; line-height:1.45; color:var(--ink-secondary);">
+              Early intervention is recommended because multiple independent signals converge on the same infrastructure zone and the recurrence rate is increasing. Replacing the gasket before full rupture avoids estimated $512,000 in cleanroom flooding and line drive destruction.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. ACTION PROGRESS TIMELINE -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">ACTION PROGRESS TIMELINE:</span>
+        <div class="progress-timeline-container" id="drawerProgressTimelineContainer">
+          <!-- Rendered dynamically by actions.js -->
+        </div>
+      </section>
+
+      <!-- 9. RESOLUTION VERIFICATION (Before / After Evidence) -->
+      <section class="drawer-section drawer-verif-section">
+        <div class="why-header-row">
+          <span class="drawer-section-label font-mono">RESOLUTION VERIFICATION (BEFORE / AFTER):</span>
+          <span class="stat-badge badge-forest font-mono" id="drawerVerifResultBadge">VERIFIED</span>
+        </div>
+
+        <div class="before-after-telemetry-grid">
+          <!-- Before Pane -->
+          <div class="verif-telemetry-pane pane-before">
+            <div class="telemetry-pane-header font-mono">
+              <span class="pane-tag">BEFORE RESOLUTION</span>
+              <span class="text-vermilion">Anomaly Peak</span>
+            </div>
+            <div class="telemetry-stat-row font-mono">
+              <span class="stat-lbl">Moisture Probe:</span>
+              <span class="stat-num text-vermilion" id="drawerVerifBeforeMoisture">68.4%</span>
+            </div>
+            <div class="telemetry-stat-row font-mono">
+              <span class="stat-lbl">Leakage Recurrence:</span>
+              <span class="stat-num text-vermilion" id="drawerVerifBeforeRecurr">High</span>
+            </div>
+            <div class="telemetry-stat-row font-mono">
+              <span class="stat-lbl">Risk Score:</span>
+              <span class="stat-num text-vermilion" id="drawerVerifBeforeScore">86 / 100</span>
+            </div>
+          </div>
+
+          <!-- After Pane -->
+          <div class="verif-telemetry-pane pane-after">
+            <div class="telemetry-pane-header font-mono">
+              <span class="pane-tag text-forest">AFTER RESOLUTION</span>
+              <span class="text-forest">Target Restored</span>
+            </div>
+            <div class="telemetry-stat-row font-mono">
+              <span class="stat-lbl">Moisture Probe:</span>
+              <span class="stat-num text-forest" id="drawerVerifAfterMoisture">21.3%</span>
+            </div>
+            <div class="telemetry-stat-row font-mono">
+              <span class="stat-lbl">Leakage Recurrence:</span>
+              <span class="stat-num text-forest" id="drawerVerifAfterRecurr">Normal</span>
+            </div>
+            <div class="telemetry-stat-row font-mono">
+              <span class="stat-lbl">Risk Score:</span>
+              <span class="stat-num text-forest" id="drawerVerifAfterScore">18 / 100</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="verif-explanation-box font-sans">
+          <strong>Verification Assessment:</strong>
+          <p id="drawerVerifExplanation" style="margin:4px 0 0 0; font-size:0.8rem; line-height:1.45; color:var(--ink-secondary);">
+            Post-action signals indicate that the abnormal pattern has returned toward baseline. 0 new moisture spikes detected across 72 hours of continuous monitoring.
+          </p>
+          <div class="font-mono text-muted" style="font-size:0.68rem; margin-top:6px;">
+            * Continuous sensor telemetry confirms anomaly suppression within operating thresholds.
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. VERIFICATION CHECKLIST -->
+      <section class="drawer-section">
+        <div class="why-header-row">
+          <span class="drawer-section-label font-mono">VERIFICATION CHECKLIST:</span>
+          <span class="font-mono text-muted" style="font-size:0.68rem;">TELEMETRY VERIFICATION AUDIT</span>
+        </div>
+        <div class="verification-checklist-container" id="drawerVerificationChecklist">
+          <!-- Rendered dynamically by actions.js -->
+        </div>
+      </section>
+
+      <!-- 12. CROSS-PAGE CONNECTIONS & DEEP LINKS -->
+      <section class="drawer-section drawer-deep-links-section">
+        <span class="drawer-section-label font-mono">CONNECTED EARLYSIGHT INTELLIGENCE:</span>
+        <div class="drawer-deep-links-grid font-mono">
+          <a href="risks.html?riskId=RSK-001" id="drawerActionDeepRisk" class="btn-drawer-deep-link">
+            <span>View Risk Dossier</span> <span>→</span>
+          </a>
+          <a href="evidence.html?riskId=RSK-001" id="drawerActionDeepEvidence" class="btn-drawer-deep-link">
+            <span>View Causal Evidence</span> <span>→</span>
+          </a>
+          <a href="signals.html?zone=block-a" id="drawerActionDeepSignals" class="btn-drawer-deep-link">
+            <span>View Linked Signals</span> <span>→</span>
+          </a>
+          <a href="timeline.html?zone=block-a&case=0" id="drawerActionDeepTimeline" class="btn-drawer-deep-link">
+            <span>View Progression Timeline</span> <span>→</span>
+          </a>
+          <a href="map.html?zone=block-a" id="drawerActionDeepMap" class="btn-drawer-deep-link">
+            <span>View Location on Map</span> <span>→</span>
+          </a>
+        </div>
+      </section>
 
     </div>
-  </div>
+  </aside>
+
+  <!-- Drawer Backdrop for modal overlay on mobile and blur on desktop -->
+  <div class="action-drawer-backdrop" id="actionDrawerBackdrop" aria-hidden="true"></div>
 
   <!-- Floating Toast Notification Container -->
   <div id="actionToastContainer" class="action-toast-container"></div>
 
   <!-- Scripts -->
-  <script src="actions-data.js"></script>
-  <script src="actions.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/actions-entry.js"></script>
 </body>
 </html>

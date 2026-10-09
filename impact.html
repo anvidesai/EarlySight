@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Impact Monitoring & Resolution Audit (Stage 11)</title>
   <meta name="description" content="Operational impact monitoring interface proving whether interventions actually reduced problems. Quantifies before-action precursor frequency, executed field actions, and after-action signal decay with clean trend visualizations, resolution status, and monitoring periods.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -77,67 +78,61 @@
   <!-- Main Impact Monitoring Container -->
   <main class="impact-page-container">
 
-    <!-- Executive KPI Ribbon / Proof of Value -->
-    <section class="impact-kpi-ribbon" aria-label="Executive Value Metrics">
-      <div class="impact-kpi-card">
-        <div class="impact-kpi-header">
-          <span class="impact-kpi-label">AVG SIGNAL REDUCTION</span>
-          <span class="impact-kpi-badge badge-emerald">Audited</span>
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header">
+      <div class="es-page-header-top">
+        <div>
+          <div class="es-badge font-mono" style="margin-bottom:6px; background:rgba(114,198,165,0.18); color:#102A43; border-color:rgba(114,198,165,0.4);">
+            STAGE 11 VERIFICATION AUDIT
+          </div>
+          <h1 class="es-page-title">Impact Monitoring &amp; Audit</h1>
+          <p class="es-page-desc">Proving physical remediation efficacy through cross-silo precursor signal tracking and quantifiable decay audits.</p>
         </div>
-        <div class="impact-kpi-val text-emerald" id="kpiAvgReduction">-95.2%</div>
-        <div class="impact-kpi-sub">Precursor frequency decay post-intervention</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="es-btn es-btn-secondary font-mono" id="btnExportCertificate" onclick="window.impactController && window.impactController.openAuditCertificate()" style="font-size:0.75rem;">
+            Export Audit Certificate 📄
+          </button>
+        </div>
       </div>
 
-      <div class="impact-kpi-card">
-        <div class="impact-kpi-header">
-          <span class="impact-kpi-label">TOTAL AVERTED LOSS</span>
-          <span class="impact-kpi-badge badge-blue">FY 2026</span>
+      <!-- Executive KPI Strip -->
+      <div class="es-kpi-strip">
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">AVG SIGNAL REDUCTION</span>
+          <span class="es-kpi-val" style="color:var(--color-leaf, #72C6A5);" id="kpiAvgReduction">-95.2%</span>
         </div>
-        <div class="impact-kpi-val" id="kpiTotalSavings">$1,922,000</div>
-        <div class="impact-kpi-sub">Catastrophic downtime &amp; damage averted</div>
-      </div>
-
-      <div class="impact-kpi-card">
-        <div class="impact-kpi-header">
-          <span class="impact-kpi-label">DOWNTIME HOURS SAVED</span>
-          <span class="impact-kpi-badge badge-amber">5 Assets</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">TOTAL AVERTED LOSS</span>
+          <span class="es-kpi-val" id="kpiTotalSavings">$1,922,000</span>
         </div>
-        <div class="impact-kpi-val text-amber" id="kpiDowntimeHours">180 hrs</div>
-        <div class="impact-kpi-sub">Unplanned production line outage avoided</div>
-      </div>
-
-      <div class="impact-kpi-card">
-        <div class="impact-kpi-header">
-          <span class="impact-kpi-label">TRUE POSITIVE RATE</span>
-          <span class="impact-kpi-badge badge-emerald">Verified</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">DOWNTIME SAVED</span>
+          <span class="es-kpi-val text-amber" id="kpiDowntimeHours">180 hrs</span>
         </div>
-        <div class="impact-kpi-val text-emerald" id="kpiTruePositive">100%</div>
-        <div class="impact-kpi-sub">0 false alerts across audited interventions</div>
-      </div>
-
-      <div class="impact-kpi-card">
-        <div class="impact-kpi-header">
-          <span class="impact-kpi-label">TIME TO STABILIZATION</span>
-          <span class="impact-kpi-badge badge-neutral">MTTS</span>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">TRUE POSITIVE RATE</span>
+          <span class="es-kpi-val" style="color:var(--color-leaf, #72C6A5);" id="kpiTruePositive">100%</span>
         </div>
-        <div class="impact-kpi-val" id="kpiTimeToStabilize">3.4 days</div>
-        <div class="impact-kpi-sub">Average return to nominal baseline</div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">TIME TO STABILIZATION</span>
+          <span class="es-kpi-val font-mono" id="kpiTimeToStabilize">3.4 days</span>
+        </div>
       </div>
-    </section>
+    </header>
 
     <!-- Hero / Case Selector Section -->
-    <section class="impact-hero-section">
+    <section class="impact-hero-section es-card" style="margin-bottom:24px;">
       <div class="impact-hero-top">
         <div class="impact-hero-left">
-          <div class="impact-eyebrow font-mono">
-            <span class="eyebrow-pill">STAGE 11 VERIFICATION AUDIT</span>
+          <div class="impact-eyebrow font-mono" style="margin-bottom:6px;">
+            <span class="es-badge" style="font-size:0.7rem;">AUDITED ASSET</span>
             <span class="eyebrow-divider">&bull;</span>
             <span id="activeCaseAssetTag" class="font-mono text-muted">DI Water Main Joint 4B-12</span>
           </div>
-          <h1 class="impact-main-title" id="activeCaseTitle">
+          <h2 class="impact-main-title" id="activeCaseTitle" style="font-size:1.35rem; font-weight:800; color:var(--ink-primary); margin:0 0 6px 0;">
             Sub-Slab Pressurized Water Seepage on Flange 4B-12
-          </h1>
-          <p class="impact-main-desc" id="activeCaseDesc">
+          </h2>
+          <p class="impact-main-desc" id="activeCaseDesc" style="font-size:0.85rem; color:var(--ink-secondary); margin:0; line-height:1.5;">
             Proving physical remediation efficacy through cross-silo precursor signal tracking. Monitors whether maintenance intervention successfully suppressed anomalous failure precursors and restored baseline physical equilibrium.
           </p>
         </div>
@@ -642,9 +637,6 @@
   <div class="action-toast-container" id="impactToastContainer" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="impact-data.js"></script>
-  <script src="impact.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/impact-entry.js"></script>
 </body>
 </html>

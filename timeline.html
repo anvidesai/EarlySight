@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EarlySight — Trends & Timeline Analysis (Stage 7)</title>
   <meta name="description" content="Chronological problem development timeline showing how operational precursors emerge, repeat, form patterns, increase in frequency, trigger early warnings, and undergo verified remediation with quantified historical comparisons.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -69,46 +70,103 @@
   <!-- Main Timeline Container -->
   <main class="timeline-page-container">
 
-    <!-- Executive Problem Overview Header Card -->
-    <section class="timeline-hero-card">
-      <div class="timeline-hero-top">
-        <div class="hero-case-selector-group">
-          <span class="timeline-eyebrow font-mono">STAGE 7 // PROBLEM DEVELOPMENT OVER TIME</span>
-          <h1 class="timeline-main-title" id="caseStudyTitle">Block A — Sub-Slab Water Infrastructure Micro-Leakage</h1>
-          <p class="timeline-sub-summary" id="caseStudySummary">
-            Tracking the chronological lifecycle from the first sub-threshold pressure transient to cross-silo pattern detection, early warning issuance, and documented downtime avoidance.
-          </p>
-        </div>
+    <!-- Standardized Header -->
+    <div class="es-page-header">
+      <div class="es-header-info">
+        <h1 class="es-page-title" id="caseStudyTitle">Block A — Sub-Slab Water Infrastructure Micro-Leakage</h1>
+        <p class="es-page-desc" id="caseStudySummary">
+          Tracking the chronological lifecycle from the first sub-threshold pressure transient to cross-silo pattern detection, early warning issuance, and documented downtime avoidance.
+        </p>
+      </div>
 
-        <div class="case-switcher-box">
-          <label for="timelineCaseSelect" class="font-mono text-muted" style="font-size:0.7rem; text-transform:uppercase;">Select Problem Case Study:</label>
-          <select id="timelineCaseSelect" class="map-styled-select" style="min-width:260px;">
-            <option value="0">Block A — Water Infrastructure Issue (High Severity)</option>
-            <option value="1">Block C — Hydraulic Valve Cavitation (High Severity)</option>
+      <div class="es-header-actions">
+        <div class="case-switcher-box" style="margin-right:12px;">
+          <select id="timelineCaseSelect" class="es-select" style="min-width:260px;">
+            <option value="0">Block A — Water Infrastructure Issue (High)</option>
+            <option value="1">Block C — Hydraulic Valve Cavitation (High)</option>
+            <option value="2">Power Island — Busbar 3B Thermal Overload (Critical)</option>
           </select>
         </div>
+
+        <div class="es-kpi-strip">
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Status</span>
+            <span class="kpi-val text-vermilion" id="caseStudySeverityBadge" style="font-size:0.85rem;">HIGH</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Lead Time</span>
+            <span class="kpi-val text-vermilion" id="caseStudyLeadTime">14.2d</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Confidence</span>
+            <span class="kpi-val" id="caseStudyConfidence">87.0%</span>
+          </div>
+          <div class="es-kpi-chip">
+            <span class="kpi-label">Averted Cost</span>
+            <span class="kpi-val text-forest" id="caseStudyCostAverted">$512k</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Lifecycle Track & Compact Risk Score Trajectory -->
+    <section class="timeline-trajectory-lifecycle-card" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:8px; padding:16px 20px; margin-bottom:18px; box-shadow:var(--shadow-sm);">
+      
+      <!-- Top Row: Risk Lifecycle Track -->
+      <div style="margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+            <span class="font-mono text-muted" style="font-size:0.72rem; text-transform:uppercase; font-weight:700; letter-spacing:0.5px;">
+              LIFECYCLE PROGRESSION STATUS
+            </span>
+          </div>
+          <span style="font-size:0.75rem; color:var(--ink-muted); font-family:var(--font-mono);">
+            Detected &rarr; Forming &rarr; Emerging &rarr; Active &rarr; De-escalating &rarr; Resolved
+          </span>
+        </div>
+
+        <div class="risk-lifecycle-track" id="visualRiskLifecycleTrack" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:8px;">
+          <!-- Populated by timelineController.renderRiskLifecycleTrack() -->
+        </div>
       </div>
 
-      <!-- Quick KPI Strip -->
-      <div class="timeline-kpi-ribbon">
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Severity Status</span>
-          <span class="risk-severity-pill badge-severity-high" id="caseStudySeverityBadge">HIGH SEVERITY</span>
+      <!-- Bottom Row: Compact Risk Score Trajectory Strip & Time Filters -->
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding-top:14px; border-top:1px solid var(--border-subtle,#E4E0D8);">
+        
+        <!-- Compact Score Trajectory Strip -->
+        <div style="flex:1; min-width:320px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span class="font-mono" style="font-size:0.7rem; font-weight:700; color:var(--color-rust,#C85A32); text-transform:uppercase;">
+              RISK SCORE TRAJECTORY:
+            </span>
+            <span style="font-size:0.75rem; color:var(--ink-secondary);">
+              <span style="color:var(--color-rust,#C85A32); font-weight:700;">↑ Escalation</span> &nbsp;then&nbsp; <span style="color:var(--color-forest,#1B4332); font-weight:700;">↓ De-escalation</span>
+            </span>
+          </div>
+          
+          <div class="trajectory-score-strip" id="trajectoryScoreStrip" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <!-- Trajectory pills rendered by controller -->
+          </div>
         </div>
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Actionable Lead Time</span>
-          <span class="kpi-ribbon-val text-vermilion" id="caseStudyLeadTime">14.2 Days Lead</span>
+
+        <!-- Section 15: Compact Time Horizon Filters -->
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="font-mono text-muted" style="font-size:0.72rem; text-transform:uppercase;">Time Horizon:</span>
+          <div class="map-pill-buttons" id="timelineHorizonFilters">
+            <button class="time-filter-btn" data-horizon="24h"><span>Last 24h</span></button>
+            <button class="time-filter-btn" data-horizon="7d"><span>Last 7d</span></button>
+            <button class="time-filter-btn active" data-horizon="30d"><span>Last 30d</span></button>
+            <button class="time-filter-btn" data-horizon="all"><span>Custom / All</span></button>
+          </div>
         </div>
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Peak Confidence</span>
-          <span class="kpi-ribbon-val" id="caseStudyConfidence">87.0%</span>
-        </div>
-        <div class="kpi-ribbon-item">
-          <span class="kpi-ribbon-label">Downtime Loss Averted</span>
-          <span class="kpi-ribbon-val text-emerald" id="caseStudyCostAverted">$512,000</span>
-        </div>
+
       </div>
+
     </section>
+
+    <!-- Animated Problem Storyline Visualizer Container -->
+    <div id="timelineStoryVisualizerContainer"></div>
 
     <!-- Sticky Interactive Lifecycle Stepper (The Core 7-Step Progression) -->
     <nav class="sticky-stepper-panel" aria-label="Problem Development Lifecycle">
@@ -136,22 +194,30 @@
       </div>
     </nav>
 
-    <!-- SECTION 1: Chronological Problem Development Cards -->
+    <!-- SECTION 1: Chronological Problem Development Cards & Event Detail Inspector (Sections 10, 11, 12, 14) -->
     <section class="timeline-progression-section">
       <div class="section-block-header">
         <div>
           <h2 class="section-block-title">
             <span class="indicator-dot dot-vermilion"></span>
-            <span>Chronological Lifecycle Evolution</span>
+            <span>Chronological Lifecycle Evolution &amp; Evidence Timeline</span>
           </h2>
           <p style="font-size:0.78rem; color:var(--ink-secondary); margin-top:3px;">
             Watch how a problem develops step-by-step from initial isolated noise into an actionable multi-modal early warning.
           </p>
         </div>
-        <span class="section-block-badge font-mono">Scroll or click stepper to inspect</span>
+        <span class="section-block-badge font-mono" id="timelineActiveEventsTally">CHRONOLOGICAL EVENT SEQUENCE</span>
       </div>
 
-      <div class="chronological-cards-list" id="chronologicalCardsContainer"></div>
+      <!-- Two-column layout: Chronological Event Cards Feed + Sticky Event Context Inspector (Section 14) -->
+      <div class="timeline-layout-grid" style="display:grid; grid-template-columns: 1.55fr 1fr; gap:16px; align-items:start;">
+        <div class="chronological-cards-list" id="chronologicalCardsContainer"></div>
+        
+        <!-- Section 14: Sticky Event Detail Inspector -->
+        <div class="event-detail-inspector-card" id="eventDetailInspectorCard" style="background:var(--bg-card,#FFFFFF); border:1px solid var(--border-subtle,#E4E0D8); border-radius:8px; padding:18px; position:sticky; top:80px; box-shadow:var(--shadow-sm);">
+          <!-- Populated by timelineController.renderEventDetailInspector() -->
+        </div>
+      </div>
     </section>
 
     <!-- SECTION 2: Trend Charts with Daily / Weekly / Monthly Filtering -->
@@ -507,10 +573,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="timeline-data.js"></script>
-  <script src="timeline.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/timeline-entry.js"></script>
 
 </body>
 </html>

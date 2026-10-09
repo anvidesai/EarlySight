@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EarlySight — AI Operational Copilot (Stage 9)</title>
-  <meta name="description" content="Integrated EarlySight AI Assistant Copilot for industrial operations. Cross-silo evidence correlation, natural language query answering, inline velocity charts, and prescriptive diagnostics connecting SCADA, CMMS, and floor logs.">
-  <link rel="stylesheet" href="styles.css">
+  <title>EarlySight — AI Copilot & Operational Intelligence (Milestone 9)</title>
+  <meta name="description" content="EarlySight AI Copilot workspace. Inquire about weak signals, spatial patterns, emerging risks, causal evidence, and prescriptive actions across industrial systems.">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="map-page-body">
+<body class="map-page-body copilot-page-body">
 
   <!-- Top Enterprise Header -->
   <header class="site-header">
@@ -25,232 +26,307 @@
       </div>
       <div class="brand-text">
         <span class="brand-title">EarlySight</span>
-        <span class="brand-subtitle-badge">AI Operational Copilot</span>
+        <span class="brand-subtitle-badge">AI Copilot</span>
       </div>
     </a>
 
     <div class="view-switcher-pill">
       <a href="index.html" class="view-switch-btn" style="text-decoration:none;">&larr; Back to Dashboard</a>
-      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+      <a href="signals.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-teal"></span>
-        <span>Workspaces 🏢</span>
+        <span>Signals (M4)</span>
       </a>
-      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+      <a href="risks.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-vermilion"></span>
-        <span>Action Center &rarr;</span>
+        <span>Risks (M5)</span>
       </a>
-      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-emerald"></span>
-        <span>Impact Monitoring &rarr;</span>
-      </a>
-      <button class="view-switch-btn active">AI Copilot</button>
       <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-amber"></span>
-        <span>Signal Map &rarr;</span>
+        <span>Map (M6)</span>
       </a>
       <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
         <span class="indicator-dot dot-vermilion"></span>
-        <span>Trends & Timeline &rarr;</span>
+        <span>Timeline (M6)</span>
       </a>
       <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>Evidence & Explainability &rarr;</span>
+        <span class="indicator-dot dot-blue"></span>
+        <span>Evidence (M7)</span>
       </a>
+      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+        <span class="indicator-dot dot-emerald"></span>
+        <span>Actions (M8)</span>
+      </a>
+      <button class="view-switch-btn active">AI Copilot (M9)</button>
     </div>
 
     <div style="display: flex; align-items: center; gap: 16px;">
       <div class="header-status-pill">
         <span class="status-dot-pulse"></span>
-        <span>STAGE 9 ACTIVE &bull; COPILOT ENGINE ONLINE</span>
+        <span>STAGE 05/06 • INTELLIGENCE MODE // MOCK AI</span>
       </div>
-      <button class="btn-header-cta" onclick="window.earlySightAiAssistant && window.earlySightAiAssistant.exportBriefing()">
-        Export Intelligence Briefing
-      </button>
     </div>
   </header>
 
-  <!-- Main AI Assistant Page Container -->
-  <main class="evidence-page-container">
+  <!-- Main AI Copilot Container -->
+  <main class="risks-page-container copilot-page-container">
 
-    <!-- Hero Header Card -->
-    <section class="evidence-hero-card">
-      <div class="evidence-hero-top">
-        <div class="hero-left-content">
-          <div class="hero-eyebrow font-mono">
-            <span>STAGE 9 // NATURAL LANGUAGE OPERATIONAL INTELLIGENCE</span>
-            <span class="eyebrow-divider">&bull;</span>
-            <span class="text-teal font-mono">CROSS-SILO KNOWLEDGE REASONING</span>
+    <!-- Standardized Enterprise Page Header -->
+    <header class="es-page-header">
+      <div class="es-page-header-top">
+        <div>
+          <div class="es-badge font-mono" style="margin-bottom:6px; background:rgba(183,167,232,0.2); color:#4B3F72; border-color:rgba(183,167,232,0.4);">
+            OPERATIONAL INTELLIGENCE COPILOT
           </div>
-          <h1 class="evidence-main-title">
-            EarlySight Operational AI Copilot
-          </h1>
-          <p class="evidence-location-str font-mono">
-            Connected to 54 Live Telemetry Signals &bull; 148 Monitored Assets &bull; Facility Quad 04
-          </p>
+          <h1 class="es-page-title">AI Copilot</h1>
+          <p class="es-page-desc">Inquire about weak signals, spatial patterns, emerging risks, causal evidence, and prescriptive actions across industrial systems.</p>
         </div>
-
-        <div class="hero-confidence-display" style="border-color: var(--color-forest-border); background: var(--color-forest-subtle);">
-          <div class="confidence-ring-wrapper">
-            <div class="confidence-number-group" style="border-color: var(--color-forest-border); background: #FFFFFF;">
-              <span class="confidence-label font-mono" style="color: var(--color-forest);">ONTOLOGY SYNC</span>
-              <span class="confidence-value font-mono" style="color: var(--color-forest); font-size: 1.8rem;">100% LIVE</span>
-            </div>
-            <div class="confidence-meta-group">
-              <span class="conf-lead-time font-mono">SCADA + CMMS + Logs</span>
-              <span class="conf-loss-val font-mono" style="color: var(--color-forest);">$2.84M Protected</span>
-            </div>
-          </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span class="font-mono text-muted" style="font-size:0.75rem;">Simulated Intelligence Horizon</span>
         </div>
       </div>
+
+      <!-- KPI Strip -->
+      <div class="es-kpi-strip">
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Signals Analyzed</span>
+          <span class="es-kpi-val" id="kpiCopilotSignals">128</span>
+        </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Precursor Groups</span>
+          <span class="es-kpi-val" style="color:var(--intel-secondary, #78C7C7);" id="kpiCopilotGroups">06</span>
+        </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Emerging Risks</span>
+          <span class="es-kpi-val text-vermilion" id="kpiCopilotRisks">04</span>
+        </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Evidence Chains</span>
+          <span class="es-kpi-val" style="color:var(--color-rust, #C85A32);" id="kpiCopilotChains">06</span>
+        </div>
+        <div class="es-kpi-chip">
+          <span class="es-kpi-label">Open Actions</span>
+          <span class="es-kpi-val text-amber" id="kpiCopilotActions">19</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Console Section -->
+    <section class="copilot-console-section" style="margin-bottom: 24px;">
+      <!-- Console Interactive Bar -->
+      <div class="copilot-console-bar">
+        <form id="copilotQueryForm" class="copilot-query-form">
+          
+          <!-- Context Selector (Section 4) -->
+          <div class="copilot-context-selector-wrap">
+            <label for="copilotContextSelect" class="sr-only">Analysis Context</label>
+            <select id="copilotContextSelect" class="copilot-context-select font-mono" title="Select Analysis Scope Context">
+              <!-- Populated by copilot.js -->
+            </select>
+          </div>
+
+          <!-- Query Input (Section 3) -->
+          <div class="copilot-input-wrapper">
+            <span class="query-prompt-icon font-mono" aria-hidden="true">&gt;</span>
+            <input type="text" id="copilotQueryInput" class="copilot-query-input font-sans" placeholder="Ask EarlySight about risks, evidence, signals, or actions (e.g. 'Why was Block A flagged?')..." autocomplete="off" aria-label="Operational query input">
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="copilotQuerySubmitBtn" class="btn-copilot-submit font-mono" title="Analyze Query">
+            <span>Ask EarlySight</span>
+            <span class="submit-arrow" aria-hidden="true">➔</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Suggested Question Chips (Section 8) -->
+      <div class="copilot-suggestions-bar">
+        <span class="suggestions-label font-mono">ASK EARLYSIGHT:</span>
+        <div class="copilot-suggested-queries-wrap" id="copilotSuggestedQueriesContainer">
+          <!-- Populated dynamically by copilot.js -->
+        </div>
+      </div>
+
     </section>
 
-    <!-- Industrial Cockpit Container -->
-    <div class="ai-cockpit-container" id="earlySightAiAssistantContainer">
+    <!-- TWO-COLUMN MAIN WORKSPACE -->
+    <div class="copilot-workspace-grid">
       
-      <!-- Left Panel: Intelligence Hub & History (320px) -->
-      <aside class="ai-cockpit-sidebar">
+      <!-- LEFT / PRIMARY COLUMN: Active Copilot Response & Evidence Trace -->
+      <div class="copilot-primary-col">
         
-        <!-- Facility Context Status Strip -->
-        <div class="ai-facility-status-card">
-          <div class="ai-status-row">
-            <span class="ai-status-pulse"></span>
-            <span class="ai-status-title font-mono">PLANT COPILOT ONLINE</span>
+        <!-- SECTION 5 & 6: MOCK COPILOT RESPONSE & EVIDENCE TRACE -->
+        <div id="copilotResponseContainer" class="copilot-response-container" aria-live="polite">
+          <!-- Populated dynamically by copilot.js with structured response -->
+        </div>
+
+        <!-- SECTION 7: WHAT THE COPILOT CAN SEE (Insight Cards) -->
+        <section class="copilot-insight-section">
+          <div class="section-header-compact">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="indicator-dot dot-forest" style="background:#1B4332;"></span>
+              <h2 class="dash-viz-title" style="margin:0; font-size:1.0rem;">WHAT THE COPILOT CAN SEE</h2>
+            </div>
+            <span class="dash-viz-badge badge-forest-subtle font-mono">Real-Time Operational Observation Horizons</span>
           </div>
-          <div class="ai-status-metrics-grid">
-            <div class="ai-status-metric">
-              <span class="metric-key">FACILITY</span>
-              <span class="metric-val">Facility 04</span>
-            </div>
-            <div class="ai-status-metric">
-              <span class="metric-key">SIGNALS</span>
-              <span class="metric-val text-teal">54 Live</span>
-            </div>
-            <div class="ai-status-metric">
-              <span class="metric-key">ACTIVE HAZARDS</span>
-              <span class="metric-val text-vermilion">2 Critical</span>
-            </div>
-            <div class="ai-status-metric">
-              <span class="metric-key">AVERTED ROI</span>
-              <span class="metric-val text-emerald">$2.84M</span>
-            </div>
+
+          <div class="copilot-insight-cards-grid" id="copilotInsightCardsGrid">
+            <!-- Populated dynamically by copilot.js -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT / SUPPORTING COLUMN: Reasoning Stages & Recent Activity -->
+      <aside class="copilot-supporting-col">
+        
+        <!-- SECTION 11: HOW EARLYSIGHT REASONS -->
+        <div class="copilot-reasoning-panel">
+          <div class="panel-header-compact">
+            <span class="indicator-dot dot-teal"></span>
+            <h3 class="panel-title font-mono">HOW EARLYSIGHT REASONS</h3>
+          </div>
+          <div class="reasoning-stages-list" id="copilotReasoningStagesContainer">
+            <!-- Populated dynamically by copilot.js (Signal -> Relationship -> Pattern -> Risk -> Evidence -> Action) -->
           </div>
         </div>
 
-        <!-- Suggested Operational Questions -->
-        <div class="ai-sidebar-section">
-          <div class="ai-sidebar-header font-mono">
-            <span>SUGGESTED OPERATIONAL INQUIRIES</span>
+        <!-- SECTION 9: RECENT COPILOT ACTIVITY -->
+        <div class="copilot-activity-panel">
+          <div class="panel-header-compact">
+            <span class="indicator-dot dot-amber"></span>
+            <h3 class="panel-title font-mono">RECENT COPILOT ACTIVITY</h3>
           </div>
-          <div class="ai-suggested-questions-list" id="aiSuggestedQuestionsList">
-            <!-- Rendered dynamically by ai-assistant.js -->
-          </div>
-        </div>
-
-        <!-- Search & Query History -->
-        <div class="ai-sidebar-section">
-          <div class="ai-sidebar-header font-mono">
-            <span>INVESTIGATION SEARCH & HISTORY</span>
-          </div>
-          
-          <div class="ai-history-search-box">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="aiHistorySearchInput" class="ai-history-search-input" placeholder="Search investigation history...">
-          </div>
-
-          <div class="ai-history-list" id="aiHistoryList">
-            <!-- Rendered dynamically by ai-assistant.js -->
+          <div class="copilot-activity-list" id="copilotActivityList">
+            <!-- Populated dynamically by copilot.js -->
           </div>
         </div>
 
       </aside>
 
-      <!-- Right Panel: Conversation Canvas & Visual Reasoning Feed -->
-      <section class="ai-cockpit-main">
-        
-        <!-- Top Console Action Bar -->
-        <div class="ai-console-top-bar">
-          <div class="ai-console-scope-info">
-            <span class="ai-scope-pill font-mono">
-              <span class="indicator-dot dot-teal"></span>
-              <span>Active Scope: Facility 04 (All Zones)</span>
-            </span>
-            <span class="ai-connected-pill font-mono">Connected: SCADA + CMMS + Shift Logs + IoT Probes</span>
-          </div>
-          <div class="ai-console-actions">
-            <button type="button" class="btn-ai-action font-mono" id="aiExportBriefingBtn" title="Export investigation briefing">
-              <span>Export Briefing</span>
-            </button>
-            <button type="button" class="btn-ai-action font-mono" id="aiClearThreadBtn" title="Clear active thread">
-              <span>Reset</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Messages Feed -->
-        <div class="ai-chat-feed" id="aiChatFeed">
-          <!-- Messages rendered dynamically with charts, evidence chips & alerts -->
-        </div>
-
-        <!-- Interactive Query Input Bar -->
-        <div class="ai-query-input-bar">
-          <div class="ai-input-silos-row font-mono">
-            <span class="silo-label">SYNTHESIZING DATA SILOS:</span>
-            <span class="silo-badge active">&bull; SCADA Telemetry</span>
-            <span class="silo-badge active">&bull; CMMS Work Orders</span>
-            <span class="silo-badge active">&bull; Shift Handovers</span>
-            <span class="silo-badge active">&bull; Subsurface Probes</span>
-          </div>
-
-          <form id="aiQueryForm" class="ai-query-form">
-            <input type="text" id="aiQueryInput" class="ai-query-input" placeholder="Ask EarlySight Copilot (e.g. 'What problems are increasing this week?', 'Show emerging issues in Block A')..." autocomplete="off">
-            <button type="submit" class="ai-query-send-btn" id="aiQuerySendBtn" title="Execute Query">
-              <span>Analyze</span>
-              <span class="send-arrow">&rarr;</span>
-            </button>
-          </form>
-        </div>
-
-      </section>
-
     </div>
-
-    <!-- Bottom Navigation Bar -->
-    <nav class="evidence-bottom-nav">
-      <div class="bottom-nav-left">
-        <span class="font-mono text-muted">EARLYSIGHT WORKFLOW STAGES</span>
-        <span class="bottom-nav-tag font-mono" style="background: var(--color-forest-subtle); color: var(--color-forest); border: 1px solid var(--color-forest-border);">STAGE 9 COMPLETE</span>
-      </div>
-      <div class="bottom-nav-links">
-        <a href="index.html" class="btn-nav-outline">&larr; Return to Dashboard</a>
-        <a href="map.html" class="btn-nav-outline">Open Signal Map ↗</a>
-        <a href="timeline.html" class="btn-nav-outline">Open Trends & Timeline ↗</a>
-        <a href="evidence.html" class="btn-nav-outline">Open Evidence & Explainability ↗</a>
-      </div>
-    </nav>
 
   </main>
 
-  <!-- AI Assistant Evidence Record Inspector Modal -->
-  <div class="ai-evidence-modal" id="aiEvidenceModal" role="dialog" aria-hidden="true">
-    <div class="ai-evidence-dialog">
-      <div class="ai-evidence-dialog-header">
-        <div>
-          <span class="evidence-modal-badge font-mono">ORGANIZATIONAL EVIDENCE CITATION</span>
-          <h4 class="evidence-modal-title" id="aiEvidenceModalTitle">Evidence Record</h4>
-          <span class="evidence-modal-source font-mono" id="aiEvidenceModalSource">Source</span>
+  <!-- SECTION 10: COPILOT INSPECTOR DRAWER (Right-side slide on desktop, full-width on mobile) -->
+  <aside class="copilot-inspector-drawer" id="copilotInspectorDrawer" aria-label="Copilot Evidence Inspector" role="dialog" aria-modal="true">
+    <div class="drawer-header-row">
+      <div class="drawer-title-group">
+        <div class="drawer-top-badges font-mono">
+          <span class="action-id-tag font-bold">INTELLIGENCE DOSSIER</span>
+          <span class="stat-badge badge-forest font-mono">AUDITED REASONING</span>
         </div>
-        <button type="button" class="ai-modal-close" id="aiEvidenceModalClose" aria-label="Close dialog">&times;</button>
+        <h3 class="drawer-headline font-sans" id="inspDrawerQuery">
+          "Why was the Block A risk flagged?"
+        </h3>
       </div>
-      <div class="ai-evidence-dialog-body" id="aiEvidenceModalBody"></div>
+      <button class="drawer-close-btn" id="copilotInspectorCloseBtn" aria-label="Close Inspector Drawer">&times;</button>
     </div>
-  </div>
+
+    <div class="drawer-body-scroll">
+      
+      <!-- Context & Scope -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">ANALYSIS CONTEXT:</span>
+        <div class="insp-data-block font-mono text-forest font-bold" id="inspDrawerContext">
+          Risks &amp; Evidence
+        </div>
+      </section>
+
+      <!-- AI Interpretation -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">AI INTERPRETATION:</span>
+        <div class="insp-data-block font-sans" id="inspDrawerInterpretation">
+          Recurrent joint fatigue and subterranean seepage in Trench 4B.
+        </div>
+      </section>
+
+      <!-- Supporting Signals -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">SUPPORTING SIGNALS:</span>
+        <div class="insp-data-block font-mono" id="inspDrawerSignals">
+          SIG-031 (Moisture Probe), SIG-044 (Visual Floor Seepage), SIG-WTR-01 (Pressure Drop)
+        </div>
+      </section>
+
+      <!-- Pattern -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">IDENTIFIED PATTERN:</span>
+        <div class="insp-data-block font-mono text-amber font-bold" id="inspDrawerPattern">
+          PAT-006: Recurring Water Infrastructure Anomaly
+        </div>
+      </section>
+
+      <!-- Risk -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">SYNTHESIZED RISK:</span>
+        <div class="insp-data-block font-mono text-vermilion font-bold" id="inspDrawerRisk">
+          RSK-001: Water Infrastructure Degradation (Score 86/100, P1)
+        </div>
+      </section>
+
+      <!-- Evidence -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">EVIDENCE DOSSIER:</span>
+        <div class="insp-data-block font-sans" id="inspDrawerEvidence">
+          EVD-014: Multi-sensor spatial convergence with 84% statistical confidence
+        </div>
+      </section>
+
+      <!-- Action -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">RECOMMENDED ACTION:</span>
+        <div class="insp-data-block font-sans" id="inspDrawerAction">
+          ACT-001: Viton Gasket Replacement (Due: 20 Sep 2026, Owner: Facilities)
+        </div>
+      </section>
+
+      <!-- Confidence & Timeline -->
+      <section class="drawer-section">
+        <span class="drawer-section-label font-mono">CONFIDENCE &amp; TIMELINE:</span>
+        <div class="drawer-meta-grid font-mono">
+          <div class="drawer-meta-card">
+            <span class="meta-label">Confidence Metrics</span>
+            <span class="meta-val text-teal font-bold" id="inspDrawerConfidence">84% Evidence / 91% Pattern</span>
+          </div>
+          <div class="drawer-meta-card">
+            <span class="meta-label">Lead Time Projection</span>
+            <span class="meta-val text-amber font-bold" id="inspDrawerTimeline">14.2 Days Lead Time</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Deep Links -->
+      <section class="drawer-section drawer-deep-links-section">
+        <span class="drawer-section-label font-mono">NAVIGATE EARLYSIGHT INTELLIGENCE:</span>
+        <div class="drawer-deep-links-grid font-mono">
+          <a href="signals.html" id="inspLinkSignals" class="btn-drawer-deep-link">
+            <span>View Signals (M4)</span> <span>→</span>
+          </a>
+          <a href="risks.html" id="inspLinkRisk" class="btn-drawer-deep-link">
+            <span>View Risk Dossier (M5)</span> <span>→</span>
+          </a>
+          <a href="evidence.html" id="inspLinkEvidence" class="btn-drawer-deep-link">
+            <span>View Evidence (M7)</span> <span>→</span>
+          </a>
+          <a href="timeline.html" id="inspLinkTimeline" class="btn-drawer-deep-link">
+            <span>View Timeline (M6)</span> <span>→</span>
+          </a>
+          <a href="actions.html" id="inspLinkAction" class="btn-drawer-deep-link">
+            <span>View Action Center (M8)</span> <span>→</span>
+          </a>
+          <a href="map.html" id="inspLinkMap" class="btn-drawer-deep-link">
+            <span>View Location on Map (M6)</span> <span>→</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </aside>
+
+  <!-- Drawer Backdrop -->
+  <div class="copilot-drawer-backdrop" id="copilotDrawerBackdrop" aria-hidden="true"></div>
 
   <!-- Scripts -->
-  <script src="signals-data.js"></script>
-  <script src="dashboard-data.js"></script>
-  <script src="ai-assistant-data.js"></script>
-  <script src="ai-assistant.js"></script>
-  <script src="global-nav.js"></script>
-  <script src="micro-interactions.js"></script>
+  <script type="module" src="/src/js/copilot-entry.js"></script>
 </body>
 </html>
