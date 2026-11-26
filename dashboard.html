@@ -13,78 +13,6 @@
 </head>
 <body>
 
-  <!-- Top Enterprise Navigation Header -->
-  <header class="site-header">
-    <a href="#" class="brand-container">
-      <div class="brand-logo-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16" cy="16" r="14" stroke="#1B4332" stroke-width="2" stroke-dasharray="3 3"/>
-          <circle cx="16" cy="16" r="8" stroke="#C85A32" stroke-width="1.8"/>
-          <circle cx="16" cy="16" r="3.5" fill="#C85A32"/>
-          <line x1="16" y1="16" x2="25" y2="9" stroke="#C85A32" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <span class="brand-title">EarlySight</span>
-        <span class="brand-subtitle-badge">Operational Intelligence</span>
-      </div>
-    </a>
-
-    <div class="view-switcher-pill">
-      <button class="view-switch-btn active" id="viewSwitchHero">Startup Narrative</button>
-      <button class="view-switch-btn" id="viewSwitchDash">Main Dashboard</button>
-      <a href="workspace.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>Multi-Org Workspaces &rarr;</span>
-      </a>
-      <a href="actions.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-vermilion"></span>
-        <span>Action Center &rarr;</span>
-      </a>
-      <a href="impact.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-emerald"></span>
-        <span>Impact Monitoring &rarr;</span>
-      </a>
-      <a href="copilot.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>AI Copilot</span>
-      </a>
-      <a href="map.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-amber"></span>
-        <span>Signal Map &rarr;</span>
-      </a>
-      <a href="timeline.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-vermilion"></span>
-        <span>Trends & Timeline &rarr;</span>
-      </a>
-      <a href="evidence.html" class="view-switch-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
-        <span class="indicator-dot dot-teal"></span>
-        <span>Evidence & Explainability &rarr;</span>
-      </a>
-    </div>
-
-    <nav class="header-nav">
-      <a href="#mainDashboardSection" class="nav-link" id="navLinkDashboard">Main Dashboard</a>
-      <a href="workspace.html" class="nav-link" style="color:var(--tenant-primary, #1D4ED8); font-weight:700;">Workspaces 🏢</a>
-      <a href="actions.html" class="nav-link" style="color:var(--accent-risk); font-weight:700;">Action Center 🎯</a>
-      <a href="impact.html" class="nav-link" style="color:#059669; font-weight:700;">Impact Audit 📊</a>
-      <a href="#aiAssistantBlock" class="nav-link" style="color:var(--accent-teal); font-weight:700;">AI Copilot</a>
-      <a href="map.html" class="nav-link">Signal Map</a>
-      <a href="timeline.html" class="nav-link">Timeline</a>
-      <a href="evidence.html" class="nav-link">Evidence</a>
-      <a href="#pipelineSection" class="nav-link">Architecture</a>
-      <a href="#sandboxSection" class="nav-link">Signal Sandbox</a>
-    </nav>
-
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <div class="header-status-pill">
-        <span class="status-dot-pulse"></span>
-        <span>TELEMETRY ACTIVE</span>
-      </div>
-      <a href="#mainDashboardSection" class="btn-header-cta" id="headerCtaBtn">Enter Dashboard</a>
-    </div>
-  </header>
-
   <main class="dashboard-page-main" id="mainDashboardPage">
   <!-- Interactive Architectural Pipeline & Sandbox (Toggleable Studio) -->
   <div id="heroNarrativeContainer" class="hero-narrative-collapse" style="display: none;">
@@ -491,6 +419,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Dedicated Block: Emerging Risks (Shown when filtering by emerging-risks) -->
+    <div class="dashboard-content-block" data-block-type="emerging-risks" style="display: none;">
       <div class="section-block-header">
         <h3 class="section-block-title">
           <span class="indicator-dot dot-vermilion"></span>
@@ -498,7 +429,7 @@
         </h3>
         <span class="section-block-badge">Pre-Failure Projections • Multimodal Synthesis • Quantified Trajectories</span>
       </div>
-      <div class="emerging-risks-grid" id="emergingRisksGridContainer"></div>
+      <div class="emerging-risks-grid" id="emergingRisksGridContainerDetailed"></div>
     </div>
 
     <!-- STAGE 9 — EARLYSIGHT AI ASSISTANT (INTEGRATED INDUSTRIAL COPILOT) -->

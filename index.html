@@ -97,54 +97,70 @@
             </button>
           </div>
 
+          <!-- Live Telemetry Stream Ticker -->
+          <div class="home-live-stream-ticker" id="homeLiveStreamTicker">
+            <div class="home-ticker-badge">
+              <span class="home-pulse-indicator"></span>
+              <span class="home-ticker-badge-text">TELEMETRY STREAM</span>
+            </div>
+            <div class="home-ticker-track-wrap">
+              <div class="home-ticker-content" id="homeTickerContent">
+                <span class="home-ticker-chip chip-teal"><b>SIG-W01</b>: Flange 4B Acoustic Cavitation 1.4kHz • Block A</span>
+              </div>
+            </div>
+          </div>
+
           <!-- Five Compact Audience Labels -->
           <div class="home-audience-container">
-            <span class="home-audience-title">Trusted across operational environments:</span>
-            <div class="home-audience-pills">
+            <div class="home-audience-header">
+              <span class="home-audience-title">Explore by operational sector:</span>
+              <span class="home-audience-hint">Click sector to switch live preview</span>
+            </div>
+            <div class="home-audience-pills" id="homeAudiencePills">
               <!-- Colleges -->
-              <a href="workspace.html?org=org-abc-college" class="home-audience-pill" title="Higher Education Campuses">
+              <button type="button" class="home-audience-pill active" data-industry="colleges" title="Higher Education Campuses">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                   <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                 </svg>
                 <span>Colleges</span>
-              </a>
+              </button>
 
               <!-- Hospitals -->
-              <a href="workspace.html?org=org-city-hospital" class="home-audience-pill" title="Tertiary Healthcare Facilities">
+              <button type="button" class="home-audience-pill" data-industry="hospitals" title="Tertiary Healthcare Facilities">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
                   <path d="M9 10h6M12 7v6"></path>
                 </svg>
                 <span>Hospitals</span>
-              </a>
+              </button>
 
               <!-- Companies -->
-              <a href="workspace.html?org=org-apex-industrial" class="home-audience-pill" title="Corporate Enterprises">
+              <button type="button" class="home-audience-pill" data-industry="companies" title="Corporate Enterprises">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
                   <path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"></path>
                 </svg>
                 <span>Companies</span>
-              </a>
+              </button>
 
               <!-- Factories -->
-              <a href="workspace.html?org=org-apex-industrial" class="home-audience-pill" title="Manufacturing & Industrial Plants">
+              <button type="button" class="home-audience-pill" data-industry="factories" title="Manufacturing & Industrial Plants">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M2 20h20M5 20V8l6 4V8l6 4v8"></path>
                   <path d="M18 4h2v4h-2z"></path>
                 </svg>
                 <span>Factories</span>
-              </a>
+              </button>
 
               <!-- Communities -->
-              <a href="workspace.html?org=org-green-residency" class="home-audience-pill" title="Residential & Municipal Communities">
+              <button type="button" class="home-audience-pill" data-industry="communities" title="Residential & Municipal Communities">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                   <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
                 <span>Communities</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -203,7 +219,7 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                   </div>
                 </div>
-                <div class="home-mini-tenant-badge" title="Tenant: ABC College">ABC</div>
+                <div class="home-mini-tenant-badge" id="previewTenantBadge" title="Current Active Workspace">ABC</div>
               </aside>
 
               <!-- Main Dashboard Canvas Area -->
@@ -211,42 +227,42 @@
                 <!-- Overview Header -->
                 <div class="home-preview-header">
                   <div>
-                    <h2 class="home-preview-heading">Operational Intelligence Overview</h2>
-                    <p class="home-preview-subheading">Continuous multi-modal precursor detection & risk synthesis</p>
+                    <h2 class="home-preview-heading" id="previewHeading">Operational Intelligence Overview</h2>
+                    <p class="home-preview-subheading" id="previewSubheading">Continuous multi-modal precursor detection & risk synthesis</p>
                   </div>
-                  <span class="home-preview-confidence-badge">94.8% AI CONFIDENCE</span>
+                  <span class="home-preview-confidence-badge" id="previewConfidenceBadge">94.8% AI CONFIDENCE</span>
                 </div>
 
                 <!-- 3 KPI Cards Row -->
                 <div class="home-preview-kpi-row">
                   <!-- Active Signals -->
-                  <div class="home-preview-kpi-card">
+                  <div class="home-preview-kpi-card" id="previewKpiCard1">
                     <div class="home-kpi-top">
-                      <span>Active Signals</span>
+                      <span id="previewKpiLabel1">Active Signals</span>
                       <span class="home-kpi-dot teal"></span>
                     </div>
-                    <span class="home-kpi-value" style="color:var(--home-primary-teal);">128</span>
-                    <span class="home-kpi-meta">+14% in 24h &bull; 6 Modalities</span>
+                    <span class="home-kpi-value" id="previewKpiVal1" style="color:var(--home-primary-teal);">128</span>
+                    <span class="home-kpi-meta" id="previewKpiMeta1">+14% in 24h &bull; 6 Modalities</span>
                   </div>
 
                   <!-- Open Risks -->
-                  <div class="home-preview-kpi-card">
+                  <div class="home-preview-kpi-card" id="previewKpiCard2">
                     <div class="home-kpi-top">
-                      <span>Open Risks</span>
+                      <span id="previewKpiLabel2">Open Risks</span>
                       <span class="home-kpi-dot amber"></span>
                     </div>
-                    <span class="home-kpi-value" style="color:var(--home-peach-dark);">4</span>
-                    <span class="home-kpi-meta">1 Critical &bull; 14d Lead Time</span>
+                    <span class="home-kpi-value" id="previewKpiVal2" style="color:var(--home-peach-dark);">4</span>
+                    <span class="home-kpi-meta" id="previewKpiMeta2">1 Critical &bull; 14d Lead Time</span>
                   </div>
 
                   <!-- Actions Pending -->
-                  <div class="home-preview-kpi-card">
+                  <div class="home-preview-kpi-card" id="previewKpiCard3">
                     <div class="home-kpi-top">
-                      <span>Actions Pending</span>
+                      <span id="previewKpiLabel3">Actions Pending</span>
                       <span class="home-kpi-dot lavender"></span>
                     </div>
-                    <span class="home-kpi-value" style="color:var(--home-lavender-dark);">6</span>
-                    <span class="home-kpi-meta">2 In Progress &bull; 1 Verified</span>
+                    <span class="home-kpi-value" id="previewKpiVal3" style="color:var(--home-lavender-dark);">6</span>
+                    <span class="home-kpi-meta" id="previewKpiMeta3">2 In Progress &bull; 1 Verified</span>
                   </div>
                 </div>
 
@@ -255,48 +271,51 @@
                   <div class="home-chart-header">
                     <div style="display:flex; align-items:center; gap:6px;">
                       <span class="home-kpi-dot amber"></span>
-                      <span class="home-chart-title">Emerging Risk Trajectory: RSK-001 (Cavitation Risk)</span>
+                      <span class="home-chart-title" id="previewChartTitle">Emerging Risk Trajectory: RSK-001 (Cavitation Risk)</span>
                     </div>
-                    <span class="home-chart-leadtime">+14 Days Lead Time</span>
+                    <span class="home-chart-leadtime" id="previewChartLeadtime">+14 Days Lead Time</span>
                   </div>
                   
-                  <!-- SVG Risk Trajectory Curve -->
-                  <svg class="home-chart-svg" viewBox="0 0 460 85" fill="none">
-                    <defs>
-                      <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#FFBF91" stop-opacity="0.35"/>
-                        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0"/>
-                      </linearGradient>
-                    </defs>
-                    <!-- Severity horizontal bands -->
-                    <rect x="0" y="65" width="460" height="20" fill="#E4F7F5" opacity="0.35"/>
-                    <rect x="0" y="45" width="460" height="20" fill="#EAF5FC" opacity="0.35"/>
-                    <rect x="0" y="25" width="460" height="20" fill="#FFF1E7" opacity="0.35"/>
-                    <rect x="0" y="0" width="460" height="25" fill="#FDE2E2" opacity="0.35"/>
-                    
-                    <!-- Reference Grid Lines -->
-                    <line x1="0" y1="25" x2="460" y2="25" stroke="#DCE8F0" stroke-dasharray="2 3"/>
-                    <line x1="0" y1="45" x2="460" y2="45" stroke="#DCE8F0" stroke-dasharray="2 3"/>
-                    <line x1="0" y1="65" x2="460" y2="65" stroke="#DCE8F0" stroke-dasharray="2 3"/>
-                    
-                    <!-- Shaded Area Under Curve -->
-                    <path d="M 10 75 Q 120 72 200 58 T 320 30 T 420 18 L 420 85 L 10 85 Z" fill="url(#chartGrad)"/>
-                    
-                    <!-- Trajectory Line -->
-                    <path d="M 10 75 Q 120 72 200 58 T 320 30 T 420 18" stroke="#D97736" stroke-width="2.5" stroke-linecap="round"/>
-                    
-                    <!-- Milestone Precursor Points -->
-                    <circle cx="90" cy="74" r="3.5" fill="#087E8B"/>
-                    <circle cx="200" cy="58" r="3.5" fill="#A992EE"/>
-                    <circle cx="320" cy="30" r="4" fill="#D97736"/>
-                    <circle cx="420" cy="18" r="5" fill="#EF7B7B" stroke="#FFFFFF" stroke-width="2"/>
-                    
-                    <!-- Text Labels -->
-                    <text x="90" y="83" font-size="7" fill="#66839B" text-anchor="middle">P1: Leak</text>
-                    <text x="200" y="52" font-size="7" fill="#66839B" text-anchor="middle">P2: Heat</text>
-                    <text x="320" y="24" font-size="7" fill="#D97736" text-anchor="middle">P3: Vibration</text>
-                    <text x="420" y="12" font-size="8" font-weight="bold" fill="#EF7B7B" text-anchor="middle">Score 86</text>
-                  </svg>
+                  <!-- SVG Risk Trajectory Curve with Interactive Tooltip Target -->
+                  <div class="trajectory-svg-container" style="position:relative;">
+                    <svg class="home-chart-svg" id="previewChartSvg" viewBox="0 0 460 85" fill="none">
+                      <defs>
+                        <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stop-color="#FFBF91" stop-opacity="0.35"/>
+                          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+                        </linearGradient>
+                      </defs>
+                      <!-- Severity horizontal bands -->
+                      <rect x="0" y="65" width="460" height="20" fill="#E4F7F5" opacity="0.35"/>
+                      <rect x="0" y="45" width="460" height="20" fill="#EAF5FC" opacity="0.35"/>
+                      <rect x="0" y="25" width="460" height="20" fill="#FFF1E7" opacity="0.35"/>
+                      <rect x="0" y="0" width="460" height="25" fill="#FDE2E2" opacity="0.35"/>
+                      
+                      <!-- Reference Grid Lines -->
+                      <line x1="0" y1="25" x2="460" y2="25" stroke="#DCE8F0" stroke-dasharray="2 3"/>
+                      <line x1="0" y1="45" x2="460" y2="45" stroke="#DCE8F0" stroke-dasharray="2 3"/>
+                      <line x1="0" y1="65" x2="460" y2="65" stroke="#DCE8F0" stroke-dasharray="2 3"/>
+                      
+                      <!-- Shaded Area Under Curve -->
+                      <path d="M 10 75 Q 120 72 200 58 T 320 30 T 420 18 L 420 85 L 10 85 Z" fill="url(#chartGrad)"/>
+                      
+                      <!-- Trajectory Line -->
+                      <path d="M 10 75 Q 120 72 200 58 T 320 30 T 420 18" stroke="#D97736" stroke-width="2.5" stroke-linecap="round"/>
+                      
+                      <!-- Milestone Precursor Points -->
+                      <circle cx="90" cy="74" r="5" fill="#087E8B" class="milestone-point" data-tip="Precursor 1: Micro-weep detected via acoustic sensor (1.4 kHz)" style="cursor:pointer;"/>
+                      <circle cx="200" cy="58" r="5" fill="#A992EE" class="milestone-point" data-tip="Precursor 2: Delta-T thermal gradient surge (+6.2°C)" style="cursor:pointer;"/>
+                      <circle cx="320" cy="30" r="5" fill="#D97736" class="milestone-point" data-tip="Precursor 3: 28 Hz resonance flutter crossing alert threshold" style="cursor:pointer;"/>
+                      <circle cx="420" cy="18" r="6" fill="#EF7B7B" stroke="#FFFFFF" stroke-width="2" class="milestone-point" data-tip="Projected Breach: Composite Risk Score 86 (High Hazard)" style="cursor:pointer;"/>
+                      
+                      <!-- Text Labels -->
+                      <text x="90" y="83" font-size="7" fill="#66839B" text-anchor="middle">P1: Leak</text>
+                      <text x="200" y="52" font-size="7" fill="#66839B" text-anchor="middle">P2: Heat</text>
+                      <text x="320" y="24" font-size="7" fill="#D97736" text-anchor="middle">P3: Vibration</text>
+                      <text x="420" y="12" font-size="8" font-weight="bold" fill="#EF7B7B" text-anchor="middle">Score 86</text>
+                    </svg>
+                    <div class="trajectory-milestone-tooltip" id="trajectoryTooltip" style="display:none;"></div>
+                  </div>
                 </div>
 
                 <!-- Recent Signals List -->
@@ -306,28 +325,30 @@
                     <span style="font-size:0.68rem; color:var(--home-text-muted);">Real-time stream</span>
                   </div>
                   
-                  <div class="home-signal-row">
-                    <div class="home-signal-left">
-                      <span class="home-signal-code">SIG-W01</span>
-                      <span class="home-signal-desc">Sub-Slab Flange 4B Micro-Weep</span>
+                  <div class="home-signals-list-body" id="previewSignalsList">
+                    <div class="home-signal-row">
+                      <div class="home-signal-left">
+                        <span class="home-signal-code">SIG-W01</span>
+                        <span class="home-signal-desc">Sub-Slab Flange 4B Micro-Weep</span>
+                      </div>
+                      <span class="home-signal-badge home-badge-teal">Acoustic • 1.4 kHz</span>
                     </div>
-                    <span class="home-signal-badge home-badge-teal">Acoustic • 1.4 kHz</span>
-                  </div>
 
-                  <div class="home-signal-row">
-                    <div class="home-signal-left">
-                      <span class="home-signal-code">SIG-V04</span>
-                      <span class="home-signal-desc">Secondary Impeller Flutter</span>
+                    <div class="home-signal-row">
+                      <div class="home-signal-left">
+                        <span class="home-signal-code">SIG-V04</span>
+                        <span class="home-signal-desc">Secondary Impeller Flutter</span>
+                      </div>
+                      <span class="home-signal-badge home-badge-amber">Vibration • +2.8 mm/s</span>
                     </div>
-                    <span class="home-signal-badge home-badge-amber">Vibration • +2.8 mm/s</span>
-                  </div>
 
-                  <div class="home-signal-row">
-                    <div class="home-signal-left">
-                      <span class="home-signal-code">SIG-T02</span>
-                      <span class="home-signal-desc">Heat Exchanger Delta-T Creep</span>
+                    <div class="home-signal-row">
+                      <div class="home-signal-left">
+                        <span class="home-signal-code">SIG-T02</span>
+                        <span class="home-signal-desc">Heat Exchanger Delta-T Creep</span>
+                      </div>
+                      <span class="home-signal-badge home-badge-lavender">Thermal • +6.2°C</span>
                     </div>
-                    <span class="home-signal-badge home-badge-lavender">Thermal • +6.2°C</span>
                   </div>
                 </div>
 
@@ -793,8 +814,12 @@
         </div>
       </div>
 
-      <!-- Modal Footer -->
-      <div style="display:flex; justify-content:flex-end; gap:12px;">
+      <!-- Modal Navigation Controls & Footer -->
+      <div class="demo-stage-nav-controls">
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="demo-nav-btn" id="demoPrevBtn" style="display:none;">&larr; Previous Stage</button>
+          <button type="button" class="demo-nav-btn primary" id="demoNextBtn">Next Stage: Pattern Detection &rarr;</button>
+        </div>
         <a href="dashboard.html" class="home-btn-pill-teal">
           <span>Launch Live Operational Cockpit</span> &rarr;
         </a>
