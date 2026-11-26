@@ -23582,6 +23582,263 @@ body.earlysight-homepage {
   }
 }
 
+/* ==========================================================================
+   STAGE 15: HIGH-IMPACT MODERN UI/UX REVAMP & MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* 1. Prevent FOUC for legacy header across all app pages */
+body.has-global-nav .site-header,
+.site-header {
+  display: none !important;
+}
+
+/* 2. Glassmorphic Sticky Header */
+.home-header {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(16, 52, 92, 0.08) !important;
+  box-shadow: 0 4px 20px -2px rgba(16, 52, 92, 0.03) !important;
+}
+
+/* 3. Live Telemetry Stream Ticker */
+.home-live-stream-ticker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #FFFFFF;
+  border: 1px solid rgba(16, 52, 92, 0.08);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  margin-top: 14px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(16, 52, 92, 0.03);
+  max-width: 640px;
+  overflow: hidden;
+}
+
+.home-ticker-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--home-pale-aqua, #E8F6F6);
+  padding: 3px 10px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.home-ticker-badge-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--home-primary-teal, #087E8B);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.home-ticker-track-wrap {
+  flex-grow: 1;
+  overflow: hidden;
+  position: relative;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.home-ticker-content {
+  display: flex;
+  align-items: center;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+}
+
+.home-ticker-chip {
+  font-size: 0.82rem;
+  color: var(--home-text-heading, #172B4D);
+  white-space: nowrap;
+}
+
+.home-ticker-chip b {
+  color: var(--home-primary-teal, #087E8B);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.home-ticker-chip.chip-teal b { color: #087E8B; }
+.home-ticker-chip.chip-amber b { color: #D97706; }
+.home-ticker-chip.chip-lavender b { color: #7C3AED; }
+.home-ticker-chip.chip-peach b { color: #EA580C; }
+
+/* 4. Audience Header & Active Pills */
+.home-audience-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.home-audience-hint {
+  font-size: 0.75rem;
+  color: var(--home-primary-teal, #087E8B);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.home-audience-pill {
+  cursor: pointer;
+  border: 1px solid var(--home-border, #E2E8F0);
+  background: #FFFFFF;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--home-text-heading, #172B4D);
+}
+
+.home-audience-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(8, 126, 139, 0.4);
+  background: var(--home-pale-aqua, #E8F6F6);
+}
+
+.home-audience-pill.active {
+  background: var(--home-primary-teal, #087E8B) !important;
+  color: #FFFFFF !important;
+  border-color: var(--home-primary-teal, #087E8B) !important;
+  box-shadow: 0 4px 14px rgba(8, 126, 139, 0.28) !important;
+}
+
+.home-audience-pill.active svg {
+  stroke: #FFFFFF !important;
+}
+
+/* 5. Trajectory Tooltip & Milestone Points */
+.milestone-point {
+  transition: r 0.2s ease, filter 0.2s ease;
+}
+
+.milestone-point:hover {
+  r: 8px;
+  filter: drop-shadow(0 0 6px rgba(8, 126, 139, 0.6));
+}
+
+.trajectory-milestone-tooltip {
+  position: absolute;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #172B4D;
+  color: #FFFFFF;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  white-space: nowrap;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.trajectory-milestone-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #172B4D transparent transparent transparent;
+}
+
+/* 6. Demo Modal Enhancement */
+.demo-stage-nav-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--home-border, #E2E8F0);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.demo-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid var(--home-border, #E2E8F0);
+  background: #FFFFFF;
+  color: var(--home-text-heading, #172B4D);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.demo-nav-btn:hover {
+  background: var(--home-bg-secondary, #F1F5F9);
+}
+
+.demo-nav-btn.primary {
+  background: var(--home-primary-teal, #087E8B);
+  color: #FFFFFF;
+  border-color: var(--home-primary-teal, #087E8B);
+}
+
+.demo-nav-btn.primary:hover {
+  background: #066671;
+}
+
+/* 7. Smooth Global Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 199, 199, 0.45);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(8, 126, 139, 0.7);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* 8. Card Micro-Interactions */
+.home-feature-card,
+.home-step-card,
+.home-usecase-card,
+.home-preview-kpi-card,
+.es-card {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s !important;
+}
+
+.home-feature-card:hover,
+.home-usecase-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 28px -4px rgba(16, 52, 92, 0.08) !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 
 
 

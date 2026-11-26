@@ -983,9 +983,10 @@ class EarlySightDashboard {
   // Prominent Emerging Risks Panel (Card Fields: Problem title, Location, Related signals, Trend, Severity, Confidence, First detected, Last updated, Status, Recommended action)
   renderEmergingRisksPanel() {
     const container = document.getElementById('emergingRisksGridContainer');
-    if (!container) return;
+    const containerDetailed = document.getElementById('emergingRisksGridContainerDetailed');
+    if (!container && !containerDetailed) return;
 
-    container.innerHTML = EMERGING_RISKS_PANEL.map(r => `
+    const cardsHtml = EMERGING_RISKS_PANEL.map(r => `
       <div class="emerging-risk-card card-severity-${r.severity.toLowerCase()}" onclick="dashboardController.inspectRisk('${r.id}')">
         <div class="risk-card-top-row">
           <div class="risk-severity-pill ${r.severityBadgeClass}">
@@ -1065,6 +1066,9 @@ class EarlySightDashboard {
         </div>
       </div>
     `).join('');
+
+    if (container) container.innerHTML = cardsHtml;
+    if (containerDetailed) containerDetailed.innerHTML = cardsHtml;
   }
 
   // 2. Active Early Warnings
